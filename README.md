@@ -1,7 +1,7 @@
 # d1x
 
 Experiments on [d1](https://github.com/vvvkor/d1)  
-** Not for production! **
+**Not for production!**
 
 ### Use from CDN
 
