@@ -329,8 +329,8 @@ var main = new (function(){
         s.top = vert ? 0 : '100%';
         var qn = n.getBoundingClientRect();
         var qr = r.getBoundingClientRect();
-        //var dx = (qn.right > (this.prevWidth || window.innerWidth));
         var dx = (qn.right > window.innerWidth);
+        //var dx = (qn.right > (this.prevWidth || window.innerWidth));
         var dy = (qn.bottom > window.innerHeight);
         //x
         if(vert) s.left = dx ? '3em' : '100%';
