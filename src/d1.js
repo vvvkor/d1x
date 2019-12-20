@@ -17,7 +17,7 @@ var main = new (function(){
 
   this.sequence = 0;
   this.dlg = null;
-  this.prevWidth = 0;
+  //this.prevWidth = 0;
   
   this.opt = {
     dialog: 1,
@@ -253,7 +253,7 @@ var main = new (function(){
       if(d.matches(this.qs.tab) && on===undefined) on = true; //tabs: show instead of toggle
       //console.log('toggle '+d.id, on, deep);
       //d.classList.add('toggle');//anti:target
-      this.prevWidth = window.innerWidth;
+      //this.prevWidth = window.innerWidth;
       d.classList[on ? 'remove' : (on===undefined ? 'toggle' : 'add')](this.qs.cHide);
       if(this.vis(d)) this.fixPosition(d);
       if(deep!=-1){
@@ -329,7 +329,8 @@ var main = new (function(){
         s.top = vert ? 0 : '100%';
         var qn = n.getBoundingClientRect();
         var qr = r.getBoundingClientRect();
-        var dx = (qn.right > (this.prevWidth || window.innerWidth));
+        //var dx = (qn.right > (this.prevWidth || window.innerWidth));
+        var dx = (qn.right > window.innerWidth);
         var dy = (qn.bottom > window.innerHeight);
         //x
         if(vert) s.left = dx ? '3em' : '100%';
