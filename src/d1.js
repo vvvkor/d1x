@@ -235,7 +235,7 @@ var main = new (function(){
         else this.unhash();
       }
     }
-    else if(as && as.matches(this.qs.alert+','+this.qs.dialog) && !this.curDialog() /*&& !(as.form && as.form.elements[this.qs.aConfirm])*/){
+    else if(as && as.matches(this.qs.alert+','+this.qs.dialog) && !this.curDialog() && !(as.form && as.form.elements[this.qs.aConfirm])){
       //d = this.dialog(e, a, (n, v) => !console.log(v) && this.unpop()); //custom callback
       e.preventDefault();
       d = this.dialog(as);
@@ -425,7 +425,7 @@ var main = new (function(){
       n.form.elements[this.qs.aConfirm] || this.ins('input', '', {type: 'hidden', name: this.qs.aConfirm, value: 1}, n.form);
       if(v!==true){
         var i = n.form.elements[p] || this.ins('input', '', {type: 'hidden', name: p}, n.form);
-        if(i) i.value = v;
+        if(i) i.value = v;//todo: checkValidity with new value
       }
       n.click();
     }
