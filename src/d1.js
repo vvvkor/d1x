@@ -422,9 +422,11 @@ var main = new (function(){
     else if(!v && v!=='') ;
     //form submit
     else if(n.form){
-      this.ins('input', '', {type: 'hidden', name: this.qs.aConfirm, value: 1}, n.form);
-      var i = n.form.elements[p] || this.ins('input', '', {type: 'hidden', name: p}, n.form);
-      i.value = v;
+      n.form.elements[this.qs.aConfirm] || this.ins('input', '', {type: 'hidden', name: this.qs.aConfirm, value: 1}, n.form);
+      if(v!==true){
+        var i = n.form.elements[p] || this.ins('input', '', {type: 'hidden', name: p}, n.form);
+        if(i) i.value = v;
+      }
       n.click();
     }
     //goto link
