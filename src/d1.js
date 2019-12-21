@@ -58,9 +58,6 @@ var main = new (function(){
     };
 
   this.init = function(d){
-    //prepare body
-    document.body.classList.add(this.qs.cJs); //anti:hover, anti:target
-    
     //toggle
     var q = this.qs;
     this.qs.toggle = [q.tgl, q.pop, q.nav, q.dlg, q.tab, q.tre, q.drw/*, q.gal*/].join(', ');
@@ -83,6 +80,9 @@ var main = new (function(){
     this.b([window], 'hashchange', this.onHash);
     this.b([document], 'keydown', this.onKey);
     this.b([document], 'click', this.onClick);
+
+    //prepare body
+    document.body.classList.add(this.qs.cJs); //anti:hover, anti:target
     this.afterAction();
   }
   
@@ -235,7 +235,7 @@ var main = new (function(){
         else this.unhash();
       }
     }
-    else if(as && as.matches(this.qs.alert+','+this.qs.dialog) && !this.curDialog() && !(as.form && as.form.elements[this.qs.aConfirm])){
+    else if(as && as.matches(this.qs.alert+','+this.qs.dialog)){
       //d = this.dialog(e, a, (n, v) => !console.log(v) && this.unpop()); //custom callback
       e.preventDefault();
       d = this.dialog(as);
@@ -423,29 +423,31 @@ var main = new (function(){
     else if(!v && v!=='') ;
     //form submit
     else if(n.form){
-      n.form.elements[this.qs.aConfirm] || this.ins('input', '', {type: 'hidden', name: this.qs.aConfirm, value: 1}, n.form);
       if(v!==true){
         var i = n.form.elements[p] || this.ins('input', '', {type: 'hidden', name: p}, n.form);
-        if(i) i.value = v;//todo: checkValidity with new value
+        if(i) i.value = v;
       }
-      n.click();
+      if(n.form.reportValidity()){
+        this.ins('input', '', {type: 'hidden', name: n.name, value: n.value}, n.form);
+        n.form.elements[this.qs.aConfirm] || this.ins('input', '', {type: 'hidden', name: this.qs.aConfirm, value: 1}, n.form);
+        n.form.submit();
+      }
+      else this.unpop();
+      //n.click();
     }
     //goto link
     else if(n.href){
-      if(this.attr(n, 'href').substr(0, 1)=='#'){
-        this.unpop()
-        u = n.hash;
-      }
+      var ha = (this.attr(n, 'href').substr(0, 1)=='#');
+      var bl = (n.target=='_blank');
+      if(ha || bl) this.unpop();
+      if(ha) u = n.hash;
       else{
         var a = {};
         a[this.qs.aConfirm] = 1;
         if(v!==true) a[p] = v;
         var u = this.makeUrl(n, a);
       }
-      if(n.target=='_blank'){
-        this.unpop();
-        window.open(u, n.target);
-      }
+      if(n.target=='_blank') window.open(u, n.target);
       else location.href = u;
     }
   }
@@ -489,4 +491,3 @@ var main = new (function(){
 
 
 d1.b([document], 'DOMContentLoaded', d1.init);
-

@@ -1149,7 +1149,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 
 <div class="bord">
 <div class="pad">
-	<div class="dlg c pad rad">
+	<div class="box -dlg c pad rad">
 		<svg class="text-n" width="80" height="80"><use xlink:href="#svg-github"/></svg>
 		<p><b>No items yet</b>
 		<p>Click the button to create new item</p>
@@ -1280,8 +1280,8 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 </p>
 <form class="mar">
 	<input type="text" name="nm" id="nms" value="qq" required pattern="[A-Za-z]{2,}" title="Two or more letters">
-	<input type="submit" value="OK">
-	<input type="submit" value="Confirm form" class="dialog bg-w" title="Warning!" data-prompt-x="nm">
+	<input type="submit" name="s1" value="OK">
+	<input type="submit" name="s2" value="Confirm form" class="dialog bg-w" title="Warning!" data-prompt="nm">
 	<a href="?nm=" class="dialog" data-prompt="nm" data-caption="Name:" data-src="#nms">Prompt from input</a>
 </form>
 </div>
