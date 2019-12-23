@@ -16,6 +16,7 @@ var main = new (function(){
 
   this.sequence = 0;
   this.dlg = null;
+  this.plugins = {};
   //this.prevWidth = 0;
   
   this.opt = {
@@ -57,6 +58,8 @@ var main = new (function(){
     };
 
   this.init = function(d){
+    this.initPlugins();
+    
     //toggle
     var q = this.qs;
     this.qs.toggle = [q.tgl, q.pop, q.nav, q.dlg, q.tab, q.tre, q.drw/*, q.gal*/].join(', ');
@@ -83,6 +86,14 @@ var main = new (function(){
     //prepare body
     document.body.classList.add(this.qs.cJs); //anti:hover, anti:target
     this.afterAction();
+  }
+  
+  this.plug = function(p) {
+    this.plugins[p.name] = p;
+  }
+  
+  this.initPlugins = function(opts){
+    Object.keys(this.plugins).forEach(k => this.plugins[k].init({})); // todo: avoid {}
   }
   
   //utils
@@ -224,7 +235,7 @@ var main = new (function(){
     var as = this.closest(n, 'a, input, button');
     var d = (a && a.matches('a[href^="#"]')) ? this.q(a.hash) : null;
     this.unpop([a, n, d]);
-    if(n.matches(this.qs.gal)) this.prevImg(e);
+    if(n.matches(this.qs.gal)) this.onClickGal(e);
     else if(d && d.matches(this.qs.tgl)){
       var d = this.q(a.hash);
       if(d && d.matches(this.qs.tgl)){
@@ -350,15 +361,17 @@ var main = new (function(){
     }
   }
 
-  this.prevImg = function(e) {
-  var n = e.target;
+  this.onClickGal = function(e){
+    var n = e.target;
     if(e.clientX < n.clientWidth / 3){
-      var p = n.previousElementSibling || this.qq('a[id]', n.parentNode).pop();
-      if(p.id){
-        location.hash = '#' + p.id;
-        e.preventDefault();
-      }
+      if(this.prevImg(n)) e.preventDefault();
     }
+  }
+  
+  this.prevImg = function(n) {
+    var p = n.previousElementSibling || this.qq('a[id]', n.parentNode).pop();
+    if(p.id) location.hash = '#' + p.id;
+    return p.id;
   }
   
   //dialog
