@@ -1,3 +1,5 @@
+/*! d1css v1.0.1 */
+
 :root {
     --bg: #fff;
     --bg-pane: rgba(0, 0, 0, .05);
@@ -33,13 +35,35 @@ a {
     color: var(--link);
 }
 
-.js .hide, .hide:not(:target), /*!chg*/ body:not(.js) .pop:not(:hover)>div,
+pre {
+    overflow: auto;
+    max-height: 80vh;
+}
+
+img {
+    max-width: 100%;
+}
+
+.icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+}
+
+.roll {
+    overflow-x: auto;
+}
+
+.js .hide, .hide:not(:target), body:not(.js) .pop:not(:hover)>div,
 .pop:not(:hover)>div:not([id]), body:not(.js) .dlg:not(:target),
 body:not(.js) .nav li:not(:hover)>ul, .nav:not(.toggle) li:not(:hover)>ul,
 body:not(.js) .tabs+div>:not(:target):not(:last-child),
-body:not(.js) .tabs+div>:target~div, .gal a:not(:target), a.act>.is-off,
-a:not(.act)>.is-on {
+body:not(.js) .tabs+div>:target~div, .gal *, a.act>.is-off, a:not(.act)>.is-on {
     display: none;
+}
+
+.drawer[class], .gal a:target, .gal a:target~a:not([id]) {
+    display: block;
 }
 
 .pop {
@@ -58,8 +82,6 @@ body:not(.js) .pop>div.shift, .pop>div:not([id]).shift {
     left: auto;
     right: 0;
 }
-
-/*!chg*/
 
 .dlg {
     z-index: 100;
@@ -112,7 +134,6 @@ body:not(.js) .pop>div.shift, .pop>div:not([id]).shift {
 
 .drawer[class] {
     z-index: 30;
-    display: block; /*!chg*/
     position: fixed;
     top: 0;
     left: -21em;
@@ -143,7 +164,6 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
     background: #000 50% 50% / contain no-repeat;
     background-image: var(--img);
     z-index: 90;
-    display: block;
     position: fixed;
     left: 0;
     top: 0;
@@ -157,8 +177,7 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
     background-position: 999em 999em;
 }
 
-.gal a:target~a:not([id]), .gal a:target[data-caption]:after {
-    display: block;
+.gal a:not([id]), .gal a:after {
     z-index: 91;
     position: fixed;
     top: 0;
@@ -170,6 +189,7 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
 .gal a[data-caption]:after {
     content: attr(data-caption);
     left: 0;
+    display: block;
 }
 
 .gal a:not([id]) {
@@ -206,17 +226,11 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
     min-width: 12em;
 }
 
-.pop>div, .nav ul, .dlg, .drawer {
+.pop>div, .nav ul, .dlg, .drawer, .box {
     box-shadow: 0 .2em .8em rgba(0, 0, 0, .5);
     background-color: #fff;
     background-color: var(--bg);
     text-align: left;
-}
-
-.dlg {
-    border: 200vh solid rgba(0, 0, 0, .5);
-    border-radius: calc(200vh + .5em);
-    border-radius: calc(200vh + var(--radius));
 }
 
 .tabs li {
@@ -224,28 +238,34 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
     margin-right: calc(var(--gap-n)/4);
 }
 
-/*!chg*/
+.dlg {
+    border: 200vh solid rgba(0, 0, 0, .5);
+}
 
-.tabs a {
+.rad {
+    border-radius: .5em;
+    border-radius: var(--radius);
+}
+
+.dlg.rad {
+    border-radius: calc(200vh + .5em);
+    border-radius: calc(200vh + var(--radius));
+}
+
+.tabs.rad a {
     border-radius: .5em .5em 0 0;
     border-radius: var(--radius) var(--radius) 0 0;
 }
-
-/*!chg*/
 
 .act, a:hover {
     color: #06f;
     color: var(--text-hilite);
 }
 
-/*!chg*/
-
 .act, a.hover:hover, .nav.hover li:hover>a {
     background-color: rgba(0, 0, 0, .05);
     background-color: var(--bg-hilite);
 }
-
-/*!chg*/
 
 .bg {
     background-color: rgba(0, 0, 0, .05);
@@ -269,6 +289,10 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
 
 .r {
     text-align: right;
+}
+
+.c {
+    text-align: center;
 }
 
 .center {

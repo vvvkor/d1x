@@ -1,3 +1,5 @@
+/*! d1css v0.0.0 */
+
 /*
 - .dlg.hide -> .dlg
 - .dlg -> .box
@@ -32,7 +34,7 @@ img{max-width:100%;}
 
 /* hide */
 .js .hide,
-.hide:not(:target),/*!chg*/
+.hide:not(:target),/*chg*/
 	/* .pop:not(:hover)>div:not([id]), /* pop-hover */
 	/* body:not(.js) .pop>div[id]:not(:target), /* pop-target */
 body:not(.js) .pop:not(:hover)>div, /* pop-hover-no-js */
@@ -57,7 +59,7 @@ a.act>.is-off, a:not(.act)>.is-on /* change-icon */
 /* pop */
 .pop{position:relative;display:inline-block;}
 .pop>div{z-index:10;position:absolute;top:100%;left:0;}
-body:not(.js) .pop>div.shift, .pop>div:not([id]).shift{left:auto;right:0;}/*!chg*/
+body:not(.js) .pop>div.shift, .pop>div:not([id]).shift{left:auto;right:0;}/*chg*/
 /* modal */
 .dlg{z-index:100;position:fixed;top:50%;left:50%;transform:translate(-50%, -50%);background-clip:padding-box;min-width:16em;max-width:80vw;max-height:80vh;overflow:auto;}
 /* nav */
@@ -89,12 +91,14 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide){right:0;}
 	/* decor */
 	.pop>div, .nav ul{min-width:12em;}
 	.pop>div, .nav ul, .dlg, .drawer, .box{box-shadow:0 .2em .8em rgba(0,0,0,.5);background-color:var(--bg);text-align:left;}
-	.dlg{border:200vh solid rgba(0,0,0,.5);border-radius:calc(200vh + var(--radius));}
-	.tabs li{margin-right:calc(var(--gap-n) / 4);}/*!chg*/
-	.tabs a{border-radius:var(--radius) var(--radius) 0 0;}/*!chg*/
+	.tabs li{margin-right:calc(var(--gap-n) / 4);}/*chg*/
+	.dlg{border:200vh solid rgba(0,0,0,.5);}
+	.rad{border-radius:var(--radius);}
+	.dlg.rad{border-radius:calc(200vh + var(--radius));}
+	.tabs.rad a{border-radius:var(--radius) var(--radius) 0 0;}/*chg*/
 /* modifiers */
-.act, a:hover{color:var(--text-hilite);}/*!chg*/
-.act, a.hover:hover, .nav.hover li:hover>a/*, a:focus*/{background-color:var(--bg-hilite);}/*!chg*/
+.act, a:hover{color:var(--text-hilite);}/*chg*/
+.act, a.hover:hover, .nav.hover li:hover>a/*, a:focus*/{background-color:var(--bg-hilite);}/*chg*/
 .bg{background-color:var(--bg-pane);}
 .pad{padding:var(--gaps-n);}
 .mar{margin:var(--gap-n) 0;}

@@ -9,18 +9,11 @@
   "scripts": {
     "build:css": "postcss -c postcss.config.json",
     "minify:css": "postcss -u cssnano dist/d1.css -o dist/d1.min.css",
-    "//build-beautify:js": "uglifyjs --verbose --beautify --comments '/^/*!/' --output ./dist/d1.js ./src/d1.js",
-    "build:js": "copyfiles ./src/d1.js ./dist -f",
-    "minify:js": "terser ./dist/d1.js -c -m --output ./dist/d1.min.js",
-    "//minify:js": "uglifyjs --verbose --comments /^!/ --output ./dist/d1.min.js ./src/d1.js",
-    "build:version.dist": "cross-var replace-in-file \"/d1css v\\d+\\.\\d+\\.\\d+/g\" \"d1css v$npm_package_version\" \"dist/*.*\" --isRegex",
-    "build:docs": "copyfiles ./src/index.html ./docs -f", 
-    "build:version.docs": "cross-var replace-in-file \"/d1css@\\d+\\.\\d+\\.\\d+/g\" \"d1css@$npm_package_version\" \"docs/*.*\" --isRegex",
-    "build:version.docs.path": "cross-var replace-in-file \"/(d1\\w*)\\.(css|js)#/g\" \"https://cdn.jsdelivr.net/npm/d1x@$npm_package_version/dist/$1.min.$2\" \"docs/*.*\" --isRegex",
-    "build:version.docs.info": "cross-var replace-in-file \"/v\\d+\\.\\d+\\.\\d+/g\" \"v$npm_package_version\" \"docs/*.*\" --isRegex",
-    "build:version.docs.cmt": "cross-var replace-in-file \"/REMOVE-/g\" \"\" \"docs/*.*\" --isRegex", 
-    "build": "npm run build:css && npm run minify:css && npm run build:js && npm run minify:js && npm run build:version.dist && npm run build:docs && npm run build:version.docs && npm run build:version.docs.path && npm run build:version.docs.info && npm run build:version.docs.cmt",
-    "//prepublishOnly": "npm version patch",
+    "build:docs": "copyfiles ./src/index.html ./docs -f",
+    "build:docs.cmt": "cross-var replace-in-file \"/REMOVE-/g\" \"\" \"docs/*.*\" --isRegex",
+    "build:version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"dist/*.*\" --isRegex",
+    "build:docs.version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"docs/*.*\" --isRegex",
+    "build": "npm run build:css && npm run minify:css && npm run build:docs && npm run build:docs.cmt && npm run build:docs.version && webpack && npm run build:version",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -40,19 +33,32 @@
     "url": "https://github.com/vvvkor/d1x/issues"
   },
   "homepage": "https://github.com/vvvkor/d1x#readme",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "terser": "^4.4.3",
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "babel-loader": "^8.0.6",
     "copyfiles": "^2.1.1",
     "cross-var": "^1.1.0",
+    "css-loader": "^3.4.0",
     "cssnano": "^3.10.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "mini-css-extract-plugin": "^0.9.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
     "perfectionist": "^2.4.0",
     "postcss-calc": "^7.0.1",
     "postcss-cli": "^2.6.0",
     "postcss-custom-properties": "^8.0.11",
     "postcss-discard-comments": "^2.0.4",
+    "postcss-import": "^12.0.1",
+    "postcss-loader": "^3.0.0",
+    "postcss-preset-env": "^6.7.0",
     "replace-in-file": "^3.4.4",
-    "uglify-js": "^3.6.7"
+    "sugarss": "^2.0.0",
+    "terser": "^4.4.3",
+    "uglify-js": "^3.6.7",
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.10"
   }
 }

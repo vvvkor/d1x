@@ -1,5 +1,4 @@
-/*! d1css v0.0.0 https://github.com/vvvkor/d1 */
-/* Enhancements for d1css microframework */
+/*! d1css v0.0.0 */
 
 (function(window, document, Element) {
   
@@ -488,6 +487,3 @@ var main = new (function(){
   }
 
 })(window, document, Element);
-
-
-d1.b([document], 'DOMContentLoaded', d1.init);

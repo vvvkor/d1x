@@ -17,13 +17,12 @@ process:
 - publish html
 -->
 	
-	<!--link href="https://cdn.jsdelivr.net/npm/d1css@1.0.1/dist/d1.min.css" rel="stylesheet"-->
 	<!-- CDN -->
 	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.1/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.1/dist/d1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.1/dist/d1.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/d1.css" rel="stylesheet">
-	<script src="../src/d1.js"></script>
+	<script src="../dist/d1.js"></script>
 	<!-- -->
 	
 </head>
@@ -299,14 +298,14 @@ Wrap your rows into <code>div</code> with <code>wrap</code> class to limit maxim
 		<div class="bg">div</div>
 		<div class="bg">div</div>
 	</div>
-	<div class="row let mar flip">
+	<!--div class="row let mar flip">
 		<div class="bg-i">aaaaaaaaaaaaaaa</div>
 		<div class="bg-i">bbbbbbbbbbbbbbbbbb</div>
 		<div class="bg-i">ccccccccccccccc</div>
 		<div class="bg-i">ddddddddddddddd</div>
 		<div class="bg-i">eeeeeeeeeeeeeeee</div>
 		<div class="bg-i">wwwwwwwwwwrap!</div>
-	</div>
+	</div-->
 </div>	
 	<pre class="hide let" data-src="#s-grid"></pre>
 </div>
@@ -860,7 +859,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <div class="bord">
 <div id="s-modal" class="pad">
 <a href="#modal">Dialog</a>
-<div id="modal" class="hide dlg c pad -let">
+<div id="modal" class="hide dlg rad c pad -let">
 	<a class="close pad" href="#cancel">&times;</a>
 	<p>Dialog</p>
 </div>
@@ -933,7 +932,7 @@ Next sibling <code>div</code> should contain <code>div</code> tab panels.
 
 <div class="bord">
 <div id="s-tabs" class="pad">
-<ul class="nav tabs toggle mem">
+<ul class="nav tabs rad toggle mem">
 	<li><a href="#tab1">Tab1</a></li>
 	<li><a href="#tab2">Tab2</a></li>
 	<li><a href="#tab3">Tab3</a></li>
@@ -1149,7 +1148,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 
 <div class="bord">
 <div class="pad">
-	<div class="dlg c pad rad">
+	<div class="box -dlg c pad rad">
 		<svg class="text-n" width="80" height="80"><use xlink:href="#svg-github"/></svg>
 		<p><b>No items yet</b>
 		<p>Click the button to create new item</p>
@@ -1280,8 +1279,8 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 </p>
 <form class="mar">
 	<input type="text" name="nm" id="nms" value="qq" required pattern="[A-Za-z]{2,}" title="Two or more letters">
-	<input type="submit" value="OK">
-	<input type="submit" value="Confirm form" class="dialog bg-w" title="Warning!">
+	<input type="submit" name="s1" value="OK">
+	<input type="submit" name="s2" value="Confirm form" class="dialog bg-w" title="Warning!" data-prompt="nm">
 	<a href="?nm=" class="dialog" data-prompt="nm" data-caption="Name:" data-src="#nms">Prompt from input</a>
 </form>
 </div>
