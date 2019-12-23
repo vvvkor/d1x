@@ -239,7 +239,7 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
 }
 
 .dlg {
-    border: 200vh solid rgba(0, 0, 0, .5);
+    border: 500em solid rgba(0, 0, 0, .5);
 }
 
 .rad {
@@ -248,8 +248,8 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
 }
 
 .dlg.rad {
-    border-radius: calc(200vh + .5em);
-    border-radius: calc(200vh + var(--radius));
+    border-radius: 500.5em;
+    border-radius: calc(500em + var(--radius));
 }
 
 .tabs.rad a {
