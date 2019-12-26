@@ -1,10 +1,11 @@
 /*! d1tablex */
-/* Filter and sort HTML table */
 
-//table.sort[data-filter][data-filter-report][data-case][data-filter-cols]
-if(typeof module !== "undefined") var d1 = require('../d1.js');
-(function(){
-main = new(function() {
+// Filter and sort HTML table
+// table.sort[data-filter][data-filter-report][data-case][data-filter-cols]
+
+var d1 = require('../d1.js');
+
+module.exports = new(function() {
 
   "use strict";
 
@@ -17,7 +18,7 @@ main = new(function() {
     cFilter: 'bg-w', // filter-on - non-empty filter field
     cScan: 'text-i', // col-scan - searchable columns' header (used if "data-filter-cols" is set)
     cShow: '', // row-show - matching row
-    cHide: 'hide', // row-hide - non-matching row (if not set the "display:none" is used)
+    //cHide: 'hide', // row-hide - non-matching row (if not set the "display:none" is used)
     cSort: '', // col-sort - sortable column's header
     cAsc:  'bg-y', // col-asc - !non-empty! - header of currently sorted column (ascending)
     cDesc: 'bg-w', // col-desc - header of currently sorted column (descending)
@@ -26,13 +27,12 @@ main = new(function() {
   };
 
   this.init = function(opt) {
-    var i;
-    if(opt) for(i in opt) this.opt[i] = opt[i];
     this.lang = document.documentElement.getAttribute('lang') || 'en';
     this.skipComma = (this.lang=='en');
-    var t = document.querySelectorAll(this.opt.qSort + ', table[' + this.opt.attrFilter + ']');
+    //var t = document.querySelectorAll(this.opt.qSort + ', table[' + this.opt.attrFilter + ']');
     //t.forEach(this.prepare.bind(this));
-    for (i = 0; i < t.length; i++) this.prepare(t[i]);
+    //for (i = 0; i < t.length; i++) this.prepare(t[i]);
+    d1.e(this.opt.qSort + ', table[' + this.opt.attrFilter + ']', this.prepare.bind(this))
   }
 
   this.prepare = function(n) {
@@ -141,7 +141,7 @@ main = new(function() {
         s = '|' + data.join('|') + '|';
         hide = !this.matches(s, q, n.vCase);
       }
-      if(this.opt.cHide) n.vData[i].n.classList[hide ? 'add' : 'remove'](this.opt.cHide);
+      if(d1.opt.cHide) n.vData[i].n.classList[hide ? 'add' : 'remove'](d1.opt.cHide);
       else n.vData[i].n.style.display = hide ? 'none' : '';
       if(this.opt.cShow) n.vData[i].n.classList[hide ? 'remove' : 'add'](this.opt.cShow);
       if (!hide) cnt++;
@@ -276,8 +276,4 @@ main = new(function() {
 
   d1.plug(this);
 
-})();
-
-  if(typeof module !== "undefined") module.exports = main;
-  else if(window) d1tablex = main;
 })();

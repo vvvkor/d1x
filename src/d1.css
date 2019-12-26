@@ -92,7 +92,7 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide){right:0;}
 	.pop>div, .nav ul{min-width:12em;}
 	.pop>div, .nav ul, .dlg, .drawer, .box{box-shadow:0 .2em .8em rgba(0,0,0,.5);background-color:var(--bg);text-align:left;}
 	.tabs li{margin-right:calc(var(--gap-n) / 4);}/*chg*/
-	.dlg{border:500em solid rgba(0,0,0,.5);}
+	.dlg{border:500em solid rgba(0,0,0,.7);}
 	.rad{border-radius:var(--radius);}
 	.dlg.rad{border-radius:calc(500em + var(--radius));}
 	.tabs.rad a{border-radius:var(--radius) var(--radius) 0 0;}/*chg*/

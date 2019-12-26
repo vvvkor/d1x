@@ -240,7 +240,7 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
 }
 
 .dlg {
-    border: 500em solid rgba(0, 0, 0, .5);
+    border: 500em solid rgba(0, 0, 0, .7);
 }
 
 .rad {

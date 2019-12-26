@@ -1,10 +1,11 @@
-/*! d1gallery https://github.com/vvvkor/d1gallery */
-/* Lighweight image gallery */
+/*! d1 gallery */
 
-//.gallery a.pic
-if(typeof module !== "undefined") var d1 = require('../d1.js');
-(function () {
-var main = new(function () {
+// Lighweight image gallery
+// .gallery a.pic 
+
+var d1 = require('../d1.js');
+
+module.exports = new(function () {
 
   "use strict";
 
@@ -13,17 +14,33 @@ var main = new(function () {
   this.opt = {
     idPrefix: 'pic-',
     num: true,
+    cGal: 'gal',
+    qGal: '.gal>a[id]', // dup of toggle.opt.qGal
     qGallery: '.gallery',
     qLinks: 'a.pic'
   };
   
   this.init = function (opt) {
-    var i;
-    if(opt) for (i in opt) this.opt[i] = opt[i];
     d1.e(this.opt.qGallery, this.prepare.bind(this));
     d1.b([document], 'keydown', this.key.bind(this));
     d1.b([window], 'hashchange', this.loadTarget.bind(this));
     if(location.hash) this.loadTarget();
+  }
+  
+  this.onClick = function(e){
+    var n = e.target;
+    if(n.matches(this.opt.qGal)){
+      if(e.clientX > 0 /* not Enter key */ && e.clientX < n.clientWidth / 3){
+        if(this.prevImg(n)) e.preventDefault();
+      }
+      return n;
+    }
+  }
+  
+  this.prevImg = function(n) {
+    var p = n.previousElementSibling || d1.qq('a[id]', n.parentNode).pop();
+    if(p.id) location.hash = '#' + p.id;
+    return p.id;
   }
   
   this.loadTarget = function() {
@@ -42,7 +59,7 @@ var main = new(function () {
   }
   
   this.prepare = function (n) {
-    var g = d1.ins('div', '', {className: d1.opt.cGal});
+    var g = d1.ins('div', '', {className: this.opt.cGal});
     var a = n.querySelectorAll(this.opt.qLinks);
     var z = a.length;
     var first = 0;
@@ -57,7 +74,7 @@ var main = new(function () {
       //p.style.backgroundImage = 'url("' + a[i].getAttribute('href') + '")';//preload all
       p.vLink = a[i].getAttribute('href');//real link
       p.vImg = a[i].getAttribute('href');//preload prev & next
-      p.setAttribute('data-caption', (this.opt.num ? (i+1)+'/'+z+(a[i].title ? ' - ' : '') : '') + (a[i].title || ''));
+      p.setAttribute(d1.opt.aCaption, (this.opt.num ? (i+1)+'/'+z+(a[i].title ? ' - ' : '') : '') + (a[i].title || ''));
       a[i].href = '#' + p.id;
       a[i].vDone = 1;
     }
@@ -71,7 +88,7 @@ var main = new(function () {
       var a = d1.q(location.hash);
       if(a && a.hash){
         var k = e.keyCode;
-        if (k==37 || k==38) d1.prevImg(a);
+        if (k==37 || k==38) this.prevImg(a);
         else if (k==39 || k==40) location.hash = a.hash;//a.click();
         else if(k==8){
           var h = a.vLink;
@@ -88,8 +105,4 @@ var main = new(function () {
 
   d1.plug(this);
 
-})();
-
-  if (typeof module !== "undefined") module.exports = main;
-  else if (window) d1gallery = main;
 })();
