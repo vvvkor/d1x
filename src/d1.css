@@ -76,7 +76,7 @@ body:not(.js) .drawer:target, body.js .drawer:not(.hide){left:0;}
 .drawer.shift[class][id]{left:auto;right:-21em;transition-property:right;}
 body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide){right:0;}
 /* gallery */
-.gal a:target{color:#fff;background:#000 50% 50% / contain no-repeat;background-image:var(--img);z-index:90;position:fixed;left:0;top:0;width:100%;height:100vh;box-shadow:inset 0 3em 3em -1.5em rgba(0,0,0,.3);} /* current */
+.gal a:target{color:#fff;background:#000 50% 50% / contain no-repeat;background-image:var(--img);z-index:90;position:fixed;left:0;top:0;width:100%;height:100vh;box-shadow:inset 0 3em 3em -1.5em rgba(0,0,0,.3);border-bottom:10em solid #000;} /* current */
 	.gal a:target+a{background-image:var(--img);background-position:999em 999em;} /* preload next */
 	.gal a:not([id]), .gal a:after{z-index:91;position:fixed;top:0;color:#fff;padding:0 calc(var(--gap-n) / 2);}
 	.gal a[data-caption]:after{content:attr(data-caption);left:0;display:block;}

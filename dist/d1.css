@@ -170,6 +170,7 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
     width: 100%;
     height: 100vh;
     box-shadow: inset 0 3em 3em -1.5em rgba(0, 0, 0, .3);
+    border-bottom: 10em solid #000;
 }
 
 .gal a:target+a {

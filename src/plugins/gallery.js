@@ -2,7 +2,7 @@
 /* Lighweight image gallery */
 
 //.gallery a.pic
-if(typeof module !== "undefined") var d1 = require('./d1.js');
+if(typeof module !== "undefined") var d1 = require('../d1.js');
 (function () {
 var main = new(function () {
 
@@ -11,20 +11,16 @@ var main = new(function () {
   this.name = 'gallery';
   
   this.opt = {
-    cGallery: 'gal',
-    hashCancel: '#cancel',
-    idPrefix: 'pic',
+    idPrefix: 'pic-',
     num: true,
-    qsGallery: '.gallery',
-    qsLinks: 'a.pic'
+    qGallery: '.gallery',
+    qLinks: 'a.pic'
   };
-  
-  this.seq = 0;
   
   this.init = function (opt) {
     var i;
-    for (i in opt) this.opt[i] = opt[i];
-    d1.e(this.opt.qsGallery, this.prepare.bind(this));
+    if(opt) for (i in opt) this.opt[i] = opt[i];
+    d1.e(this.opt.qGallery, this.prepare.bind(this));
     d1.b([document], 'keydown', this.key.bind(this));
     d1.b([window], 'hashchange', this.loadTarget.bind(this));
     if(location.hash) this.loadTarget();
@@ -46,14 +42,16 @@ var main = new(function () {
   }
   
   this.prepare = function (n) {
-    var g = d1.ins('div', '', {className: this.opt.cGallery});
-    var a = n.querySelectorAll(this.opt.qsLinks);
+    var g = d1.ins('div', '', {className: d1.opt.cGal});
+    var a = n.querySelectorAll(this.opt.qLinks);
     var z = a.length;
+    var first = 0;
     for(var i=0; i<z; i++) if(!a[i].vDone) {
-      this.seq++;
+      var s = d1.seq();
+      if(!i) first = s;
       var p = d1.ins('a', '', {
-          id: this.opt.idPrefix + this.seq,
-          href: '#' + this.opt.idPrefix + (this.seq + 1 - (i==z-1 ? z : 0))
+          id: this.opt.idPrefix + s,
+          href: '#' + this.opt.idPrefix + (i==z-1 ? first : s+1)
           }, g);
       //p.style.setProperty('--img', 'url("' + a[i].getAttribute('href') + '")');
       //p.style.backgroundImage = 'url("' + a[i].getAttribute('href') + '")';//preload all
@@ -75,7 +73,14 @@ var main = new(function () {
         var k = e.keyCode;
         if (k==37 || k==38) d1.prevImg(a);
         else if (k==39 || k==40) location.hash = a.hash;//a.click();
-        else if(k==8 && a.vLink) location.href = a.vLink;
+        else if(k==8){
+          var h = a.vLink;
+          if(!h){
+            h = window.getComputedStyle(a).backgroundImage;
+            h = h.substring(4, h.length-1).replace(/^"|"$/g, '');
+          }
+          if(h) location.href = h;
+        }
         //e.preventDefault();
       }
     }

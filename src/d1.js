@@ -20,31 +20,29 @@ var main = new (function(){
   //this.prevWidth = 0;
   
   this.opt = {
-    dialog: 1,
+    customDialog: 1,
     keepHash: 0,
-  };
-  
-  this.qs = {
-    tgl: '.toggle[id]',
-    pop: '.pop>div[id]',
-    nav: '.nav.toggle ul',
-    dlg: '.dlg',
-    tab: '.tabs+div>[id]',
-    tre: 'ul.toggle:not(.nav) ul', //'.tree ul',
-    drw: '.drawer',
-
-    acc: 'ul.accordion',
-    acco: 'ul.accordion ul',
-    alert: 'a.alert',
-    dialog: 'a.dialog, input.dialog',
-    gal: '.gal>a[id]',
-    subMem: '.tabs.mem+div>[id], ul.mem:not(.nav) ul',
+    
+    qTgl: '.toggle[id]',
+    qPop: '.pop>div[id]',
+    qNav: '.nav.toggle ul',
+    qDlg: '.dlg',
+    qTab: '.tabs+div>[id]',
+    qTre: 'ul.toggle:not(.nav) ul', //'.tree ul',
+    qDrw: '.drawer',
+    qAccRoot: 'ul.accordion',
+    qAcc: 'ul.accordion ul',
+    qAlert: 'a.alert',
+    qDialog: 'a.dialog, input.dialog',
+    qGal: '.gal>a[id]',
+    qSubMem: '.tabs.mem+div>[id], ul.mem:not(.nav) ul',
     
     aCaption: 'data-caption',
     aConfirm: '_confirm',
     aPrompt: 'data-prompt',
     cBtn: 'btn pad',
     cClose: 'close',
+    cGal: 'gal',
     cHide: 'hide',
     cJs: 'js',
     cMem: 'mem',
@@ -57,25 +55,34 @@ var main = new (function(){
     sOk: 'OK'
     };
 
-  this.init = function(d){
-    this.initPlugins();
+  this.init = function(opt){
+    //options
+    var i;
+    if(!opt){
+      opt = this.attr(document.body, 'data-d1');
+      if(opt) opt = JSON.parse(opt);
+    }
+    if(opt) for(i in opt) this.opt[i] = opt[i];
+    
+    //plugins
+    this.initPlugins(opt);
     
     //toggle
-    var q = this.qs;
-    this.qs.toggle = [q.tgl, q.pop, q.nav, q.dlg, q.tab, q.tre, q.drw/*, q.gal*/].join(', ');
-    this.qs.autohide = [q.pop, q.nav, q.dlg, q.tab, q.acco, q.drw/*, q.gal*/].join(', ');
-    this.qs.unpop = [q.pop, q.nav, q.dlg, q.drw/*, q.gal*/].join(', ');
-    this.e(this.qs.toggle, n => n.classList.add(this.qs.cToggle)); //initialize togglers
-    this.e(this.qs.autohide, n => this.tgl(n, 0)); //autohide
+    var q = this.opt;
+    this.opt.qToggle = [q.qTgl, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw/*, q.qGal*/].join(', ');
+    this.opt.qAutohide = [q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw/*, q.qGal*/].join(', ');
+    this.opt.qUnpop = [q.qPop, q.qNav, q.qDlg, q.qDrw/*, q.qGal*/].join(', ');
+    this.e(this.opt.qToggle, n => n.classList.add(this.opt.cToggle)); //initialize togglers
+    this.e(this.opt.qAutohide, n => this.tgl(n, 0)); //autohide
     
-    this.e(this.qs.nav + ', ' + this.qs.tre, this.attachSubNav); //nav, tree: attach to links
-    this.e(this.qs.gal + ':last-child', n => this.insClose(n, 1));//gal: auto add close link
-    this.e(this.qs.subMem, n => n.classList.add(this.qs.cMem)); //initialize sub mem
+    this.e(this.opt.qNav + ', ' + this.opt.qTre, this.attachSubNav); //nav, tree: attach to links
+    this.e(this.opt.qGal + ':last-child', n => this.insClose(n, 1));//gal: auto add close link
+    this.e(this.opt.qSubMem, n => n.classList.add(this.opt.cMem)); //initialize sub mem
     this.e('[id]', this.restoreVisibility);//restore visibility
     this.onHash(); //activate hash
-    this.e(this.qs.tab + ':not(.hide) ~ [id]:not(.hide)', n => this.tgl(n, 0)); //undup tabs
-    this.e(this.qs.tab + ':first-child', n => this.a(n.parentNode.children).filter(m => this.vis(m)).length ? null : this.tgl(this.q(this.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1));//inactive tabs: show first
-    this.e('.' + this.qs.cToggle + '[id]', this.hiliteLinks);//init links state
+    this.e(this.opt.qTab + ':not(.hide) ~ [id]:not(.hide)', n => this.tgl(n, 0)); //undup tabs
+    this.e(this.opt.qTab + ':first-child', n => this.a(n.parentNode.children).filter(m => this.vis(m)).length ? null : this.tgl(this.q(this.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1));//inactive tabs: show first
+    this.e('.' + this.opt.cToggle + '[id]', this.hiliteLinks);//init links state
     
     //bind events
     
@@ -84,7 +91,7 @@ var main = new (function(){
     this.b([document], 'click', this.onClick);
 
     //prepare body
-    document.body.classList.add(this.qs.cJs); //anti:hover, anti:target
+    document.body.classList.add(this.opt.cJs); //anti:hover, anti:target
     this.afterAction();
   }
   
@@ -92,8 +99,8 @@ var main = new (function(){
     this.plugins[p.name] = p;
   }
   
-  this.initPlugins = function(opts){
-    Object.keys(this.plugins).forEach(k => this.plugins[k].init({})); // todo: avoid {}
+  this.initPlugins = function(opt){
+    Object.keys(this.plugins).forEach(k => this.plugins[k].init(opt && opt.plug && opt.plug[k] ? opt.plug[k] : null));
   }
   
   //utils
@@ -167,20 +174,20 @@ var main = new (function(){
   }
 
   this.insClose = function(d, pos, cls){
-    return this.ins('a', this.qs.iClose, {href: this.qs.hClose, className: this.qs.cClose + ' ' + (cls || '')}, d, pos);
+    return this.ins('a', this.opt.iClose, {href: this.opt.hClose, className: this.opt.cClose + ' ' + (cls || '')}, d, pos);
   }
   
   //toggle
   
   this.vis = function(n){
-    return !n.classList.contains(this.qs.cHide)
+    return !n.classList.contains(this.opt.cHide)
   }
   
   this.attachSubNav = function(n){
     //var a = n.previousElementSibling;
     var aa = this.a(n.parentNode.children).filter(v => v.tagName=='A');
     var a = aa.filter(v => !v.href)[0] || aa[0]
-      || (this.ins('',' ',{},n.parentNode, false) && this.ins('a', this.qs.iToggle, {}, n.parentNode, false));
+      || (this.ins('',' ',{},n.parentNode, false) && this.ins('a', this.opt.iToggle, {}, n.parentNode, false));
     if(a){
       if(!n.id) n.id = 'ul-' + this.seq();
       a.href = '#' + n.id;
@@ -188,19 +195,20 @@ var main = new (function(){
   }
 
   this.curDialog = function(){
-    return this.q(this.qs.dlg+':not(.'+this.qs.cHide+')');
+    return this.q(this.opt.qDlg+':not(.'+this.opt.cHide+')');
   }
   
   this.curGallery = function(){
-    return this.q(this.qs.gal+':target');
+    //return this.q(this.opt.qGal+':target');
+    return this.q(this.opt.qGal+'[id="' + location.hash.substr(1) + '"]');
   }
   
   this.afterAction = function(n){
     var d = this.curDialog();
-    var g = d ? this.curGallery() : null;
+    var g = d ? null : this.curGallery();
     document.body.style.overflow = d || g ? 'hidden' : '';
     if(d){
-      var f = this.q('input, a:not(.' + this.qs.cClose + ')', d);
+      var f = this.q('input, a:not(.' + this.opt.cClose + ')', d);
       if(f) f.focus();
     }
   }
@@ -208,11 +216,21 @@ var main = new (function(){
   this.onHash = function(e){
     if(location.hash){
       var d = this.q(location.hash);
-      if(d && d.matches(this.qs.tgl)){
-        this.unpop();
-        this.toggle(d, true);
-        if(!this.opt.keepHash) this.unhash();
-        this.afterAction();
+      if(d){
+        var t = d.matches(this.opt.qTgl);
+        var g = d.matches(this.opt.qGal)
+        if(t || g){
+          this.unpop();
+          if(t){
+            this.toggle(d, true);
+            if(!this.opt.keepHash) this.unhash();
+          }
+          this.afterAction();
+        }
+      }
+      else if(location.hash==this.opt.hClose){
+          this.unpop();
+          this.afterAction();
       }
     }
   }
@@ -235,17 +253,14 @@ var main = new (function(){
     var as = this.closest(n, 'a, input, button');
     var d = (a && a.matches('a[href^="#"]')) ? this.q(a.hash) : null;
     this.unpop([a, n, d]);
-    if(n.matches(this.qs.gal)) this.onClickGal(e);
-    else if(d && d.matches(this.qs.tgl)){
-      var d = this.q(a.hash);
-      if(d && d.matches(this.qs.tgl)){
-        e.preventDefault();
-        d = this.toggle(d);
-        if(this.vis(d) && this.opt.keepHash) this.addHistory(a.hash);
-        else this.unhash();
-      }
+    if(n.matches(this.opt.qGal)) this.onClickGal(e);
+    else if(d && d.matches(this.opt.qTgl)){
+      e.preventDefault();
+      d = this.toggle(d);
+      if(this.vis(d) && this.opt.keepHash) this.addHistory(a.hash);
+      else this.unhash();
     }
-    else if(as && as.matches(this.qs.alert+','+this.qs.dialog)){
+    else if(as && as.matches(this.opt.qAlert+','+this.opt.qDialog)){
       //d = this.dialog(e, a, (n, v) => !console.log(v) && this.unpop()); //custom callback
       e.preventDefault();
       d = this.dialog(as);
@@ -260,11 +275,11 @@ var main = new (function(){
   this.toggle = function(h, on, deep){
     var d = h ? (h.tagName ? h : this.q(h)) : null;
     if(d){
-      if(d.matches(this.qs.tab) && on===undefined) on = true; //tabs: show instead of toggle
+      if(d.matches(this.opt.qTab) && on===undefined) on = true; //tabs: show instead of toggle
       //console.log('toggle '+d.id, on, deep);
       //d.classList.add('toggle');//anti:target
       //this.prevWidth = window.innerWidth;
-      d.classList[on ? 'remove' : (on===undefined ? 'toggle' : 'add')](this.qs.cHide);
+      d.classList[on ? 'remove' : (on===undefined ? 'toggle' : 'add')](this.opt.cHide);
       if(this.vis(d)) this.fixPosition(d);
       if(deep!=-1){
         if(!deep) this.toggleDependent(d);
@@ -277,24 +292,24 @@ var main = new (function(){
   }
   
   this.tgl = function(d, on){
-    if(d) d.classList[on ? 'remove' : (on===undefined ? 'toggle' : 'add')](this.qs.cHide);
+    if(d) d.classList[on ? 'remove' : (on===undefined ? 'toggle' : 'add')](this.opt.cHide);
   }
   
   this.toggleDependent = function(d){
     if(this.vis(d)){
-      if(d.matches(this.qs.dlg)) this.e(this.qs.dlg, n => n==d ? null : this.toggle(n, false, 1)); //hide other dialogs
-      else if(d.matches(this.qs.tab)) this.e(d.parentNode.children, n => n==d ? null : this.toggle(n, false, 1)); //hide sibling tabs
-      else if(d.matches(this.qs.acco)) this.e(this.qq(this.qs.acco, this.closest(d, this.qs.acc)), n => n.contains(d) ? null : this.toggle(n, false, 1)); //hide other ul
+      if(d.matches(this.opt.qDlg)) this.e(this.opt.qDlg, n => n==d ? null : this.toggle(n, false, 1)); //hide other dialogs
+      else if(d.matches(this.opt.qTab)) this.e(d.parentNode.children, n => n==d ? null : this.toggle(n, false, 1)); //hide sibling tabs
+      else if(d.matches(this.opt.qAcc)) this.e(this.qq(this.opt.qAcc, this.closest(d, this.opt.qAccRoot)), n => n.contains(d) ? null : this.toggle(n, false, 1)); //hide other ul
     }
   }
   
   this.unpop = function(keep){
-    if(keep && keep[0] && keep[0].hash==this.qs.hClose) keep = []; //to close all, even container
-    this.e(this.qs.unpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
+    if(keep && keep[0] && keep[0].hash==this.opt.hClose) keep = []; //to close all, even container
+    this.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
   }
   
   this.unhash = function(){
-    //if(location.hash) location.hash = this.qs.hClose;
+    //if(location.hash) location.hash = this.opt.hClose;
     this.addHistory(location.pathname + location.search);
   }
   
@@ -306,13 +321,13 @@ var main = new (function(){
   }
 
   this.storeVisibility = function(n){
-    if(n.classList.contains(this.qs.cMem)){
+    if(n.classList.contains(this.opt.cMem)){
       localStorage.setItem('vis#'+n.id, this.vis(n) ? 1 : -1);
     }
   }
   
   this.restoreVisibility = function(n){
-    if(n.classList.contains(this.qs.cMem)){
+    if(n.classList.contains(this.opt.cMem)){
       var v = localStorage.getItem('vis#'+n.id);
       if(v) this.toggle(n, v>0, -1);
     }
@@ -324,10 +339,10 @@ var main = new (function(){
   }
   
   this.fixPosition = function(n){
-    var nav = n.matches(this.qs.nav);
+    var nav = n.matches(this.opt.qNav);
     var ss = nav ? window.getComputedStyle(n.parentNode.parentNode) : null;
     var vert = ss ? (ss.display!='flex') : false;
-    if(n.matches(this.qs.pop) || nav){
+    if(n.matches(this.opt.qPop) || nav){
       var s = n.style;
       var p = n.parentNode;
       var i = p.nextElementSibling;
@@ -363,7 +378,7 @@ var main = new (function(){
 
   this.onClickGal = function(e){
     var n = e.target;
-    if(e.clientX < n.clientWidth / 3){
+    if(e.clientX > 0 /* not Enter key */ && e.clientX < n.clientWidth / 3){
       if(this.prevImg(n)) e.preventDefault();
     }
   }
@@ -388,13 +403,13 @@ var main = new (function(){
     var inp = {value: true};
     if(def || def==='') inp = this.ins('input', '', {value: def}, b);
     var bb = this.ins('p', '', {className: 'r'}, b);
-    var warn = this.qs.cBtn + ' ' + ((t.substr(0,1)==' ' || n.className.match(/-[we]\b/)) ? 'bg-e' : 'bg-y');
-    var sec = this.qs.cBtn + ' bg-n';
-    var yes = this.ins('a', this.attr(n, 'data-ok', this.qs.sOk), {href: this.qs.hClose, className: (rev ? sec : warn)}, bb);
+    var warn = this.opt.cBtn + ' ' + ((t.substr(0,1)==' ' || n.className.match(/-[we]\b/)) ? 'bg-e' : 'bg-y');
+    var sec = this.opt.cBtn + ' bg-n';
+    var yes = this.ins('a', this.attr(n, 'data-ok', this.opt.sOk), {href: this.opt.hClose, className: (rev ? sec : warn)}, bb);
     if(f){
-      var no = this.ins('a', this.attr(n, 'data-cancel', this.qs.sCancel), {href: this.qs.hClose, className: (rev ? warn : sec)}, yes, rev ? -1 : 1);
+      var no = this.ins('a', this.attr(n, 'data-cancel', this.opt.sCancel), {href: this.opt.hClose, className: (rev ? warn : sec)}, yes, rev ? -1 : 1);
       this.ins('', ' ', {}, yes, rev ? -1 : 1);
-      yes.href = this.qs.hOk;
+      yes.href = this.opt.hOk;
       this.b([yes], 'click', e => { e.preventDefault(); f.call(this, inp.value); });
       if(inp.tagName) this.b([inp], 'keyup', e => e.keyCode==13 ? f.call(this, inp.value, e) : null);
     }
@@ -414,9 +429,9 @@ var main = new (function(){
     src = src ? this.q(src) : null;
     if(!src && n.form) src = n.form.elements[p];
     var v = null;
-    var al = n.matches(this.qs.alert);
+    var al = n.matches(this.opt.qAlert);
     var def = p ? (src ? src.value : this.get(n, p)) : null;
-    if(this.opt.dialog){
+    if(this.opt.customDialog){
       this.initDlg(n, '', t, al ? null : this.onAnswer.bind(this, n, f, p), def, rev);
     }
     else{
@@ -441,7 +456,7 @@ var main = new (function(){
       }
       if(n.form.reportValidity()){
         this.ins('input', '', {type: 'hidden', name: n.name, value: n.value}, n.form);
-        n.form.elements[this.qs.aConfirm] || this.ins('input', '', {type: 'hidden', name: this.qs.aConfirm, value: 1}, n.form);
+        n.form.elements[this.opt.aConfirm] || this.ins('input', '', {type: 'hidden', name: this.opt.aConfirm, value: 1}, n.form);
         n.form.submit();
       }
       else this.unpop();
@@ -455,7 +470,7 @@ var main = new (function(){
       if(ha) u = n.hash;
       else{
         var a = {};
-        a[this.qs.aConfirm] = 1;
+        a[this.opt.aConfirm] = 1;
         if(v!==true) a[p] = v;
         var u = this.makeUrl(n, a);
       }

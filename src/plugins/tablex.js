@@ -2,7 +2,7 @@
 /* Filter and sort HTML table */
 
 //table.sort[data-filter][data-filter-report][data-case][data-filter-cols]
-if(typeof module !== "undefined") var d1 = require('./d1.js');
+if(typeof module !== "undefined") var d1 = require('../d1.js');
 (function(){
 main = new(function() {
 
@@ -21,16 +21,16 @@ main = new(function() {
     cSort: '', // col-sort - sortable column's header
     cAsc:  'bg-y', // col-asc - !non-empty! - header of currently sorted column (ascending)
     cDesc: 'bg-w', // col-desc - header of currently sorted column (descending)
-    qsSort: 'table.sort',
+    qSort: 'table.sort',
     wait: 200
   };
 
   this.init = function(opt) {
     var i;
-    for(i in opt) this.opt[i] = opt[i];
+    if(opt) for(i in opt) this.opt[i] = opt[i];
     this.lang = document.documentElement.getAttribute('lang') || 'en';
     this.skipComma = (this.lang=='en');
-    var t = document.querySelectorAll(this.opt.qsSort + ', table[' + this.opt.attrFilter + ']');
+    var t = document.querySelectorAll(this.opt.qSort + ', table[' + this.opt.attrFilter + ']');
     //t.forEach(this.prepare.bind(this));
     for (i = 0; i < t.length; i++) this.prepare(t[i]);
   }
