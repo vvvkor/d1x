@@ -90,6 +90,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1css v1.0.2 */
+//require('../plugins/toggle.js'); 
 (function (window, document, Element) {
   "use strict"; //check single instance
 
@@ -98,11 +99,11 @@
   } else {
     // begin module
     var main = new function () {
-      this.sequence = 0; //this.dlg = null;
-
-      this.plugins = {}; //this.prevWidth = 0;
-
+      this.sequence = 0;
+      this.plugins = {};
+      this.handlers = {};
       this.opt = {
+        debug: 0,
         cHide: 'hide',
         aCaption: 'data-caption',
         cClose: 'close',
@@ -116,21 +117,39 @@
       };
 
       this.init = function (opt) {
+        var _this = this;
+
         //options
         if (!opt) {
           opt = this.attr(document.body, 'data-d1');
           if (opt) opt = JSON.parse(opt);
         }
 
-        this.setOpt(this, opt); //plugins
+        this.setOpt(this, opt);
+        this.initPlugins(opt); // plugins
+        // bind events
 
-        this.initPlugins(opt); //bind events
+        this.b([window], 'hashchange', function (e) {
+          return _this.on('hash', e);
+        });
+        this.b([document], 'keydown', function (e) {
+          return _this.on('key', e);
+        });
+        this.b([document], 'click', function (e) {
+          return _this.on('click', e);
+        });
+        if (location.hash) this.on('hash');
+        document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
 
-        this.b([document], 'click', this.onClick); //prepare body
+        this.fire('after');
+      }; // event delegation
+      // https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
 
-        document.body.classList.add(this.opt.cJs); //anti:hover, anti:target
 
-        if (this.plugins.toggle) this.plugins.toggle.afterAction();
+      this.on = function (t, e) {
+        this.fire(t, e);
+        this.fire(t + 'ed', e);
+        this.fire('after', e);
       }; //plugins
 
 
@@ -146,15 +165,34 @@
       };
 
       this.initPlugins = function (opt) {
-        var _this = this;
+        var _this2 = this;
 
         Object.keys(this.plugins).forEach(function (k) {
-          if (opt && opt.plug && opt.plug[k]) _this.setOpt(_this.plugins[k], opt.plug[k]);
+          if (opt && opt.plug && opt.plug[k]) _this2.setOpt(_this2.plugins[k], opt.plug[k]);
 
-          _this.plugins[k].init();
+          _this2.plugins[k].init();
+        });
+      }; //events
+
+
+      this.listen = function (t, f) {
+        if (!this.handlers[t]) this.handlers[t] = [];
+        this.handlers[t].push(f);
+      };
+
+      this.fire = function (t, e) {
+        var _this3 = this;
+
+        this.dbg(['fire ' + t, e]);
+        if (this.handlers[t]) this.handlers[t].forEach(function (h) {
+          return h.call(_this3, e);
         });
       }; //utils
 
+
+      this.dbg = function (s, l, e) {
+        if (this.opt.debug >= (l || 1)) console[e ? 'error' : 'log'](s);
+      };
 
       this.seq = function () {
         return ++this.sequence;
@@ -190,13 +228,13 @@
       };
 
       this.b = function (nn, e, f) {
-        var _this2 = this;
+        var _this4 = this;
 
         if (typeof nn === 'string') nn = this.qq(nn);else if (nn.tagName) nn = [nn];else nn = this.a(nn);
         if (nn && f) nn.forEach(function (n) {
-          return e ? n.addEventListener(e, f.bind(_this2
+          return e ? n.addEventListener(e, f.bind(_this4
           /*, n*/
-          ), false) : f.call(_this2, n);
+          ), false) : f.call(_this4, n);
         });
       };
 
@@ -222,7 +260,7 @@
         return n ? pos ? n.parentNode.insertBefore(c, pos < 0 ? n : n.nextSibling) : pos === false ? n.insertBefore(c, n.firstChild) : n.appendChild(c) : c;
       };
 
-      this.insClose = function (d, pos, cls) {
+      this.x = function (d, pos, cls) {
         return this.ins('a', this.opt.iClose, {
           href: this.opt.hClose,
           className: this.opt.cClose + ' ' + (cls || '')
@@ -231,20 +269,6 @@
 
       this.vis = function (n) {
         return !n.classList.contains(this.opt.cHide);
-      }; //event delegation
-      //https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
-
-
-      this.onClick = function (e) {
-        var _this3 = this;
-
-        var n = e.target;
-        var d = null;
-        Object.keys(this.plugins).forEach(function (k) {
-          d = !d && _this3.plugins[k].onClick ? _this3.plugins[k].onClick(e) : d;
-        });
-        if (this.plugins.toggle) this.plugins.toggle.unpop([n, d]);
-        if (this.plugins.toggle) this.plugins.toggle.afterAction(d);
       }; // url
 
 
@@ -259,7 +283,7 @@
           gets[v[0]] = decodeURIComponent(v[1]).replace(/\+/, ' ');
         }
 
-        return g ? gets[g] : gets; //protocol, host (hostname,port), pathname, search, hash
+        return g ? gets[g] : gets; //protocol, host (hostname, port), pathname, search, hash
       };
 
       this.makeUrl = function (a, args) {
@@ -290,8 +314,11 @@
 var d1 = __webpack_require__(0); //var plugins = [
 
 
-__webpack_require__(2), __webpack_require__(3), __webpack_require__(4), __webpack_require__(5); //];
+__webpack_require__(2), __webpack_require__(3), __webpack_require__(4), __webpack_require__(5);
+
+__webpack_require__(6); //];
 //plugins.forEach(p => d1.plug(p));
+
 
 d1.b([document], 'DOMContentLoaded', function (e) {
   return d1.init();
@@ -302,14 +329,17 @@ d1.b([document], 'DOMContentLoaded', function (e) {
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 example plugin */
+// Interface components: dropdown, popup, toggle, modal dialog, tabs, drawer, tree, gallery
+// .nav, .pop, .toggle, .dlg, .tabs, .drawer, .tree, .gal
 var d1 = __webpack_require__(0);
 
 module.exports = new function () {
   "use strict";
 
   this.name = 'toggle';
+  this.shown = null;
   this.opt = {
-    keepHash: 0,
+    keepHash: 1,
     qTgl: '.toggle[id]',
     qPop: '.pop>div[id]',
     qNav: '.nav.toggle ul',
@@ -323,6 +353,7 @@ module.exports = new function () {
     qGal: '.gal>a[id]',
     // dup of gallery.opt.qGal
     qSubMem: '.tabs.mem+div>[id], ul.mem:not(.nav) ul',
+    qMedia: '.hide-mobile, .hide-desktop',
     cMem: 'mem',
     cToggle: 'toggle',
     iToggle: '[+]'
@@ -331,12 +362,30 @@ module.exports = new function () {
   this.init = function (opt) {
     var _this = this;
 
-    //toggle
+    d1.listen('esc', function (e) {
+      return _this.esc(e);
+    });
+    d1.listen('hash', function (e) {
+      return _this.onHash(e);
+    });
+    d1.listen('key', function (e) {
+      return _this.onKey(e);
+    });
+    d1.listen('click', function (e) {
+      return _this.onClick(e);
+    });
+    d1.listen('clicked', function (e) {
+      return _this.unpop(e.target);
+    });
+    d1.listen('after', function (e) {
+      return _this.after(e ? e.target : null);
+    }); //toggle
+
     var q = this.opt;
-    this.opt.qToggle = [q.qTgl, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw
+    this.opt.qToggle = [q.qTgl, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw, q.qMedia
     /*, q.qGal*/
     ].join(', ');
-    this.opt.qAutohide = [q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw
+    this.opt.qAutohide = [q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia
     /*, q.qGal*/
     ].join(', ');
     this.opt.qUnpop = [q.qPop, q.qNav, q.qDlg, q.qDrw
@@ -350,19 +399,17 @@ module.exports = new function () {
       return _this.tgl(n, 0);
     }); //autohide
 
-    d1.e(this.opt.qNav + ', ' + this.opt.qTre, this.attachSubNav); //nav, tree: attach to links
+    d1.e(this.opt.qNav + ', ' + this.opt.qTre, this.attachSubNav.bind(this)); //nav, tree: attach to links
 
     d1.e(this.opt.qGal + ':last-child', function (n) {
-      return d1.insClose(n, 1);
+      return d1.x(n, 1);
     }); //gal: auto add close link
 
     d1.e(this.opt.qSubMem, function (n) {
       return n.classList.add(_this.opt.cMem);
     }); //initialize sub mem
 
-    d1.e('[id]', this.restoreVisibility); //restore visibility
-
-    this.onHash(); //activate hash
+    d1.e('[id]', this.restoreVisibility.bind(this)); //restore visibility
 
     d1.e(this.opt.qTab + ':not(.hide) ~ [id]:not(.hide)', function (n) {
       return _this.tgl(n, 0);
@@ -374,15 +421,13 @@ module.exports = new function () {
       }).length ? null : _this.tgl(d1.q(d1.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1);
     }); //inactive tabs: show first
 
-    d1.e('.' + this.opt.cToggle + '[id]', this.hiliteLinks); //init links state
-    //bind events
-
-    d1.b([window], 'hashchange', this.onHash.bind(this));
-    d1.b([document], 'keydown', this.onKey.bind(this)); //this.afterAction();
+    d1.e('.' + this.opt.cToggle + '[id]', this.hiliteLinks.bind(this)); //init links state
   };
 
-  this.afterAction = function (n) {
-    //var modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cHide+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
+  this.after = function (n) {
+    this.shown = null;
+    d1.dbg(['after', n]); //var modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cHide+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
+
     var modal = d1.q(this.opt.qDlg + ':not(.' + d1.opt.cHide + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
     document.body.style.overflow = modal ? 'hidden' : '';
 
@@ -392,39 +437,37 @@ module.exports = new function () {
     }
   };
 
+  this.esc = function (e) {
+    if (e) e.preventDefault();
+    this.unpop();
+    this.unhash();
+    this.after();
+  };
+
   this.onHash = function (e) {
-    if (location.hash) {
+    d1.dbg(['hash', location.hash]);
+    if (location.hash == d1.opt.hClose) d1.fire('esc', e);else if (location.hash) {
       var d = d1.q(location.hash);
 
       if (d) {
         var t = d.matches(this.opt.qTgl);
         var g = d.matches(this.opt.qGal);
 
-        if (t || g) {
+        if (t) {
           this.unpop();
-
-          if (t) {
-            this.toggle(d, true);
-            if (!this.opt.keepHash) this.unhash();
-          }
-
-          this.afterAction();
+          this.toggle(d, true);
+          if (!this.opt.keepHash) this.unhash();
         }
-      } else if (location.hash == d1.opt.hClose) {
-        this.unpop();
-        this.afterAction();
+
+        if (t || g) this.after();
       }
     }
   };
 
   this.onKey = function (e) {
     var k = e.keyCode;
-
-    if (k == 27) {
-      this.unpop();
-      this.unhash();
-      this.afterAction();
-    }
+    d1.dbg(['key', k]);
+    if (k == 27) d1.fire('esc', e);
   };
 
   this.onClick = function (e) {
@@ -432,13 +475,12 @@ module.exports = new function () {
     var n = e.target;
     var a = d1.closest(n, 'a');
     var d = a && a.matches('a[href^="#"]') ? d1.q(a.hash) : null;
-
-    if (d && d.matches(this.opt.qTgl)) {
+    if (a && a.hash == d1.opt.hClose) d1.fire('esc', e);else if (d && d.matches(this.opt.qTgl)) {
       e.preventDefault();
       d = this.toggle(d);
       if (d1.vis(d) && this.opt.keepHash) this.addHistory(a.hash);else this.unhash();
       return d;
-    } else if (!d && !a) {
+    } else if (!a) {
       this.unhash();
     }
   };
@@ -467,12 +509,17 @@ module.exports = new function () {
       //console.log('toggle '+d.id, on, deep);
 
       d.classList[on ? 'remove' : on === undefined ? 'toggle' : 'add'](d1.opt.cHide);
-      if (d1.vis(d)) this.fixPosition(d);
+      d1.dbg(['toggle' + (deep ? ' deep' : ''), on, d], deep ? 2 : 1);
+
+      if (d1.vis(d)) {
+        this.fixPosition(d);
+        if (!deep) this.shown = d;
+      }
 
       if (deep != -1) {
         if (!deep) this.toggleDependent(d);
         this.hiliteLinks(d);
-        this.storeVisibility(d); //if(!deep) this.afterAction(d);
+        this.storeVisibility(d); //if(!deep) this.after(d);
       }
     }
 
@@ -499,12 +546,20 @@ module.exports = new function () {
     }
   };
 
-  this.unpop = function (keep) {
+  this.unpop = function (x) {
     var _this3 = this;
 
-    var a = keep && keep[0] ? d1.closest(keep[0], 'a') : null;
-    if (a && a.hash == d1.opt.hClose) keep = []; //to close all, even container
+    var keep = [x];
+    keep.push(this.shown);
+    var a = x ? d1.closest(x, 'a') : null;
 
+    if (a && a.hash) {
+      //if(a.hash==d1.opt.hClose) keep = []; //to close all, even container
+      //else 
+      keep.push(d1.q(a.hash));
+    }
+
+    d1.dbg(['unpop', keep]);
     d1.e(this.opt.qUnpop, function (n) {
       return keep && keep.filter(function (m) {
         return m && m.tagName && n.contains(m);
@@ -565,14 +620,15 @@ module.exports = new function () {
         var qn = n.getBoundingClientRect();
         var qr = r.getBoundingClientRect();
         var dx = qn.right > window.innerWidth;
-        var dy = qn.bottom > window.innerHeight; //x
+        var dy = qn.bottom > window.innerHeight;
+        var wide = qr.width > 200; //x
 
-        if (vert) s.left = dx ? '3em' : '100%';else if (dx && qn.width > qr.width && qr.right > qn.width) {
+        if (vert) s.left = dx || wide ? '3em' : '100%';else if (dx && qn.width > qr.width && qr.right > qn.width) {
           //if(overflows-right && wider-then-container && enough-place-on-the-left) pop-left
           s.left = qr.width - qn.width + 'px';
         } else s.left = 0; //y
 
-        if (vert) s.top = dx ? '90%' : 0;else if (dy && qr.top > qn.height) {
+        if (vert) s.top = dx || wide ? '90%' : 0;else if (dy && qr.top > qn.height) {
           //if(overflows-bottom && enough-place-on-the-top) pop-top
           s.top = (i ? -qr.height : 0) - qn.height + 'px';
         } else s.top = '100%';
@@ -589,6 +645,9 @@ module.exports = new function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 dialog */
+// Replacement of standard Javascript dialogs: alert, confirm, prompt
+// a.alert([title]|[data-caption])
+// a.dialog[href]([title]|[data-caption])[data-prompt] [data-src][data-ok][data-cancel][data-reverse] 
 var d1 = __webpack_require__(0); //require('../plugins/toggle.js');
 
 
@@ -606,7 +665,13 @@ module.exports = new function () {
     qDialog: 'a.dialog, input.dialog'
   };
 
-  this.init = function (opt) {};
+  this.init = function (opt) {
+    var _this = this;
+
+    d1.listen('click', function (e) {
+      return _this.onClick(e);
+    });
+  };
 
   this.onClick = function (e) {
     var as = d1.closest(e.target, 'a, input, button');
@@ -619,7 +684,7 @@ module.exports = new function () {
   };
 
   this.initDlg = function (n, h, t, f, def, rev) {
-    var _this = this;
+    var _this2 = this;
 
     if (!this.dlg) this.dlg = d1.ins('div', '', {
       className: 'dlg toggle'
@@ -637,7 +702,7 @@ module.exports = new function () {
     d1.ins('h3', h || '', {
       className: 'let pad'
     }, hh);
-    d1.insClose(hh, 0, 'pad hover col-0');
+    d1.x(hh, 0, 'pad hover col-0');
     var b = d1.ins('div', '', {
       className: 'pad'
     }, d);
@@ -667,10 +732,10 @@ module.exports = new function () {
       yes.href = d1.opt.hOk;
       d1.b([yes], 'click', function (e) {
         e.preventDefault();
-        f.call(_this, inp.value);
+        f.call(_this2, inp.value);
       });
       if (inp.tagName) d1.b([inp], 'keyup', function (e) {
-        return e.keyCode == 13 ? f.call(_this, inp.value, e) : null;
+        return e.keyCode == 13 ? f.call(_this2, inp.value, e) : null;
       });
     }
 
@@ -757,7 +822,7 @@ module.exports = new function () {
 
 /*! d1tablex */
 // Filter and sort HTML table
-// table.sort[data-filter][data-filter-report][data-case][data-filter-cols]
+// table.sort[data-filter] [data-filter-report][data-case][data-filter-cols]
 var d1 = __webpack_require__(0);
 
 module.exports = new function () {
@@ -767,7 +832,7 @@ module.exports = new function () {
   this.lang = '';
   this.skipComma = 0;
   this.opt = {
-    attrFilter: 'data-filter',
+    aFilter: 'data-filter',
     cFilter: 'bg-w',
     // filter-on - non-empty filter field
     cScan: 'text-i',
@@ -787,11 +852,11 @@ module.exports = new function () {
 
   this.init = function (opt) {
     this.lang = document.documentElement.getAttribute('lang') || 'en';
-    this.skipComma = this.lang == 'en'; //var t = document.querySelectorAll(this.opt.qSort + ', table[' + this.opt.attrFilter + ']');
+    this.skipComma = this.lang == 'en'; //var t = document.querySelectorAll(this.opt.qSort + ', table[' + this.opt.aFilter + ']');
     //t.forEach(this.prepare.bind(this));
     //for (i = 0; i < t.length; i++) this.prepare(t[i]);
 
-    d1.e(this.opt.qSort + ', table[' + this.opt.attrFilter + ']', this.prepare.bind(this));
+    d1.e(this.opt.qSort + ', table[' + this.opt.aFilter + ']', this.prepare.bind(this));
   };
 
   this.prepare = function (n) {
@@ -816,7 +881,7 @@ module.exports = new function () {
 
 
     n.vCase = n.getAttribute('data-case') !== null;
-    var fq = n.getAttribute(this.opt.attrFilter);
+    var fq = n.getAttribute(this.opt.aFilter);
     n.vInp = fq ? document.querySelector(fq) : n.querySelector('[name="_q"]');
 
     if (n.vInp) {
@@ -1083,10 +1148,18 @@ module.exports = new function () {
   };
 
   this.init = function (opt) {
+    var _this = this;
+
+    d1.listen('hash', function (e) {
+      return _this.onHash(e);
+    });
+    d1.listen('key', function (e) {
+      return _this.onKey(e);
+    });
+    d1.listen('click', function (e) {
+      return _this.onClick(e);
+    });
     d1.e(this.opt.qGallery, this.prepare.bind(this));
-    d1.b([document], 'keydown', this.key.bind(this));
-    d1.b([window], 'hashchange', this.loadTarget.bind(this));
-    if (location.hash) this.loadTarget();
   };
 
   this.onClick = function (e) {
@@ -1097,9 +1170,8 @@ module.exports = new function () {
       /* not Enter key */
       && e.clientX < n.clientWidth / 3) {
         if (this.prevImg(n)) e.preventDefault();
-      }
+      } //return n;
 
-      return n;
     }
   };
 
@@ -1109,7 +1181,7 @@ module.exports = new function () {
     return p.id;
   };
 
-  this.loadTarget = function () {
+  this.onHash = function () {
     var n = d1.q(location.hash);
 
     if (n) {
@@ -1153,12 +1225,12 @@ module.exports = new function () {
       }
     }
 
-    d1.insClose(g);
+    d1.x(g);
     d1.b(d1.qq('a[id]', g), 'click', d1.gotoPrev);
     document.querySelector('body').appendChild(g);
   };
 
-  this.key = function (e) {
+  this.onKey = function (e) {
     if (location.hash) {
       var a = d1.q(location.hash);
 
@@ -1177,6 +1249,46 @@ module.exports = new function () {
           } //e.preventDefault();
       }
     }
+  };
+
+  d1.plug(this);
+}();
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! d1 example plugin */
+var d1 = __webpack_require__(0);
+
+module.exports = new function () {
+  "use strict";
+
+  this.name = 'scroll';
+  this.y = null;
+  this.opt = {};
+
+  this.init = function (opt) {
+    d1.b([window], 'scroll', this.onScroll.bind(this));
+    this.onScroll();
+  };
+
+  this.onScroll = function (e) {
+    var _this = this;
+
+    if (this.y !== null) {
+      var dy = window.scrollY - this.y;
+      d1.e('.topbar', function (n) {
+        return _this.decorate(n, window.scrollY, dy);
+      });
+    }
+
+    this.y = window.scrollY;
+  };
+
+  this.decorate = function (n, y, dy) {
+    n.classList[dy > 0 ? 'add' : 'remove']('hide');
+    n.classList[y && dy <= 0 ? 'add' : 'remove']('box');
   };
 
   d1.plug(this);

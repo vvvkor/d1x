@@ -1,5 +1,7 @@
 /*! d1css v0.0.0 */
 
+//require('../plugins/toggle.js'); 
+
 (function(window, document, Element) {
   
   "use strict";
@@ -11,15 +13,15 @@
   else {
 
 // begin module
- 
+
 var main = new (function(){
 
   this.sequence = 0;
-  //this.dlg = null;
   this.plugins = {};
-  //this.prevWidth = 0;
+  this.handlers = {};
   
   this.opt = {
+    debug: 0,
     cHide: 'hide',
     aCaption: 'data-caption',
     cClose: 'close',
@@ -29,7 +31,7 @@ var main = new (function(){
     iClose: '&#x2715;', //&times;
     sCancel: 'Cancel',
     sOk: 'OK'
-    };
+  };
 
   this.init = function(opt){
     //options
@@ -39,15 +41,24 @@ var main = new (function(){
     }
     this.setOpt(this, opt);
     
-    //plugins
-    this.initPlugins(opt);
+    this.initPlugins(opt); // plugins
     
-    //bind events
-    this.b([document], 'click', this.onClick);
+    // bind events
+    this.b([window], 'hashchange', e => this.on('hash', e));
+    this.b([document], 'keydown', e => this.on('key', e));
+    this.b([document], 'click', e => this.on('click', e));
+    if(location.hash) this.on('hash')
 
-    //prepare body
-    document.body.classList.add(this.opt.cJs); //anti:hover, anti:target
-    if(this.plugins.toggle) this.plugins.toggle.afterAction();
+    document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
+    this.fire('after');
+  }
+  
+  // event delegation
+  // https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
+  this.on = function(t, e){
+    this.fire(t, e);
+    this.fire(t + 'ed', e);
+    this.fire('after', e);
   }
   
   //plugins
@@ -68,7 +79,23 @@ var main = new (function(){
     });
   }
   
+  //events
+  
+  this.listen = function(t, f){
+    if(!this.handlers[t]) this.handlers[t] = [];
+    this.handlers[t].push(f);
+  }
+  
+  this.fire = function(t, e){
+    this.dbg(['fire ' + t, e]);
+    if(this.handlers[t]) this.handlers[t].forEach(h => h.call(this, e));
+  }
+  
   //utils
+  
+  this.dbg = function(s, l, e){
+    if(this.opt.debug >= (l || 1)) console[e ? 'error' : 'log'](s);
+  }
   
   this.seq = function(){
     return ++this.sequence;
@@ -138,7 +165,7 @@ var main = new (function(){
       : c;
   }
 
-  this.insClose = function(d, pos, cls){
+  this.x = function(d, pos, cls){
     return this.ins('a', this.opt.iClose, {href: this.opt.hClose, className: this.opt.cClose + ' ' + (cls || '')}, d, pos);
   }
   
@@ -146,16 +173,6 @@ var main = new (function(){
     return !n.classList.contains(this.opt.cHide)
   }
   
-  //event delegation
-  //https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
-  this.onClick = function(e){
-    var n = e.target;
-    var d = null;
-    Object.keys(this.plugins).forEach(k => { d = (!d && this.plugins[k].onClick) ? this.plugins[k].onClick(e) : d; });
-    if(this.plugins.toggle) this.plugins.toggle.unpop([n, d]);
-    if(this.plugins.toggle) this.plugins.toggle.afterAction(d);
-  }
-
   // url
   
   this.get = function(a, g){
@@ -167,7 +184,7 @@ var main = new (function(){
       gets[v[0]] = decodeURIComponent(v[1]).replace(/\+/, ' ');
     }
     return g ? gets[g] : gets;
-    //protocol, host (hostname,port), pathname, search, hash
+    //protocol, host (hostname, port), pathname, search, hash
   }
   
   this.makeUrl = function(a, args){

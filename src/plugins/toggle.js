@@ -1,5 +1,8 @@
 /*! d1 example plugin */
 
+// Interface components: dropdown, popup, toggle, modal dialog, tabs, drawer, tree, gallery
+// .nav, .pop, .toggle, .dlg, .tabs, .drawer, .tree, .gal
+
 var d1 = require('../d1.js');
 
 module.exports = new(function () {
@@ -7,9 +10,10 @@ module.exports = new(function () {
   "use strict";
 
   this.name = 'toggle';
+  this.shown = null;
   
   this.opt = {
-    keepHash: 0,
+    keepHash: 1,
     
     qTgl: '.toggle[id]',
     qPop: '.pop>div[id]',
@@ -22,6 +26,7 @@ module.exports = new(function () {
     qAcc: 'ul.accordion ul',
     qGal: '.gal>a[id]', // dup of gallery.opt.qGal
     qSubMem: '.tabs.mem+div>[id], ul.mem:not(.nav) ul',
+    qMedia: '.hide-mobile, .hide-desktop',
 
     cMem: 'mem',
     cToggle : 'toggle',
@@ -29,32 +34,32 @@ module.exports = new(function () {
   };
   
   this.init = function (opt) {
+    d1.listen('esc', e => this.esc(e));
+    d1.listen('hash', e => this.onHash(e));
+    d1.listen('key', e => this.onKey(e));
+    d1.listen('click', e => this.onClick(e));
+    d1.listen('clicked', e => this.unpop(e.target));
+    d1.listen('after', e => this.after(e ? e.target : null));
     //toggle
     var q = this.opt;
-    this.opt.qToggle = [q.qTgl, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw/*, q.qGal*/].join(', ');
-    this.opt.qAutohide = [q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw/*, q.qGal*/].join(', ');
+    this.opt.qToggle = [q.qTgl, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
+    this.opt.qAutohide = [q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
     this.opt.qUnpop = [q.qPop, q.qNav, q.qDlg, q.qDrw/*, q.qGal*/].join(', ');
     d1.e(this.opt.qToggle, n => n.classList.add(this.opt.cToggle)); //initialize togglers
     d1.e(this.opt.qAutohide, n => this.tgl(n, 0)); //autohide
     
-    d1.e(this.opt.qNav + ', ' + this.opt.qTre, this.attachSubNav); //nav, tree: attach to links
-    d1.e(this.opt.qGal + ':last-child', n => d1.insClose(n, 1));//gal: auto add close link
+    d1.e(this.opt.qNav + ', ' + this.opt.qTre, this.attachSubNav.bind(this)); //nav, tree: attach to links
+    d1.e(this.opt.qGal + ':last-child', n => d1.x(n, 1));//gal: auto add close link
     d1.e(this.opt.qSubMem, n => n.classList.add(this.opt.cMem)); //initialize sub mem
-    d1.e('[id]', this.restoreVisibility);//restore visibility
-    this.onHash(); //activate hash
+    d1.e('[id]', this.restoreVisibility.bind(this));//restore visibility
     d1.e(this.opt.qTab + ':not(.hide) ~ [id]:not(.hide)', n => this.tgl(n, 0)); //undup tabs
     d1.e(this.opt.qTab + ':first-child', n => d1.a(n.parentNode.children).filter(m => d1.vis(m)).length ? null : this.tgl(d1.q(d1.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1));//inactive tabs: show first
-    d1.e('.' + this.opt.cToggle + '[id]', this.hiliteLinks);//init links state
-    
-    //bind events
-    
-    d1.b([window], 'hashchange', this.onHash.bind(this));
-    d1.b([document], 'keydown', this.onKey.bind(this));
-    
-    //this.afterAction();
+    d1.e('.' + this.opt.cToggle + '[id]', this.hiliteLinks.bind(this));//init links state
   }
   
-  this.afterAction = function(n){
+  this.after = function(n){
+    this.shown = null;
+    d1.dbg(['after', n]);
     //var modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cHide+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
     var modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cHide+'), '+this.opt.qGal+'[id="' + location.hash.substr(1) + '"]');
     document.body.style.overflow = modal ? 'hidden' : '';
@@ -64,51 +69,52 @@ module.exports = new(function () {
     }
   }
   
+  this.esc = function(e){
+    if(e) e.preventDefault();
+    this.unpop();
+    this.unhash();
+    this.after();
+  }
+
   this.onHash = function(e){
-    if(location.hash){
+    d1.dbg(['hash', location.hash]);
+    if(location.hash==d1.opt.hClose) d1.fire('esc', e);
+    else if(location.hash){
       var d = d1.q(location.hash);
       if(d){
         var t = d.matches(this.opt.qTgl);
         var g = d.matches(this.opt.qGal)
-        if(t || g){
+        if(t){
           this.unpop();
-          if(t){
-            this.toggle(d, true);
-            if(!this.opt.keepHash) this.unhash();
-          }
-          this.afterAction();
+          this.toggle(d, true);
+          if(!this.opt.keepHash) this.unhash();
         }
-      }
-      else if(location.hash==d1.opt.hClose){
-          this.unpop();
-          this.afterAction();
+        if(t || g) this.after();
       }
     }
   }
   
   this.onKey = function(e){
     var k = e.keyCode;
-    if(k==27){
-      this.unpop();
-      this.unhash();
-      this.afterAction();
-    }
+    d1.dbg(['key', k]);
+    if(k==27) d1.fire('esc', e);
   }
-
+  
   this.onClick = function(e){
     var d = null;
     var n = e.target;
     var a = d1.closest(n, 'a');
     var d = (a && a.matches('a[href^="#"]')) ? d1.q(a.hash) : null;
     
-    if(d && d.matches(this.opt.qTgl)){
+    if(a && a.hash==d1.opt.hClose) d1.fire('esc', e);
+    else if(d && d.matches(this.opt.qTgl)){
       e.preventDefault();
       d = this.toggle(d);
       if(d1.vis(d) && this.opt.keepHash) this.addHistory(a.hash);
       else this.unhash();
       return d;
     }
-    else if(!d && !a){
+    else if(!a){
       this.unhash();
     }
   }
@@ -131,12 +137,16 @@ module.exports = new(function () {
       if(d.matches(this.opt.qTab) && on===undefined) on = true; //tabs: show instead of toggle
       //console.log('toggle '+d.id, on, deep);
       d.classList[on ? 'remove' : (on===undefined ? 'toggle' : 'add')](d1.opt.cHide);
-      if(d1.vis(d)) this.fixPosition(d);
+      d1.dbg(['toggle' + (deep ? ' deep' : ''), on, d], deep ? 2 : 1);
+      if(d1.vis(d)){
+        this.fixPosition(d);
+        if(!deep) this.shown = d;
+      }
       if(deep!=-1){
         if(!deep) this.toggleDependent(d);
         this.hiliteLinks(d);
         this.storeVisibility(d);
-        //if(!deep) this.afterAction(d);
+        //if(!deep) this.after(d);
       }
     }
     return d;
@@ -154,9 +164,16 @@ module.exports = new(function () {
     }
   }
   
-  this.unpop = function(keep){
-    var a = keep && keep[0] ? d1.closest(keep[0], 'a') : null;
-    if(a && a.hash==d1.opt.hClose) keep = []; //to close all, even container
+  this.unpop = function(x){
+    var keep = [x];
+    keep.push(this.shown);
+    var a = x ? d1.closest(x, 'a') : null;
+    if(a && a.hash){
+      //if(a.hash==d1.opt.hClose) keep = []; //to close all, even container
+      //else 
+        keep.push(d1.q(a.hash));
+    }
+    d1.dbg(['unpop', keep]);
     d1.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
   }
   
@@ -208,15 +225,16 @@ module.exports = new(function () {
         var qr = r.getBoundingClientRect();
         var dx = (qn.right > window.innerWidth);
         var dy = (qn.bottom > window.innerHeight);
+        var wide = (qr.width > 200);
         //x
-        if(vert) s.left = dx ? '3em' : '100%';
+        if(vert) s.left = (dx || wide) ? '3em' : '100%';
         else if(dx && qn.width > qr.width && qr.right > qn.width){
           //if(overflows-right && wider-then-container && enough-place-on-the-left) pop-left
           s.left = (qr.width - qn.width) + 'px';
         }
         else s.left = 0;
         //y
-        if(vert) s.top = dx ? '90%' : 0;
+        if(vert) s.top = (dx || wide) ? '90%' : 0;
         else if(dy && qr.top > qn.height){
           //if(overflows-bottom && enough-place-on-the-top) pop-top
           s.top = ((i ? -qr.height : 0) - qn.height) + 'px';

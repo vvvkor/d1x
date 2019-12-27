@@ -21,10 +21,10 @@ module.exports = new(function () {
   };
   
   this.init = function (opt) {
+    d1.listen('hash', e => this.onHash(e));
+    d1.listen('key', e => this.onKey(e));
+    d1.listen('click', e => this.onClick(e));
     d1.e(this.opt.qGallery, this.prepare.bind(this));
-    d1.b([document], 'keydown', this.key.bind(this));
-    d1.b([window], 'hashchange', this.loadTarget.bind(this));
-    if(location.hash) this.loadTarget();
   }
   
   this.onClick = function(e){
@@ -33,7 +33,7 @@ module.exports = new(function () {
       if(e.clientX > 0 /* not Enter key */ && e.clientX < n.clientWidth / 3){
         if(this.prevImg(n)) e.preventDefault();
       }
-      return n;
+      //return n;
     }
   }
   
@@ -43,7 +43,7 @@ module.exports = new(function () {
     return p.id;
   }
   
-  this.loadTarget = function() {
+  this.onHash = function() {
     var n = d1.q(location.hash);
     if(n) {
       this.loadImg(n);
@@ -78,12 +78,12 @@ module.exports = new(function () {
       a[i].href = '#' + p.id;
       a[i].vDone = 1;
     }
-    d1.insClose(g);
+    d1.x(g);
     d1.b(d1.qq('a[id]', g), 'click', d1.gotoPrev);
     document.querySelector('body').appendChild(g);
   }
 
-   this.key = function(e) {
+   this.onKey = function(e) {
     if(location.hash) {
       var a = d1.q(location.hash);
       if(a && a.hash){

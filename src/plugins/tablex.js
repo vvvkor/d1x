@@ -1,7 +1,7 @@
 /*! d1tablex */
 
 // Filter and sort HTML table
-// table.sort[data-filter][data-filter-report][data-case][data-filter-cols]
+// table.sort[data-filter] [data-filter-report][data-case][data-filter-cols]
 
 var d1 = require('../d1.js');
 
@@ -14,7 +14,7 @@ module.exports = new(function() {
   this.skipComma = 0;
   
   this.opt = {
-    attrFilter: 'data-filter',
+    aFilter: 'data-filter',
     cFilter: 'bg-w', // filter-on - non-empty filter field
     cScan: 'text-i', // col-scan - searchable columns' header (used if "data-filter-cols" is set)
     cShow: '', // row-show - matching row
@@ -29,10 +29,10 @@ module.exports = new(function() {
   this.init = function(opt) {
     this.lang = document.documentElement.getAttribute('lang') || 'en';
     this.skipComma = (this.lang=='en');
-    //var t = document.querySelectorAll(this.opt.qSort + ', table[' + this.opt.attrFilter + ']');
+    //var t = document.querySelectorAll(this.opt.qSort + ', table[' + this.opt.aFilter + ']');
     //t.forEach(this.prepare.bind(this));
     //for (i = 0; i < t.length; i++) this.prepare(t[i]);
-    d1.e(this.opt.qSort + ', table[' + this.opt.attrFilter + ']', this.prepare.bind(this))
+    d1.e(this.opt.qSort + ', table[' + this.opt.aFilter + ']', this.prepare.bind(this))
   }
 
   this.prepare = function(n) {
@@ -52,7 +52,7 @@ module.exports = new(function() {
     }
     //var inp = d1.ins('input','',{type:'search',size:4},rh.cells[0]);
     n.vCase = (n.getAttribute('data-case') !== null);
-    var fq = n.getAttribute(this.opt.attrFilter);
+    var fq = n.getAttribute(this.opt.aFilter);
     n.vInp = fq
       ? document.querySelector(fq)
       : n.querySelector('[name="_q"]');

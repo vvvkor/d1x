@@ -1,5 +1,9 @@
 /*! d1 dialog */
 
+// Replacement of standard Javascript dialogs: alert, confirm, prompt
+// a.alert([title]|[data-caption])
+// a.dialog[href]([title]|[data-caption])[data-prompt] [data-src][data-ok][data-cancel][data-reverse] 
+
 var d1 = require('../d1.js');
 //require('../plugins/toggle.js');
 
@@ -20,6 +24,7 @@ module.exports = new(function () {
   };
   
   this.init = function (opt) {
+    d1.listen('click', e => this.onClick(e));
   }
   
   this.onClick = function(e){
@@ -37,7 +42,7 @@ module.exports = new(function () {
     while(c=d.firstChild) d.removeChild(c);
     var hh = d1.ins('div', '', {className: 'row bg'}, d);
     d1.ins('h3', h || '', {className: 'let pad'}, hh);
-    d1.insClose(hh, 0, 'pad hover col-0');
+    d1.x(hh, 0, 'pad hover col-0');
     var b = d1.ins('div', '', {className: 'pad'}, d);
     if(t) d1.ins('div', t, {}, b);
     var inp = {value: true};

@@ -4,6 +4,7 @@ var d1 = require('./d1.js');
   require('./plugins/dialog.js'),
   require('./plugins/tablex.js'),
   require('./plugins/gallery.js')
+  require('./plugins/scroll.js')
 //];
 //plugins.forEach(p => d1.plug(p));
 d1.b([document], 'DOMContentLoaded', e => d1.init());

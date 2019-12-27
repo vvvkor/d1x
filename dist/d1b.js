@@ -82,7 +82,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -91,6 +91,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1css v1.0.2 */
+//require('../plugins/toggle.js'); 
 (function (window, document, Element) {
   "use strict"; //check single instance
 
@@ -99,11 +100,11 @@
   } else {
     // begin module
     var main = new function () {
-      this.sequence = 0; //this.dlg = null;
-
-      this.plugins = {}; //this.prevWidth = 0;
-
+      this.sequence = 0;
+      this.plugins = {};
+      this.handlers = {};
       this.opt = {
+        debug: 0,
         cHide: 'hide',
         aCaption: 'data-caption',
         cClose: 'close',
@@ -117,21 +118,39 @@
       };
 
       this.init = function (opt) {
+        var _this = this;
+
         //options
         if (!opt) {
           opt = this.attr(document.body, 'data-d1');
           if (opt) opt = JSON.parse(opt);
         }
 
-        this.setOpt(this, opt); //plugins
+        this.setOpt(this, opt);
+        this.initPlugins(opt); // plugins
+        // bind events
 
-        this.initPlugins(opt); //bind events
+        this.b([window], 'hashchange', function (e) {
+          return _this.on('hash', e);
+        });
+        this.b([document], 'keydown', function (e) {
+          return _this.on('key', e);
+        });
+        this.b([document], 'click', function (e) {
+          return _this.on('click', e);
+        });
+        if (location.hash) this.on('hash');
+        document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
 
-        this.b([document], 'click', this.onClick); //prepare body
+        this.fire('after');
+      }; // event delegation
+      // https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
 
-        document.body.classList.add(this.opt.cJs); //anti:hover, anti:target
 
-        if (this.plugins.toggle) this.plugins.toggle.afterAction();
+      this.on = function (t, e) {
+        this.fire(t, e);
+        this.fire(t + 'ed', e);
+        this.fire('after', e);
       }; //plugins
 
 
@@ -147,15 +166,34 @@
       };
 
       this.initPlugins = function (opt) {
-        var _this = this;
+        var _this2 = this;
 
         Object.keys(this.plugins).forEach(function (k) {
-          if (opt && opt.plug && opt.plug[k]) _this.setOpt(_this.plugins[k], opt.plug[k]);
+          if (opt && opt.plug && opt.plug[k]) _this2.setOpt(_this2.plugins[k], opt.plug[k]);
 
-          _this.plugins[k].init();
+          _this2.plugins[k].init();
+        });
+      }; //events
+
+
+      this.listen = function (t, f) {
+        if (!this.handlers[t]) this.handlers[t] = [];
+        this.handlers[t].push(f);
+      };
+
+      this.fire = function (t, e) {
+        var _this3 = this;
+
+        this.dbg(['fire ' + t, e]);
+        if (this.handlers[t]) this.handlers[t].forEach(function (h) {
+          return h.call(_this3, e);
         });
       }; //utils
 
+
+      this.dbg = function (s, l, e) {
+        if (this.opt.debug >= (l || 1)) console[e ? 'error' : 'log'](s);
+      };
 
       this.seq = function () {
         return ++this.sequence;
@@ -191,13 +229,13 @@
       };
 
       this.b = function (nn, e, f) {
-        var _this2 = this;
+        var _this4 = this;
 
         if (typeof nn === 'string') nn = this.qq(nn);else if (nn.tagName) nn = [nn];else nn = this.a(nn);
         if (nn && f) nn.forEach(function (n) {
-          return e ? n.addEventListener(e, f.bind(_this2
+          return e ? n.addEventListener(e, f.bind(_this4
           /*, n*/
-          ), false) : f.call(_this2, n);
+          ), false) : f.call(_this4, n);
         });
       };
 
@@ -223,7 +261,7 @@
         return n ? pos ? n.parentNode.insertBefore(c, pos < 0 ? n : n.nextSibling) : pos === false ? n.insertBefore(c, n.firstChild) : n.appendChild(c) : c;
       };
 
-      this.insClose = function (d, pos, cls) {
+      this.x = function (d, pos, cls) {
         return this.ins('a', this.opt.iClose, {
           href: this.opt.hClose,
           className: this.opt.cClose + ' ' + (cls || '')
@@ -232,20 +270,6 @@
 
       this.vis = function (n) {
         return !n.classList.contains(this.opt.cHide);
-      }; //event delegation
-      //https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
-
-
-      this.onClick = function (e) {
-        var _this3 = this;
-
-        var n = e.target;
-        var d = null;
-        Object.keys(this.plugins).forEach(function (k) {
-          d = !d && _this3.plugins[k].onClick ? _this3.plugins[k].onClick(e) : d;
-        });
-        if (this.plugins.toggle) this.plugins.toggle.unpop([n, d]);
-        if (this.plugins.toggle) this.plugins.toggle.afterAction(d);
       }; // url
 
 
@@ -260,7 +284,7 @@
           gets[v[0]] = decodeURIComponent(v[1]).replace(/\+/, ' ');
         }
 
-        return g ? gets[g] : gets; //protocol, host (hostname,port), pathname, search, hash
+        return g ? gets[g] : gets; //protocol, host (hostname, port), pathname, search, hash
       };
 
       this.makeUrl = function (a, args) {
@@ -286,7 +310,7 @@
 
 /***/ }),
 
-/***/ 6:
+/***/ 7:
 /***/ (function(module, exports, __webpack_require__) {
 
 var d1 = __webpack_require__(0);
