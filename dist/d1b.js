@@ -1,4 +1,4 @@
-/*! d1x v1.0.3 */
+/*! d1x v1.0.4 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -90,7 +90,7 @@
 /***/ 0:
 /***/ (function(module, exports, __webpack_require__) {
 
-/*! d1css v1.0.3 */
+/*! d1css v1.0.4 */
 //require('../plugins/toggle.js'); 
 (function (window, document, Element) {
   "use strict"; //check single instance

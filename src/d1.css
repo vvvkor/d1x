@@ -281,7 +281,7 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide){right:0;}
 	.gal a:not([id]){right:0;}
 /* topbar */
 .topbar{z-index:4;position:fixed;top:0;left:0;width:100%;height:var(--topbar);align-items:center;transition:top .2s;}
-.topbar.hide{top:calc(0em - var(--topbar));}
+.topbar.hide{top:calc(-.1em - var(--topbar));}
 .topbar+*{margin-top:var(--topbar);}
 	/* [id]:target:before{display:block;content:"";height:var(--topbar);margin-top:calc(0em - var(--topbar));} */
 

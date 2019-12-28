@@ -1,4 +1,4 @@
-/*! d1css v1.0.3 */
+/*! d1css v1.0.4 */
 
 :root {
     --text: #000;
@@ -600,8 +600,8 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
 }
 
 .topbar.hide {
-    top: -3.2em;
-    top: calc(0 - var(--topbar));
+    top: -3.3em;
+    top: calc(-0.1em - var(--topbar));
 }
 
 .topbar+* {
