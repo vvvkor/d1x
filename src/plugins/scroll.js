@@ -17,7 +17,6 @@ module.exports = new(function () {
     d1.b([window], 'scroll', this.onScroll.bind(this));
     this.onScroll();
   }
-  
   this.onScroll = function(e){
     if(this.y!==null){
       var dy = window.scrollY - this.y;

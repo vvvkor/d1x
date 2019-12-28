@@ -14,7 +14,7 @@
     --visited: #90c;
     --bg-btn: var(--link);
     --text-btn: var(--bg);
-    --rad: .5;
+    --rad: .3;
     --gap: 1;
     --gap-rate: .5;
     --topbar: 3.2em;
@@ -110,11 +110,6 @@ td, th {
 
 button, [type="submit"], [type="search"] {
     -webkit-appearance: none;
-}
-
-[type="search"] {
-    -webkit-border-radius: .5em;
-    -webkit-border-radius: var(--radius);
 }
 
 button::-moz-focus-inner, [type="submit"]::-moz-focus-inner {
@@ -489,29 +484,30 @@ ul.nav, .nav ul {
     transform: translate(-50%, -50%);
     background-clip: padding-box;
     min-width: 16em;
-    max-width: 80vw;
+    max-width: 70%;
     max-height: 80vh;
     overflow: auto;
 }
 
-.dlg.let {
-    width: 80%;
-}
-
 .full {
     width: 100%;
+    max-width: 100%;
     min-height: 100vh;
     box-sizing: border-box;
+}
+
+.dlg.let {
+    width: 70%;
+}
+
+.dlg.full {
+    height: 100vh;
 }
 
 .full.c {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.dlg.full {
-    height: 100vh;
 }
 
 div.hide {
@@ -775,7 +771,7 @@ mark {
     .btn, button, [type="submit"] {
         padding: .5em 1em;
         padding: var(--gaps-n);
-        border-radius: .5em;
+        border-radius: .3em;
         border-radius: var(--radius);
         margin: .2em 0;
         margin: var(--gap-xs) 0;
@@ -975,6 +971,36 @@ mark {
     }
 }
 
+.pop>div, .nav ul, .dlg, .drawer, .box {
+    box-shadow: 0 .2em .8em rgba(0, 0, 0, .5);
+    background-color: #fff;
+    background-color: var(--bg);
+    text-align: left;
+}
+
+.tabs li {
+    margin-right: .25em;
+    margin-right: calc(var(--gap-n)/4);
+}
+
+.dlg {
+    border: 500em solid rgba(0, 0, 0, .7);
+}
+
+.dlg.full {
+    border: none;
+}
+
+.dlg.rad {
+    border-radius: 500.3em;
+    border-radius: calc(500em + var(--radius));
+}
+
+.tabs.rad a {
+    border-radius: .3em .3em 0 0;
+    border-radius: var(--radius) var(--radius) 0 0;
+}
+
 .center {
     margin: 0 auto;
 }
@@ -1000,7 +1026,7 @@ form .mar {
 }
 
 .rad {
-    border-radius: .5em;
+    border-radius: .3em;
     border-radius: var(--radius);
 }
 
@@ -1022,30 +1048,4 @@ form .mar {
 
 .narrow {
     max-width: 16em;
-}
-
-.pop>div, .nav ul, .dlg, .drawer, .box {
-    box-shadow: 0 .2em .8em rgba(0, 0, 0, .5);
-    background-color: #fff;
-    background-color: var(--bg);
-    text-align: left;
-}
-
-.tabs li {
-    margin-right: .25em;
-    margin-right: calc(var(--gap-n)/4);
-}
-
-.dlg {
-    border: 500em solid rgba(0, 0, 0, .7);
-}
-
-.dlg.rad {
-    border-radius: 500.5em;
-    border-radius: calc(500em + var(--radius));
-}
-
-.tabs.rad a {
-    border-radius: .5em .5em 0 0;
-    border-radius: var(--radius) var(--radius) 0 0;
 }

@@ -225,7 +225,7 @@ module.exports = new(function () {
         var qr = r.getBoundingClientRect();
         var dx = (qn.right > window.innerWidth);
         var dy = (qn.bottom > window.innerHeight);
-        var wide = (qr.width > 200);
+        var wide = (qr.width > 300);
         //x
         if(vert) s.left = (dx || wide) ? '3em' : '100%';
         else if(dx && qn.width > qr.width && qr.right > qn.width){
