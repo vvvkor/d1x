@@ -100,7 +100,7 @@ module.exports = new(function () {
         if(i) i.value = v;
       }
       if(n.form.reportValidity()){
-        d1.ins('input', '', {type: 'hidden', name: n.name, value: n.value}, n.form);
+        d1.q('[type="hidden"][name="'+ n.name +'"]', n.form) || d1.ins('input', '', {type: 'hidden', name: n.name, value: n.value}, n.form);
         n.form.elements[this.opt.aConfirm] || d1.ins('input', '', {type: 'hidden', name: this.opt.aConfirm, value: 1}, n.form);
         n.form.submit();
       }

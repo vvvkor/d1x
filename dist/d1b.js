@@ -1,4 +1,4 @@
-/*! d1x v1.0.4 */
+/*! d1x v1.0.5 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -90,7 +90,7 @@
 /***/ 0:
 /***/ (function(module, exports, __webpack_require__) {
 
-/*! d1css v1.0.4 */
+/*! d1css v1.0.5 */
 //require('../plugins/toggle.js'); 
 (function (window, document, Element) {
   "use strict"; //check single instance
@@ -264,7 +264,7 @@
       this.x = function (d, pos, cls) {
         return this.ins('a', this.opt.iClose, {
           href: this.opt.hClose,
-          className: this.opt.cClose + ' ' + (cls || '')
+          className: cls || ''
         }, d, pos);
       };
 

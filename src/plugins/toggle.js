@@ -64,7 +64,8 @@ module.exports = new(function () {
     var modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cHide+'), '+this.opt.qGal+'[id="' + location.hash.substr(1) + '"]');
     document.body.style.overflow = modal ? 'hidden' : '';
     if(modal){
-      var f = d1.q('input, a:not(.' + d1.opt.cClose + ')', modal);
+      //var f = d1.q('input, a:not(.' + d1.opt.cClose + ')', modal);
+      var f = d1.q('input, a:not([href="' + d1.opt.hClose + '"])', modal);
       if(f) f.focus();
     }
   }
@@ -178,15 +179,17 @@ module.exports = new(function () {
   }
   
   this.unhash = function(){
-    //if(location.hash) location.hash = d1.opt.hClose;
+    //v1.
+    if(location.hash) location.hash = d1.opt.hClose;
+    //v2.
     this.addHistory(location.pathname + location.search /* + d1.opt.hClose*/);
   }
   
   this.addHistory = function(h) {
     history.pushState({}, '', h);
-  //following required to re-render hash changes (test: open gallery, esc)
-    history.pushState({}, '', h);
-    history.go(-1);
+    //following required to re-render hash changes (test: open gallery, esc)
+    //history.pushState({}, '', h);
+    //history.go(-1);
   }
 
   this.storeVisibility = function(n){

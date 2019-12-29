@@ -1,4 +1,4 @@
-/*! d1x v1.0.4 */
+/*! d1x v1.0.5 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/*! d1css v1.0.4 */
+/*! d1css v1.0.5 */
 //require('../plugins/toggle.js'); 
 (function (window, document, Element) {
   "use strict"; //check single instance
@@ -263,7 +263,7 @@
       this.x = function (d, pos, cls) {
         return this.ins('a', this.opt.iClose, {
           href: this.opt.hClose,
-          className: this.opt.cClose + ' ' + (cls || '')
+          className: cls || ''
         }, d, pos);
       };
 
@@ -432,7 +432,8 @@ module.exports = new function () {
     document.body.style.overflow = modal ? 'hidden' : '';
 
     if (modal) {
-      var f = d1.q('input, a:not(.' + d1.opt.cClose + ')', modal);
+      //var f = d1.q('input, a:not(.' + d1.opt.cClose + ')', modal);
+      var f = d1.q('input, a:not([href="' + d1.opt.hClose + '"])', modal);
       if (f) f.focus();
     }
   };
@@ -568,7 +569,9 @@ module.exports = new function () {
   };
 
   this.unhash = function () {
-    //if(location.hash) location.hash = d1.opt.hClose;
+    //v1.
+    if (location.hash) location.hash = d1.opt.hClose; //v2.
+
     this.addHistory(location.pathname + location.search
     /* + d1.opt.hClose*/
     );
@@ -576,9 +579,8 @@ module.exports = new function () {
 
   this.addHistory = function (h) {
     history.pushState({}, '', h); //following required to re-render hash changes (test: open gallery, esc)
-
-    history.pushState({}, '', h);
-    history.go(-1);
+    //history.pushState({}, '', h);
+    //history.go(-1);
   };
 
   this.storeVisibility = function (n) {
@@ -785,7 +787,7 @@ module.exports = new function () {
           }
 
           if (n.form.reportValidity()) {
-            d1.ins('input', '', {
+            d1.q('[type="hidden"][name="' + n.name + '"]', n.form) || d1.ins('input', '', {
               type: 'hidden',
               name: n.name,
               value: n.value

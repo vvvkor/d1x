@@ -166,7 +166,7 @@ var main = new (function(){
   }
 
   this.x = function(d, pos, cls){
-    return this.ins('a', this.opt.iClose, {href: this.opt.hClose, className: this.opt.cClose + ' ' + (cls || '')}, d, pos);
+    return this.ins('a', this.opt.iClose, {href: this.opt.hClose, className: (cls || '')}, d, pos);
   }
   
   this.vis = function(n){
