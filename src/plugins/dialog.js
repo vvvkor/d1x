@@ -24,13 +24,18 @@ module.exports = new(function () {
   };
   
   this.init = function (opt) {
-    d1.listen('click', e => this.onClick(e));
+    if(d1.plugins.toggle){
+      d1.listen('click', e => this.onClick(e));
+    }
+    else{
+      console.error('Module "dialog" requires "toggle"');
+    }
   }
   
   this.onClick = function(e){
     var as = d1.closest(e.target, 'a, input, button');
     if(as && as.matches(this.opt.qAlert+','+this.opt.qDialog)){
-      //d = this.dialog(e, a, (m, v) => !console.log(v) && d1.unpop()); //custom callback
+      //d = this.dialog(e, a, (m, v) => !console.log(v) && d1.plugins.toggle.unpop()); //custom callback
       e.preventDefault();
       return this.dialog(as);
     }
@@ -104,14 +109,14 @@ module.exports = new(function () {
         n.form.elements[this.opt.aConfirm] || d1.ins('input', '', {type: 'hidden', name: this.opt.aConfirm, value: 1}, n.form);
         n.form.submit();
       }
-      else d1.unpop();
+      else d1.plugins.toggle.unpop();
       //n.click();
     }
     //goto link
     else if(n.href){
       var ha = (d1.attr(n, 'href').substr(0, 1)=='#');
       var bl = (n.target=='_blank');
-      if(ha || bl) d1.unpop();
+      if(ha || bl) d1.plugins.toggle.unpop();
       if(ha) u = n.hash;
       else{
         var a = {};

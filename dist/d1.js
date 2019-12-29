@@ -1,4 +1,4 @@
-/*! d1x v1.0.5 */
+/*! d1x v1.0.6 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/*! d1css v1.0.5 */
+/*! d1css v1.0.6 */
 //require('../plugins/toggle.js'); 
 (function (window, document, Element) {
   "use strict"; //check single instance
@@ -670,16 +670,20 @@ module.exports = new function () {
   this.init = function (opt) {
     var _this = this;
 
-    d1.listen('click', function (e) {
-      return _this.onClick(e);
-    });
+    if (d1.plugins.toggle) {
+      d1.listen('click', function (e) {
+        return _this.onClick(e);
+      });
+    } else {
+      console.error('Module "dialog" requires "toggle"');
+    }
   };
 
   this.onClick = function (e) {
     var as = d1.closest(e.target, 'a, input, button');
 
     if (as && as.matches(this.opt.qAlert + ',' + this.opt.qDialog)) {
-      //d = this.dialog(e, a, (m, v) => !console.log(v) && d1.unpop()); //custom callback
+      //d = this.dialog(e, a, (m, v) => !console.log(v) && d1.plugins.toggle.unpop()); //custom callback
       e.preventDefault();
       return this.dialog(as);
     }
@@ -798,13 +802,13 @@ module.exports = new function () {
               value: 1
             }, n.form);
             n.form.submit();
-          } else d1.unpop(); //n.click();
+          } else d1.plugins.toggle.unpop(); //n.click();
 
         } //goto link
         else if (n.href) {
             var ha = d1.attr(n, 'href').substr(0, 1) == '#';
             var bl = n.target == '_blank';
-            if (ha || bl) d1.unpop();
+            if (ha || bl) d1.plugins.toggle.unpop();
             if (ha) u = n.hash;else {
               var a = {};
               a[this.opt.aConfirm] = 1;
