@@ -14,11 +14,13 @@ module.exports = new(function () {
   };
   
   this.init = function (opt) {
-    //this.onScroll(); // forces reflow
+    var ons = d1.throttle(this.onScroll.bind(this), 500);
+    //ons(); // forces reflow
     d1.e('.topbar', n => setTimeout(this.onScroll.bind(this), 20));
-    d1.b([window], 'scroll', this.onScroll.bind(this));
+    d1.b([window], 'scroll', ons);
   }
   this.onScroll = function(e){
+    //d1.dbg('scroll');
     if(this.y!==null){
       var dy = window.scrollY - this.y;
       d1.e('.topbar', n => this.decorate(n, window.scrollY, dy));

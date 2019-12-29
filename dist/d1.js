@@ -1,4 +1,4 @@
-/*! d1x v1.0.8 */
+/*! d1x v1.0.9 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/*! d1css v1.0.8 */
+/*! d1css v1.0.9 */
 //require('../plugins/toggle.js'); 
 (function (window, document, Element) {
   "use strict"; //check single instance
@@ -269,6 +269,29 @@
 
       this.vis = function (n) {
         return !n.classList.contains(this.opt.cHide);
+      }; //func
+
+
+      this.throttle = function (f, ms) {
+        var p = false,
+            a;
+        return function ff() {
+          if (p) a = arguments; //2
+          else {
+              f.apply(null, arguments); //1
+
+              p = true;
+              setTimeout(function () {
+                //3
+                p = false;
+
+                if (a) {
+                  ff.apply(null, a);
+                  a = null;
+                }
+              }, ms);
+            }
+        };
       }; // url
 
 
@@ -1281,15 +1304,18 @@ module.exports = new function () {
   this.init = function (opt) {
     var _this = this;
 
-    //this.onScroll(); // forces reflow
+    var ons = d1.throttle(this.onScroll.bind(this), 500); //ons(); // forces reflow
+
     d1.e('.topbar', function (n) {
       return setTimeout(_this.onScroll.bind(_this), 20);
     });
-    d1.b([window], 'scroll', this.onScroll.bind(this));
+    d1.b([window], 'scroll', ons);
   };
 
   this.onScroll = function (e) {
     var _this2 = this;
+
+    d1.dbg('scroll');
 
     if (this.y !== null) {
       var dy = window.scrollY - this.y;

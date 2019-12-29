@@ -173,6 +173,26 @@ var main = new (function(){
     return !n.classList.contains(this.opt.cHide)
   }
   
+  //func
+  
+  this.throttle = function(f, ms){
+    var p = false, a;
+    return function ff(){
+      if (p) a = arguments; //2
+      else{
+        f.apply(null, arguments); //1
+        p = true;
+        setTimeout(() => { //3
+          p = false;
+          if(a){
+            ff.apply(null, a);
+            a = null;
+          }
+        }, ms);
+      }
+    }
+  }
+  
   // url
   
   this.get = function(a, g){
