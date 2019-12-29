@@ -62,9 +62,10 @@ module.exports = new(function () {
     d1.dbg(['after', n]);
     //var modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cHide+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
     var modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cHide+'), '+this.opt.qGal+'[id="' + location.hash.substr(1) + '"]');
-    var s = document.body.style
+    var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
+    var s = document.body.style;
     s.overflow = modal ? 'hidden' : '';
-    s.paddingRight = modal ? '15px' : ''; // avoid width reflow on desktop
+    s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
     if(modal){
       //var f = d1.q('input, a:not(.' + d1.opt.cClose + ')', modal);
       var f = d1.q('input, a:not([href="' + d1.opt.hClose + '"])', modal);

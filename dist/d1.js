@@ -1,4 +1,4 @@
-/*! d1x v1.0.7 */
+/*! d1x v1.0.8 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/*! d1css v1.0.7 */
+/*! d1css v1.0.8 */
 //require('../plugins/toggle.js'); 
 (function (window, document, Element) {
   "use strict"; //check single instance
@@ -429,9 +429,11 @@ module.exports = new function () {
     d1.dbg(['after', n]); //var modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cHide+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
 
     var modal = d1.q(this.opt.qDlg + ':not(.' + d1.opt.cHide + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
+    var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
+
     var s = document.body.style;
     s.overflow = modal ? 'hidden' : '';
-    s.paddingRight = modal ? '15px' : ''; // avoid width reflow on desktop
+    s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
 
     if (modal) {
       //var f = d1.q('input, a:not(.' + d1.opt.cClose + ')', modal);
