@@ -1,4 +1,4 @@
-/*! d1x v1.0.6 */
+/*! d1x v1.0.7 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/*! d1css v1.0.6 */
+/*! d1css v1.0.7 */
 //require('../plugins/toggle.js'); 
 (function (window, document, Element) {
   "use strict"; //check single instance
@@ -429,7 +429,9 @@ module.exports = new function () {
     d1.dbg(['after', n]); //var modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cHide+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
 
     var modal = d1.q(this.opt.qDlg + ':not(.' + d1.opt.cHide + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
-    document.body.style.overflow = modal ? 'hidden' : '';
+    var s = document.body.style;
+    s.overflow = modal ? 'hidden' : '';
+    s.paddingRight = modal ? '15px' : ''; // avoid width reflow on desktop
 
     if (modal) {
       //var f = d1.q('input, a:not(.' + d1.opt.cClose + ')', modal);
@@ -1275,21 +1277,26 @@ module.exports = new function () {
   this.opt = {};
 
   this.init = function (opt) {
+    var _this = this;
+
+    //this.onScroll(); // forces reflow
+    d1.e('.topbar', function (n) {
+      return setTimeout(_this.onScroll.bind(_this), 20);
+    });
     d1.b([window], 'scroll', this.onScroll.bind(this));
-    this.onScroll();
   };
 
   this.onScroll = function (e) {
-    var _this = this;
+    var _this2 = this;
 
     if (this.y !== null) {
       var dy = window.scrollY - this.y;
       d1.e('.topbar', function (n) {
-        return _this.decorate(n, window.scrollY, dy);
+        return _this2.decorate(n, window.scrollY, dy);
       });
     }
 
-    this.y = window.scrollY;
+    this.y = window.scrollY; // forces reflow
   };
 
   this.decorate = function (n, y, dy) {

@@ -1,4 +1,4 @@
-/*! d1css v1.0.6 */
+/*! d1css v1.0.7 */
 
 :root {
     --text: #000;
@@ -23,7 +23,7 @@
     --text-nav: #03b;
     --text-vis: #80b;
     --bg-danger: #fcc;
-    --bg-warning: #fd8;
+    --bg-warning: #fd9;
     --bg-info: #bef;
     --bg-success: #cec;
     --bg-lite: #eee;
@@ -633,7 +633,7 @@ pre code {
 }
 
 mark {
-    background-color: #fd8;
+    background-color: #fd9;
     background-color: var(--bg-warning);
 }
 
@@ -893,7 +893,7 @@ mark {
     }
 
     .bg-w[class] {
-        background-color: #fd8;
+        background-color: #fd9;
         background-color: var(--bg-warning);
     }
 

@@ -14,15 +14,16 @@ module.exports = new(function () {
   };
   
   this.init = function (opt) {
+    //this.onScroll(); // forces reflow
+    d1.e('.topbar', n => setTimeout(this.onScroll.bind(this), 20));
     d1.b([window], 'scroll', this.onScroll.bind(this));
-    this.onScroll();
   }
   this.onScroll = function(e){
     if(this.y!==null){
       var dy = window.scrollY - this.y;
       d1.e('.topbar', n => this.decorate(n, window.scrollY, dy));
     }
-    this.y = window.scrollY;
+    this.y = window.scrollY; // forces reflow
   }
   
   this.decorate = function(n, y, dy){
