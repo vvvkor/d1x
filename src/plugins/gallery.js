@@ -3,7 +3,7 @@
 // Lighweight image gallery
 // .gallery a.pic 
 
-var d1 = require('../d1.js');
+let d1 = require('../d1.js');
 
 module.exports = new(function () {
 
@@ -28,7 +28,7 @@ module.exports = new(function () {
   }
   
   this.onClick = function(e){
-    var n = e.target;
+    let n = e.target;
     if(n.matches(this.opt.qGal)){
       if(e.clientX > 0 /* not Enter key */ && e.clientX < n.clientWidth / 3){
         if(this.prevImg(n)) e.preventDefault();
@@ -38,13 +38,13 @@ module.exports = new(function () {
   }
   
   this.prevImg = function(n) {
-    var p = n.previousElementSibling || d1.qq('a[id]', n.parentNode).pop();
+    let p = n.previousElementSibling || d1.qq('a[id]', n.parentNode).pop();
     if(p.id) location.hash = '#' + p.id;
     return p.id;
   }
   
   this.onHash = function() {
-    var n = d1.q(location.hash);
+    let n = d1.q(location.hash);
     if(n) {
       this.loadImg(n);
       this.loadImg(d1.q(n.hash));
@@ -59,14 +59,14 @@ module.exports = new(function () {
   }
   
   this.prepare = function (n) {
-    var g = d1.ins('div', '', {className: this.opt.cGal});
-    var a = n.querySelectorAll(this.opt.qLinks);
-    var z = a.length;
-    var first = 0;
-    for(var i=0; i<z; i++) if(!a[i].vDone) {
-      var s = d1.seq();
+    let g = d1.ins('div', '', {className: this.opt.cGal});
+    let a = n.querySelectorAll(this.opt.qLinks);
+    let z = a.length;
+    let first = 0;
+    for(let i=0; i<z; i++) if(!a[i].vDone) {
+      let s = d1.seq();
       if(!i) first = s;
-      var p = d1.ins('a', '', {
+      let p = d1.ins('a', '', {
           id: this.opt.idPrefix + s,
           href: '#' + this.opt.idPrefix + (i==z-1 ? first : s+1)
           }, g);
@@ -83,15 +83,15 @@ module.exports = new(function () {
     document.querySelector('body').appendChild(g);
   }
 
-   this.onKey = function(e) {
+  this.onKey = function(e) {
     if(location.hash) {
-      var a = d1.q(location.hash);
+      let a = d1.q(location.hash);
       if(a && a.hash){
-        var k = e.keyCode;
+        let k = e.keyCode;
         if (k==37 || k==38) this.prevImg(a);
         else if (k==39 || k==40) location.hash = a.hash;//a.click();
         else if(k==8){
-          var h = a.vLink;
+          let h = a.vLink;
           if(!h){
             h = window.getComputedStyle(a).backgroundImage;
             h = h.substring(4, h.length-1).replace(/^"|"$/g, '');

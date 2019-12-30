@@ -87,254 +87,244 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-/*! d1css v1.0.9 */
-//require('../plugins/toggle.js'); 
-(function (window, document, Element) {
-  "use strict"; //check single instance
+/*! d1css v0.0.0 */
+// (() => {
+//let main = new (function(){
+module.exports = new function () {
+  this.sequence = 0;
+  this.plugins = {};
+  this.handlers = {};
+  this.opt = {
+    debug: 0,
+    cHide: 'hide',
+    aCaption: 'data-caption',
+    cClose: 'close',
+    cJs: 'js',
+    hClose: '#cancel',
+    hOk: '#ok',
+    iClose: '&#x2715;',
+    //&times;
+    sCancel: 'Cancel',
+    sOk: 'OK'
+  };
 
-  if (window && window.d1) {
-    console.log("d1 already included");
-  } else {
-    // begin module
-    var main = new function () {
-      this.sequence = 0;
-      this.plugins = {};
-      this.handlers = {};
-      this.opt = {
-        debug: 0,
-        cHide: 'hide',
-        aCaption: 'data-caption',
-        cClose: 'close',
-        cJs: 'js',
-        hClose: '#cancel',
-        hOk: '#ok',
-        iClose: '&#x2715;',
-        //&times;
-        sCancel: 'Cancel',
-        sOk: 'OK'
-      };
+  this.init = function (opt) {
+    var _this = this;
 
-      this.init = function (opt) {
-        var _this = this;
+    //options
+    if (!opt) {
+      opt = this.attr(document.body, 'data-d1');
+      if (opt) opt = JSON.parse(opt);
+    }
 
-        //options
-        if (!opt) {
-          opt = this.attr(document.body, 'data-d1');
-          if (opt) opt = JSON.parse(opt);
-        }
+    this.setOpt(this, opt);
+    this.initPlugins(opt); // plugins
+    // bind events
 
-        this.setOpt(this, opt);
-        this.initPlugins(opt); // plugins
-        // bind events
+    this.b([window], 'hashchange', function (e) {
+      return _this.on('hash', e);
+    });
+    this.b([document], 'keydown', function (e) {
+      return _this.on('key', e);
+    });
+    this.b([document], 'click', function (e) {
+      return _this.on('click', e);
+    });
+    if (location.hash) this.on('hash');
+    document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
 
-        this.b([window], 'hashchange', function (e) {
-          return _this.on('hash', e);
-        });
-        this.b([document], 'keydown', function (e) {
-          return _this.on('key', e);
-        });
-        this.b([document], 'click', function (e) {
-          return _this.on('click', e);
-        });
-        if (location.hash) this.on('hash');
-        document.body.classList.add(this.opt.cJs); // prepare body: anti-hover, anti-target
-
-        this.fire('after');
-      }; // event delegation
-      // https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
+    this.fire('after');
+  }; // event delegation
+  // https://gomakethings.com/why-event-delegation-is-a-better-way-to-listen-for-events-in-vanilla-js/
 
 
-      this.on = function (t, e) {
-        this.fire(t, e);
-        this.fire(t + 'ed', e);
-        this.fire('after', e);
-      }; //plugins
+  this.on = function (t, e) {
+    this.fire(t, e);
+    this.fire(t + 'ed', e);
+    this.fire('after', e);
+  }; //plugins
 
 
-      this.setOpt = function (obj, opt) {
-        var i;
-        if (opt) for (i in opt) {
-          obj.opt[i] = opt[i];
-        }
-      };
+  this.setOpt = function (obj, opt) {
+    var i;
+    if (opt) for (i in opt) {
+      obj.opt[i] = opt[i];
+    }
+  };
 
-      this.plug = function (p) {
-        this.plugins[p.name] = p;
-      };
+  this.plug = function (p) {
+    this.plugins[p.name] = p;
+  };
 
-      this.initPlugins = function (opt) {
-        var _this2 = this;
+  this.initPlugins = function (opt) {
+    var _this2 = this;
 
-        Object.keys(this.plugins).forEach(function (k) {
-          if (opt && opt.plug && opt.plug[k]) _this2.setOpt(_this2.plugins[k], opt.plug[k]);
+    Object.keys(this.plugins).forEach(function (k) {
+      if (opt && opt.plug && opt.plug[k]) _this2.setOpt(_this2.plugins[k], opt.plug[k]);
 
-          _this2.plugins[k].init();
-        });
-      }; //events
-
-
-      this.listen = function (t, f) {
-        if (!this.handlers[t]) this.handlers[t] = [];
-        this.handlers[t].push(f);
-      };
-
-      this.fire = function (t, e) {
-        var _this3 = this;
-
-        this.dbg(['fire ' + t, e]);
-        if (this.handlers[t]) this.handlers[t].forEach(function (h) {
-          return h.call(_this3, e);
-        });
-      }; //utils
+      _this2.plugins[k].init();
+    });
+  }; //events
 
 
-      this.dbg = function (s, l, e) {
-        if (this.opt.debug >= (l || 1)) console[e ? 'error' : 'log'](s);
-      };
+  this.listen = function (t, f) {
+    if (!this.handlers[t]) this.handlers[t] = [];
+    this.handlers[t].push(f);
+  };
 
-      this.seq = function () {
-        return ++this.sequence;
-      };
+  this.fire = function (t, e) {
+    var _this3 = this;
 
-      this.closest = function (n, q) {
-        //including self
-        //return n.parentNode.closest(q); //-ie
-        do {
-          if (n.matches && n.matches(q)) return n;
-        } while (n = n.parentNode);
-      };
-
-      this.a = function (c) {
-        return c ? Array.prototype.slice.call(c) : c;
-      };
-
-      this.q = function (s, n) {
-        try {
-          return (n || document).querySelector(s);
-        } catch (e) {
-          return null;
-        }
-      };
-
-      this.qq = function (s, n) {
-        try {
-          var r = (n || document).querySelectorAll(s);
-          return this.a(r);
-        } catch (e) {
-          return [];
-        }
-      };
-
-      this.b = function (nn, e, f) {
-        var _this4 = this;
-
-        if (typeof nn === 'string') nn = this.qq(nn);else if (nn.tagName) nn = [nn];else nn = this.a(nn);
-        if (nn && f) nn.forEach(function (n) {
-          return e ? n.addEventListener(e, f.bind(_this4
-          /*, n*/
-          ), false) : f.call(_this4, n);
-        });
-      };
-
-      this.e = function (nn, f) {
-        return this.b(nn, '', f);
-      };
-
-      this.attr = function (n, a, def) {
-        return n && n.hasAttribute(a) ? n.getAttribute(a) : def || '';
-      }; //pos: -1=before, false=prepend, 0=append(default), 1=after
+    this.dbg(['fire ' + t, e]);
+    if (this.handlers[t]) this.handlers[t].forEach(function (h) {
+      return h.call(_this3, e);
+    });
+  }; //utils
 
 
-      this.ins = function (tag, t, attrs, n, pos) {
-        var c = document.createElement(tag || 'span');
-        if (t && t.tagName) c.appendChild(t);else if (t) c.innerHTML = t; //c.appendChild(document.createTextNode(t||''));
+  this.dbg = function (s, l, e) {
+    if (this.opt.debug >= (l || 1)) console[e ? 'error' : 'log'](s);
+  };
 
-        if (attrs) {
-          for (var i in attrs) {
-            if (i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);else c[i] = attrs[i];
-          }
-        }
+  this.seq = function () {
+    return ++this.sequence;
+  };
 
-        return n ? pos ? n.parentNode.insertBefore(c, pos < 0 ? n : n.nextSibling) : pos === false ? n.insertBefore(c, n.firstChild) : n.appendChild(c) : c;
-      };
+  this.closest = function (n, q) {
+    //including self
+    //return n.parentNode.closest(q); //-ie
+    do {
+      if (n.matches && n.matches(q)) return n;
+    } while (n = n.parentNode);
+  };
 
-      this.x = function (d, pos, cls) {
-        return this.ins('a', this.opt.iClose, {
-          href: this.opt.hClose,
-          className: cls || ''
-        }, d, pos);
-      };
+  this.a = function (c) {
+    return c ? Array.prototype.slice.call(c) : c;
+  };
 
-      this.vis = function (n) {
-        return !n.classList.contains(this.opt.cHide);
-      }; //func
+  this.q = function (s, n) {
+    try {
+      return (n || document).querySelector(s);
+    } catch (e) {
+      return null;
+    }
+  };
+
+  this.qq = function (s, n) {
+    try {
+      var r = (n || document).querySelectorAll(s);
+      return this.a(r);
+    } catch (e) {
+      return [];
+    }
+  };
+
+  this.b = function (nn, e, f) {
+    var _this4 = this;
+
+    if (typeof nn === 'string') nn = this.qq(nn);else if (nn.tagName) nn = [nn];else nn = this.a(nn);
+    if (nn && f) nn.forEach(function (n) {
+      return e ? n.addEventListener(e, f.bind(_this4
+      /*, n*/
+      ), false) : f.call(_this4, n);
+    });
+  };
+
+  this.e = function (nn, f) {
+    return this.b(nn, '', f);
+  };
+
+  this.attr = function (n, a, def) {
+    return n && n.hasAttribute(a) ? n.getAttribute(a) : def || '';
+  }; //pos: -1=before, false=prepend, 0=append(default), 1=after
 
 
-      this.throttle = function (f, ms) {
-        var p = false,
-            a;
-        return function ff() {
-          if (p) a = arguments; //2
-          else {
-              f.apply(null, arguments); //1
+  this.ins = function (tag, t, attrs, n, pos) {
+    var c = document.createElement(tag || 'span');
+    if (t && t.tagName) c.appendChild(t);else if (t) c.innerHTML = t; //c.appendChild(document.createTextNode(t||''));
 
-              p = true;
-              setTimeout(function () {
-                //3
-                p = false;
+    if (attrs) {
+      for (var i in attrs) {
+        if (i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);else c[i] = attrs[i];
+      }
+    }
 
-                if (a) {
-                  ff.apply(null, a);
-                  a = null;
-                }
-              }, ms);
+    return n ? pos ? n.parentNode.insertBefore(c, pos < 0 ? n : n.nextSibling) : pos === false ? n.insertBefore(c, n.firstChild) : n.appendChild(c) : c;
+  };
+
+  this.x = function (d, pos, cls) {
+    return this.ins('a', this.opt.iClose, {
+      href: this.opt.hClose,
+      className: cls || ''
+    }, d, pos);
+  };
+
+  this.vis = function (n) {
+    return !n.classList.contains(this.opt.cHide);
+  }; //func
+
+
+  this.throttle = function (f, ms) {
+    var p = false,
+        a;
+    return function ff() {
+      if (p) a = arguments; //2
+      else {
+          f.apply(null, arguments); //1
+
+          p = true;
+          setTimeout(function () {
+            //3
+            p = false;
+
+            if (a) {
+              ff.apply(null, a);
+              a = null;
             }
-        };
-      }; // url
-
-
-      this.get = function (a, g) {
-        if (!a || a.tagName != 'A') return null;
-        var i,
-            gets = {};
-        var args = a.search ? a.search.replace(/^\?/, '').split('&') : [];
-
-        for (i = 0; i < args.length; i++) {
-          var v = args[i].split('=');
-          gets[v[0]] = decodeURIComponent(v[1]).replace(/\+/, ' ');
+          }, ms);
         }
+    };
+  }; // url
 
-        return g ? gets[g] : gets; //protocol, host (hostname, port), pathname, search, hash
-      };
 
-      this.makeUrl = function (a, args) {
-        var g = this.get(a);
-        Object.keys(args).forEach(function (k) {
-          return g[k] = args[k];
-        });
-        var q = Object.keys(g).map(function (k) {
-          return encodeURIComponent(k) + '=' + encodeURIComponent(g[k]);
-        }).join('&');
-        return a.protocol + '//' + a.host + a.pathname + (q ? '?' + q : '') + a.hash;
-      };
-    }(); // end module
-    // var isNode    = (typeof module !== 'undefined' && this.module !== module); // use module or global
-    // var isBrowser = (typeof window !== 'undefined' && this.window === this);
+  this.get = function (a, g) {
+    if (!a || a.tagName != 'A') return null;
+    var i,
+        gets = {};
+    var args = a.search ? a.search.replace(/^\?/, '').split('&') : [];
 
-    if (true) {
-      //console.log("npm require d1", module);
-      module.exports = main;
-    } else {}
-  }
-})(window, document, Element);
+    for (i = 0; i < args.length; i++) {
+      var v = args[i].split('=');
+      gets[v[0]] = decodeURIComponent(v[1]).replace(/\+/, ' ');
+    }
+
+    return g ? gets[g] : gets; //protocol, host (hostname, port), pathname, search, hash
+  };
+
+  this.makeUrl = function (a, args) {
+    var g = this.get(a);
+    Object.keys(args).forEach(function (k) {
+      return g[k] = args[k];
+    });
+    var q = Object.keys(g).map(function (k) {
+      return encodeURIComponent(k) + '=' + encodeURIComponent(g[k]);
+    }).join('&');
+    return a.protocol + '//' + a.host + a.pathname + (q ? '?' + q : '') + a.hash;
+  };
+}();
+/*
+if (this.window === this) window[main.name] = main;
+else module.exports = main;
+})();
+*/
 
 /***/ }),
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var d1 = __webpack_require__(0); //var plugins = [
+var d1 = __webpack_require__(0); //let plugins = [
 
 
 __webpack_require__(2), __webpack_require__(3), __webpack_require__(4), __webpack_require__(5);
@@ -346,6 +336,8 @@ __webpack_require__(6); //];
 d1.b([document], 'DOMContentLoaded', function (e) {
   return d1.init();
 }); //d1.b([document], 'DOMContentLoaded', d1.init.bind(d1, {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}));
+
+if (window) window.d1 = d1;
 
 /***/ }),
 /* 2 */
@@ -382,7 +374,7 @@ module.exports = new function () {
     iToggle: '[+]'
   };
 
-  this.init = function (opt) {
+  this.init = function () {
     var _this = this;
 
     d1.listen('esc', function (e) {
@@ -449,7 +441,7 @@ module.exports = new function () {
 
   this.after = function (n) {
     this.shown = null;
-    d1.dbg(['after', n]); //var modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cHide+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
+    d1.dbg(['after', n]); //let modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cHide+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
 
     var modal = d1.q(this.opt.qDlg + ':not(.' + d1.opt.cHide + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
     var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
@@ -459,7 +451,7 @@ module.exports = new function () {
     s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
 
     if (modal) {
-      //var f = d1.q('input, a:not(.' + d1.opt.cClose + ')', modal);
+      //let f = d1.q('input, a:not(.' + d1.opt.cClose + ')', modal);
       var f = d1.q('input, a:not([href="' + d1.opt.hClose + '"])', modal);
       if (f) f.focus();
     }
@@ -499,7 +491,6 @@ module.exports = new function () {
   };
 
   this.onClick = function (e) {
-    var d = null;
     var n = e.target;
     var a = d1.closest(n, 'a');
     var d = a && a.matches('a[href^="#"]') ? d1.q(a.hash) : null;
@@ -514,7 +505,7 @@ module.exports = new function () {
   };
 
   this.attachSubNav = function (n) {
-    //var a = n.previousElementSibling;
+    //let a = n.previousElementSibling;
     var aa = d1.a(n.parentNode.children).filter(function (v) {
       return v.tagName == 'A';
     });
@@ -583,7 +574,7 @@ module.exports = new function () {
 
     if (a && a.hash) {
       //if(a.hash==d1.opt.hClose) keep = []; //to close all, even container
-      //else 
+      //else
       keep.push(d1.q(a.hash));
     }
 
@@ -639,7 +630,7 @@ module.exports = new function () {
       var s = n.style;
       var p = n.parentNode;
       var i = p.nextElementSibling;
-      var i = i && i.tagName == 'INPUT' ? i : null;
+      i = i && i.tagName == 'INPUT' ? i : null;
       var r = i || n.parentNode;
 
       if (r) {
@@ -836,11 +827,12 @@ module.exports = new function () {
             var ha = d1.attr(n, 'href').substr(0, 1) == '#';
             var bl = n.target == '_blank';
             if (ha || bl) d1.plugins.toggle.unpop();
+            var u;
             if (ha) u = n.hash;else {
               var a = {};
               a[this.opt.aConfirm] = 1;
               if (v !== true) a[p] = v;
-              var u = d1.makeUrl(n, a);
+              u = d1.makeUrl(n, a);
             }
             if (n.target == '_blank') window.open(u, n.target);else location.href = u;
           }
@@ -885,7 +877,7 @@ module.exports = new function () {
 
   this.init = function (opt) {
     this.lang = document.documentElement.getAttribute('lang') || 'en';
-    this.skipComma = this.lang == 'en'; //var t = document.querySelectorAll(this.opt.qSort + ', table[' + this.opt.aFilter + ']');
+    this.skipComma = this.lang == 'en'; //let t = document.querySelectorAll(this.opt.qSort + ', table[' + this.opt.aFilter + ']');
     //t.forEach(this.prepare.bind(this));
     //for (i = 0; i < t.length; i++) this.prepare(t[i]);
 
@@ -910,7 +902,7 @@ module.exports = new function () {
 
     for (j = 0; j < rh.cells.length; j++) {
       h[j] = rh.cells[j]; //if (this.opt.cSort && this.isSortable(rh.cells[j])) h[j].classList.add(this.opt.cSort);
-    } //var inp = d1.ins('input','',{type:'search',size:4},rh.cells[0]);
+    } //let inp = d1.ins('input','',{type:'search',size:4},rh.cells[0]);
 
 
     n.vCase = n.getAttribute('data-case') !== null;
@@ -1315,8 +1307,7 @@ module.exports = new function () {
   this.onScroll = function (e) {
     var _this2 = this;
 
-    d1.dbg('scroll');
-
+    //d1.dbg('scroll');
     if (this.y !== null) {
       var dy = window.scrollY - this.y;
       d1.e('.topbar', function (n) {

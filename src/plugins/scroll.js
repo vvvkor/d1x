@@ -1,6 +1,6 @@
 /*! d1 example plugin */
 
-var d1 = require('../d1.js');
+let d1 = require('../d1.js');
 
 module.exports = new(function () {
 
@@ -14,7 +14,7 @@ module.exports = new(function () {
   };
   
   this.init = function (opt) {
-    var ons = d1.throttle(this.onScroll.bind(this), 500);
+    let ons = d1.throttle(this.onScroll.bind(this), 500);
     //ons(); // forces reflow
     d1.e('.topbar', n => setTimeout(this.onScroll.bind(this), 20));
     d1.b([window], 'scroll', ons);
@@ -22,7 +22,7 @@ module.exports = new(function () {
   this.onScroll = function(e){
     //d1.dbg('scroll');
     if(this.y!==null){
-      var dy = window.scrollY - this.y;
+      let dy = window.scrollY - this.y;
       d1.e('.topbar', n => this.decorate(n, window.scrollY, dy));
     }
     this.y = window.scrollY; // forces reflow

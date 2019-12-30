@@ -1,6 +1,6 @@
 /*! d1 example plugin */
 
-var d1 = require('../d1.js');
+let d1 = require('../d1.js');
 
 module.exports = new(function () {
 
@@ -16,7 +16,7 @@ module.exports = new(function () {
   
   /*
   this.onClick = function(e){
-    var n = e.target;
+    let n = e.target;
     if(0) return n;
   }
   */
