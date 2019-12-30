@@ -23,7 +23,7 @@ module.exports = new(function () {
     qDialog: 'a.dialog, input.dialog'
   };
   
-  this.init = function (opt) {
+  this.init = function () {
     if(d1.plugins.toggle){
       d1.listen('click', e => this.onClick(e));
     }
@@ -57,7 +57,7 @@ module.exports = new(function () {
     let sec = this.opt.cBtn + ' bg-n';
     let yes = d1.ins('a', d1.attr(n, 'data-ok', d1.opt.sOk), {href: d1.opt.hClose, className: (rev ? sec : warn)}, bb);
     if(f){
-      let no = d1.ins('a', d1.attr(n, 'data-cancel', d1.opt.sCancel), {href: d1.opt.hClose, className: (rev ? warn : sec)}, yes, rev ? -1 : 1);
+      d1.ins('a', d1.attr(n, 'data-cancel', d1.opt.sCancel), {href: d1.opt.hClose, className: (rev ? warn : sec)}, yes, rev ? -1 : 1);
       d1.ins('', ' ', {}, yes, rev ? -1 : 1);
       yes.href = d1.opt.hOk;
       d1.b([yes], 'click', e => { e.preventDefault(); f.call(this, inp.value); });

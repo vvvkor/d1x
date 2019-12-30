@@ -11,13 +11,13 @@ module.exports = new(function () {
   this.opt = {
   };
   
-  this.init = function (opt) {
+  this.init = function () {
+    //d1.listen('click', e => this.onClick(e));
   }
   
   /*
   this.onClick = function(e){
     let n = e.target;
-    if(0) return n;
   }
   */
 

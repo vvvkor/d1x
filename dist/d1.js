@@ -1,4 +1,4 @@
-/*! d1x v1.0.9 */
+/*! d1x v1.0.10 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,14 +82,14 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1css v0.0.0 */
+/*! d1css v1.0.10 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -120,6 +120,7 @@ module.exports = new function () {
     }
 
     this.setOpt(this, opt);
+    this.dbg(['opt', this.opt]);
     this.initPlugins(opt); // plugins
     // bind events
 
@@ -150,7 +151,7 @@ module.exports = new function () {
   this.setOpt = function (obj, opt) {
     var i;
     if (opt) for (i in opt) {
-      obj.opt[i] = opt[i];
+      if (i != 'plug') obj.opt[i] = opt[i];
     }
   };
 
@@ -161,6 +162,7 @@ module.exports = new function () {
   this.initPlugins = function (opt) {
     var _this2 = this;
 
+    this.dbg(['plugins', this.plugins]);
     Object.keys(this.plugins).forEach(function (k) {
       if (opt && opt.plug && opt.plug[k]) _this2.setOpt(_this2.plugins[k], opt.plug[k]);
 
@@ -322,25 +324,6 @@ else module.exports = main;
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var d1 = __webpack_require__(0); //let plugins = [
-
-
-__webpack_require__(2), __webpack_require__(3), __webpack_require__(4), __webpack_require__(5);
-
-__webpack_require__(6); //];
-//plugins.forEach(p => d1.plug(p));
-
-
-d1.b([document], 'DOMContentLoaded', function (e) {
-  return d1.init();
-}); //d1.b([document], 'DOMContentLoaded', d1.init.bind(d1, {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}));
-
-if (window) window.d1 = d1;
-
-/***/ }),
-/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 example plugin */
@@ -661,7 +644,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 dialog */
@@ -685,7 +668,7 @@ module.exports = new function () {
     qDialog: 'a.dialog, input.dialog'
   };
 
-  this.init = function (opt) {
+  this.init = function () {
     var _this = this;
 
     if (d1.plugins.toggle) {
@@ -748,7 +731,7 @@ module.exports = new function () {
     }, bb);
 
     if (f) {
-      var no = d1.ins('a', d1.attr(n, 'data-cancel', d1.opt.sCancel), {
+      d1.ins('a', d1.attr(n, 'data-cancel', d1.opt.sCancel), {
         href: d1.opt.hClose,
         className: rev ? warn : sec
       }, yes, rev ? -1 : 1);
@@ -842,7 +825,154 @@ module.exports = new function () {
 }();
 
 /***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! d1 gallery */
+// Lighweight image gallery
+// .gallery a.pic 
+var d1 = __webpack_require__(0);
+
+module.exports = new function () {
+  "use strict";
+
+  this.name = 'gallery';
+  this.opt = {
+    idPrefix: 'pic-',
+    num: true,
+    cGal: 'gal',
+    qGal: '.gal>a[id]',
+    // dup of toggle.opt.qGal
+    qGallery: '.gallery',
+    qLinks: 'a.pic'
+  };
+
+  this.init = function () {
+    var _this = this;
+
+    d1.listen('hash', function (e) {
+      return _this.onHash(e);
+    });
+    d1.listen('key', function (e) {
+      return _this.onKey(e);
+    });
+    d1.listen('click', function (e) {
+      return _this.onClick(e);
+    });
+    d1.e(this.opt.qGallery, this.prepare.bind(this));
+  };
+
+  this.onClick = function (e) {
+    var n = e.target;
+
+    if (n.matches(this.opt.qGal)) {
+      if (e.clientX > 0
+      /* not Enter key */
+      && e.clientX < n.clientWidth / 3) {
+        if (this.prevImg(n)) e.preventDefault();
+      } //return n;
+
+    }
+  };
+
+  this.prevImg = function (n) {
+    var p = n.previousElementSibling || d1.qq('a[id]', n.parentNode).pop();
+    if (p.id) location.hash = '#' + p.id;
+    return p.id;
+  };
+
+  this.onHash = function () {
+    var n = d1.q(location.hash);
+
+    if (n) {
+      this.loadImg(n);
+      this.loadImg(d1.q(n.hash));
+    }
+  };
+
+  this.loadImg = function (n) {
+    if (n && n.vImg) {
+      n.style.backgroundImage = 'url("' + n.vImg + '")';
+      n.vImg = '';
+    }
+  };
+
+  this.prepare = function (n) {
+    var g = d1.ins('div', '', {
+      className: this.opt.cGal
+    });
+    var a = n.querySelectorAll(this.opt.qLinks);
+    var z = a.length;
+    var first = 0;
+
+    for (var i = 0; i < z; i++) {
+      if (!a[i].vDone) {
+        var s = d1.seq();
+        if (!i) first = s;
+        var p = d1.ins('a', '', {
+          id: this.opt.idPrefix + s,
+          href: '#' + this.opt.idPrefix + (i == z - 1 ? first : s + 1)
+        }, g); //p.style.setProperty('--img', 'url("' + a[i].getAttribute('href') + '")');
+        //p.style.backgroundImage = 'url("' + a[i].getAttribute('href') + '")';//preload all
+
+        p.vLink = a[i].getAttribute('href'); //real link
+
+        p.vImg = a[i].getAttribute('href'); //preload prev & next
+
+        p.setAttribute(d1.opt.aCaption, (this.opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || ''));
+        a[i].href = '#' + p.id;
+        a[i].vDone = 1;
+      }
+    }
+
+    d1.x(g);
+    d1.b(d1.qq('a[id]', g), 'click', d1.gotoPrev);
+    document.querySelector('body').appendChild(g);
+  };
+
+  this.onKey = function (e) {
+    if (location.hash) {
+      var a = d1.q(location.hash);
+
+      if (a && a.hash) {
+        var k = e.keyCode;
+        if (k == 37 || k == 38) this.prevImg(a);else if (k == 39 || k == 40) location.hash = a.hash; //a.click();
+        else if (k == 8) {
+            var h = a.vLink;
+
+            if (!h) {
+              h = window.getComputedStyle(a).backgroundImage;
+              h = h.substring(4, h.length - 1).replace(/^"|"$/g, '');
+            }
+
+            if (h) location.href = h;
+          } //e.preventDefault();
+      }
+    }
+  };
+
+  d1.plug(this);
+}();
+
+/***/ }),
 /* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var d1 = __webpack_require__(0); //let plugins = [
+
+
+__webpack_require__(1), __webpack_require__(2), __webpack_require__(3);
+__webpack_require__(5), __webpack_require__(6); //];
+//plugins.forEach(p => d1.plug(p));
+
+d1.b([document], 'DOMContentLoaded', function (e) {
+  return d1.init();
+}); //d1.b([document], 'DOMContentLoaded', d1.init.bind(d1, {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}));
+
+if (window) window.d1 = d1;
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1tablex */
@@ -853,7 +983,7 @@ var d1 = __webpack_require__(0);
 module.exports = new function () {
   "use strict";
 
-  this.name = 'tablex';
+  this.name = 'table';
   this.lang = '';
   this.skipComma = 0;
   this.opt = {
@@ -875,7 +1005,7 @@ module.exports = new function () {
     wait: 200
   };
 
-  this.init = function (opt) {
+  this.init = function () {
     this.lang = document.documentElement.getAttribute('lang') || 'en';
     this.skipComma = this.lang == 'en'; //let t = document.querySelectorAll(this.opt.qSort + ', table[' + this.opt.aFilter + ']');
     //t.forEach(this.prepare.bind(this));
@@ -921,7 +1051,7 @@ module.exports = new function () {
       var row = [];
 
       for (j = 0; j < c.length; j++) {
-        row[j] = this.val(c[j], n.vCase);
+        row[j] = this.val(c[j], n.vCase); //c[j].setAttribute('data-cell', row[j]);
       }
 
       a.push({
@@ -1088,7 +1218,7 @@ module.exports = new function () {
 
   this.nr = function (s) {
     //use Number instead of parseFloat for more strictness
-    s = this.skipComma ? s.replace(/(\$|\,|\s)/g, '') : s.replace(/(\$|\s)/g, '').replace(',', '.');
+    s = this.skipComma ? s.replace(/(\$|,|\s)/g, '') : s.replace(/(\$|\s)/g, '').replace(',', '.');
     return parseFloat(s);
   };
 
@@ -1150,136 +1280,6 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*! d1 gallery */
-// Lighweight image gallery
-// .gallery a.pic 
-var d1 = __webpack_require__(0);
-
-module.exports = new function () {
-  "use strict";
-
-  this.name = 'gallery';
-  this.opt = {
-    idPrefix: 'pic-',
-    num: true,
-    cGal: 'gal',
-    qGal: '.gal>a[id]',
-    // dup of toggle.opt.qGal
-    qGallery: '.gallery',
-    qLinks: 'a.pic'
-  };
-
-  this.init = function (opt) {
-    var _this = this;
-
-    d1.listen('hash', function (e) {
-      return _this.onHash(e);
-    });
-    d1.listen('key', function (e) {
-      return _this.onKey(e);
-    });
-    d1.listen('click', function (e) {
-      return _this.onClick(e);
-    });
-    d1.e(this.opt.qGallery, this.prepare.bind(this));
-  };
-
-  this.onClick = function (e) {
-    var n = e.target;
-
-    if (n.matches(this.opt.qGal)) {
-      if (e.clientX > 0
-      /* not Enter key */
-      && e.clientX < n.clientWidth / 3) {
-        if (this.prevImg(n)) e.preventDefault();
-      } //return n;
-
-    }
-  };
-
-  this.prevImg = function (n) {
-    var p = n.previousElementSibling || d1.qq('a[id]', n.parentNode).pop();
-    if (p.id) location.hash = '#' + p.id;
-    return p.id;
-  };
-
-  this.onHash = function () {
-    var n = d1.q(location.hash);
-
-    if (n) {
-      this.loadImg(n);
-      this.loadImg(d1.q(n.hash));
-    }
-  };
-
-  this.loadImg = function (n) {
-    if (n && n.vImg) {
-      n.style.backgroundImage = 'url("' + n.vImg + '")';
-      n.vImg = '';
-    }
-  };
-
-  this.prepare = function (n) {
-    var g = d1.ins('div', '', {
-      className: this.opt.cGal
-    });
-    var a = n.querySelectorAll(this.opt.qLinks);
-    var z = a.length;
-    var first = 0;
-
-    for (var i = 0; i < z; i++) {
-      if (!a[i].vDone) {
-        var s = d1.seq();
-        if (!i) first = s;
-        var p = d1.ins('a', '', {
-          id: this.opt.idPrefix + s,
-          href: '#' + this.opt.idPrefix + (i == z - 1 ? first : s + 1)
-        }, g); //p.style.setProperty('--img', 'url("' + a[i].getAttribute('href') + '")');
-        //p.style.backgroundImage = 'url("' + a[i].getAttribute('href') + '")';//preload all
-
-        p.vLink = a[i].getAttribute('href'); //real link
-
-        p.vImg = a[i].getAttribute('href'); //preload prev & next
-
-        p.setAttribute(d1.opt.aCaption, (this.opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || ''));
-        a[i].href = '#' + p.id;
-        a[i].vDone = 1;
-      }
-    }
-
-    d1.x(g);
-    d1.b(d1.qq('a[id]', g), 'click', d1.gotoPrev);
-    document.querySelector('body').appendChild(g);
-  };
-
-  this.onKey = function (e) {
-    if (location.hash) {
-      var a = d1.q(location.hash);
-
-      if (a && a.hash) {
-        var k = e.keyCode;
-        if (k == 37 || k == 38) this.prevImg(a);else if (k == 39 || k == 40) location.hash = a.hash; //a.click();
-        else if (k == 8) {
-            var h = a.vLink;
-
-            if (!h) {
-              h = window.getComputedStyle(a).backgroundImage;
-              h = h.substring(4, h.length - 1).replace(/^"|"$/g, '');
-            }
-
-            if (h) location.href = h;
-          } //e.preventDefault();
-      }
-    }
-  };
-
-  d1.plug(this);
-}();
-
-/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1293,25 +1293,21 @@ module.exports = new function () {
   this.y = null;
   this.opt = {};
 
-  this.init = function (opt) {
-    var _this = this;
-
+  this.init = function () {
     var ons = d1.throttle(this.onScroll.bind(this), 500); //ons(); // forces reflow
 
-    d1.e('.topbar', function (n) {
-      return setTimeout(_this.onScroll.bind(_this), 20);
-    });
+    setTimeout(this.onScroll.bind(this), 20);
     d1.b([window], 'scroll', ons);
   };
 
-  this.onScroll = function (e) {
-    var _this2 = this;
+  this.onScroll = function () {
+    var _this = this;
 
     //d1.dbg('scroll');
     if (this.y !== null) {
       var dy = window.scrollY - this.y;
       d1.e('.topbar', function (n) {
-        return _this2.decorate(n, window.scrollY, dy);
+        return _this.decorate(n, window.scrollY, dy);
       });
     }
 

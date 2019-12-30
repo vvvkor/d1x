@@ -20,7 +20,7 @@ module.exports = new(function () {
     qLinks: 'a.pic'
   };
   
-  this.init = function (opt) {
+  this.init = function () {
     d1.listen('hash', e => this.onHash(e));
     d1.listen('key', e => this.onKey(e));
     d1.listen('click', e => this.onClick(e));

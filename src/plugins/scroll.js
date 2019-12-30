@@ -13,13 +13,14 @@ module.exports = new(function () {
   this.opt = {
   };
   
-  this.init = function (opt) {
+  this.init = function () {
     let ons = d1.throttle(this.onScroll.bind(this), 500);
     //ons(); // forces reflow
-    d1.e('.topbar', n => setTimeout(this.onScroll.bind(this), 20));
+    setTimeout(this.onScroll.bind(this), 20);
     d1.b([window], 'scroll', ons);
   }
-  this.onScroll = function(e){
+  
+  this.onScroll = function(){
     //d1.dbg('scroll');
     if(this.y!==null){
       let dy = window.scrollY - this.y;

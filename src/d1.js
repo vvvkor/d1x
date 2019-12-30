@@ -29,6 +29,7 @@ module.exports = new (function(){
       if(opt) opt = JSON.parse(opt);
     }
     this.setOpt(this, opt);
+    this.dbg(['opt', this.opt]);
 
     this.initPlugins(opt); // plugins
 
@@ -54,7 +55,7 @@ module.exports = new (function(){
 
   this.setOpt = function(obj, opt){
     let i;
-    if(opt) for(i in opt) obj.opt[i] = opt[i];
+    if(opt) for(i in opt) if(i != 'plug') obj.opt[i] = opt[i];
   }
 
   this.plug = function(p) {
@@ -62,6 +63,7 @@ module.exports = new (function(){
   }
 
   this.initPlugins = function(opt){
+    this.dbg(['plugins', this.plugins]);
     Object.keys(this.plugins).forEach(k => {
         if(opt && opt.plug && opt.plug[k]) this.setOpt(this.plugins[k], opt.plug[k]);
         this.plugins[k].init();

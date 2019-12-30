@@ -2,8 +2,8 @@ let d1 = require('./d1.js');
 //let plugins = [
   require('./plugins/toggle.js'),
   require('./plugins/dialog.js'),
-  require('./plugins/tablex.js'),
   require('./plugins/gallery.js')
+  require('./plugins/table.js'),
   require('./plugins/scroll.js')
 //];
 //plugins.forEach(p => d1.plug(p));

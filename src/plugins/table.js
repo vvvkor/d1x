@@ -9,7 +9,7 @@ module.exports = new(function() {
 
   "use strict";
 
-  this.name = 'tablex';
+  this.name = 'table';
   this.lang = '';
   this.skipComma = 0;
   
@@ -26,7 +26,7 @@ module.exports = new(function() {
     wait: 200
   };
 
-  this.init = function(opt) {
+  this.init = function() {
     this.lang = document.documentElement.getAttribute('lang') || 'en';
     this.skipComma = (this.lang=='en');
     //let t = document.querySelectorAll(this.opt.qSort + ', table[' + this.opt.aFilter + ']');
@@ -65,7 +65,10 @@ module.exports = new(function() {
     for (i = start; i < tb.rows.length; i++) {
       let c = tb.rows[i].cells;
       let row = [];
-      for (j = 0; j < c.length; j++) row[j] = this.val(c[j], n.vCase);
+      for (j = 0; j < c.length; j++){
+        row[j] = this.val(c[j], n.vCase);
+        //c[j].setAttribute('data-cell', row[j]);
+      }
       a.push({
         d: row,
         n: tb.rows[i]
@@ -220,7 +223,7 @@ module.exports = new(function() {
   this.nr = function(s){
     //use Number instead of parseFloat for more strictness
     s = this.skipComma
-      ? s.replace(/(\$|\,|\s)/g, '')
+      ? s.replace(/(\$|,|\s)/g, '')
       : s.replace(/(\$|\s)/g, '').replace(',', '.');
     return parseFloat(s);
   }
