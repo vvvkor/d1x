@@ -362,10 +362,10 @@ form>table tr>* {
 }
 
 .fix {
+    z-index: 5;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 5;
 }
 
 .fix.r {
@@ -529,7 +529,7 @@ div.hide {
 }
 
 .drawer[class] {
-    z-index: 50;
+    z-index: 80;
     position: fixed;
     top: 0;
     left: -21em;
@@ -556,10 +556,10 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
 }
 
 .gal a:target {
+    z-index: 90;
     color: #fff;
     background: #000 50% 50% / contain no-repeat;
     background-image: var(--img);
-    z-index: 90;
     position: fixed;
     left: 0;
     top: 0;
@@ -595,7 +595,7 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
 }
 
 .topbar {
-    z-index: 4;
+    z-index: 70;
     position: fixed;
     top: 0;
     left: 0;
@@ -745,10 +745,10 @@ mark {
     }
 
     .stick {
+        z-index: 3;
         position: sticky;
         top: 0;
         align-self: flex-start;
-        z-index: 3;
         overflow: auto;
         max-height: 100vh;
     }

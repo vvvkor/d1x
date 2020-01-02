@@ -31,24 +31,22 @@ process:
 <body class="-bg" data-d1='{"hOk":"#yes","debug":1,"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
 
 <div class="topbar">
-	<a href="#top" class="pad"><b>d1</b> frontend framework</a>
+	<a href="#top" class="pad"><b>d1</b> v1.0.10</a>
 	<code class="pad">npm install d1css</code>
+	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1" title="GitHub" class="pad">GitHub</a>
+	<a href="#m" class="pad hide-desktop">&equiv;</a>
 </div>
 
 <div class="-pad row -wrap -center flip">
 <!--a href="#m">m</a-->
-<div class="stick pad -bg hide-print" data-class-mobile-="drawer" data-class-desktop-="stick pad" id="m"><div class="pad">
+<div class-x="drawer -stick -pad -bg hide-print" data-class-mobile="drawer toggle hide" data-class-desktop="stick pad" id="m"><div class="pad">
 
-<div class="-mar -pad -bg -c">
+<!--div class="-mar -pad -bg -c">
 	<p>
-	<!-- font used on logo is "Rosario", ratio is 34x25 = 136 -->
-	<!-- lowercase: ratio is 300x265 = 60x53 -->
-	<!--a href="#top" class="text-n"><svg width="136" height="100"><use xlink:href="#svg-logo"/></svg></a-->
-	<!--a href="#top" class="text-n"><svg width="120" height="106"><use xlink:href="#svg-logo-lower"/></svg></a-->
 	<a href="#top" class="text-n" style="font-size:700%;line-height:.9;">d1</a>
 	</p>
 
-	<!--p><b>d1</b> CSS framework</p-->
+	<p><b>d1</b> CSS framework</p>
 	
 	<p><code>v1.0.10</code></p>
 
@@ -59,12 +57,12 @@ process:
 			<svg class="icon" width="32" height="32"><use xlink:href="#svg-place"/></svg> <span>GitHub</span></a>
 		</p>
 	</div>
-</div>
+</div-->
 	<!--p class="print"><code class="-pad">npm install d1css</code></p>
 	<p class="print"><code class="-pad">github.com/vvvkor/d1</code></p-->
 
-	<div class="hide-desktop"><a href="#menu" class="pad hover" title="Menu">&equiv;</a></div>
-	<div class="hide-mobile toggle mem" id="menu">
+	<!--div class="hide-desktop"><a href="#menu" class="pad hover" title="Menu">&equiv;</a></div-->
+	<div class-x="hide-mobile toggle mem" id="menu">
 	<ul class="toggle mem">
 		<li><a href="#start">Get started</a>
 		<li><a href="#typo">Typography</a>
@@ -1220,7 +1218,9 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 	<li>Submit form: <code>(select|[type="checkbox"]|[type="search"])[data-submit]</code>
 	-->
 	<li>Align table columns: <code>table.r5</code>
-	<li>Class depending on resize (<code data-class-mobile="text-y" data-class-desktop="text-n">[data-class-mobile]</code> or <code data-class-desktop="text-y" data-class-mobile="text-n">[data-class-desktop]</code>).
+	<li>Class depending on resize 
+		(<code data-class-mobile="text-y" data-class-desktop="text-n">[data-class-mobile]</code> or 
+		 <code data-class-desktop="text-y" data-class-mobile="text-n">[data-class-desktop]</code>).
 	<li>Asynchronous request: <code>[data-target]</code>
 </ul>
 

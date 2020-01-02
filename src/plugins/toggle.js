@@ -209,7 +209,7 @@ module.exports = new(function () {
 
   this.hiliteLinks = function(d){
     let op = d1.vis(d) ? 'add' : 'remove';
-    d1.e('a[href="#'+d.id+'"]', a => a.classList[op]('act'));
+    d1.e('a[href="#'+d.id+'"]', a => a.classList[op](d1.opt.cAct));
   }
 
   this.fixPosition = function(n){
@@ -250,6 +250,6 @@ module.exports = new(function () {
     }
   }
 
-  d1.plug(this);
+  //d1.plug(this);
 
 })();

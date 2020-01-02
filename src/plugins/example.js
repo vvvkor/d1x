@@ -21,6 +21,6 @@ module.exports = new(function () {
   }
   */
 
-  d1.plug(this);
+  //d1.plug(this);
 
 })();

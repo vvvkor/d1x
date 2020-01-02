@@ -11,6 +11,7 @@ module.exports = new (function(){
 
   this.opt = {
     debug: 0,
+    cAct: 'act',
     cHide: 'hide',
     aCaption: 'data-caption',
     cClose: 'close',

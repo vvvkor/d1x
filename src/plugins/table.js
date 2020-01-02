@@ -277,6 +277,6 @@ module.exports = new(function() {
     return NaN;
   }
 
-  d1.plug(this);
+  //d1.plug(this);
 
 })();

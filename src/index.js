@@ -1,13 +1,9 @@
 let d1 = require('./d1.js');
-//let plugins = [
-  require('./plugins/toggle.js'),
-  require('./plugins/dialog.js'),
-  require('./plugins/gallery.js')
-  require('./plugins/table.js'),
-  require('./plugins/scroll.js')
-//];
-//plugins.forEach(p => d1.plug(p));
-d1.b([document], 'DOMContentLoaded', e => d1.init());
-//d1.b([document], 'DOMContentLoaded', d1.init.bind(d1, {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}));
+
+['toggle', 'dialog', 'gallery', 'table', 'scroll', 'tools', 'theme']
+  .forEach(p => d1.plug(require('./plugins/'+p+'.js')));
+
+//let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
+d1.b([document], 'DOMContentLoaded', e => d1.init(/*opt*/));
 
 if (window) window.d1 = d1;

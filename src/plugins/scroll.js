@@ -34,6 +34,6 @@ module.exports = new(function () {
     n.classList[y && dy<=0 ? 'add' : 'remove']('box')
   }
   
-  d1.plug(this);
+  //d1.plug(this);
 
 })();

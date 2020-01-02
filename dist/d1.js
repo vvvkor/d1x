@@ -82,7 +82,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -98,6 +98,7 @@ module.exports = new function () {
   this.handlers = {};
   this.opt = {
     debug: 0,
+    cAct: 'act',
     cHide: 'hide',
     aCaption: 'data-caption',
     cClose: 'close',
@@ -326,322 +327,36 @@ else module.exports = main;
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/*! d1 example plugin */
-// Interface components: dropdown, popup, toggle, modal dialog, tabs, drawer, tree, gallery
-// .nav, .pop, .toggle, .dlg, .tabs, .drawer, .tree, .gal
-var d1 = __webpack_require__(0);
-
-module.exports = new function () {
-  "use strict";
-
-  this.name = 'toggle';
-  this.shown = null;
-  this.opt = {
-    keepHash: 1,
-    qTgl: '.toggle[id]',
-    qPop: '.pop>div[id]',
-    qNav: '.nav.toggle ul',
-    qDlg: '.dlg',
-    qTab: '.tabs+div>[id]',
-    qTre: 'ul.toggle:not(.nav) ul',
-    //'.tree ul',
-    qDrw: '.drawer',
-    qAccRoot: 'ul.accordion',
-    qAcc: 'ul.accordion ul',
-    qGal: '.gal>a[id]',
-    // dup of gallery.opt.qGal
-    qSubMem: '.tabs.mem+div>[id], ul.mem:not(.nav) ul',
-    qMedia: '.hide-mobile, .hide-desktop',
-    cMem: 'mem',
-    cToggle: 'toggle',
-    iToggle: '[+]'
-  };
-
-  this.init = function () {
-    var _this = this;
-
-    d1.listen('esc', function (e) {
-      return _this.esc(e);
-    });
-    d1.listen('hash', function (e) {
-      return _this.onHash(e);
-    });
-    d1.listen('key', function (e) {
-      return _this.onKey(e);
-    });
-    d1.listen('click', function (e) {
-      return _this.onClick(e);
-    });
-    d1.listen('clicked', function (e) {
-      return _this.unpop(e.target);
-    });
-    d1.listen('after', function (e) {
-      return _this.after(e ? e.target : null);
-    }); //toggle
-
-    var q = this.opt;
-    this.opt.qToggle = [q.qTgl, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw, q.qMedia
-    /*, q.qGal*/
-    ].join(', ');
-    this.opt.qAutohide = [q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia
-    /*, q.qGal*/
-    ].join(', ');
-    this.opt.qUnpop = [q.qPop, q.qNav, q.qDlg, q.qDrw
-    /*, q.qGal*/
-    ].join(', ');
-    d1.e(this.opt.qToggle, function (n) {
-      return n.classList.add(_this.opt.cToggle);
-    }); //initialize togglers
-
-    d1.e(this.opt.qAutohide, function (n) {
-      return _this.tgl(n, 0);
-    }); //autohide
-
-    d1.e(this.opt.qNav + ', ' + this.opt.qTre, this.attachSubNav.bind(this)); //nav, tree: attach to links
-
-    d1.e(this.opt.qGal + ':last-child', function (n) {
-      return d1.x(n, 1);
-    }); //gal: auto add close link
-
-    d1.e(this.opt.qSubMem, function (n) {
-      return n.classList.add(_this.opt.cMem);
-    }); //initialize sub mem
-
-    d1.e('[id]', this.restoreVisibility.bind(this)); //restore visibility
-
-    d1.e(this.opt.qTab + ':not(.hide) ~ [id]:not(.hide)', function (n) {
-      return _this.tgl(n, 0);
-    }); //undup tabs
-
-    d1.e(this.opt.qTab + ':first-child', function (n) {
-      return d1.a(n.parentNode.children).filter(function (m) {
-        return d1.vis(m);
-      }).length ? null : _this.tgl(d1.q(d1.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1);
-    }); //inactive tabs: show first
-
-    d1.e('.' + this.opt.cToggle + '[id]', this.hiliteLinks.bind(this)); //init links state
-  };
-
-  this.after = function (n) {
-    this.shown = null;
-    d1.dbg(['after', n]); //let modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cHide+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
-
-    var modal = d1.q(this.opt.qDlg + ':not(.' + d1.opt.cHide + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
-    var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
-
-    var s = document.body.style;
-    s.overflow = modal ? 'hidden' : '';
-    s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
-
-    if (modal) {
-      //let f = d1.q('input, a:not(.' + d1.opt.cClose + ')', modal);
-      var f = d1.q('input, a:not([href="' + d1.opt.hClose + '"])', modal);
-      if (f) f.focus();
-    }
-  };
-
-  this.esc = function (e) {
-    if (e) e.preventDefault();
-    this.unpop();
-    this.unhash();
-    this.after();
-  };
-
-  this.onHash = function (e) {
-    d1.dbg(['hash', location.hash]);
-    if (location.hash == d1.opt.hClose) d1.fire('esc', e);else if (location.hash) {
-      var d = d1.q(location.hash);
-
-      if (d) {
-        var t = d.matches(this.opt.qTgl);
-        var g = d.matches(this.opt.qGal);
-
-        if (t) {
-          this.unpop();
-          this.toggle(d, true);
-          if (!this.opt.keepHash) this.unhash();
-        }
-
-        if (t || g) this.after();
-      }
-    }
-  };
-
-  this.onKey = function (e) {
-    var k = e.keyCode;
-    d1.dbg(['key', k]);
-    if (k == 27) d1.fire('esc', e);
-  };
-
-  this.onClick = function (e) {
-    var n = e.target;
-    var a = d1.closest(n, 'a');
-    var d = a && a.matches('a[href^="#"]') ? d1.q(a.hash) : null;
-    if (a && a.hash == d1.opt.hClose) d1.fire('esc', e);else if (d && d.matches(this.opt.qTgl)) {
-      e.preventDefault();
-      d = this.toggle(d);
-      if (d1.vis(d) && this.opt.keepHash) this.addHistory(a.hash);else this.unhash();
-      return d;
-    } else if (!a) {
-      this.unhash();
-    }
-  };
-
-  this.attachSubNav = function (n) {
-    //let a = n.previousElementSibling;
-    var aa = d1.a(n.parentNode.children).filter(function (v) {
-      return v.tagName == 'A';
-    });
-    var a = aa.filter(function (v) {
-      return !v.href;
-    })[0] || aa[0] || d1.ins('', ' ', {}, n.parentNode, false) && d1.ins('a', this.opt.iToggle, {}, n.parentNode, false);
-
-    if (a) {
-      if (!n.id) n.id = 'ul-' + d1.seq();
-      a.href = '#' + n.id;
-    }
-  }; //deep: -1=prepare, 0=click|hash, 1=deps|clo
+var map = {
+	"./dialog.js": 2,
+	"./example.js": 3,
+	"./gallery.js": 4,
+	"./scroll.js": 5,
+	"./table.js": 6,
+	"./theme.js": 7,
+	"./toggle.js": 8,
+	"./tools.js": 9
+};
 
 
-  this.toggle = function (h, on, deep) {
-    var d = h ? h.tagName ? h : d1.q(h) : null;
-
-    if (d) {
-      if (d.matches(this.opt.qTab) && on === undefined) on = true; //tabs: show instead of toggle
-      //console.log('toggle '+d.id, on, deep);
-
-      d.classList[on ? 'remove' : on === undefined ? 'toggle' : 'add'](d1.opt.cHide);
-      d1.dbg(['toggle' + (deep ? ' deep' : ''), on, d], deep ? 2 : 1);
-
-      if (d1.vis(d)) {
-        this.fixPosition(d);
-        if (!deep) this.shown = d;
-      }
-
-      if (deep != -1) {
-        if (!deep) this.toggleDependent(d);
-        this.hiliteLinks(d);
-        this.storeVisibility(d); //if(!deep) this.after(d);
-      }
-    }
-
-    return d;
-  };
-
-  this.tgl = function (d, on) {
-    if (d) d.classList[on ? 'remove' : on === undefined ? 'toggle' : 'add'](d1.opt.cHide);
-  };
-
-  this.toggleDependent = function (d) {
-    var _this2 = this;
-
-    if (d1.vis(d)) {
-      if (d.matches(this.opt.qDlg)) d1.e(this.opt.qDlg, function (n) {
-        return n == d ? null : _this2.toggle(n, false, 1);
-      }); //hide other dialogs
-      else if (d.matches(this.opt.qTab)) d1.e(d.parentNode.children, function (n) {
-          return n == d ? null : _this2.toggle(n, false, 1);
-        }); //hide sibling tabs
-        else if (d.matches(this.opt.qAcc)) d1.e(d1.qq(this.opt.qAcc, d1.closest(d, this.opt.qAccRoot)), function (n) {
-            return n.contains(d) ? null : _this2.toggle(n, false, 1);
-          }); //hide other ul
-    }
-  };
-
-  this.unpop = function (x) {
-    var _this3 = this;
-
-    var keep = [x];
-    keep.push(this.shown);
-    var a = x ? d1.closest(x, 'a') : null;
-
-    if (a && a.hash) {
-      //if(a.hash==d1.opt.hClose) keep = []; //to close all, even container
-      //else
-      keep.push(d1.q(a.hash));
-    }
-
-    d1.dbg(['unpop', keep]);
-    d1.e(this.opt.qUnpop, function (n) {
-      return keep && keep.filter(function (m) {
-        return m && m.tagName && n.contains(m);
-      }).length ? null : _this3.toggle(n, false, 1);
-    });
-  };
-
-  this.unhash = function () {
-    //v1.
-    if (location.hash) location.hash = d1.opt.hClose; //v2.
-
-    this.addHistory(location.pathname + location.search
-    /* + d1.opt.hClose*/
-    );
-  };
-
-  this.addHistory = function (h) {
-    history.pushState({}, '', h); //following required to re-render hash changes (test: open gallery, esc)
-    //history.pushState({}, '', h);
-    //history.go(-1);
-  };
-
-  this.storeVisibility = function (n) {
-    if (n.classList.contains(this.opt.cMem)) {
-      localStorage.setItem('vis#' + n.id, d1.vis(n) ? 1 : -1);
-    }
-  };
-
-  this.restoreVisibility = function (n) {
-    if (n.classList.contains(this.opt.cMem)) {
-      var v = localStorage.getItem('vis#' + n.id);
-      if (v) this.toggle(n, v > 0, -1);
-    }
-  };
-
-  this.hiliteLinks = function (d) {
-    var op = d1.vis(d) ? 'add' : 'remove';
-    d1.e('a[href="#' + d.id + '"]', function (a) {
-      return a.classList[op]('act');
-    });
-  };
-
-  this.fixPosition = function (n) {
-    var nav = n.matches(this.opt.qNav);
-    var ss = nav ? window.getComputedStyle(n.parentNode.parentNode) : null;
-    var vert = ss ? ss.display != 'flex' : false;
-
-    if (n.matches(this.opt.qPop) || nav) {
-      var s = n.style;
-      var p = n.parentNode;
-      var i = p.nextElementSibling;
-      i = i && i.tagName == 'INPUT' ? i : null;
-      var r = i || n.parentNode;
-
-      if (r) {
-        s.right = 'auto';
-        s.left = vert ? '100%' : 0;
-        s.top = vert ? 0 : '100%';
-        var qn = n.getBoundingClientRect();
-        var qr = r.getBoundingClientRect();
-        var dx = qn.right > window.innerWidth;
-        var dy = qn.bottom > window.innerHeight;
-        var wide = qr.width > 300; //x
-
-        if (vert) s.left = dx || wide ? '3em' : '100%';else if (dx && qn.width > qr.width && qr.right > qn.width) {
-          //if(overflows-right && wider-then-container && enough-place-on-the-left) pop-left
-          s.left = qr.width - qn.width + 'px';
-        } else s.left = 0; //y
-
-        if (vert) s.top = dx || wide ? '90%' : 0;else if (dy && qr.top > qn.height) {
-          //if(overflows-bottom && enough-place-on-the-top) pop-top
-          s.top = (i ? -qr.height : 0) - qn.height + 'px';
-        } else s.top = '100%';
-        if (i) p.style.verticalAlign = 'bottom';
-      }
-    }
-  };
-
-  d1.plug(this);
-}();
+function webpackContext(req) {
+	var id = webpackContextResolve(req);
+	return __webpack_require__(id);
+}
+function webpackContextResolve(req) {
+	if(!__webpack_require__.o(map, req)) {
+		var e = new Error("Cannot find module '" + req + "'");
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	}
+	return map[req];
+}
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 1;
 
 /***/ }),
 /* 2 */
@@ -819,13 +534,36 @@ module.exports = new function () {
             }
             if (n.target == '_blank') window.open(u, n.target);else location.href = u;
           }
-  };
+  }; //d1.plug(this);
 
-  d1.plug(this);
 }();
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! d1 example plugin */
+var d1 = __webpack_require__(0);
+
+module.exports = new function () {
+  "use strict";
+
+  this.name = 'example';
+  this.opt = {};
+
+  this.init = function () {} //d1.listen('click', e => this.onClick(e));
+
+  /*
+  this.onClick = function(e){
+    let n = e.target;
+  }
+  */
+  //d1.plug(this);
+  ;
+}();
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 gallery */
@@ -949,30 +687,54 @@ module.exports = new function () {
           } //e.preventDefault();
       }
     }
-  };
+  }; //d1.plug(this);
 
-  d1.plug(this);
 }();
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var d1 = __webpack_require__(0); //let plugins = [
+/*! d1 example plugin */
+var d1 = __webpack_require__(0);
 
+module.exports = new function () {
+  "use strict";
 
-__webpack_require__(1), __webpack_require__(2), __webpack_require__(3);
-__webpack_require__(5), __webpack_require__(6); //];
-//plugins.forEach(p => d1.plug(p));
+  this.name = 'scroll';
+  this.y = null;
+  this.opt = {};
 
-d1.b([document], 'DOMContentLoaded', function (e) {
-  return d1.init();
-}); //d1.b([document], 'DOMContentLoaded', d1.init.bind(d1, {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}}));
+  this.init = function () {
+    var ons = d1.throttle(this.onScroll.bind(this), 500); //ons(); // forces reflow
 
-if (window) window.d1 = d1;
+    setTimeout(this.onScroll.bind(this), 20);
+    d1.b([window], 'scroll', ons);
+  };
+
+  this.onScroll = function () {
+    var _this = this;
+
+    //d1.dbg('scroll');
+    if (this.y !== null) {
+      var dy = window.scrollY - this.y;
+      d1.e('.topbar', function (n) {
+        return _this.decorate(n, window.scrollY, dy);
+      });
+    }
+
+    this.y = window.scrollY; // forces reflow
+  };
+
+  this.decorate = function (n, y, dy) {
+    n.classList[dy > 0 ? 'add' : 'remove']('hide');
+    n.classList[y && dy <= 0 ? 'add' : 'remove']('box');
+  }; //d1.plug(this);
+
+}();
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1tablex */
@@ -1274,53 +1036,532 @@ module.exports = new function () {
     }
 
     return NaN;
-  };
+  }; //d1.plug(this);
 
-  d1.plug(this);
 }();
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/*! d1 example plugin */
+/*! d1 live theme configurator */
 var d1 = __webpack_require__(0);
 
 module.exports = new function () {
   "use strict";
 
-  this.name = 'scroll';
-  this.y = null;
-  this.opt = {};
+  this.name = 'theme';
+  this.drw = null;
 
   this.init = function () {
-    var ons = d1.throttle(this.onScroll.bind(this), 500); //ons(); // forces reflow
+    this.restore(document.documentElement, 'theme-html');
+    this.restore(document.body, 'theme-body'); //button
 
-    setTimeout(this.onScroll.bind(this), 20);
-    d1.b([window], 'scroll', ons);
+    var a = d1.ins('a', 'Theme', {
+      href: '#theme',
+      className: 'fix pad btn theme-btn'
+    }, document.body);
+    var s = a.style;
+    s.transform = 'rotate(-90deg)';
+    s.transformOrigin = '100% 100%';
+    s.top = '10vh';
+    s.right = '-.2em';
+    s.bottom = s.left = 'auto';
+    s.margin = 0; //drawer
+
+    this.drw = d1.ins('div', '', {
+      id: 'theme',
+      className: 'drawer toggle hide pad shift theme-drawer'
+    }, document.body);
+    d1.ins('a', '&#x2715;', {
+      href: '#cancel',
+      className: 'pad hover close'
+    }, this.drw); //menu
+
+    this.h('Theme', 2);
+    d1.b([d1.ins('a', 'Reset to default', {
+      href: '#',
+      className: ''
+    }, this.drw)], 'click', this.unstyle.bind(this));
+    this.put('Background', ['#fff', '#eee', '#ffeee6', '#ffe', '#efe', '#e6fcf9', '#e3eeff', '#f9e9ff'], '--bg');
+    this.put('Menu', ['rgba(255,255,255,0)', 'rgba(0,0,0,.1)', 'hsla(1,100%,55%,.3)', 'hsla(45,100%,50%,.3)', 'hsla(120,100%,35%,.3)', 'hsla(180,100%,35%,.3)', 'hsla(220,100%,55%,.3)', 'hsla(290,100%,50%,.3)'], ['--bg-pane', '--bg-hilite']);
+    this.put('Links', ['#000', '#777', '#c00', '#c60', '#090', '#088', '#00c', '#909'], ['--link', '--visited', '--hover']);
+    this.put('Text', ['#000', '#222', '#444', '#555', '#666', '#777', '#888', '#999'], '--text');
+    this.put('Font', ['sans-serif', 'serif', 'monospace', 'Roboto', 'Open Sans', 'Georgia', 'PT Sans', 'PT Serif', 'PT Mono'], 'font-family');
+    this.put('Gaps', ['0.5', '0.7', '1', '1.2', '1.5'], '--gap');
   };
 
-  this.onScroll = function () {
+  this.restore = function (n, v) {
+    var css = localStorage.getItem(v);
+    if (css) n.style = css;
+  };
+
+  this.style = function (k, v, deep) {
     var _this = this;
 
-    //d1.dbg('scroll');
-    if (this.y !== null) {
-      var dy = window.scrollY - this.y;
-      d1.e('.topbar', function (n) {
-        return _this.decorate(n, window.scrollY, dy);
-      });
+    if (k instanceof Array) k.forEach(function (w) {
+      return _this.style(w, v, 1);
+    });else {
+      var n = k.substr(0, 2) == '--' ? document.documentElement : document.body;
+      n.style.setProperty(k, v);
+      localStorage.setItem('theme-' + n.tagName.toLowerCase(), n.style.cssText);
+    }
+  };
+
+  this.unstyle = function (e) {
+    e.preventDefault();
+    document.documentElement.style = document.body.style = '';
+    localStorage.removeItem('theme-html');
+    localStorage.removeItem('theme-body');
+  };
+
+  this.h = function (s, l) {
+    d1.ins('h' + (l || 1), s, {
+      className: 'mar'
+    }, this.drw);
+  };
+
+  this.put = function (hh, arr, func) {
+    var _this2 = this;
+
+    this.h(hh, 3);
+    var c = [];
+    arr.forEach(function (v, k) {
+      var color = v.match(/[#\(]/);
+      var a = d1.ins('a', color ? '' : v, {
+        href: '#',
+        title: v,
+        className: color ? 'pad hover bord' : 'pad hover'
+      }, _this2.drw);
+      if (color) a.style.backgroundColor = v;else if (typeof func === 'string') a.style[func] = v;
+      c.push(a);
+    });
+    d1.b(c, 'click', func instanceof Function ? func : function (e) {
+      e.preventDefault();
+
+      _this2.style(func, e.target.title);
+    });
+  }; //d1.plug(this);
+
+}();
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! d1 example plugin */
+// Interface components: dropdown, popup, toggle, modal dialog, tabs, drawer, tree, gallery
+// .nav, .pop, .toggle, .dlg, .tabs, .drawer, .tree, .gal
+var d1 = __webpack_require__(0);
+
+module.exports = new function () {
+  "use strict";
+
+  this.name = 'toggle';
+  this.shown = null;
+  this.opt = {
+    keepHash: 1,
+    qTgl: '.toggle[id]',
+    qPop: '.pop>div[id]',
+    qNav: '.nav.toggle ul',
+    qDlg: '.dlg',
+    qTab: '.tabs+div>[id]',
+    qTre: 'ul.toggle:not(.nav) ul',
+    //'.tree ul',
+    qDrw: '.drawer',
+    qAccRoot: 'ul.accordion',
+    qAcc: 'ul.accordion ul',
+    qGal: '.gal>a[id]',
+    // dup of gallery.opt.qGal
+    qSubMem: '.tabs.mem+div>[id], ul.mem:not(.nav) ul',
+    qMedia: '.hide-mobile, .hide-desktop',
+    cMem: 'mem',
+    cToggle: 'toggle',
+    iToggle: '[+]'
+  };
+
+  this.init = function () {
+    var _this = this;
+
+    d1.listen('esc', function (e) {
+      return _this.esc(e);
+    });
+    d1.listen('hash', function (e) {
+      return _this.onHash(e);
+    });
+    d1.listen('key', function (e) {
+      return _this.onKey(e);
+    });
+    d1.listen('click', function (e) {
+      return _this.onClick(e);
+    });
+    d1.listen('clicked', function (e) {
+      return _this.unpop(e.target);
+    });
+    d1.listen('after', function (e) {
+      return _this.after(e ? e.target : null);
+    }); //toggle
+
+    var q = this.opt;
+    this.opt.qToggle = [q.qTgl, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw, q.qMedia
+    /*, q.qGal*/
+    ].join(', ');
+    this.opt.qAutohide = [q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia
+    /*, q.qGal*/
+    ].join(', ');
+    this.opt.qUnpop = [q.qPop, q.qNav, q.qDlg, q.qDrw
+    /*, q.qGal*/
+    ].join(', ');
+    d1.e(this.opt.qToggle, function (n) {
+      return n.classList.add(_this.opt.cToggle);
+    }); //initialize togglers
+
+    d1.e(this.opt.qAutohide, function (n) {
+      return _this.tgl(n, 0);
+    }); //autohide
+
+    d1.e(this.opt.qNav + ', ' + this.opt.qTre, this.attachSubNav.bind(this)); //nav, tree: attach to links
+
+    d1.e(this.opt.qGal + ':last-child', function (n) {
+      return d1.x(n, 1);
+    }); //gal: auto add close link
+
+    d1.e(this.opt.qSubMem, function (n) {
+      return n.classList.add(_this.opt.cMem);
+    }); //initialize sub mem
+
+    d1.e('[id]', this.restoreVisibility.bind(this)); //restore visibility
+
+    d1.e(this.opt.qTab + ':not(.hide) ~ [id]:not(.hide)', function (n) {
+      return _this.tgl(n, 0);
+    }); //undup tabs
+
+    d1.e(this.opt.qTab + ':first-child', function (n) {
+      return d1.a(n.parentNode.children).filter(function (m) {
+        return d1.vis(m);
+      }).length ? null : _this.tgl(d1.q(d1.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1);
+    }); //inactive tabs: show first
+
+    d1.e('.' + this.opt.cToggle + '[id]', this.hiliteLinks.bind(this)); //init links state
+  };
+
+  this.after = function (n) {
+    this.shown = null;
+    d1.dbg(['after', n]); //let modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cHide+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
+
+    var modal = d1.q(this.opt.qDlg + ':not(.' + d1.opt.cHide + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
+    var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
+
+    var s = document.body.style;
+    s.overflow = modal ? 'hidden' : '';
+    s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
+
+    if (modal) {
+      //let f = d1.q('input, a:not(.' + d1.opt.cClose + ')', modal);
+      var f = d1.q('input, a:not([href="' + d1.opt.hClose + '"])', modal);
+      if (f) f.focus();
+    }
+  };
+
+  this.esc = function (e) {
+    if (e) e.preventDefault();
+    this.unpop();
+    this.unhash();
+    this.after();
+  };
+
+  this.onHash = function (e) {
+    d1.dbg(['hash', location.hash]);
+    if (location.hash == d1.opt.hClose) d1.fire('esc', e);else if (location.hash) {
+      var d = d1.q(location.hash);
+
+      if (d) {
+        var t = d.matches(this.opt.qTgl);
+        var g = d.matches(this.opt.qGal);
+
+        if (t) {
+          this.unpop();
+          this.toggle(d, true);
+          if (!this.opt.keepHash) this.unhash();
+        }
+
+        if (t || g) this.after();
+      }
+    }
+  };
+
+  this.onKey = function (e) {
+    var k = e.keyCode;
+    d1.dbg(['key', k]);
+    if (k == 27) d1.fire('esc', e);
+  };
+
+  this.onClick = function (e) {
+    var n = e.target;
+    var a = d1.closest(n, 'a');
+    var d = a && a.matches('a[href^="#"]') ? d1.q(a.hash) : null;
+    if (a && a.hash == d1.opt.hClose) d1.fire('esc', e);else if (d && d.matches(this.opt.qTgl)) {
+      e.preventDefault();
+      d = this.toggle(d);
+      if (d1.vis(d) && this.opt.keepHash) this.addHistory(a.hash);else this.unhash();
+      return d;
+    } else if (!a) {
+      this.unhash();
+    }
+  };
+
+  this.attachSubNav = function (n) {
+    //let a = n.previousElementSibling;
+    var aa = d1.a(n.parentNode.children).filter(function (v) {
+      return v.tagName == 'A';
+    });
+    var a = aa.filter(function (v) {
+      return !v.href;
+    })[0] || aa[0] || d1.ins('', ' ', {}, n.parentNode, false) && d1.ins('a', this.opt.iToggle, {}, n.parentNode, false);
+
+    if (a) {
+      if (!n.id) n.id = 'ul-' + d1.seq();
+      a.href = '#' + n.id;
+    }
+  }; //deep: -1=prepare, 0=click|hash, 1=deps|clo
+
+
+  this.toggle = function (h, on, deep) {
+    var d = h ? h.tagName ? h : d1.q(h) : null;
+
+    if (d) {
+      if (d.matches(this.opt.qTab) && on === undefined) on = true; //tabs: show instead of toggle
+      //console.log('toggle '+d.id, on, deep);
+
+      d.classList[on ? 'remove' : on === undefined ? 'toggle' : 'add'](d1.opt.cHide);
+      d1.dbg(['toggle' + (deep ? ' deep' : ''), on, d], deep ? 2 : 1);
+
+      if (d1.vis(d)) {
+        this.fixPosition(d);
+        if (!deep) this.shown = d;
+      }
+
+      if (deep != -1) {
+        if (!deep) this.toggleDependent(d);
+        this.hiliteLinks(d);
+        this.storeVisibility(d); //if(!deep) this.after(d);
+      }
     }
 
-    this.y = window.scrollY; // forces reflow
+    return d;
   };
 
-  this.decorate = function (n, y, dy) {
-    n.classList[dy > 0 ? 'add' : 'remove']('hide');
-    n.classList[y && dy <= 0 ? 'add' : 'remove']('box');
+  this.tgl = function (d, on) {
+    if (d) d.classList[on ? 'remove' : on === undefined ? 'toggle' : 'add'](d1.opt.cHide);
   };
 
-  d1.plug(this);
+  this.toggleDependent = function (d) {
+    var _this2 = this;
+
+    if (d1.vis(d)) {
+      if (d.matches(this.opt.qDlg)) d1.e(this.opt.qDlg, function (n) {
+        return n == d ? null : _this2.toggle(n, false, 1);
+      }); //hide other dialogs
+      else if (d.matches(this.opt.qTab)) d1.e(d.parentNode.children, function (n) {
+          return n == d ? null : _this2.toggle(n, false, 1);
+        }); //hide sibling tabs
+        else if (d.matches(this.opt.qAcc)) d1.e(d1.qq(this.opt.qAcc, d1.closest(d, this.opt.qAccRoot)), function (n) {
+            return n.contains(d) ? null : _this2.toggle(n, false, 1);
+          }); //hide other ul
+    }
+  };
+
+  this.unpop = function (x) {
+    var _this3 = this;
+
+    var keep = [x];
+    keep.push(this.shown);
+    var a = x ? d1.closest(x, 'a') : null;
+
+    if (a && a.hash) {
+      //if(a.hash==d1.opt.hClose) keep = []; //to close all, even container
+      //else
+      keep.push(d1.q(a.hash));
+    }
+
+    d1.dbg(['unpop', keep]);
+    d1.e(this.opt.qUnpop, function (n) {
+      return keep && keep.filter(function (m) {
+        return m && m.tagName && n.contains(m);
+      }).length ? null : _this3.toggle(n, false, 1);
+    });
+  };
+
+  this.unhash = function () {
+    //v1.
+    if (location.hash) location.hash = d1.opt.hClose; //v2.
+
+    this.addHistory(location.pathname + location.search
+    /* + d1.opt.hClose*/
+    );
+  };
+
+  this.addHistory = function (h) {
+    history.pushState({}, '', h); //following required to re-render hash changes (test: open gallery, esc)
+    //history.pushState({}, '', h);
+    //history.go(-1);
+  };
+
+  this.storeVisibility = function (n) {
+    if (n.classList.contains(this.opt.cMem)) {
+      localStorage.setItem('vis#' + n.id, d1.vis(n) ? 1 : -1);
+    }
+  };
+
+  this.restoreVisibility = function (n) {
+    if (n.classList.contains(this.opt.cMem)) {
+      var v = localStorage.getItem('vis#' + n.id);
+      if (v) this.toggle(n, v > 0, -1);
+    }
+  };
+
+  this.hiliteLinks = function (d) {
+    var op = d1.vis(d) ? 'add' : 'remove';
+    d1.e('a[href="#' + d.id + '"]', function (a) {
+      return a.classList[op](d1.opt.cAct);
+    });
+  };
+
+  this.fixPosition = function (n) {
+    var nav = n.matches(this.opt.qNav);
+    var ss = nav ? window.getComputedStyle(n.parentNode.parentNode) : null;
+    var vert = ss ? ss.display != 'flex' : false;
+
+    if (n.matches(this.opt.qPop) || nav) {
+      var s = n.style;
+      var p = n.parentNode;
+      var i = p.nextElementSibling;
+      i = i && i.tagName == 'INPUT' ? i : null;
+      var r = i || n.parentNode;
+
+      if (r) {
+        s.right = 'auto';
+        s.left = vert ? '100%' : 0;
+        s.top = vert ? 0 : '100%';
+        var qn = n.getBoundingClientRect();
+        var qr = r.getBoundingClientRect();
+        var dx = qn.right > window.innerWidth;
+        var dy = qn.bottom > window.innerHeight;
+        var wide = qr.width > 300; //x
+
+        if (vert) s.left = dx || wide ? '3em' : '100%';else if (dx && qn.width > qr.width && qr.right > qn.width) {
+          //if(overflows-right && wider-then-container && enough-place-on-the-left) pop-left
+          s.left = qr.width - qn.width + 'px';
+        } else s.left = 0; //y
+
+        if (vert) s.top = dx || wide ? '90%' : 0;else if (dy && qr.top > qn.height) {
+          //if(overflows-bottom && enough-place-on-the-top) pop-top
+          s.top = (i ? -qr.height : 0) - qn.height + 'px';
+        } else s.top = '100%';
+        if (i) p.style.verticalAlign = 'bottom';
+      }
+    }
+  }; //d1.plug(this);
+
 }();
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! d1 tools */
+
+/*
++ cell-align
++ resize-class
++ toggle-class
+- boxes
+- set-input
+- color
+*/
+var d1 = __webpack_require__(0);
+
+module.exports = new function () {
+  "use strict";
+
+  this.name = 'tools';
+  this.opt = {
+    minDesktop: 900
+  };
+
+  this.init = function () {
+    //d1.listen('click', e => this.onClick(e));
+    d1.e('table[class]', this.alignCells.bind(this)); //toggle class
+
+    d1.e('[data-class]', this.toggleClass.bind(this));
+    d1.b('[data-class]', 'click', this.toggleClass.bind(this));
+    this.onResize();
+    d1.b([window], 'resize', this.onResize.bind(this));
+  };
+  /*
+  this.onClick = function(e){
+    let n = e.target;
+  }
+  */
+
+
+  this.alignCells = function (n) {
+    var m = n.className.match(/\b[lcr]\d\d?\b/g);
+
+    if (m) {
+      var _loop = function _loop(i) {
+        d1.e(d1.qq('tr>*:nth-child(' + m[i].substr(1) + ')', n), function (c) {
+          return c.classList.add(m[i].substr(0, 1));
+        });
+      };
+
+      for (var i = 0; i < m.length; i++) {
+        _loop(i);
+      }
+    }
+  };
+
+  this.setClass = function (a, c, on, n) {
+    n.classList[on ? 'add' : 'remove'](c);
+    a.classList[on ? 'add' : 'remove'](d1.opt.cAct);
+  };
+
+  this.toggleClass = function (e) {
+    var n = e.tagName ? e : e.target;
+    var box = n.type == 'checkbox';
+    if (e && !e.tagName && !box) e.preventDefault();
+    var q = d1.attr(n, 'data-nodes', n.hash);
+    var c = d1.attr(n, 'data-class');
+    var on = box ? n.checked : n.classList.contains(d1.opt.cAct);
+    if (e && !e.tagName && !box) on = !on;
+    if (c) d1.e(q, this.setClass.bind(this, n, c, on));
+  };
+
+  this.onResize = function () {
+    var m = window.innerWidth <= this.opt.minDesktop;
+    m ? d1.e('[data-class-mobile]', function (n) {
+      return n.className = n.getAttribute('data-class-mobile');
+    }) : d1.e('[data-class-desktop]', function (n) {
+      return n.className = n.getAttribute('data-class-desktop');
+    });
+  }; //d1.plug(this);
+
+}();
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var d1 = __webpack_require__(0);
+
+['toggle', 'dialog', 'gallery', 'table', 'scroll', 'tools', 'theme'].forEach(function (p) {
+  return d1.plug(__webpack_require__(1)("./" + p + ".js"));
+}); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
+
+d1.b([document], 'DOMContentLoaded', function (e) {
+  return d1.init();
+});
+if (window) window.d1 = d1;
 
 /***/ })
 /******/ ]);
