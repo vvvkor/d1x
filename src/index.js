@@ -1,6 +1,6 @@
 let d1 = require('./d1.js');
 
-['toggle', 'dialog', 'gallery', 'table', 'scroll', 'tools', 'theme']
+['toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'tools', 'form', 'fetch', 'theme']
   .forEach(p => d1.plug(require('./plugins/'+p+'.js')));
 
 //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};

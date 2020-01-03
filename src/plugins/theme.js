@@ -65,8 +65,8 @@ module.exports = new(function () {
   this.put = function(hh, arr, func){
     this.h(hh, 3);
     let c = [];
-    arr.forEach((v, k) => {
-      let color = v.match(/[#\(]/);
+    arr.forEach((v/*, k*/) => {
+      let color = v.match(/[#(]/);
       let a = d1.ins('a', color ? '' : v, {href:'#', title: v, className: color ? 'pad hover bord' : 'pad hover'}, this.drw);
       if(color) a.style.backgroundColor = v;
       else if(typeof func === 'string') a.style[func] = v;

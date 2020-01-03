@@ -1,4 +1,4 @@
-/*! d1x v1.0.10 */
+/*! d1x v1.0.11 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,14 +82,14 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1css v1.0.10 */
+/*! d1css v1.0.11 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -330,12 +330,14 @@ else module.exports = main;
 var map = {
 	"./dialog.js": 2,
 	"./example.js": 3,
-	"./gallery.js": 4,
-	"./scroll.js": 5,
-	"./table.js": 6,
-	"./theme.js": 7,
-	"./toggle.js": 8,
-	"./tools.js": 9
+	"./fetch.js": 4,
+	"./form.js": 5,
+	"./gallery.js": 6,
+	"./scroll.js": 7,
+	"./tablex.js": 8,
+	"./theme.js": 9,
+	"./toggle.js": 10,
+	"./tools.js": 11
 };
 
 
@@ -438,7 +440,7 @@ module.exports = new function () {
     var bb = d1.ins('p', '', {
       className: 'r'
     }, b);
-    var warn = this.opt.cBtn + ' ' + (t.substr(0, 1) == ' ' || n.className.match(/-[we]\b/) ? 'bg-e' : 'bg-y');
+    var warn = this.opt.cBtn + ' ' + (t.substr(0, 1) == ' ' || n && n.className.match(/-[we]\b/) ? 'bg-e' : 'bg-y');
     var sec = this.opt.cBtn + ' bg-n';
     var yes = d1.ins('a', d1.attr(n, 'data-ok', d1.opt.sOk), {
       href: d1.opt.hClose,
@@ -564,6 +566,132 @@ module.exports = new function () {
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! d1 async fetch */
+var d1 = __webpack_require__(0); //require('../plugins/dialog.js');
+//require('../plugins/toggle.js');
+
+
+module.exports = new function () {
+  "use strict";
+
+  this.name = 'fetch';
+  this.opt = {};
+
+  this.init = function () {
+    var _this = this;
+
+    d1.listen('click', function (e) {
+      return _this.onClick(e);
+    });
+  };
+
+  this.onClick = function (e) {
+    var a = d1.closest(e.target, 'a[data-target]');
+
+    if (a) {
+      e.preventDefault();
+      this.fetchBy(a);
+    }
+  };
+
+  this.fetchBy = function (n, f) {
+    this.fetch(d1.attr(n, 'href'), f ? f.bind(null, n) : this.recv.bind(this, n));
+  };
+
+  this.fetch = function (url, f) {
+    var req = new XMLHttpRequest();
+    if (f) req.addEventListener('load', f.bind(null, req));
+    req.open('GET', url);
+    req.send();
+  };
+
+  this.recv = function (n, req, e) {
+    // JSON.parse(req.responseText)
+    var d = d1.q(d1.attr(n, 'data-target'));
+
+    if (req.status == '200') {
+      if (d) {
+        d.innerHTML = req.responseText;
+        var dlg = d1.closest(d, '.dlg[id]');
+        if (dlg) d1.plugins.toggle.toggle(dlg, true);
+      } else {
+        d1.plugins.dialog.initDlg(null, '', req.responseText);
+      }
+    } else console.error('XHTTP request failed', req);
+
+    d1.fire('after', e);
+  };
+}();
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! d1 form tools */
+var d1 = __webpack_require__(0); //require('../plugins/toggle.js');
+
+
+module.exports = new function () {
+  "use strict";
+
+  this.name = 'form';
+  this.opt = {};
+
+  this.init = function () {
+    var _this = this;
+
+    d1.e('input[type="color"]', this.prepareColor.bind(this));
+    d1.listen('click', function (e) {
+      return _this.onClick(e);
+    });
+  };
+
+  this.onClick = function (e) {
+    var n = e.target;
+    var a = d1.closest(n, 'a[href^="#"][data-value]');
+
+    if (a) {
+      e.preventDefault();
+      this.setValue(a);
+    } else if (n.matches('input[data-group]')) {
+      this.checkBoxes(n);
+    }
+  };
+
+  this.checkBoxes = function (n) {
+    d1.e(d1.qq('input[type="checkbox"][class~="' + d1.attr(n, 'data-group') + '"]', n.form), function (m) {
+      return m.checked = n.checked;
+    });
+  };
+
+  this.setValue = function (n) {
+    var d = d1.q(n.hash);
+
+    if (d) {
+      d.value = d1.attr(n, 'data-value');
+      d1.plugins.toggle.esc();
+    }
+  };
+
+  this.prepareColor = function (n) {
+    var m = document.createElement('input');
+    m.type = "text";
+    m.value = n.value;
+    m.size = 7;
+    m.className = 'color';
+    n.parentNode.insertBefore(m, n);
+    n.parentNode.insertBefore(document.createTextNode(' '), n);
+    d1.b([n, m], 'input', function (e) {
+      return (e.target == n ? m : n).value = e.target.value;
+    });
+  }; //d1.plug(this);
+
+}();
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 gallery */
@@ -692,7 +820,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 example plugin */
@@ -734,7 +862,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1tablex */
@@ -745,7 +873,7 @@ var d1 = __webpack_require__(0);
 module.exports = new function () {
   "use strict";
 
-  this.name = 'table';
+  this.name = 'tablex';
   this.lang = '';
   this.skipComma = 0;
   this.opt = {
@@ -1041,7 +1169,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 live theme configurator */
@@ -1126,8 +1254,10 @@ module.exports = new function () {
 
     this.h(hh, 3);
     var c = [];
-    arr.forEach(function (v, k) {
-      var color = v.match(/[#\(]/);
+    arr.forEach(function (v
+    /*, k*/
+    ) {
+      var color = v.match(/[#(]/);
       var a = d1.ins('a', color ? '' : v, {
         href: '#',
         title: v,
@@ -1146,7 +1276,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 example plugin */
@@ -1466,19 +1596,10 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 tools */
-
-/*
-+ cell-align
-+ resize-class
-+ toggle-class
-- boxes
-- set-input
-- color
-*/
 var d1 = __webpack_require__(0);
 
 module.exports = new function () {
@@ -1490,20 +1611,22 @@ module.exports = new function () {
   };
 
   this.init = function () {
-    //d1.listen('click', e => this.onClick(e));
-    d1.e('table[class]', this.alignCells.bind(this)); //toggle class
+    var _this = this;
 
+    d1.e('table[class]', this.alignCells.bind(this));
     d1.e('[data-class]', this.toggleClass.bind(this));
-    d1.b('[data-class]', 'click', this.toggleClass.bind(this));
+    d1.listen('click', function (e) {
+      return _this.onClick(e);
+    });
     this.onResize();
     d1.b([window], 'resize', this.onResize.bind(this));
   };
-  /*
-  this.onClick = function(e){
-    let n = e.target;
-  }
-  */
 
+  this.onClick = function (e) {
+    var n = e.target;
+    var a = d1.closest(n, '[data-class]');
+    if (a) this.toggleClass(n, e);
+  };
 
   this.alignCells = function (n) {
     var m = n.className.match(/\b[lcr]\d\d?\b/g);
@@ -1526,14 +1649,17 @@ module.exports = new function () {
     a.classList[on ? 'add' : 'remove'](d1.opt.cAct);
   };
 
-  this.toggleClass = function (e) {
-    var n = e.tagName ? e : e.target;
+  this.toggleClass = function (n, e) {
     var box = n.type == 'checkbox';
-    if (e && !e.tagName && !box) e.preventDefault();
     var q = d1.attr(n, 'data-nodes', n.hash);
     var c = d1.attr(n, 'data-class');
     var on = box ? n.checked : n.classList.contains(d1.opt.cAct);
-    if (e && !e.tagName && !box) on = !on;
+
+    if (e && !box) {
+      on = !on;
+      e.preventDefault();
+    }
+
     if (c) d1.e(q, this.setClass.bind(this, n, c, on));
   };
 
@@ -1549,12 +1675,12 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var d1 = __webpack_require__(0);
 
-['toggle', 'dialog', 'gallery', 'table', 'scroll', 'tools', 'theme'].forEach(function (p) {
+['toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'tools', 'form', 'fetch', 'theme'].forEach(function (p) {
   return d1.plug(__webpack_require__(1)("./" + p + ".js"));
 }); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
 

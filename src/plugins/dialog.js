@@ -53,7 +53,7 @@ module.exports = new(function () {
     let inp = {value: true};
     if(def || def==='') inp = d1.ins('input', '', {value: def}, b);
     let bb = d1.ins('p', '', {className: 'r'}, b);
-    let warn = this.opt.cBtn + ' ' + ((t.substr(0,1)==' ' || n.className.match(/-[we]\b/)) ? 'bg-e' : 'bg-y');
+    let warn = this.opt.cBtn + ' ' + ((t.substr(0,1)==' ' || (n && n.className.match(/-[we]\b/))) ? 'bg-e' : 'bg-y');
     let sec = this.opt.cBtn + ' bg-n';
     let yes = d1.ins('a', d1.attr(n, 'data-ok', d1.opt.sOk), {href: d1.opt.hClose, className: (rev ? sec : warn)}, bb);
     if(f){

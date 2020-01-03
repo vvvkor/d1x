@@ -7,14 +7,14 @@ module.exports = new(function () {
   "use strict";
 
   this.name = 'example';
-  
+
   this.opt = {
   };
-  
+
   this.init = function () {
     //d1.listen('click', e => this.onClick(e));
   }
-  
+
   /*
   this.onClick = function(e){
     let n = e.target;

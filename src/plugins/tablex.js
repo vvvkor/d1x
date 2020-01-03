@@ -9,7 +9,7 @@ module.exports = new(function() {
 
   "use strict";
 
-  this.name = 'table';
+  this.name = 'tablex';
   this.lang = '';
   this.skipComma = 0;
   
