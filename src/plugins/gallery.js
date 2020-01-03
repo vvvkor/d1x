@@ -24,7 +24,7 @@ module.exports = new(function () {
     d1.listen('hash', e => this.onHash(e));
     d1.listen('key', e => this.onKey(e));
     d1.listen('click', e => this.onClick(e));
-    d1.e(this.opt.qGallery, this.prepare.bind(this));
+    d1.e(this.opt.qGallery, n => this.prepare(n));
   }
   
   this.onClick = function(e){
@@ -60,7 +60,7 @@ module.exports = new(function () {
   
   this.prepare = function (n) {
     let g = d1.ins('div', '', {className: this.opt.cGal});
-    let a = n.querySelectorAll(this.opt.qLinks);
+    let a = d1.qq(this.opt.qLinks, n);
     let z = a.length;
     let first = 0;
     for(let i=0; i<z; i++) if(!a[i].vDone) {
@@ -70,17 +70,17 @@ module.exports = new(function () {
           id: this.opt.idPrefix + s,
           href: '#' + this.opt.idPrefix + (i==z-1 ? first : s+1)
           }, g);
-      //p.style.setProperty('--img', 'url("' + a[i].getAttribute('href') + '")');
-      //p.style.backgroundImage = 'url("' + a[i].getAttribute('href') + '")';//preload all
-      p.vLink = a[i].getAttribute('href');//real link
-      p.vImg = a[i].getAttribute('href');//preload prev & next
+      //p.style.setProperty('--img', 'url("' + d1.attr(a[i], 'href') + '")');
+      //p.style.backgroundImage = 'url("' + d1.attr(a[i], 'href') + '")';//preload all
+      p.vLink = d1.attr(a[i], 'href');//real link
+      p.vImg = d1.attr(a[i], 'href');//preload prev & next
       p.setAttribute(d1.opt.aCaption, (this.opt.num ? (i+1)+'/'+z+(a[i].title ? ' - ' : '') : '') + (a[i].title || ''));
       a[i].href = '#' + p.id;
       a[i].vDone = 1;
     }
     d1.x(g);
     d1.b(d1.qq('a[id]', g), 'click', d1.gotoPrev);
-    document.querySelector('body').appendChild(g);
+    document.body.appendChild(g);
   }
 
   this.onKey = function(e) {
@@ -102,7 +102,5 @@ module.exports = new(function () {
       }
     }
   }
-
-  //d1.plug(this);
 
 })();

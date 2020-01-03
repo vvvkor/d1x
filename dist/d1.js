@@ -1,4 +1,4 @@
-/*! d1x v1.0.11 */
+/*! d1x v1.0.12 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1css v1.0.11 */
+/*! d1css v1.0.12 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -224,14 +224,16 @@ module.exports = new function () {
     }
   };
 
-  this.b = function (nn, e, f) {
+  this.b = function (nn, et, f) {
     var _this4 = this;
 
     if (typeof nn === 'string') nn = this.qq(nn);else if (nn.tagName) nn = [nn];else nn = this.a(nn);
     if (nn && f) nn.forEach(function (n) {
-      return e ? n.addEventListener(e, f.bind(_this4
-      /*, n*/
-      ), false) : f.call(_this4, n);
+      return et ? n.addEventListener(et, function (e) {
+        return f(e);
+      }
+      /*f.bind(this)*/
+      , false) : f.call(_this4, n);
     });
   };
 
@@ -467,6 +469,8 @@ module.exports = new function () {
   };
 
   this.dialog = function (n, f) {
+    var _this3 = this;
+
     if (n.form && !n.form.checkValidity()) {
       n.form.reportValidity();
       return;
@@ -483,7 +487,9 @@ module.exports = new function () {
     var def = p ? src ? src.value : d1.get(n, p) : null;
 
     if (this.opt.customDialog) {
-      this.initDlg(n, '', t, al ? null : this.onAnswer.bind(this, n, f, p), def, rev);
+      this.initDlg(n, '', t, al ? null : function (w) {
+        return _this3.onAnswer(n, f, p, w);
+      }, def, rev);
     } else {
       if (al) v = alert(t); //undef
       else if (!p) v = confirm(t); //bool
@@ -536,8 +542,7 @@ module.exports = new function () {
             }
             if (n.target == '_blank') window.open(u, n.target);else location.href = u;
           }
-  }; //d1.plug(this);
-
+  };
 }();
 
 /***/ }),
@@ -597,12 +602,18 @@ module.exports = new function () {
   };
 
   this.fetchBy = function (n, f) {
-    this.fetch(d1.attr(n, 'href'), f ? f.bind(null, n) : this.recv.bind(this, n));
+    var _this2 = this;
+
+    this.fetch(d1.attr(n, 'href'), function (r) {
+      return f ? f(n, r) : _this2.recv(n, r);
+    });
   };
 
   this.fetch = function (url, f) {
     var req = new XMLHttpRequest();
-    if (f) req.addEventListener('load', f.bind(null, req));
+    if (f) req.addEventListener('load', function (e) {
+      return f(req);
+    });
     req.open('GET', url);
     req.send();
   };
@@ -642,7 +653,9 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
-    d1.e('input[type="color"]', this.prepareColor.bind(this));
+    d1.e('input[type="color"]', function (n) {
+      return _this.prepareColor(n);
+    });
     d1.listen('click', function (e) {
       return _this.onClick(e);
     });
@@ -676,18 +689,17 @@ module.exports = new function () {
   };
 
   this.prepareColor = function (n) {
-    var m = document.createElement('input');
-    m.type = "text";
-    m.value = n.value;
-    m.size = 7;
-    m.className = 'color';
-    n.parentNode.insertBefore(m, n);
-    n.parentNode.insertBefore(document.createTextNode(' '), n);
+    var m = d1.ins('input', '', {
+      type: 'text',
+      value: n.value,
+      size: 7,
+      className: 'color'
+    }, n, -1);
+    d1.ins('', ' ', {}, m, 1);
     d1.b([n, m], 'input', function (e) {
       return (e.target == n ? m : n).value = e.target.value;
     });
-  }; //d1.plug(this);
-
+  };
 }();
 
 /***/ }),
@@ -725,7 +737,9 @@ module.exports = new function () {
     d1.listen('click', function (e) {
       return _this.onClick(e);
     });
-    d1.e(this.opt.qGallery, this.prepare.bind(this));
+    d1.e(this.opt.qGallery, function (n) {
+      return _this.prepare(n);
+    });
   };
 
   this.onClick = function (e) {
@@ -767,7 +781,7 @@ module.exports = new function () {
     var g = d1.ins('div', '', {
       className: this.opt.cGal
     });
-    var a = n.querySelectorAll(this.opt.qLinks);
+    var a = d1.qq(this.opt.qLinks, n);
     var z = a.length;
     var first = 0;
 
@@ -778,12 +792,12 @@ module.exports = new function () {
         var p = d1.ins('a', '', {
           id: this.opt.idPrefix + s,
           href: '#' + this.opt.idPrefix + (i == z - 1 ? first : s + 1)
-        }, g); //p.style.setProperty('--img', 'url("' + a[i].getAttribute('href') + '")');
-        //p.style.backgroundImage = 'url("' + a[i].getAttribute('href') + '")';//preload all
+        }, g); //p.style.setProperty('--img', 'url("' + d1.attr(a[i], 'href') + '")');
+        //p.style.backgroundImage = 'url("' + d1.attr(a[i], 'href') + '")';//preload all
 
-        p.vLink = a[i].getAttribute('href'); //real link
+        p.vLink = d1.attr(a[i], 'href'); //real link
 
-        p.vImg = a[i].getAttribute('href'); //preload prev & next
+        p.vImg = d1.attr(a[i], 'href'); //preload prev & next
 
         p.setAttribute(d1.opt.aCaption, (this.opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || ''));
         a[i].href = '#' + p.id;
@@ -793,7 +807,7 @@ module.exports = new function () {
 
     d1.x(g);
     d1.b(d1.qq('a[id]', g), 'click', d1.gotoPrev);
-    document.querySelector('body').appendChild(g);
+    document.body.appendChild(g);
   };
 
   this.onKey = function (e) {
@@ -815,8 +829,7 @@ module.exports = new function () {
           } //e.preventDefault();
       }
     }
-  }; //d1.plug(this);
-
+  };
 }();
 
 /***/ }),
@@ -834,20 +847,26 @@ module.exports = new function () {
   this.opt = {};
 
   this.init = function () {
-    var ons = d1.throttle(this.onScroll.bind(this), 500); //ons(); // forces reflow
+    var _this = this;
 
-    setTimeout(this.onScroll.bind(this), 20);
+    var ons = d1.throttle(function () {
+      return _this.onScroll();
+    }, 500); //ons(); // forces reflow
+
+    setTimeout(function () {
+      return _this.onScroll();
+    }, 20);
     d1.b([window], 'scroll', ons);
   };
 
   this.onScroll = function () {
-    var _this = this;
+    var _this2 = this;
 
     //d1.dbg('scroll');
     if (this.y !== null) {
       var dy = window.scrollY - this.y;
       d1.e('.topbar', function (n) {
-        return _this.decorate(n, window.scrollY, dy);
+        return _this2.decorate(n, window.scrollY, dy);
       });
     }
 
@@ -857,8 +876,7 @@ module.exports = new function () {
   this.decorate = function (n, y, dy) {
     n.classList[dy > 0 ? 'add' : 'remove']('hide');
     n.classList[y && dy <= 0 ? 'add' : 'remove']('box');
-  }; //d1.plug(this);
-
+  };
 }();
 
 /***/ }),
@@ -868,6 +886,8 @@ module.exports = new function () {
 /*! d1tablex */
 // Filter and sort HTML table
 // table.sort[data-filter] [data-filter-report][data-case][data-filter-cols]
+// todo: optimize: bind to arrFunc, getAttribute to attr, querySelector(All) to q/qq
+//       appendChild/insertBefore to ins
 var d1 = __webpack_require__(0);
 
 module.exports = new function () {
@@ -896,7 +916,7 @@ module.exports = new function () {
   };
 
   this.init = function () {
-    this.lang = document.documentElement.getAttribute('lang') || 'en';
+    this.lang = d1.attr(document.documentElement, 'lang') || 'en';
     this.skipComma = this.lang == 'en'; //let t = document.querySelectorAll(this.opt.qSort + ', table[' + this.opt.aFilter + ']');
     //t.forEach(this.prepare.bind(this));
     //for (i = 0; i < t.length; i++) this.prepare(t[i]);
@@ -1164,8 +1184,7 @@ module.exports = new function () {
     }
 
     return NaN;
-  }; //d1.plug(this);
-
+  };
 }();
 
 /***/ }),
@@ -1182,6 +1201,8 @@ module.exports = new function () {
   this.drw = null;
 
   this.init = function () {
+    var _this = this;
+
     this.restore(document.documentElement, 'theme-html');
     this.restore(document.body, 'theme-body'); //button
 
@@ -1210,7 +1231,9 @@ module.exports = new function () {
     d1.b([d1.ins('a', 'Reset to default', {
       href: '#',
       className: ''
-    }, this.drw)], 'click', this.unstyle.bind(this));
+    }, this.drw)], 'click', function (e) {
+      return _this.unstyle(e);
+    });
     this.put('Background', ['#fff', '#eee', '#ffeee6', '#ffe', '#efe', '#e6fcf9', '#e3eeff', '#f9e9ff'], '--bg');
     this.put('Menu', ['rgba(255,255,255,0)', 'rgba(0,0,0,.1)', 'hsla(1,100%,55%,.3)', 'hsla(45,100%,50%,.3)', 'hsla(120,100%,35%,.3)', 'hsla(180,100%,35%,.3)', 'hsla(220,100%,55%,.3)', 'hsla(290,100%,50%,.3)'], ['--bg-pane', '--bg-hilite']);
     this.put('Links', ['#000', '#777', '#c00', '#c60', '#090', '#088', '#00c', '#909'], ['--link', '--visited', '--hover']);
@@ -1225,10 +1248,10 @@ module.exports = new function () {
   };
 
   this.style = function (k, v, deep) {
-    var _this = this;
+    var _this2 = this;
 
     if (k instanceof Array) k.forEach(function (w) {
-      return _this.style(w, v, 1);
+      return _this2.style(w, v, 1);
     });else {
       var n = k.substr(0, 2) == '--' ? document.documentElement : document.body;
       n.style.setProperty(k, v);
@@ -1250,7 +1273,7 @@ module.exports = new function () {
   };
 
   this.put = function (hh, arr, func) {
-    var _this2 = this;
+    var _this3 = this;
 
     this.h(hh, 3);
     var c = [];
@@ -1262,17 +1285,16 @@ module.exports = new function () {
         href: '#',
         title: v,
         className: color ? 'pad hover bord' : 'pad hover'
-      }, _this2.drw);
+      }, _this3.drw);
       if (color) a.style.backgroundColor = v;else if (typeof func === 'string') a.style[func] = v;
       c.push(a);
     });
     d1.b(c, 'click', func instanceof Function ? func : function (e) {
       e.preventDefault();
 
-      _this2.style(func, e.target.title);
+      _this3.style(func, e.target.title);
     });
-  }; //d1.plug(this);
-
+  };
 }();
 
 /***/ }),
@@ -1350,7 +1372,9 @@ module.exports = new function () {
       return _this.tgl(n, 0);
     }); //autohide
 
-    d1.e(this.opt.qNav + ', ' + this.opt.qTre, this.attachSubNav.bind(this)); //nav, tree: attach to links
+    d1.e(this.opt.qNav + ', ' + this.opt.qTre, function (n) {
+      return _this.attachSubNav(n);
+    }); //nav, tree: attach to links
 
     d1.e(this.opt.qGal + ':last-child', function (n) {
       return d1.x(n, 1);
@@ -1360,7 +1384,9 @@ module.exports = new function () {
       return n.classList.add(_this.opt.cMem);
     }); //initialize sub mem
 
-    d1.e('[id]', this.restoreVisibility.bind(this)); //restore visibility
+    d1.e('[id]', function (n) {
+      return _this.restoreVisibility(n);
+    }); //restore visibility
 
     d1.e(this.opt.qTab + ':not(.hide) ~ [id]:not(.hide)', function (n) {
       return _this.tgl(n, 0);
@@ -1372,7 +1398,9 @@ module.exports = new function () {
       }).length ? null : _this.tgl(d1.q(d1.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1);
     }); //inactive tabs: show first
 
-    d1.e('.' + this.opt.cToggle + '[id]', this.hiliteLinks.bind(this)); //init links state
+    d1.e('.' + this.opt.cToggle + '[id]', function (n) {
+      return _this.hiliteLinks(n);
+    }); //init links state
   };
 
   this.after = function (n) {
@@ -1613,13 +1641,19 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
-    d1.e('table[class]', this.alignCells.bind(this));
-    d1.e('[data-class]', this.toggleClass.bind(this));
+    d1.e('table[class]', function (n) {
+      return _this.alignCells(n);
+    });
+    d1.e('[data-class]', function (n) {
+      return _this.toggleClass(n);
+    });
     d1.listen('click', function (e) {
       return _this.onClick(e);
     });
     this.onResize();
-    d1.b([window], 'resize', this.onResize.bind(this));
+    d1.b([window], 'resize', function (e) {
+      return _this.onResize(e);
+    });
   };
 
   this.onClick = function (e) {
@@ -1650,6 +1684,8 @@ module.exports = new function () {
   };
 
   this.toggleClass = function (n, e) {
+    var _this2 = this;
+
     var box = n.type == 'checkbox';
     var q = d1.attr(n, 'data-nodes', n.hash);
     var c = d1.attr(n, 'data-class');
@@ -1660,18 +1696,19 @@ module.exports = new function () {
       e.preventDefault();
     }
 
-    if (c) d1.e(q, this.setClass.bind(this, n, c, on));
+    if (c) d1.e(q, function (m) {
+      return _this2.setClass(n, c, on, m);
+    });
   };
 
   this.onResize = function () {
     var m = window.innerWidth <= this.opt.minDesktop;
     m ? d1.e('[data-class-mobile]', function (n) {
-      return n.className = n.getAttribute('data-class-mobile');
+      return n.className = d1.attr(n, 'data-class-mobile');
     }) : d1.e('[data-class-desktop]', function (n) {
-      return n.className = n.getAttribute('data-class-desktop');
+      return n.className = d1.attr(n, 'data-class-desktop');
     });
-  }; //d1.plug(this);
-
+  };
 }();
 
 /***/ }),

@@ -26,12 +26,12 @@ module.exports = new(function () {
   }
 
   this.fetchBy = function(n, f) {
-    this.fetch(d1.attr(n, 'href'), f ? f.bind(null, n) : this.recv.bind(this, n));
+    this.fetch(d1.attr(n, 'href'), r => f ? f(n, r) : this.recv(n, r));
   }
 
   this.fetch = function(url, f) {
     let req = new XMLHttpRequest();
-    if (f) req.addEventListener('load', f.bind(null, req));
+    if (f) req.addEventListener('load', e => f(req));
     req.open('GET', url);
     req.send();
   }

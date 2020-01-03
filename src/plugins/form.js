@@ -13,7 +13,7 @@ module.exports = new(function () {
   };
 
   this.init = function () {
-    d1.e('input[type="color"]', this.prepareColor.bind(this));
+    d1.e('input[type="color"]', n => this.prepareColor(n));
     d1.listen('click', e => this.onClick(e));
   }
 
@@ -43,16 +43,9 @@ module.exports = new(function () {
   }
 
   this.prepareColor = function(n) {
-    let m = document.createElement('input');
-    m.type = "text";
-    m.value = n.value;
-    m.size = 7;
-    m.className = 'color';
-    n.parentNode.insertBefore(m, n);
-    n.parentNode.insertBefore(document.createTextNode(' '), n);
+    let m = d1.ins('input', '', {type: 'text', value: n.value, size: 7, className: 'color'}, n, -1);
+    d1.ins('', ' ', {}, m, 1);
     d1.b([n, m], 'input', e => (e.target==n ? m : n).value = e.target.value );
   }
-
-  //d1.plug(this);
 
 })();

@@ -13,11 +13,11 @@ module.exports = new(function () {
   };
 
   this.init = function () {
-    d1.e('table[class]', this.alignCells.bind(this));
-    d1.e('[data-class]', this.toggleClass.bind(this));
+    d1.e('table[class]', n => this.alignCells(n));
+    d1.e('[data-class]', n => this.toggleClass(n));
     d1.listen('click', e => this.onClick(e));
     this.onResize();
-    d1.b([window], 'resize', this.onResize.bind(this));
+    d1.b([window], 'resize', e => this.onResize(e));
   }
 
   this.onClick = function(e){
@@ -49,16 +49,14 @@ module.exports = new(function () {
       on = !on;
       e.preventDefault();
     }
-    if (c) d1.e(q, this.setClass.bind(this, n, c, on));
+    if (c) d1.e(q, m => this.setClass(n, c, on, m));
   }
 
   this.onResize = function() {
     let m = (window.innerWidth <= this.opt.minDesktop);
     m
-      ? d1.e('[data-class-mobile]', n => n.className = n.getAttribute('data-class-mobile'))
-      : d1.e('[data-class-desktop]', n => n.className = n.getAttribute('data-class-desktop'));
+      ? d1.e('[data-class-mobile]', n => n.className = d1.attr(n, 'data-class-mobile'))
+      : d1.e('[data-class-desktop]', n => n.className = d1.attr(n, 'data-class-desktop'));
   }
-
-  //d1.plug(this);
 
 })();

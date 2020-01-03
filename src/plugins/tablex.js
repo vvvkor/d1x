@@ -2,6 +2,8 @@
 
 // Filter and sort HTML table
 // table.sort[data-filter] [data-filter-report][data-case][data-filter-cols]
+// todo: optimize: bind to arrFunc, getAttribute to attr, querySelector(All) to q/qq
+//       appendChild/insertBefore to ins
 
 let d1 = require('../d1.js');
 
@@ -27,7 +29,7 @@ module.exports = new(function() {
   };
 
   this.init = function() {
-    this.lang = document.documentElement.getAttribute('lang') || 'en';
+    this.lang = d1.attr(document.documentElement, 'lang') || 'en';
     this.skipComma = (this.lang=='en');
     //let t = document.querySelectorAll(this.opt.qSort + ', table[' + this.opt.aFilter + ']');
     //t.forEach(this.prepare.bind(this));
@@ -276,7 +278,5 @@ module.exports = new(function() {
     }
     return NaN;
   }
-
-  //d1.plug(this);
 
 })();

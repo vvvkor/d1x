@@ -28,7 +28,7 @@ module.exports = new(function () {
     
     //menu
     this.h('Theme', 2);
-    d1.b([d1.ins('a', 'Reset to default', {href:'#', className: ''}, this.drw)], 'click', this.unstyle.bind(this));
+    d1.b([d1.ins('a', 'Reset to default', {href:'#', className: ''}, this.drw)], 'click', e => this.unstyle(e));
     this.put('Background', ['#fff', '#eee', '#ffeee6', '#ffe', '#efe', '#e6fcf9', '#e3eeff', '#f9e9ff'], '--bg');
     this.put('Menu', ['rgba(255,255,255,0)', 'rgba(0,0,0,.1)', 'hsla(1,100%,55%,.3)', 'hsla(45,100%,50%,.3)', 'hsla(120,100%,35%,.3)', 'hsla(180,100%,35%,.3)', 'hsla(220,100%,55%,.3)', 'hsla(290,100%,50%,.3)'], ['--bg-pane', '--bg-hilite']);
     this.put('Links', ['#000', '#777', '#c00', '#c60', '#090', '#088', '#00c', '#909'], ['--link', '--visited', '--hover']);
@@ -81,6 +81,4 @@ module.exports = new(function () {
     ));
   }
 
-  //d1.plug(this);
-  
 })();

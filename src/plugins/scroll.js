@@ -14,9 +14,9 @@ module.exports = new(function () {
   };
   
   this.init = function () {
-    let ons = d1.throttle(this.onScroll.bind(this), 500);
+    let ons = d1.throttle(() => this.onScroll(), 500);
     //ons(); // forces reflow
-    setTimeout(this.onScroll.bind(this), 20);
+    setTimeout(() => this.onScroll(), 20);
     d1.b([window], 'scroll', ons);
   }
   
@@ -34,6 +34,4 @@ module.exports = new(function () {
     n.classList[y && dy<=0 ? 'add' : 'remove']('box')
   }
   
-  //d1.plug(this);
-
 })();

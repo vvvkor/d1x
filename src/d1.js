@@ -123,11 +123,11 @@ module.exports = new (function(){
     }
   }
 
-  this.b = function(nn, e, f){
+  this.b = function(nn, et, f){
     if(typeof nn === 'string') nn = this.qq(nn);
     else if(nn.tagName) nn = [nn];
     else nn = this.a(nn);
-    if(nn && f) nn.forEach(n => e ? n.addEventListener(e, f.bind(this/*, n*/), false) : f.call(this, n));
+    if(nn && f) nn.forEach(n => et ? n.addEventListener(et, e => f(e) /*f.bind(this)*/, false) : f.call(this, n));
   }
 
   this.e = function(nn, f){

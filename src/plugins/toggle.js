@@ -48,13 +48,13 @@ module.exports = new(function () {
     d1.e(this.opt.qToggle, n => n.classList.add(this.opt.cToggle)); //initialize togglers
     d1.e(this.opt.qAutohide, n => this.tgl(n, 0)); //autohide
 
-    d1.e(this.opt.qNav + ', ' + this.opt.qTre, this.attachSubNav.bind(this)); //nav, tree: attach to links
+    d1.e(this.opt.qNav + ', ' + this.opt.qTre, n => this.attachSubNav(n)); //nav, tree: attach to links
     d1.e(this.opt.qGal + ':last-child', n => d1.x(n, 1));//gal: auto add close link
     d1.e(this.opt.qSubMem, n => n.classList.add(this.opt.cMem)); //initialize sub mem
-    d1.e('[id]', this.restoreVisibility.bind(this));//restore visibility
+    d1.e('[id]', n => this.restoreVisibility(n));//restore visibility
     d1.e(this.opt.qTab + ':not(.hide) ~ [id]:not(.hide)', n => this.tgl(n, 0)); //undup tabs
     d1.e(this.opt.qTab + ':first-child', n => d1.a(n.parentNode.children).filter(m => d1.vis(m)).length ? null : this.tgl(d1.q(d1.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1));//inactive tabs: show first
-    d1.e('.' + this.opt.cToggle + '[id]', this.hiliteLinks.bind(this));//init links state
+    d1.e('.' + this.opt.cToggle + '[id]', n => this.hiliteLinks(n));//init links state
   }
 
   this.after = function(n){

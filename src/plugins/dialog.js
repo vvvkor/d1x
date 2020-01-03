@@ -82,7 +82,7 @@ module.exports = new(function () {
     let al = n.matches(this.opt.qAlert);
     let def = p ? (src ? src.value : d1.get(n, p)) : null;
     if(this.opt.customDialog){
-      this.initDlg(n, '', t, al ? null : this.onAnswer.bind(this, n, f, p), def, rev);
+      this.initDlg(n, '', t, al ? null : (w => this.onAnswer(n, f, p, w)), def, rev);
     }
     else{
       if(al) v = alert(t);//undef
@@ -129,7 +129,5 @@ module.exports = new(function () {
       else location.href = u;
     }
   }
-  
-  //d1.plug(this);
 
 })();
