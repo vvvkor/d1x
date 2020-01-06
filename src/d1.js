@@ -15,12 +15,14 @@ module.exports = new (function(){
     cHide: 'hide',
     aCaption: 'data-caption',
     cClose: 'close',
+    cIcon: 'icon',
     cJs: 'js',
     hClose: '#cancel',
     hOk: '#ok',
     iClose: '&#x2715;', //&times;
     sCancel: 'Cancel',
-    sOk: 'OK'
+    sOk: 'OK',
+    svgSuffix: 'svg-'
   };
 
   this.init = function(opt){
@@ -161,6 +163,15 @@ module.exports = new (function(){
     return this.ins('a', this.opt.iClose, {href: this.opt.hClose, className: (cls || '')}, d, pos);
   }
 
+  this.svg = function(id, alt, c) {
+    if (!document.getElementById(id)) return this.ins('span', alt || '', {className: c || ''});
+    return this.ins('span', '<svg class="' + this.opt.cIcon + ' ' + (c || '') + '" width="24" height="24"><use xlink:href="#' + id + '"></use></svg>');
+  }
+  
+  this.i = function(id, alt, c) {
+    return this.svg(id ? this.opt.svgSuffix + id : '', alt, c);
+  }
+  
   this.vis = function(n){
     return !n.classList.contains(this.opt.cHide)
   }

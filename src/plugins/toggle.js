@@ -59,13 +59,13 @@ module.exports = new(function () {
 
   this.after = function(n){
     this.shown = null;
-    d1.dbg(['after', n]);
     //let modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cHide+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
     let modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cHide+'), '+this.opt.qGal+'[id="' + location.hash.substr(1) + '"]');
     let bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
     let s = document.body.style;
     s.overflow = modal ? 'hidden' : '';
-    s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
+    if(!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
+    d1.dbg(['after', n, modal, s.paddingRight]);
     if(modal){
       //let f = d1.q('input, a:not(.' + d1.opt.cClose + ')', modal);
       let f = d1.q('input, a:not([href="' + d1.opt.hClose + '"])', modal);

@@ -1,4 +1,4 @@
-/*! d1css v1.0.13 */
+/*! d1css v1.0.14 */
 
 :root {
     --text: #000;
@@ -149,6 +149,7 @@ ul, ol, dl, blockquote, pre, hr, p, figure {
 h1, h2, h3, h4, h5, h6 {
     margin: 3rem 0 1.5rem 0;
     line-height: 1.2;
+    max-width: 20em;
 }
 
 h1+h2, h2+h3, h3+h4, h4+h5, h5+h6 {
