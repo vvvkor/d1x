@@ -1,4 +1,4 @@
-/*! d1x v1.0.12 */
+/*! d1x v1.0.13 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,14 +82,14 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 13);
+/******/ 	return __webpack_require__(__webpack_require__.s = 14);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1css v1.0.12 */
+/*! d1css v1.0.13 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -330,16 +330,17 @@ else module.exports = main;
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./dialog.js": 2,
-	"./example.js": 3,
-	"./fetch.js": 4,
-	"./form.js": 5,
-	"./gallery.js": 6,
-	"./scroll.js": 7,
-	"./tablex.js": 8,
-	"./theme.js": 9,
-	"./toggle.js": 10,
-	"./tools.js": 11
+	"./code.js": 2,
+	"./dialog.js": 3,
+	"./example.js": 4,
+	"./fetch.js": 5,
+	"./form.js": 6,
+	"./gallery.js": 7,
+	"./scroll.js": 8,
+	"./tablex.js": 9,
+	"./theme.js": 10,
+	"./toggle.js": 11,
+	"./tools.js": 12
 };
 
 
@@ -364,6 +365,51 @@ webpackContext.id = 1;
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! d1 code sample */
+var d1 = __webpack_require__(0);
+
+module.exports = new function () {
+  "use strict";
+
+  this.name = 'code';
+  this.opt = {
+    sCode: 'show code'
+  };
+
+  this.init = function () {
+    var _this = this;
+
+    d1.e('.code', function (n) {
+      return _this.showCode(n);
+    });
+  };
+
+  this.showCode = function (src) {
+    var t = src.innerHTML.replace(/^\s*\r?\n|\s+$/g, '').replace(/\t/g, '  ').replace(/=""/g, '');
+    var cont = d1.ins('div', '', {
+      classList: 'bord'
+    }, src, 1);
+    cont.appendChild(src);
+    src.classList.add('pad');
+    var id = 'code-' + d1.seq();
+    d1.ins('div', d1.ins('a', this.opt.sCode, {
+      className: 'pad',
+      href: '#' + id
+    }), {
+      className: '-r bg small'
+    }, cont);
+    var cod = d1.ins('pre', '', {
+      className: 'let hide toggle',
+      id: id
+    }, cont);
+    cod.textContent = t;
+  };
+}();
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 dialog */
@@ -546,7 +592,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 example plugin */
@@ -570,7 +616,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 async fetch */
@@ -637,7 +683,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 form tools */
@@ -703,7 +749,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 gallery */
@@ -833,7 +879,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 example plugin */
@@ -849,6 +895,9 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
+    d1.listen('hash', function (e) {
+      return _this.onHash(e);
+    });
     var ons = d1.throttle(function () {
       return _this.onScroll();
     }, 500); //ons(); // forces reflow
@@ -859,10 +908,15 @@ module.exports = new function () {
     d1.b([window], 'scroll', ons);
   };
 
+  this.onHash = function (e) {
+    //to hide topbar on hash change
+    if (e) this.y = window.scrollY - 10; // fires before onscroll
+  };
+
   this.onScroll = function () {
     var _this2 = this;
 
-    //d1.dbg('scroll');
+    //d1.dbg(['scroll on']);
     if (this.y !== null) {
       var dy = window.scrollY - this.y;
       d1.e('.topbar', function (n) {
@@ -880,7 +934,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1tablex */
@@ -1188,7 +1242,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 live theme configurator */
@@ -1298,7 +1352,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 example plugin */
@@ -1624,7 +1678,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 tools */
@@ -1712,8 +1766,8 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 12 */,
-/* 13 */
+/* 13 */,
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var d1 = __webpack_require__(0);

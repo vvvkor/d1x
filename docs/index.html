@@ -6,6 +6,8 @@
 	<title>d1 - Docs and Demo</title>
 
 <!--
+todo:
+-
 
 process:
 - (validate / lint)
@@ -14,12 +16,12 @@ process:
 - npm run build
 - npm publish ./
 - git commit
-- publish html
+- (publish html)
 -->
 	
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.12/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.12/dist/d1.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.13/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.13/dist/d1.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/d1.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -31,7 +33,7 @@ process:
 <body class="-bg" data-d1='{"hOk":"#yes","debug":1,"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
 
 <div class="topbar">
-	<a href="#top" class="pad"><b>d1</b> v1.0.12</a>
+	<a href="#top" class="pad"><b>d1</b> v1.0.13</a>
 	<code class="pad">npm install d1css</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1" title="GitHub" class="pad">GitHub</a>
 	<a href="#m" class="pad hide-desktop">&equiv;</a>
@@ -39,7 +41,7 @@ process:
 
 <div class="-pad row -wrap -center flip">
 <!--a href="#m">m</a-->
-<div class-x="drawer -stick -pad -bg hide-print" data-class-mobile="drawer toggle hide" data-class-desktop="stick pad" id="m"><div class="pad">
+<div class="-drawer -hide-print   -stick -pad -bg" data-class-mobile="drawer toggle hide" data-class-desktop="stick pad" id="m"><div class="pad">
 
 <!--div class="-mar -pad -bg -c">
 	<p>
@@ -48,7 +50,7 @@ process:
 
 	<p><b>d1</b> CSS framework</p>
 	
-	<p><code>v1.0.12</code></p>
+	<p><code>v1.0.13</code></p>
 
 	<div class="">
 		<p class=""><code class="pad">npm i d1css</code></p>
@@ -62,7 +64,7 @@ process:
 	<p class="print"><code class="-pad">github.com/vvvkor/d1</code></p-->
 
 	<!--div class="hide-desktop"><a href="#menu" class="pad hover" title="Menu">&equiv;</a></div-->
-	<div class-x="hide-mobile toggle mem" id="menu">
+	<div class="-hide-mobile -toggle -mem" id="menu">
 	<ul class="toggle mem">
 		<li><a href="#start">Get started</a>
 		<li><a href="#typo">Typography</a>
@@ -265,22 +267,19 @@ Wrap your rows into <code>div</code> with <code>wrap</code> class to limit maxim
 		<div class="bg-y read center">read</div>
 	</div>
 	-->
-<div class="bord">
-<div class="pad">
-<div id="s-grid">
-<div class="row mar flip">
-	<div class="bg col-0">div.col-0</div>
-	<div class="bg">div</div>
-</div>
-<div class="row mar flip">
-	<div class="bg">div</div>
-	<div class="bg">div</div>
-</div>
-<div class="row mar">
-	<div class="bg-w col-2">div.col-2</div>
-	<div class="bg-y col-3">div.col-3</div>
-</div>
-</div>
+<div class="code">
+	<div class="row mar flip">
+		<div class="bg col-0">div.col-0</div>
+		<div class="bg">div</div>
+	</div>
+	<div class="row mar flip">
+		<div class="bg">div</div>
+		<div class="bg">div</div>
+	</div>
+	<div class="row mar">
+		<div class="bg-w col-2">div.col-2</div>
+		<div class="bg-y col-3">div.col-3</div>
+	</div>
 	<div class="row mar flip">
 		<div class="bg">div</div>
 		<div class="bg col-2">div.col-2</div>
@@ -297,17 +296,15 @@ Wrap your rows into <code>div</code> with <code>wrap</code> class to limit maxim
 		<div class="bg">div</div>
 		<div class="bg">div</div>
 	</div>
-	<!--div class="row let mar flip">
+	<div class="row let mar flip">
 		<div class="bg-i">aaaaaaaaaaaaaaa</div>
 		<div class="bg-i">bbbbbbbbbbbbbbbbbb</div>
 		<div class="bg-i">ccccccccccccccc</div>
 		<div class="bg-i">ddddddddddddddd</div>
 		<div class="bg-i">eeeeeeeeeeeeeeee</div>
 		<div class="bg-i">wwwwwwwwwwrap!</div>
-	</div-->
+	</div>
 </div>	
-	<pre class="hide let" data-src="#s-grid"></pre>
-</div>
 	
 <h2 id="table">Table</h2>
 
@@ -319,8 +316,6 @@ Add <code>r#, l#, #c</code> (where # is any number) classes to align cells of co
 Wrap table inside <code>div</code> with class <code>roll</code> to have independent horizontal scrolling of table when it is too wide.
 </p>
 
-<div class="bord">
-<div class="pad">
 	<div class="roll">
 	<table class="hover r1 c4 c5 -let table-sample">
 		<caption>Table caption</caption>
@@ -347,22 +342,19 @@ Wrap table inside <code>div</code> with class <code>roll</code> to have independ
 		T &mdash; <code>:target</code> (t &mdash; with undesirable scroll)<br>
 		C &mdash; <code>:checked</code> (checkbox hack)
 	</p>
-</div>
 
-<div id="s-table" class="hide">
+<div class="code">
 <div class="roll">
-	<table class="hover r1">
-		<caption>Read</caption>
+	<table class="hover">
+		<caption>Caption</caption>
 		<thead>
-			<tr><th>...</th></tr>
+			<tr><th>Heading</th></tr>
 		</thead>
 		<tbody>
-			<tr class="bg-w"><td>...</td></tr>
+			<tr class="bg-w"><td>Cell</td></tr>
 		</tbody>
 	</table>
 </div>
-</div>
-	<pre class="hide let" data-src="#s-table"></pre>
 </div>
 
 <h2 id="buttons">Buttons</h2>
@@ -373,8 +365,7 @@ Add <code>btn</code> class to the element (usually a link) to make it look like 
 For color options see <a href="#colors-buttons">Colors</a> section.
 </p>
 
-<div class="bord">
-<div class="pad">
+<div class="code">
 <input type="submit" value="Submit">
 <input type="submit" value="Disabled" disabled>
 <button type="submit">Button</button>
@@ -388,22 +379,6 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 <span class="btn bg-n">Span</span>
 <a href="#" class="pad rad hover">Link-pad-rad</a>
 <a href="#">Link</a>
-
-
-<div id="s-button" class="hide">
-<input type="submit" value="Submit">
-<input type="submit" value="Disabled" disabled>
-<button>Button</button>
-<button class="bg-e">
-	<svg class="icon"><use xlink:href="#svg-ok"/></svg>
-	Icon
-</button>
-<a href="#" class="btn bg-i">Link-button</a>
-<a href="#" class="pad hover">Link-pad</a>
-<a href="#">Link</a>
-</div>
-</div>
-	<pre class="hide let" data-src="#s-button"></pre>
 </div>
 
 
@@ -411,20 +386,16 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 
 <h3 id="form-inline">Inline form</h3>
 
-<div class="bord">
-<div id="s-form-inline" class="pad">
+<div class="code">
 <form>
 	<input type="search" size="10" title="search string">
 	<input type="submit" value="Find">
 </form>
-</div>	
-	<pre class="hide let" data-src="#s-form-inline"></pre>
 </div>
 
 <h3 id="form-stacked">Stacked form</h3>
 
-<div class="bord">
-<div id="s-form-stacked" class="pad">
+<div class="code">
 <form method="post">
 	<p>
 		<label for="name">Name</label><br>
@@ -440,13 +411,10 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 	</p>
 </form>
 </div>
-	<pre class="hide let" data-src="#s-form-stacked"></pre>
-</div>
 
 <h3 id="form-grid">Aligned form using grid</h3>
 
-<div class="bord">
-<div id="s-form-grid" class="pad">
+<div class="code">
 <form method="post">
 	<div class="row flip">
 		<label for="i1">Label one</label>
@@ -474,8 +442,6 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 	</div>
 </form>
 </div>
-	<pre class="hide let" data-src="#s-form-grid"></pre>
-</div>
 
 
 <h3 id="form-table">Aligned form using table</h3>
@@ -485,8 +451,7 @@ For aligned form, <code>table</code> may be used, which is arguably not semantic
 In this case, <code>table</code> must be a direct descendant of <code>form</code>.
 Table will become stacked on small screen.
 
-<div class="bord">
-<div class="pad roll">
+<div class="code">
 	<form method="post">
 		<table>
 		<tr>
@@ -580,39 +545,6 @@ Table will become stacked on small screen.
 				<input type="submit" value="Confirm" class="bg-w dialog" name="btn2" title="Confirm?">
 		</table>
 	</form>
-	
-
-<div id="s-form-table" class="hide">
-<form method="post">
-	<table>
-		<tbody>
-			<tr>
-				<td><label for="nom">Name</label></td>
-				<td><input type="text" name="nom" id="nom"></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><input type="submit" value="Submit"></td>
-			</tr>
-		</tbody>
-	</table>
-</form>
-</div>
-			<!--tr>
-				<td colspan="2">
-					<fieldset>
-						<legend>Switches</legend>
-						<table>
-							<tr>
-								<td><label for="city">City</label>
-								<td><input type="text" name="city" id="city">
-							</tr>
-						</table>
-					</fieldset>
-				</td>
-			</tr-->
-</div>
-	<pre class="hide let" data-src="#s-form-table"></pre>
 </div>
 
 <!--
@@ -649,8 +581,7 @@ Add <code>shift</code> class to list item to shift (and following items) to the 
 <p>
 Add <code>hover</code> class to highlight item's background on hover.
 
-<div class="bord">
-<div id="s-pagenav" class="pad">
+<div class="code">
 <ul class="nav hover bg mar">
 	<li><b>Pages</b></li>
 	<li><a href="?p=1">1</a></li>
@@ -659,23 +590,18 @@ Add <code>hover</code> class to highlight item's background on hover.
 	<li class="shift"><a href="?p=4">4</a></li>
 </ul>
 </div>
-	<pre class="hide let" data-src="#s-pagenav"></pre>
-</div>
 
 <h3 id="nav-vertical">Vertical navbar</h3>
 
 <p>
 Add <code>nav let</code> classes to unordered list.
 
-<div class="bord">
-<div id="s-nav-vert" class="pad">
+<div class="code">
 <ul class="nav let bg mar" id="nav-v">
 	<li><a href="?n=1">One</a></li>
 	<li><a href="?n=2">Two</a></li>
 	<li><a href="?n=3">Three</a></li>
 </ul>
-</div>
-	<pre class="hide let" data-src="#s-nav-vert"></pre>
 </div>
 
 <h3 id="nav-responsive">Responsive dropdown, stacked on small screen</h3>
@@ -688,8 +614,7 @@ Add <code>toggle</code> class to control behaviour with JavaScript.
 In this case, link's <code>href</code> must point to corresponding nested list's <code>id</code>.
 With JavaScript, nested lists are toggled on click.
 
-<div class="bord">
-<div id="s-nav" class="pad">
+<div class="code">
 <ul class="nav hover flip toggle bg -let nav-resp">
 	<li>
 		<a href="#">First</a>
@@ -718,8 +643,6 @@ With JavaScript, nested lists are toggled on click.
 	</li>
 </ul>
 </div>
-	<pre class="hide let" data-src="#s-nav"></pre>
-</div>
 
 <h3 id="nav-hamburger">Responsive dropdown, hamburger on small screen</h3>
 
@@ -727,8 +650,7 @@ With JavaScript, nested lists are toggled on click.
 Following code shows how to collapse navigation to a single hamburger icon on small screen,
 and expand it to horizontal dropdown navbar on large screen (add <code>flip</code> class).
 
-<div class="bord">
-<div id="s-nav-hamb" class="pad">
+<div class="code">
 <div class="hide-desktop">
 	<a href="#navi" class="pad hover" title="Menu">&equiv;</a>
 </div>
@@ -761,8 +683,6 @@ and expand it to horizontal dropdown navbar on large screen (add <code>flip</cod
 		</li>
 	</ul>
 </nav>
-</div>
-	<pre class="hide let" data-src="#s-nav-hamb"></pre>
 </div>
 
 
@@ -802,14 +722,11 @@ Optionally add <code>shift</code> class to the target element to pop up leftward
 		</div>
 	</div>
 </div>
-<div class="bord">
-<div id="s-popup" class="pad">
+<div class="code">
 <div class="pop">
 	<a href="#pop">Popup</a>
 	<div id="pop" class="toggle pad">Pop</div>
 </div>
-</div>
-	<pre class="hide let" data-src="#s-popup"></pre>
 </div>
 
 <h3 id="toggle-div">Toggle</h3>
@@ -818,12 +735,9 @@ Optionally add <code>shift</code> class to the target element to pop up leftward
 Use link pointing at element with <code>hide</code> class.
 </p>
 
-<div class="bord">
-<div id="s-toggle" class="pad">
+<div class="code">
 <a href="#tog">Toggle</a>
 <div id="tog" class="hide pad bord yel toggle mem">Togglable</div>
-</div>
-	<pre class="hide let" data-src="#s-toggle"></pre>
 </div>
 
 <h3 id="toggle-drawer">Drawer</h3>
@@ -834,15 +748,12 @@ Optionally add <code>shift</code> class to the drawer element for right side dra
 Optionally use closing link pointing at <code>#cancel</code> inside target element.
 </p>
 
-<div class="bord">
-<div id="s-drawer" class="pad">
+<div class="code">
 <a class="pad hover" href="#drw">&equiv;</a>
 <div class="drawer shift pad" id="drw">
 	<a class="close pad" href="#cancel">&times;</a>
 	Demo drawer
 </div>
-</div>
-	<pre class="hide let" data-src="#s-drawer"></pre>
 </div>
 
 
@@ -854,16 +765,12 @@ Add <code>let</code> class for larger width.<br>
 Optionally use closing link pointing at <code>#cancel</code> inside target element.
 </p>
 
-<!--p><input class="calendar" type="date" data-modal="1"></p-->
-<div class="bord">
-<div id="s-modal" class="pad">
+<div class="code">
 <a href="#modal">Dialog</a>
 <div id="modal" class="hide dlg rad c pad -let">
 	<a class="close pad" href="#cancel">&times;</a>
 	<p>Dialog</p>
 </div>
-</div>
-	<pre class="hide let" data-src="#s-modal"></pre>
 </div>
 	
 		
@@ -874,15 +781,12 @@ Use link pointing at element with <code>hide full</code> classes.<br>
 Optionally use closing link pointing at <code>#cancel</code> inside target element.
 </p>
 
-<div class="bord">
-<div id="s-modal-full" class="pad">
+<div class="code">
 <a href="#full">Fullscreen</a>
 <div id="full" class="dlg full c pad bg-w">
 	<a class="close pad" href="#cancel">&times;</a>
 	Full
 </div>
-</div>
-	<pre class="hide let" data-src="#s-modal-full"></pre>
 </div>
 
 <h3 id="toggle-gallery">Gallery</h3>
@@ -908,19 +812,14 @@ Enter key press navigates to the next image (depends on browser).
 <p>
 <i class="bg-w">Warning</i>: for IE support, use <code>background-image</code> instead of <code>--img</code> in <code>style</code> attribute; no lazy-loading in this case.
 
-<div class="bord">
-<div class="pad">
+<div class="code">
 <a href="#gal1">Open gallery</a>
-<div id="s-gal">
 <div class="gal">
 	<a id="gal1" href="#gal2" style="--img:url(https://picsum.photos/id/360/1000/700.jpg)" data-caption="1/3 - Sunset"  ></a>
 	<a id="gal2" href="#gal3" style="--img:url(https://picsum.photos/id/830/1000/700.jpg)" data-caption="2/3 - Boat"></a>
 	<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/844/1000/700.jpg)" data-caption-x="3/3 - Ocean" ></a>
 	<a class="close" href="#cancel">&times;</a>
 </div>
-</div>
-</div>
-	<pre class="hide let" data-src="#s-gal"></pre>
 </div>
 
 <h3 id="toggle-tabs">Tabs</h3>
@@ -931,8 +830,7 @@ Each list item should contain a link pointing at tab panel.<br>
 Next sibling <code>div</code> should contain <code>div</code> tab panels.
 </p>
 
-<div class="bord">
-<div id="s-tabs" class="pad">
+<div class="code">
 <ul class="nav tabs rad toggle mem">
 	<li><a href="#tab1">Tab1</a></li>
 	<li><a href="#tab2">Tab2</a></li>
@@ -944,8 +842,6 @@ Next sibling <code>div</code> should contain <code>div</code> tab panels.
 	<div id="tab1" class="hide">1</div>
 </div>
 </div>
-	<pre class="hide let" data-src="#s-tabs"></pre>
-</div>
 
 <h3 id="toggle-tree">Tree</h3>
 
@@ -954,8 +850,7 @@ Inside list items, use links pointing at nested lists.<br>
 Optionally add <code>accordion</code> class for accordion behaviour.
 </p>
 
-<div class="bord">
-<div id="s-tree" class="pad">
+<div class="code">
 <ul class="toggle mem accordion">
 	<li><a href="#ul1">List 1</a>
 		<ul id="ul1">
@@ -976,22 +871,17 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 	</li>
 </ul>
 </div>
-	<pre class="hide let" data-src="#s-tree"></pre>
-</div>
 
 <h3 id="toggle-details">Details</h3>
 
 <p>This element natively has similar functionality.<br>
 <i class="bg-w">Warning</i>: not supported in IE and Edge.
 
-<div class="bord">
-<div id="s-details" class="pad">
+<div class="code">
 <details>
 	<summary>Summary</summary>
 	<div class="bg pad">Details</div>
 </details>
-</div>
-	<pre class="hide let" data-src="#s-details"></pre>
 </div>
 
 
@@ -999,8 +889,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 
 <h3 id="colors-inline">Inline</h3>
 
-<div class="bord">
-<div class="pad">
+<div class="code">
 	<a href="#" class="text-e">Error</a>
 	<a href="#" class="text-w">Warning</a>
 	<a href="#" class="text-i">Info</a>
@@ -1014,28 +903,25 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 	<a href="#" class="bg-y">Yes</a>
 	<a href="#" class="bg-n">No</a>
 	<a href="#">Normal</a>
-<div id="s-colors-text">
-<a href="#" class="text-e bg-e">Error</a>
-<a href="#" class="text-w bg-w">Warning</a>
-<a href="#" class="text-i bg-i">Info</a>
-<a href="#" class="text-y bg-y">Yes</a>
-<a href="#" class="text-n bg-n">No</a>
-<a href="#">Normal</a>
-</div>
+	<br>
+	<a href="#" class="text-e bg-e">Error</a>
+	<a href="#" class="text-w bg-w">Warning</a>
+	<a href="#" class="text-i bg-i">Info</a>
+	<a href="#" class="text-y bg-y">Yes</a>
+	<a href="#" class="text-n bg-n">No</a>
+	<a href="#">Normal</a>
+	<br>
 	<span class="bg-e">Error</span>
 	<span class="bg-w">Warning</span>
 	<span class="bg-i">Info</span>
 	<span class="bg-y">Yes</span>
 	<span class="bg-n">No</span>
 	<span tabindex="0">Normal</span>
-</div>	
-	<pre class="hide let" data-src="#s-colors-text"></pre>
-</div>	
+</div>
 	
 <h3 id="colors-buttons">Buttons</h3>
 
-<div class="bord">	
-<div id="s-colors-buttons" class="pad">
+<div class="code">
 <button type="button" class="bg-e">Error</button>
 <button type="button" class="bg-w">Warning</button>
 <button type="button" class="bg-i">Info</button>
@@ -1044,25 +930,20 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 <button type="button">Normal</button>
 <button type="button" disabled>Disabled</button>
 </div>
-	<pre class="hide let" data-src="#s-colors-buttons"></pre>
-</div>
 
 <h3 id="colors-blocks">Blocks</h3>
 
-<div class="bord">
-<div id="s-colors-blocks" class="pad">
-<p class="pad bg-e">Error	<span class="text-e">Error</span></p>
-<p class="pad bg-w">Warning	<span class="text-w">Warning</span></p>
-<p class="pad bg-i">Info	<span class="text-i">Info</span></p>
-<p class="pad bg-y">Yes	<span class="text-y">Yes</span></p>
-<p class="pad bg-n">No <span class="text-n">No</span></p>
+<div class="code">
+<p class="pad bg-e">Error<span class="text-e">Error</span></p>
+<p class="pad bg-w">Warning<span class="text-w">Warning</span></p>
+<p class="pad bg-i">Info<span class="text-i">Info</span></p>
+<p class="pad bg-y">Yes<span class="text-y">Yes</span></p>
+<p class="pad bg-n">No<span class="text-n">No</span></p>
 <p class="pad bg">Bg</p>
 <p class="pad bord">Border</p>
 <p class="pad bg bord">Bg+Border</p>
 <p class="pad bg-i bord">Status+Border</p>
 <p class="btn bg-y">Button-like</p>
-</div>
-	<pre class="hide let" data-src="#s-colors-blocks"></pre>
 </div>
 	
 <h3 id="colors-icons">Links and Icons</h3>
@@ -1108,8 +989,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 
 <h3>Media object</h3>
 
-<div class="bord">
-<div id="s-media" class="pad">
+<div class="code">
 <div class="row">
 	<a href="#media" class="col-0">
 		<svg class="text-w" width="80" height="80">
@@ -1124,15 +1004,11 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 		<a href="#media" class="-btn -inv">Link</a>
 	</div>
 </div>
-
-</div>
-	<pre class="hide let" data-src="#s-media"></pre>
 </div>
 	
 <h3>Figure</h3>
 
-<div class="bord">
-<div id="s-fig" class="pad">
+<div class="code">
 	<figure class="bg c pad">
 		<svg class="text-i" width="80" height="80">
 			<use xlink:href="#svg-place"/>
@@ -1142,52 +1018,32 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 		</figcaption>
 	</figure>
 </div>
-	<pre class="hide let" data-src="#s-fig"></pre>
-</div>
 	
 <h3>Box</h3>
 
-<div class="bord">
-<div class="pad">
+<div class="code">
 	<div class="box -dlg c pad rad">
 		<svg class="text-n" width="80" height="80"><use xlink:href="#svg-place"/></svg>
 		<p><b>No items yet</b>
 		<p>Click the button to create new item</p>
 		<a href="#add" class="btn bg-i">Add new item</a>
 	</div>
-
-<div id="s-dlg" class="hide">
-<div class="dlg c">
-	<svg class="text-n" width="80" height="80">
-		<use xlink:href="#svg-place"/>
-	</svg>
-	<p>No items yet</p>
-</div>
-</div>
-</div>
-	<pre class="hide let" data-src="#s-dlg"></pre>
 </div>
 	
 <h3>Full height</h3>
 
-<div class="bord">
-<div id="s-full" class="pad">
+<div class="code">
 <div class="full bg-w c">Full</div>
-</div>
-	<pre class="hide let" data-src="#s-full"></pre>
 </div>
 
 <h3>Invert</h3>
 
-<div class="bord">
-<div id="s-invert" class="pad">
+<div class="code">
 <div class="invert pad">
   Inverted text
   <a href="#">link</a>
   <span class="bg-e text-e">colors</span>
 </div>
-</div>
-	<pre class="hide let" data-src="#s-invert"></pre>
 </div>
 
 <h2 id="js">JavaScript enhancements</h2>
@@ -1200,9 +1056,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 	<li>Tabs <code>.toggle</code> &mdash; multiple, unscroll, remember (<code>.mem</code>)
 	<li>Dialog &mdash; escape
 	<li>Gallery &mdash; previous, escape
-	<!--
-	<li>Output HTML code: <code>pre[data-src]</code>
-	-->
+	<li>Output HTML code: <code>div.code</code>
 	<li>Link or button with confirmation: <code>.dialog[title][data-caption]</code>
 	<li>Link with prompt: <code>a.dialog[title][data-caption][data-prompt]</code>
 	<li>Check group of boxes: <code>input[data-group]</code>, <code>[class~="data-group"]</code>
@@ -1226,15 +1080,12 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 
 <h2 id="ajax">AJAX</h2>
 
-<div class="bord">
-<div id="s-ajax" class="pad">
+<div class="code">
 <a href="data.json" data-target="#preview">Load</a><br>
 <a href="data.json" data-target="#dlg-inner">Load in modal</a><br>
 <a href="data.json" data-target="#">Load in generated modal</a>
 <pre class="bg-i" id="preview">(preview)</pre>
 <div id="preview-dlg" class="hide dlg pad"><a class="close pad" href="#cancel">&times;</a><div id="dlg-inner">(preview)</div></div>
-</div>
-	<pre class="hide let" data-src="#s-ajax"></pre>
 </div>
 
 
@@ -1245,9 +1096,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 	
 	<p>Replacement of standard HTML date inputs.
 
-<div class="bord">
-<div class="pad">
-
+<div class="code">
 	<form action="?" method="get">
 	<table>
 	<tr><td>Text<td><input name="txt" type="text">
@@ -1256,14 +1105,6 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 	<tr><td><td><input type="submit" value="OK">
 	</table>
 	</form>
-	
-	
-<div id="s-calendar" class="hide">
-<input class="calendar" type="date">
-<input class="calendar datetime" type="datetime-local" data-def="2001-02-03T04:05:06" min="2001-02-02T10:00" max="2001-02-15T20:00">
-</div>
-</div>
-	<pre class="hide let" data-src="#s-calendar"></pre>
 </div>
 
 
@@ -1271,8 +1112,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 	
 	<p>Replacement for standard Javascript dialogs.</p>
 
-<div class="bord">
-<div id="s-dialog" class="pad">
+<div class="code">
 <p>
 	<a href="#done" class="alert" title="Hello!">Alert</a>,
 	<a href="?a=1&b=2" class="dialog" title="Continue?">Confirm link</a>,
@@ -1287,8 +1127,6 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 	<a href="?nm=" class="dialog" data-prompt="nm" data-caption="Name:" data-src="#nms">Prompt from input</a>
 </form>
 </div>
-	<pre class="hide let" data-src="#s-dialog"></pre>
-</div>
 
 	
 	<h3 id="edit"><a href="https://github.com/vvvkor/d1edit">Edit</a></h3>
@@ -1302,8 +1140,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 	If absent, mode is defined automatically based on whether HTML tags are contained in text.
 	</p>
 
-<div class="bord">
-<div id="s-edit" class="pad">
+<div class="code">
 <label for="wys">Label</label>
 <textarea
   id="wys"
@@ -1314,8 +1151,6 @@ Optionally add <code>accordion</code> class for accordion behaviour.
   cols="50"
   rows="5">Write <b>formatted</b> text.</textarea>
 </div>
-	<pre class="hide let" data-src="#s-edit"></pre>
-</div>
 
 	<h3 id="gallery"><a href="https://github.com/vvvkor/d1gallery">Gallery</a></h3>
 	
@@ -1324,23 +1159,19 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 	to generate gallery similar to <a href="#toggle-gallery">pure CSS gallery</a>.
 	</p>
 	
-<div class="bord">
-<div id="s-gallery" class="pad">
+<div class="code">
 <div class="gallery">
 	<a href="https://picsum.photos/id/360/1000/700.jpg" class="btn pic" title="Sunset">#1</a>
 	<a href="https://picsum.photos/id/830/1000/700.jpg" class="btn pic" title="Boat">#2</a>
 	<a href="https://picsum.photos/id/844/1000/700.jpg" class="btn pic" title="Ocean">#3</a>
 </div>
 </div>
-	<pre class="hide let" data-src="#s-gallery"></pre>
-</div>
 
 	<h3 id="lookup"><a href="https://github.com/vvvkor/d1lookup">Lookup</a></h3>
 	
 	<p>Autocomplete lookups with data from XHTTP request.
 
-<div class="bord">
-<div id="s-lookup" class="pad">
+<div class="code">
 <label for="lkp">Label</label>
 <input
   type="text"
@@ -1353,13 +1184,10 @@ Optionally add <code>accordion</code> class for accordion behaviour.
   data-cache="10"
   data-url="/users/{id}">
 </div>
-	<pre class="hide let" data-src="#s-lookup"></pre>
-</div>
 
 	<p>Chained selects.
 
-<div class="bord">
-<div id="s-chain" class="pad">
+<div class="code">
   <select name="country" data-chain="#town">
     <option value="">-</option>
     <option value="ru">Russia</option>
@@ -1368,15 +1196,12 @@ Optionally add <code>accordion</code> class for accordion behaviour.
   </select>
   <select name="town" id="town" data-filter="{q}.json" data-placeholder="..." data-cache="10"></select>
 </div>
-	<pre class="hide let" data-src="#s-chain"></pre>
-</div>
 
 <h3 id="tablex"><a href="https://github.com/vvvkor/d1tablex">Tablex</a></h3>
 	
 	<p>Filter and sort HTML table.
 
-<div class="bord">
-<div class="pad">
+<div class="code">
 <p>
 	<input name="q" value="" type="search" id="srch" placeholder="filter table" autocomplete="off">
 	<span id="rep"></span>
@@ -1398,28 +1223,6 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 	</tfoot>
 </table>
 </div>
-
-<div class="hide" id="s-table">
-<p>
-  <input name="q" value="" type="search"
-    id="table-filter"
-    placeholder="filter table"
-    autocomplete="off">
-  <span id="filter-report"></span>
-</p>
-
-<table class="sort" 
-       data-filter="#table-filter"
-       data-filter-report="#filter-report"
-       data-filter-cols="0 2 4"
-       data-case>
-  <thead><tr><th>...</th></tr></thead>
-  <tbody><tr><td>...</td></tr></tbody>
-  <tfoot><tr><th>...</th></tr></tfoot>
-</table>
-</div>
-</div>
-	<pre class="hide let" data-src="#s-table"></pre>
 </div>
 
 <h3 id="valid"><a href="https://github.com/vvvkor/d1valid">Valid</a></h3>
@@ -1440,8 +1243,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
   minlength="2"
   maxlength="4"&gt;</pre-->
 
-<div class="bord">
-<div id="s-valid1" class="pad">
+<div class="code">
 	<form method="post">
 		<table>
 		<tbody>
@@ -1486,8 +1288,6 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 		</table>
 	</form>
 </div>
-	<pre class="hide let" data-src="#s-valid1"></pre>
-</div>
 
 <!--form class="mar pad bg js-unhint js-live-val" id="testform">
 <div><input type="text" name="tx1" required xvalue="1"> <span class="text-e">required</span><span class="text-y">ok</span></div>
@@ -1507,8 +1307,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
   &lt;input type="text" name="nm" required&gt;
   &lt;p class="small text-e">Value required&lt;/p&gt;</pre-->
 
-<div class="bord">
-<div id="s-valid2" class="pad">
+<div class="code">
 	<form method="post" class="js-unhint">
 		<table>
 		<tbody>
@@ -1544,13 +1343,18 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 				<div class="small text-e mar">Type something</div>
 		<tr>
 			<td>Box
-			<td><label for="vv-bx0"><input id="vv-bx0" type="checkbox" required class="" name="bx0" value="1" title="You need to check the box to continue"> <span>Required box</span><div class="small text-e mar">Check to continue</div></label>
+			<td>
+				<input id="vv-bx0" type="checkbox" required class="" name="bx0" value="1" title="You need to check the box to continue">
+				<span><label for="vv-bx0">Required box</label></span>
+				<div class="small text-e mar">Check to continue</div>
 			
 		<tr>
 			<td>Radio
 			<td>
 				<label for="vv-rd1"><input id="vv-rd1" type="radio" name="ra1" required value="sun"> <span>Sun</span></label><br>
-				<label for="vv-rd2"><input id="vv-rd2" type="radio" name="ra1" value="moon"> <span>Moon</span><div class="small text-e mar">Select to continue</div></label>
+				<input id="vv-rd2" type="radio" name="ra1" value="moon">
+				<span><label for="vv-rd2">Moon</label></span>
+				<div class="small text-e mar">Select to continue</div>
 		<tr>
 			<td>
 			<td>
@@ -1563,8 +1367,6 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 	<!--div class="small text-e mar">Fieldset not valid</div-->
 	<div class="small text-e mar">Form not valid</div>
 
-</div>
-	<pre class="hide let" data-src="#s-valid2"></pre>
 </div>
 
 
