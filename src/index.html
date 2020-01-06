@@ -7,7 +7,13 @@
 
 <!--
 todo:
--
+- doc structure:
+  - typo, table
+  - grid
+  - blocks, color
+  - form, button
+  - plugins (nav, toggle, js, fetch, theme, code, ...)
+  - reference
 
 process:
 - (validate / lint)
@@ -320,17 +326,18 @@ Wrap table inside <code>div</code> with class <code>roll</code> to have independ
 	<table class="hover r1 c4 c5 -let table-sample">
 		<caption>Table caption</caption>
 		<thead>
-		<tr><th>Component<th>Pure CSS<th>JS enhance<wbr>ments <code>.toggle</code><th>Re<wbr>mem<wbr>ber state <code>.mem</code><th>Close on Escape<th>Modifi<wbr>cations
+		<tr><th>Component<th>Pure CSS<th>JS enhance<wbr>ments <code>.toggle</code><th>Re<wbr>mem<wbr>ber state <code>.mem</code><th>Fix position<th>Close on Escape<th>Modifi<wbr>cations
 		<tbody>
-		<tr>				<th>Dropdown	<td>H	<td>=/T	<td>-	<td>+	<td>
-		<tr>				<th>Tree		<td>tC	<td>=/T	<td>+	<td>-	<td><code>.accor<wbr>dion</code>
-		<tr>				<th>Toggle		<td>tC	<td>=/T	<td>+	<td>-	<td>
-		<tr>				<th>Popup		<td>HtC	<td>=/T<td>-	<td>+	<td>
-		<tr>				<th>Tabs		<td>tC	<td>T	<td>+	<td>-	<td>
-		<!--tr class="bg-w"><th>Tooltip		<td>HF	<td>HF	<td>-	<td>+	<td-->
-		<tr>				<th>Modal		<td>T	<td>=	<td>-	<td>(+)	<td><code>.full</code>
-		<tr>				<th>Drawer		<td>T	<td>=	<td>-	<td>(+)	<td>
-		<tr>				<th>Gallery		<td>T	<td>=	<td>-	<td>(+)	<td>
+		<tr>	<th>Dropdown	<td>Ht	<td>H/T	<td>-	<td>+	<td>+	<td><code>li.shift</code>
+		<tr>	<th>Tree		<td>t	<td>T	<td>+	<td>-	<td>-	<td><code>.accor<wbr>dion</code>
+		<tr>	<th>Toggle		<td>t	<td>T	<td>+	<td>-	<td>-	<td>
+		<tr>	<th>Popup		<td>Ht	<td>H/T<td>-	<td>+	<td>+	<td><code>.shift</code>
+		<tr>	<th>Tabs		<td>t	<td>T	<td>+	<td>-	<td>-	<td>
+		<!--tr>	<th>Tooltip		<td>HF	<td>HF	<td>-	<td>+	<td>+	<td-->
+		<tr>	<th>Modal		<td>T	<td>=	<td>-	<td>-	<td>+	<td><code>.full, .let</code>
+		<tr>	<th>Drawer		<td>T	<td>=	<td>-	<td>-	<td>+	<td><code>.shift</code>
+		<tr>	<th>Gallery		<td>T	<td>=	<td>-	<td>-	<td>+	<td>
+		<tr>	<th>Topbar		<td>V	<td>S	<td>-	<td>-	<td>-	<td>
 		</tbody>
 	</table>
 	</div>
@@ -340,7 +347,8 @@ Wrap table inside <code>div</code> with class <code>roll</code> to have independ
 		H &mdash; <code>:hover</code><br>
 		<!--F &mdash; <code>:focus</code><br>-->
 		T &mdash; <code>:target</code> (t &mdash; with undesirable scroll)<br>
-		C &mdash; <code>:checked</code> (checkbox hack)
+		V &mdash; visible<br>
+		S &mdash; scroll<br>
 	</p>
 
 <div class="code">
@@ -1387,7 +1395,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 <li><code>--gap-rate</code> - rate of vertical and horizontal gap; default: <code>.5</code></li>
 </ul>
 
-<a class="btn bg-i" href="#customize">Customize</a>
+<a class="btn bg-i" href="#theme">Customize</a>
 
 <h2 id="ref">Reference</h2>
 
