@@ -1,8 +1,8 @@
 /*! d1 async fetch */
 
-let d1 = require('../d1.js');
-//require('../plugins/dialog.js');
-//require('../plugins/toggle.js');
+let d1 = require('./d1.js');
+//require('./dialog.js');
+//require('./toggle.js');
 
 module.exports = new(function () {
 

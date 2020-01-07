@@ -2,10 +2,10 @@
 
 // Filter and sort HTML table
 // table.sort[data-filter] [data-filter-report][data-case][data-filter-cols]
-// todo: optimize: bind to arrFunc, getAttribute to attr, querySelector(All) to q/qq
-//       appendChild/insertBefore to ins
+// todo: optimize: addEventListener to d1.b(), bind to arrFunc, getAttribute to attr,
+//       var to let, querySelector(All) to q/qq, appendChild/insertBefore to ins
 
-let d1 = require('../d1.js');
+let d1 = require('./d1.js');
 
 module.exports = new(function() {
 

@@ -22,7 +22,7 @@ module.exports = new (function(){
     iClose: '&#x2715;', //&times;
     sCancel: 'Cancel',
     sOk: 'OK',
-    svgSuffix: 'svg-'
+    pSvg: 'svg-' //prefix
   };
 
   this.init = function(opt){
@@ -169,7 +169,7 @@ module.exports = new (function(){
   }
   
   this.i = function(id, alt, c) {
-    return this.svg(id ? this.opt.svgSuffix + id : '', alt, c);
+    return this.svg(id ? this.opt.pSvg + id : '', alt, c);
   }
   
   this.vis = function(n){

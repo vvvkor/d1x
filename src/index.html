@@ -38,40 +38,21 @@ process:
 </head>
 <body class="-bg" data-d1='{"hOk":"#yes","debug":1,"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
 
-<div class="topbar">
+<div class="topbar box -toggle">
+	<a href="#menu" class="pad hide-desktop"><svg class="icon" width="32" height="32"><use xlink:href="#svg-menu"/></svg></a>
 	<a href="#top" class="pad"><b>d1</b> v0.0.0</a>
 	<code class="pad">npm install d1css</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1" title="GitHub" class="pad">GitHub</a>
-	<a href="#m" class="pad hide-desktop">&equiv;</a>
 </div>
 
 <div class="-pad row -wrap -center flip">
-<!--a href="#m">m</a-->
-<div class="-drawer -hide-print   -stick -pad -bg" data-class-mobile="drawer toggle hide" data-class-desktop="stick pad" id="m"><div class="pad">
 
-<!--div class="-mar -pad -bg -c">
-	<p>
-	<a href="#top" class="text-n" style="font-size:700%;line-height:.9;">d1</a>
-	</p>
-
-	<p><b>d1</b> CSS framework</p>
-	
-	<p><code>v0.0.0</code></p>
-
-	<div class="">
-		<p class=""><code class="pad">npm i d1css</code></p>
-		<p class="">
-			<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1" title="GitHub" class="btn bg-n">
-			<svg class="icon" width="32" height="32"><use xlink:href="#svg-place"/></svg> <span>GitHub</span></a>
-		</p>
+<div class="drawer toggle hide" data-class-mobile="drawer toggle hide pad" data-class-desktop="stick pad" id="menu">
+	<div class="hide-desktop">
+		<a href="#cancel" class="close pad text-n">&#x2715;</a>
+		<h3 class="mar">d1 frontend framework</h3>
 	</div>
-</div-->
-	<!--p class="print"><code class="-pad">npm install d1css</code></p>
-	<p class="print"><code class="-pad">github.com/vvvkor/d1</code></p-->
-
-	<!--div class="hide-desktop"><a href="#menu" class="pad hover" title="Menu">&equiv;</a></div-->
-	<div class="-hide-mobile -toggle -mem" id="menu">
-	<ul class="toggle mem">
+	<ul class="toggle mem -accordion">
 		<li><a href="#start">Get started</a>
 		<li><a href="#typo">Typography</a>
 		<li><a href="#grid">Grid</a>
@@ -123,8 +104,8 @@ process:
 		<li><a href="#custom">Customization</a>
 		<li><a href="#ref">Reference</a>
 	</ul>
-	</div>
-</div></div>
+</div>
+
 <div class="col-3 pad" id="top1">
 	
  <div class="read pad" id="top2">

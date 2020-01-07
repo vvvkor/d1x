@@ -1,6 +1,6 @@
 /*! d1 tools */
 
-let d1 = require('../d1.js');
+let d1 = require('./d1.js');
 
 module.exports = new(function () {
 
@@ -9,12 +9,14 @@ module.exports = new(function () {
   this.name = 'tools';
 
   this.opt = {
+    iTop: '&uarr;',
     minDesktop: 900
   };
 
   this.init = function () {
     d1.e('table[class]', n => this.alignCells(n));
     d1.e('[data-class]', n => this.toggleClass(n));
+    //d1.e('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]', n => this.addTopLink(n));
     d1.listen('click', e => this.onClick(e));
     this.onResize();
     d1.b([window], 'resize', e => this.onResize(e));
@@ -50,6 +52,11 @@ module.exports = new(function () {
       e.preventDefault();
     }
     if (c) d1.e(q, m => this.setClass(n, c, on, m));
+  }
+
+  this.addTopLink = function(n){
+    n.style.position = 'relative';
+    let a = d1.ins('a', this.opt.iTop, {href:'#', className: 'close pad'}, n);
   }
 
   this.onResize = function() {

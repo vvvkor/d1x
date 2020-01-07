@@ -1,7 +1,7 @@
 /*! d1 calendar */
 
-let d1 = require('../d1.js');
-//require('../plugins/toggle.js');
+let d1 = require('./d1.js');
+//require('./toggle.js');
 
 module.exports = new(function () {
 
@@ -46,7 +46,7 @@ module.exports = new(function () {
   
   this.toggle = function(on, n){
     if(n){
-      var m = n.getAttribute('data-modal');
+      var m = d1.attr(n, 'data-modal');
       if(m!==null) m = parseInt(m, 10);
       else m = this.opt.showModal || (Math.min(window.innerWidth, window.innerHeight) < this.opt.sizeLimit);
       if(on){
@@ -127,7 +127,7 @@ module.exports = new(function () {
   }
   
   this.getLimit = function(n, a, t){
-    let r = n.getAttribute(a);
+    let r = d1.attr(n, a);
     return r ? this.fmt(this.parse(r), 0, t, 'y') : (a == 'max' ? '9999' : '0000');
   }
   
@@ -146,7 +146,7 @@ module.exports = new(function () {
   
   this.build = function(n, x){
     while(this.win.firstChild) this.win.removeChild(this.win.firstChild);
-    if (typeof x === 'string') x = this.parse(x || n.getAttribute('data-def'));
+    if (typeof x === 'string') x = this.parse(x || d1.attr(n, 'data-def'));
     let min = this.getLimit(n, 'min', 0);
     let max = this.getLimit(n, 'max', 0);
     //time
@@ -204,7 +204,7 @@ module.exports = new(function () {
         vv = this.fmt(x, i, 0, 'y');
         sel = (v == xd);
         today = false;//(v == cd);
-        off = (min && vv<min) || (maxd && vv>maxd);
+        off = (min && vv<min) || (max && vv>max);
         c = d1.ins('a', i, {className: 'pad c center ' + (sel ? 'bg-w ' : '') + (today ? 'bg-y ' : '') + (off ? 'text-n ' : 'hover ') + (wd>5 ? 'text-e ' : '')}, row);
         if(!off){
           c.href = '#' + i;

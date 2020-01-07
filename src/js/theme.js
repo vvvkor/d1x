@@ -1,6 +1,6 @@
 /*! d1 live theme configurator */
 
-let d1 = require('../d1.js');
+let d1 = require('./d1.js');
 
 module.exports = new(function () {
 

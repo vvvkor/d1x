@@ -1,6 +1,6 @@
 /*! d1 code sample */
 
-let d1 = require('../d1.js');
+let d1 = require('./d1.js');
 
 module.exports = new(function () {
 
@@ -9,7 +9,7 @@ module.exports = new(function () {
   this.name = 'code';
 
   this.opt = {
-    sCode: 'show code'
+    sCode: 'HTML'
   };
 
   this.init = function () {

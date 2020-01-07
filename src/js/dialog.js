@@ -4,8 +4,8 @@
 // a.alert([title]|[data-caption])
 // a.dialog[href]([title]|[data-caption])[data-prompt] [data-src][data-ok][data-cancel][data-reverse] 
 
-let d1 = require('../d1.js');
-//require('../plugins/toggle.js');
+let d1 = require('./d1.js');
+//require('./toggle.js');
 
 module.exports = new(function () {
 

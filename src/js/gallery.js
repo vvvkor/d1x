@@ -3,7 +3,7 @@
 // Lighweight image gallery
 // .gallery a.pic 
 
-let d1 = require('../d1.js');
+let d1 = require('./d1.js');
 
 module.exports = new(function () {
 

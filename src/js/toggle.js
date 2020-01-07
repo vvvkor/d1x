@@ -3,7 +3,7 @@
 // Interface components: dropdown, popup, toggle, modal dialog, tabs, drawer, tree, gallery
 // .nav, .pop, .toggle, .dlg, .tabs, .drawer, .tree, .gal
 
-let d1 = require('../d1.js');
+let d1 = require('./d1.js');
 
 module.exports = new(function () {
 
@@ -27,6 +27,7 @@ module.exports = new(function () {
     qGal: '.gal>a[id]', // dup of gallery.opt.qGal
     qSubMem: '.tabs.mem+div>[id], ul.mem:not(.nav) ul',
     qMedia: '.hide-mobile, .hide-desktop',
+    qDrawer: '#menu',
 
     cMem: 'mem',
     cToggle : 'toggle',
@@ -94,6 +95,7 @@ module.exports = new(function () {
           if(!this.opt.keepHash) this.unhash();
         }
         if(t || g) this.after();
+        else this.unpop();//d1.fire('esc', e);
       }
     }
   }
@@ -120,6 +122,7 @@ module.exports = new(function () {
     else if(!a){
       this.unhash();
     }
+    if(e.clientX<5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
   }
 
   this.attachSubNav = function(n){

@@ -1,4 +1,4 @@
-/*! d1x v1.0.14 */
+/*! d1x v1.0.15 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1css v1.0.14 */
+/*! d1css v1.0.15 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -110,7 +110,8 @@ module.exports = new function () {
     //&times;
     sCancel: 'Cancel',
     sOk: 'OK',
-    svgSuffix: 'svg-'
+    pSvg: 'svg-' //prefix
+
   };
 
   this.init = function (opt) {
@@ -276,7 +277,7 @@ module.exports = new function () {
   };
 
   this.i = function (id, alt, c) {
-    return this.svg(id ? this.opt.svgSuffix + id : '', alt, c);
+    return this.svg(id ? this.opt.pSvg + id : '', alt, c);
   };
 
   this.vis = function (n) {
@@ -345,6 +346,7 @@ else module.exports = main;
 var map = {
 	"./calendar.js": 2,
 	"./code.js": 3,
+	"./d1.js": 0,
 	"./dialog.js": 4,
 	"./example.js": 5,
 	"./fetch.js": 6,
@@ -382,7 +384,7 @@ webpackContext.id = 1;
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 calendar */
-var d1 = __webpack_require__(0); //require('../plugins/toggle.js');
+var d1 = __webpack_require__(0); //require('./toggle.js');
 
 
 module.exports = new function () {
@@ -444,7 +446,7 @@ module.exports = new function () {
 
   this.toggle = function (on, n) {
     if (n) {
-      var m = n.getAttribute('data-modal');
+      var m = d1.attr(n, 'data-modal');
       if (m !== null) m = parseInt(m, 10);else m = this.opt.showModal || Math.min(window.innerWidth, window.innerHeight) < this.opt.sizeLimit;
 
       if (on) {
@@ -550,7 +552,7 @@ module.exports = new function () {
   };
 
   this.getLimit = function (n, a, t) {
-    var r = n.getAttribute(a);
+    var r = d1.attr(n, a);
     return r ? this.fmt(this.parse(r), 0, t, 'y') : a == 'max' ? '9999' : '0000';
   };
 
@@ -574,7 +576,7 @@ module.exports = new function () {
       this.win.removeChild(this.win.firstChild);
     }
 
-    if (typeof x === 'string') x = this.parse(x || n.getAttribute('data-def'));
+    if (typeof x === 'string') x = this.parse(x || d1.attr(n, 'data-def'));
     var min = this.getLimit(n, 'min', 0);
     var max = this.getLimit(n, 'max', 0); //time
 
@@ -675,7 +677,7 @@ module.exports = new function () {
           sel = v == xd;
           today = false; //(v == cd);
 
-          off = min && vv < min || maxd && vv > maxd;
+          off = min && vv < min || max && vv > max;
           c = d1.ins('a', i, {
             className: 'pad c center ' + (sel ? 'bg-w ' : '') + (today ? 'bg-y ' : '') + (off ? 'text-n ' : 'hover ') + (wd > 5 ? 'text-e ' : '')
           }, row);
@@ -752,7 +754,7 @@ module.exports = new function () {
 
   this.name = 'code';
   this.opt = {
-    sCode: 'show code'
+    sCode: 'HTML'
   };
 
   this.init = function () {
@@ -793,7 +795,7 @@ module.exports = new function () {
 // Replacement of standard Javascript dialogs: alert, confirm, prompt
 // a.alert([title]|[data-caption])
 // a.dialog[href]([title]|[data-caption])[data-prompt] [data-src][data-ok][data-cancel][data-reverse] 
-var d1 = __webpack_require__(0); //require('../plugins/toggle.js');
+var d1 = __webpack_require__(0); //require('./toggle.js');
 
 
 module.exports = new function () {
@@ -997,8 +999,8 @@ module.exports = new function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 async fetch */
-var d1 = __webpack_require__(0); //require('../plugins/dialog.js');
-//require('../plugins/toggle.js');
+var d1 = __webpack_require__(0); //require('./dialog.js');
+//require('./toggle.js');
 
 
 module.exports = new function () {
@@ -1064,7 +1066,7 @@ module.exports = new function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 form tools */
-var d1 = __webpack_require__(0); //require('../plugins/toggle.js');
+var d1 = __webpack_require__(0); //require('./toggle.js');
 
 
 module.exports = new function () {
@@ -1266,48 +1268,93 @@ module.exports = new function () {
   "use strict";
 
   this.name = 'scroll';
-  this.y = null;
-  this.opt = {};
+  this.y = null; //this.hashed = false;
+
+  this.opt = {
+    gap: 20,
+    cBox: 'box',
+    qTopbar: '.topbar.toggle' //qTopbarFixed: '.topbar:not(.toggle)'
+
+  };
 
   this.init = function () {
     var _this = this;
 
-    d1.listen('hash', function (e) {
-      return _this.onHash(e);
-    });
-    var ons = d1.throttle(function () {
-      return _this.onScroll();
-    }, 500); //ons(); // forces reflow
+    var t;
 
-    setTimeout(function () {
-      return _this.onScroll();
-    }, 20);
-    d1.b([window], 'scroll', ons);
+    if (d1.q(this.opt.qTopbar)) {
+      d1.listen('hash', function (e) {
+        return _this.onHash(e);
+      });
+      var ons = d1.throttle(function () {
+        return _this.onScroll();
+      }, 500); //let ons = d1.throttle((h) => this.onScroll(h), 500);
+      //ons(); // forces reflow
+
+      setTimeout(function () {
+        return _this.onScroll();
+      }, 20);
+      d1.b([window], 'scroll', function (e) {
+        return ons();
+      });
+    }
+    /*
+    else if(t = d1.q(this.opt.qTopbarFixed)){
+      d1.listen('hash', e => this.fixScroll());
+    }
+    */
+
   };
 
   this.onHash = function (e) {
     //to hide topbar on hash change
-    if (e) this.y = window.scrollY - 10; // fires before onscroll
+    // fires before onscroll, but page is already scrolled
+    d1.dbg(['scroll hash', location.hash, e]);
+
+    if (e && location.hash && d1.q(location.hash)) {
+      this.y = window.scrollY - 10; //this.y = 1;
+      //this.hashed = true;
+    }
   };
 
-  this.onScroll = function () {
+  this.onScroll = function ()
+  /*h*/
+  {
     var _this2 = this;
 
-    //d1.dbg(['scroll on']);
-    if (this.y !== null) {
-      var dy = window.scrollY - this.y;
-      d1.e('.topbar', function (n) {
-        return _this2.decorate(n, window.scrollY, dy);
-      });
-    }
+    //let mode = this.hashed ? 'hash' : (h ? 'fix' : 'scroll');
+    //d1.dbg(['scroll',mode,h,this.hashed]);
+    if (this.y !== null
+    /* && !h*/
+    ) {
+        var dy = window.scrollY - this.y;
+        d1.e(this.opt.qTopbar, function (n) {
+          return _this2.decorate(n, window.scrollY, dy);
+        });
+      }
 
     this.y = window.scrollY; // forces reflow
+    //if(this.hashed) this.fixScroll();
+    //this.hashed = false;
   };
 
   this.decorate = function (n, y, dy) {
-    n.classList[dy > 0 ? 'add' : 'remove']('hide');
-    n.classList[y && dy <= 0 ? 'add' : 'remove']('box');
+    n.classList[dy > 0 ? 'add' : 'remove'](d1.opt.cHide);
+    n.classList[y && dy <= 0 ? 'add' : 'remove'](this.opt.cBox);
   };
+  /*
+  this.fixScroll = function(){
+    d1.dbg(['scroll-fix',location.hash]);
+    if(d1.q(location.hash)){
+      //let t = d1.q(this.opt.qTopbar + ':not(.'+ d1.opt.cHide +')');
+      let t = d1.q(this.opt.qTopbarFixed);
+      window.scrollBy(0, (t ? -t.offsetHeight : 0) - this.opt.gap);
+    }
+    //this.hashed = false;
+    //setTimeout(() => this.hashed = false, 500);
+  }
+  */
+
 }();
 
 /***/ }),
@@ -1317,8 +1364,8 @@ module.exports = new function () {
 /*! d1tablex */
 // Filter and sort HTML table
 // table.sort[data-filter] [data-filter-report][data-case][data-filter-cols]
-// todo: optimize: bind to arrFunc, getAttribute to attr, querySelector(All) to q/qq
-//       appendChild/insertBefore to ins
+// todo: optimize: addEventListener to d1.b(), bind to arrFunc, getAttribute to attr,
+//       var to let, querySelector(All) to q/qq, appendChild/insertBefore to ins
 var d1 = __webpack_require__(0);
 
 module.exports = new function () {
@@ -1758,6 +1805,7 @@ module.exports = new function () {
     // dup of gallery.opt.qGal
     qSubMem: '.tabs.mem+div>[id], ul.mem:not(.nav) ul',
     qMedia: '.hide-mobile, .hide-desktop',
+    qDrawer: '#menu',
     cMem: 'mem',
     cToggle: 'toggle',
     iToggle: '[+]'
@@ -1875,7 +1923,7 @@ module.exports = new function () {
           if (!this.opt.keepHash) this.unhash();
         }
 
-        if (t || g) this.after();
+        if (t || g) this.after();else this.unpop(); //d1.fire('esc', e);
       }
     }
   };
@@ -1898,6 +1946,7 @@ module.exports = new function () {
     } else if (!a) {
       this.unhash();
     }
+    if (e.clientX < 5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
   };
 
   this.attachSubNav = function (n) {
@@ -2067,6 +2116,7 @@ module.exports = new function () {
 
   this.name = 'tools';
   this.opt = {
+    iTop: '&uarr;',
     minDesktop: 900
   };
 
@@ -2078,7 +2128,8 @@ module.exports = new function () {
     });
     d1.e('[data-class]', function (n) {
       return _this.toggleClass(n);
-    });
+    }); //d1.e('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]', n => this.addTopLink(n));
+
     d1.listen('click', function (e) {
       return _this.onClick(e);
     });
@@ -2131,6 +2182,14 @@ module.exports = new function () {
     if (c) d1.e(q, function (m) {
       return _this2.setClass(n, c, on, m);
     });
+  };
+
+  this.addTopLink = function (n) {
+    n.style.position = 'relative';
+    var a = d1.ins('a', this.opt.iTop, {
+      href: '#',
+      className: 'close pad'
+    }, n);
   };
 
   this.onResize = function () {
