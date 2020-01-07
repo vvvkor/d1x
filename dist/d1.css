@@ -1,4 +1,4 @@
-/*! d1css v1.0.15 */
+/*! d1css v1.0.16 */
 
 :root {
     --text: #000;
@@ -624,8 +624,8 @@ h1[id]:before, h2[id]:before, h3[id]:before, h4[id]:before {
     content: "";
     height: 3.7em;
     height: calc(.5em + var(--topbar));
-    margin-top: -3.2em;
-    margin-top: calc(0 - var(--topbar));
+    margin-top: -3.1em;
+    margin-top: calc(.1em - var(--topbar));
 }
 
 .bg, blockquote, pre, code, thead, tfoot {

@@ -290,7 +290,7 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide){right:0;}
 .topbar.hide{top:calc(-.1em - var(--topbar));}
 .topbar+*{margin-top:var(--topbar);}
 	h1[id]:before, h2[id]:before, h3[id]:before, h4[id]:before
-	{display:block;content:"";height:calc(.5em + var(--topbar));margin-top:calc(0em - var(--topbar));}/*?*/
+	{display:block;content:"";height:calc(.5em + var(--topbar));margin-top:calc(.1em - var(--topbar));}/*?*/
 
 /* color */
 
