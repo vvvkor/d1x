@@ -2163,17 +2163,21 @@ module.exports = new function () {
     }
   };
 
-  this.setClass = function (a, c, on, n) {
-    n.classList[on ? 'add' : 'remove'](c);
+  this.setClass = function (a, c, on, n, s) {
+    d1.dbg(['setcls', n, c]);
+    if (s) n.className = on ? c : '';else c.split(/\s+/).forEach(function (cc) {
+      return n.classList[on ? 'add' : 'remove'](cc);
+    });
     a.classList[on ? 'add' : 'remove'](d1.opt.cAct);
   };
 
   this.toggleClass = function (n, e) {
     var _this2 = this;
 
-    var box = n.type == 'checkbox';
+    var box = n.type == 'checkbox' || n.type == 'radio';
     var q = d1.attr(n, 'data-nodes', n.hash);
     var c = d1.attr(n, 'data-class');
+    var s = n.hasAttribute('data-set');
     var on = box ? n.checked : n.classList.contains(d1.opt.cAct);
 
     if (e && !box) {
@@ -2182,7 +2186,7 @@ module.exports = new function () {
     }
 
     if (c) d1.e(q, function (m) {
-      return _this2.setClass(n, c, on, m);
+      return _this2.setClass(n, c, on, m, s);
     });
   };
 

@@ -38,21 +38,24 @@ module.exports = new(function () {
     }
   }
 
-  this.setClass = function(a, c, on, n){
-    n.classList[on ? 'add' : 'remove'](c);
+  this.setClass = function(a, c, on, n, s){
+    d1.dbg(['setcls',n,c]);
+    if(s) n.className = on ? c : '';
+    else c.split(/\s+/).forEach(cc => n.classList[on ? 'add' : 'remove'](cc));
     a.classList[on ? 'add' : 'remove'](d1.opt.cAct);
   }
 
   this.toggleClass = function(n, e) {
-    let box = (n.type == 'checkbox');
+    let box = (n.type == 'checkbox' || n.type == 'radio');
     let q = d1.attr(n, 'data-nodes', n.hash);
     let c = d1.attr(n, 'data-class');
+    let s = n.hasAttribute('data-set');
     let on = box ? n.checked : n.classList.contains(d1.opt.cAct);
     if(e && !box){
       on = !on;
       e.preventDefault();
     }
-    if (c) d1.e(q, m => this.setClass(n, c, on, m));
+    if (c) d1.e(q, m => this.setClass(n, c, on, m, s));
   }
 
   this.addTopLink = function(n){

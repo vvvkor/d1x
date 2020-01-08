@@ -43,7 +43,7 @@ process:
 </head>
 <body class="-bg" data-d1='{"hOk":"#yes","debug":1,"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
 
-<div class="topbar box -let">
+<div class="topbar shade -let">
 	<a href="#menu" class="pad hide-desktop"><svg class="icon" width="32" height="32"><use xlink:href="#svg-menu"/></svg></a>
 	<a href="#top" class="pad"><b>d1</b> v0.0.0</a>
 	<code class="pad">npm install d1css</code>
@@ -57,7 +57,7 @@ process:
 		<a href="#cancel" class="close pad text-n">&#x2715;</a>
 		<h3 class="mar">d1 frontend framework</h3>
 	</div>
-	<ul class="pad let toggle mem -accordion">
+	<ul class="pure pad toggle mem -accordion">
 		<li><a href="#start">Get started</a>
 		<li><a href="#typo">Typography</a>
 		<li><a href="#grid">Grid</a>
@@ -162,7 +162,7 @@ Nothing special here. Mostly, default styling is kept.
 
 <h3>Headings</h3>
 
-	<a href="#let" data-class="let" data-nodes="#headings>*">Add</a> <code>let</code> class to remove margins.
+	<a href="#h-pure" data-class="pure" data-nodes="#headings>*">Add</a> <code>pure</code> class to remove margins.
 	<div id="headings">
 	<h1>Heading 1</h1>
 	<h2>Heading 2</h2>
@@ -209,7 +209,8 @@ Nothing special here. Mostly, default styling is kept.
 
 <h3 class="-l">Lists</h3>
 
-	<a href="#let" data-class="let" data-nodes="#lists>*">Add</a> <code>let</code> class to remove margins and list style.
+	<a href="#ul-pure" data-class="pure" data-nodes="#lists>*">Add</a> <code>pure</code> class to remove margins and list style.<br>
+	<a href="#ul-row" data-class="row let -center" data-nodes="#lists>*">Add</a> <code>row</code> class for horizontal list.
 	<div id="lists">
 	<ul class="-l -let">
 		<li>Unordered
@@ -237,6 +238,8 @@ By default, they all have equal width.
 To stack columns on small screen, add <code>flip</code> class to the container.
 <p>
 To allow row wrapping add <code>let</code> class to the container.
+<p>
+To centrify items vertically, add <code>center</code> class to the container.
 <p>
 To set various proportions, add following classes to the columns:
 <code>col-0</code> for minimal required width,
@@ -304,18 +307,18 @@ Wrap your rows into <code>div</code> with <code>wrap</code> class to limit maxim
 <p>
 <code>Table</code> is styled with border, unless it is a direct descendant of <code>form</code>.
 Add <code>hover</code> class to highlight hovered row.
-<a href="#let" data-class="let" data-nodes=".table-sample">Add</a> <code>let</code> class to hide borders.<br>
+<a href="#table-pure" data-class="pure" data-nodes=".table-sample">Add</a> <code>pure</code> class to hide borders.<br>
 Add <code>r#, l#, #c</code> (where # is any number) classes to align cells of column number # to the right, left or center, respectively (JavaScript required).
 Wrap table inside <code>div</code> with class <code>roll</code> to have independent horizontal scrolling of table when it is too wide.
 </p>
 
 	<div class="roll">
-	<table class="hover r1 c4 c5 -let table-sample">
+	<table class="hover r1 c4 c5 table-sample">
 		<caption>Table caption</caption>
 		<thead>
 		<tr><th>Component<th>Pure CSS<th>JS enhance<wbr>ments <code>.toggle</code><th>Re<wbr>mem<wbr>ber state <code>.mem</code><th>Fix position<th>Close on Escape<th>Modifi<wbr>cations
 		<tbody>
-		<tr>	<th>Dropdown	<td>Ht	<td>H/T	<td>-	<td>+	<td>+	<td><code>li.shift</code>
+		<tr>	<th>Dropdown	<td>Ht	<td>H/T	<td>-	<td>+	<td>+	<td><code>li.shift, .let</code>
 		<tr>	<th>Tree		<td>t	<td>T	<td>+	<td>-	<td>-	<td><code>.accor<wbr>dion</code>
 		<tr>	<th>Toggle		<td>t	<td>T	<td>+	<td>-	<td>-	<td>
 		<tr>	<th>Popup		<td>Ht	<td>H/T<td>-	<td>+	<td>+	<td><code>.shift</code>
@@ -324,7 +327,7 @@ Wrap table inside <code>div</code> with class <code>roll</code> to have independ
 		<tr>	<th>Modal		<td>T	<td>=	<td>-	<td>-	<td>+	<td><code>.full, .let</code>
 		<tr>	<th>Drawer		<td>T	<td>=	<td>-	<td>-	<td>+	<td><code>.shift</code>
 		<tr>	<th>Gallery		<td>T	<td>=	<td>-	<td>-	<td>+	<td>
-		<tr>	<th>Topbar		<td>V	<td>S	<td>-	<td>-	<td>-	<td>
+		<tr>	<th>Topbar		<td>V	<td>S	<td>-	<td>-	<td>-	<td><code>.let</code>
 		</tbody>
 	</table>
 	</div>
@@ -1017,7 +1020,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 <h3>Box</h3>
 
 <div class="code">
-	<div class="box -dlg c pad rad">
+	<div class="shade -dlg c pad rad">
 		<svg class="text-n" width="80" height="80"><use xlink:href="#svg-place"/></svg>
 		<p><b>No items yet</b>
 		<p>Click the button to create new item</p>
@@ -1055,7 +1058,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 	<li>Link or button with confirmation: <code>.dialog[title][data-caption]</code>
 	<li>Link with prompt: <code>a.dialog[title][data-caption][data-prompt]</code>
 	<li>Check group of boxes: <code>input[data-group]</code>, <code>[class~="data-group"]</code>
-	<li>Toggle class: <code>a[href^='#'][data-class]</code>, <code id="test1">a[data-nodes][data-class]</code> (
+	<li>Toggle class: <code>a[href^='#'][data-class][data-set]</code>, <code id="test1">a[data-nodes][data-class][data-set]</code> (
 		<a href="#test1" data-class="bg-w" data-nodes="#js-behaviours code" class="">test</a>
 		<input type="checkbox" name="chb" data-class="bg-y" data-nodes="#js-behaviours code">
 		<a href="#test2" data-class="invert" data-nodes="body" class="">invert</a>
@@ -1366,11 +1369,14 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 
 <h3 id="scroll">Scroll</h3>
 
-<p>Toggle top bar (<code>.topbar.let</code>) visibility by scrolling.
-<br><label><input type="checkbox" data-nodes="#demo-topbar" data-class="topbar"> Enable demo</label>
+<p>
+<label><input name="demo-top" type="radio" data-nodes="#demo-topbar" data-class="topbar shade bg-i" data-set> Fixed topbar</label><br>
+<label><input name="demo-top" type="radio" data-nodes="#demo-topbar" data-class="topbar shade let bg-w" data-set> Scrollable topbar</label><br>
+<label><input name="demo-top" type="radio" data-nodes="#demo-topbar" data-class="bg-n" data-set checked> Disable demo topbar</label>
+</p>
 
 <div class="code">
-	<div class="-topbar let box bg-w" id="demo-topbar">
+	<div class="-topbar -let -shade -bg-w" id="demo-topbar">
 		<b class="pad">Topbar</b>
 	</div>
 </div>
@@ -1408,32 +1414,34 @@ most important:
 <div class="roll">
 <table class="hover">
 <tr><th>CSS class<th>Description<th>Used with<th>Modifications
-<tr><td>.row<td><a href="#grid">Grid</a><td>.col-0 div .col-2 .col-3<td>.flip .stick .let <i>.wrap .read .narrow .shift</i>
+<tr><td>.row<td><a href="#grid">Grid</a><td>.col-0 div .col-2 .col-3 ul<td>.flip .stick .let .center<i>.wrap .read .narrow .shift</i>
 <tr><td>.roll<td>Horizontal scroll<td><a href="#table">table</a>.hover<td>
 <tr><td>button, a.btn<td><a href="#colors-buttons">Button</a><td><a href="#form">form</a> submit button a span<td>.bg-x <i>[data-target]</i>
-<tr><td>.nav<td><a href="#nav">Navigation</a><td>ul<td>.flip .hover .let .l .bg <i>.act .shift</i>
+<tr><td>.nav<td><a href="#nav">Navigation</a><td>ul<td>.toggle .flip .hover .let .l .bg <i>.act .shift</i>
 <tr><td>.drawer<td><a href="#toggle-drawer">Drawer</a><td>div a.close<td>.shift
 <tr><td>.topbar<td><a href="#scroll">Top bar</a><td><td>.let
 <tr><td>.flip<td>Responsive<td>.row .nav<td>
 <tr><td>.fix<td><a data-href="#fix">Fixed block</a><td><td>.r .l
-<tr><td>.hide<td><a href="#toggle">Togglable (hash)</a><td>div ul .close<td>.dlg.c.let .full.c .hide-mobile .hide-desktop <i>.pop .tabs</i>
-<tr><td>.switch<td><a href="#toggle-radio">Togglable (radio)</a><td>label div<td>.pop .tabs
+<tr><td>.hide<td><a href="#toggle">Togglable (hash)</a><td>div ul .close<td>.toggle .dlg.c.let .full.c .hide-mobile .hide-desktop <i>.pop .tabs</i>
+<tr><td>.let<td>Specific modifications to components<td>.row, .nav, .dlg, .topbar<td>
+<!--tr><td>.switch<td><a href="#toggle-radio">Togglable (radio)</a><td>label div<td>.pop .tabs -->
 <tr><td>.gal<td><a href="#toggle-gallery">Gallery</a><td>a .close<td><i>[data-info]</i>
 <tr><td>.toggle<td><a href="#js">JavaScript toggle</a><td>ul div .js-control .js-hide<td>.mem
 <tr><td>.icon<td>Small image<td>img svg a button<td>
 <tr><td>.text-<td><a href="#colors">Text color</a><td>* .invert<td>.text-e .text-w .text-i .text-y .text-n
 <tr><td>.bg<td><a href="#colors">Background color</a><td>* .invert<td>.bg-e .bg-w .bg-i .bg-y .bg-n .yel
 <tr><td>.r .c .l<td>Align<td>*<td>
-<tr><td>.center<td>Centrify<td>*<td>
+<tr><td>.center<td>Centrify<td>* .row<td>
 <tr><td>.small<td>Small font<td>*<td>
+<tr><td>.pure<td>Remove formatting<td>*<td>.mar .pad .bord .rad .shade
 <tr><td>.mar<td>Vertical margin<td>*<td>
 <tr><td>.pad<td>Padding<td>*<td>
 <tr><td>.bord<td>Border<td>*<td>
 <tr><td>.rad<td>Border radius<td>*<td>
-<tr><td>.let<td>Less formatting<td>*, ul, table, .row<td>
+<tr><td>.shade<td>Add shadow<td>*<td>
 <tr><td>.nobr<td>No wrapping<td>*<td>
 <tr><td>.hide-print .hide-screen<td>Show by media<td>*<td>
-</table>topbar
+</table>
 </div>
 
 <h3><a href="#ref-alpha">Alphabetical reference</a></h3>
@@ -1472,22 +1480,24 @@ most important:
 <li><code>.js-control</code> &mdash; visibility is controlled by JavaScript, shown by default
 <li><code>.js-hide</code> &mdash; hidden with JavaScript
 <li><code>.l</code> &mdash; align content to the left 
-<li><code>.let</code> &mdash; remove some formatting: margin, table border, list style
+<li><code>.let</code> &mdash; specific modifications to components
 <li><code>.mar</code> &mdash; add vertical margins
 <li><code>.narrow</code> &mdash; narrow block width
 <li><code>.nav</code> &mdash; horizontal dropdown navigation
 <li><code>.nobr</code> &mdash; prevent automatic text wrapping
 <li><code>.pad</code> &mdash; add padding
 <li><code>.pop</code> &mdash; popup component wrapper
+<li><code>.pure</code> &mdash; remove formatting: margin, border, padding, shadow
 <li><code>.r</code> &mdash; align content to the right
 <li><code>.rad</code> &mdash; rounded corners
 <li><code>.read</code> &mdash; block width for comfortable reading
 <li><code>.roll</code> &mdash; horizontal scrolling of contents
 <li><code>.row</code> &mdash; row of grid
+<li><code>.shade</code> &mdash; add shadow
 <li><code>.shift</code> &mdash; shift item of <code>.row</code>, <code>.nav</code>, <code>.pop</code>, <code>.drawer</code> to the right
 <li><code>.small</code> &mdash; small font size
 <li><code>.stick</code> &mdash; stick block to the top
-<li><code>.switch</code> &mdash; input controlling visibility of following block
+<!--li><code>.switch</code> &mdash; input controlling visibility of following block -->
 <li><code>.tabs</code> &mdash; tabs component
 <li><code>.text-e</code> &mdash; nominal "red" text color
 <li><code>.text-i</code> &mdash; nominal "blue" text color
