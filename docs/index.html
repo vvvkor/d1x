@@ -7,13 +7,18 @@
 
 <!--
 todo:
+- js: unify icons usage (string/array)
+- js: code formatter
+- css: input: bg, color ?
+- css h2:before can cover preceding elements!!!
+- doc: "requires toggle.js"
 - doc structure:
-  - typo, table
-  - grid
-  - blocks, color
+  - typo, table, blocks, color
+  - grid, media
   - form, button
-  - plugins (nav, toggle, js, fetch, theme, code, ...)
-  - reference
+  - toggle (css)
+  - plugins (js)
+  - reference (classes, plugins)
 
 process:
 - (validate / lint)
@@ -26,8 +31,8 @@ process:
 -->
 	
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.16/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.16/dist/d1.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.17/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.17/dist/d1.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/d1.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -38,9 +43,9 @@ process:
 </head>
 <body class="-bg" data-d1='{"hOk":"#yes","debug":1,"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
 
-<div class="topbar box -toggle">
+<div class="topbar box -let">
 	<a href="#menu" class="pad hide-desktop"><svg class="icon" width="32" height="32"><use xlink:href="#svg-menu"/></svg></a>
-	<a href="#top" class="pad"><b>d1</b> v1.0.16</a>
+	<a href="#top" class="pad"><b>d1</b> v1.0.17</a>
 	<code class="pad">npm install d1css</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1" title="GitHub" class="pad">GitHub</a>
 </div>
@@ -52,7 +57,7 @@ process:
 		<a href="#cancel" class="close pad text-n">&#x2715;</a>
 		<h3 class="mar">d1 frontend framework</h3>
 	</div>
-	<ul class="toggle mem -accordion">
+	<ul class="pad let toggle mem -accordion">
 		<li><a href="#start">Get started</a>
 		<li><a href="#typo">Typography</a>
 		<li><a href="#grid">Grid</a>
@@ -100,6 +105,7 @@ process:
 			<li><a href="#lookup">Lookup</a>
 			<li><a href="#tablex">Tablex</a>
 			<li><a href="#valid">Valid</a>
+			<li><a href="#scroll">Scroll</a>
 			</ul>
 		<li><a href="#custom">Customization</a>
 		<li><a href="#ref">Reference</a>
@@ -205,7 +211,7 @@ Nothing special here. Mostly, default styling is kept.
 
 	<a href="#let" data-class="let" data-nodes="#lists>*">Add</a> <code>let</code> class to remove margins and list style.
 	<div id="lists">
-	<ul class="-let">
+	<ul class="-l -let">
 		<li>Unordered
 		<li>List
 			<ol>
@@ -1358,6 +1364,17 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 
 </div>
 
+<h3 id="scroll">Scroll</h3>
+
+<p>Toggle top bar (<code>.topbar.let</code>) visibility by scrolling.
+<br><label><input type="checkbox" data-nodes="#demo-topbar" data-class="topbar"> Enable demo</label>
+
+<div class="code">
+	<div class="-topbar let box bg-w" id="demo-topbar">
+		<b class="pad">Topbar</b>
+	</div>
+</div>
+
 
 <h2 id="custom">Customization with CSS vars</h2>
 
@@ -1394,8 +1411,9 @@ most important:
 <tr><td>.row<td><a href="#grid">Grid</a><td>.col-0 div .col-2 .col-3<td>.flip .stick .let <i>.wrap .read .narrow .shift</i>
 <tr><td>.roll<td>Horizontal scroll<td><a href="#table">table</a>.hover<td>
 <tr><td>button, a.btn<td><a href="#colors-buttons">Button</a><td><a href="#form">form</a> submit button a span<td>.bg-x <i>[data-target]</i>
-<tr><td>.nav<td><a href="#nav">Navigation</a><td>ul<td>.flip .hover .let .bg <i>.act .shift <!--.topbar--></i>
+<tr><td>.nav<td><a href="#nav">Navigation</a><td>ul<td>.flip .hover .let .l .bg <i>.act .shift</i>
 <tr><td>.drawer<td><a href="#toggle-drawer">Drawer</a><td>div a.close<td>.shift
+<tr><td>.topbar<td><a href="#scroll">Top bar</a><td><td>.let
 <tr><td>.flip<td>Responsive<td>.row .nav<td>
 <tr><td>.fix<td><a data-href="#fix">Fixed block</a><td><td>.r .l
 <tr><td>.hide<td><a href="#toggle">Togglable (hash)</a><td>div ul .close<td>.dlg.c.let .full.c .hide-mobile .hide-desktop <i>.pop .tabs</i>
@@ -1415,7 +1433,7 @@ most important:
 <tr><td>.let<td>Less formatting<td>*, ul, table, .row<td>
 <tr><td>.nobr<td>No wrapping<td>*<td>
 <tr><td>.hide-print .hide-screen<td>Show by media<td>*<td>
-</table>
+</table>topbar
 </div>
 
 <h3><a href="#ref-alpha">Alphabetical reference</a></h3>
@@ -1476,7 +1494,7 @@ most important:
 <li><code>.text-n</code> &mdash; nominal "gray" text color
 <li><code>.text-w</code> &mdash; nominal "yellow" text color
 <li><code>.text-y</code> &mdash; nominal "green" text color
-<!--li><code>.topbar</code> &mdash; sticky top app bar-->
+<li><code>.topbar</code> &mdash; sticky top app bar>
 <li><code>.wrap</code> &mdash; reasonable page width limit
 <li><code>.yel</code> &mdash; temporary highlight targeted block
 </ol>
@@ -1484,6 +1502,7 @@ most important:
 
  </div><!-- /read -->
 </div><!-- /col -->
+
 </div><!-- /row -->
 
 <!--footer class="pad bg">

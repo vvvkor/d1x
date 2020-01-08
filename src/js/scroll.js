@@ -12,22 +12,22 @@ module.exports = new(function () {
   //this.hashed = false;
   
   this.opt = {
-    gap: 20,
+    //gap: 20,
     cBox: 'box',
-    qTopbar: '.topbar.toggle',
-    //qTopbarFixed: '.topbar:not(.toggle)'
+    qTopbar: '.topbar.let',
+    //qTopbarFixed: '.topbar:not(.let)'
   };
   
   this.init = function () {
     let t;
-    if(d1.q(this.opt.qTopbar)){
+    //if(d1.q(this.opt.qTopbar)){
       d1.listen('hash', e => this.onHash(e));
       let ons = d1.throttle(() => this.onScroll(), 500);
       //let ons = d1.throttle((h) => this.onScroll(h), 500);
       //ons(); // forces reflow
       setTimeout(() => this.onScroll(), 20);
       d1.b([window], 'scroll', e => ons(/*this.hashed*/));
-    }
+    //}
     /*
     else if(t = d1.q(this.opt.qTopbarFixed)){
       d1.listen('hash', e => this.fixScroll());
@@ -48,7 +48,7 @@ module.exports = new(function () {
   
   this.onScroll = function(/*h*/){
     //let mode = this.hashed ? 'hash' : (h ? 'fix' : 'scroll');
-    //d1.dbg(['scroll',mode,h,this.hashed]);
+    //d1.dbg(['scroll']); // ,mode,h,this.hashed
     if(this.y!==null/* && !h*/){
       let dy = window.scrollY - this.y;
       d1.e(this.opt.qTopbar, n => this.decorate(n, window.scrollY, dy));

@@ -9,6 +9,7 @@ module.exports = new(function () {
   this.name = 'tools';
 
   this.opt = {
+    qTop: 'h2[id], h3[id], h4[id], h5[id], h6[id]', // h1[id],
     iTop: '&uarr;',
     minDesktop: 900
   };
@@ -16,7 +17,7 @@ module.exports = new(function () {
   this.init = function () {
     d1.e('table[class]', n => this.alignCells(n));
     d1.e('[data-class]', n => this.toggleClass(n));
-    //d1.e('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]', n => this.addTopLink(n));
+    d1.e(this.opt.qTop, n => this.addTopLink(n));
     d1.listen('click', e => this.onClick(e));
     this.onResize();
     d1.b([window], 'resize', e => this.onResize(e));
@@ -56,7 +57,7 @@ module.exports = new(function () {
 
   this.addTopLink = function(n){
     n.style.position = 'relative';
-    let a = d1.ins('a', this.opt.iTop, {href:'#', className: 'close pad'}, n);
+    let a = d1.ins('a', this.opt.iTop, {href:'#', className: 'close l text-n'}, n);
   }
 
   this.onResize = function() {

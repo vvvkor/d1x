@@ -1,4 +1,4 @@
-/*! d1css v1.0.16 */
+/*! d1css v1.0.17 */
 
 :root {
     --text: #000;
@@ -14,7 +14,7 @@
     --rad: .3;
     --gap: 1;
     --gap-rate: .5;
-    --topbar: 3.2em;
+    --topbar: 3.2rem;
     --text-danger: #c00;
     --text-warning: #c70;
     --text-info: #07a;
@@ -149,7 +149,7 @@ ul, ol, dl, blockquote, pre, hr, p, figure {
 h1, h2, h3, h4, h5, h6 {
     margin: 3rem 0 1.5rem 0;
     line-height: 1.2;
-    max-width: 20em;
+    padding-right: 3em;
 }
 
 h1+h2, h2+h3, h3+h4, h4+h5, h5+h6 {
@@ -303,12 +303,23 @@ ul.let li {
     list-style: none;
 }
 
-ul.let {
+ul.let:not(.pad), ul.l:not(.pad) {
     padding-left: 0;
 }
 
 .let li, .let ul, .let ol, .let dd {
     margin: 0;
+}
+
+ul.l, ul.l ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+}
+
+ul.l li:not(:last-child) {
+    margin-right: 1em;
+    margin-right: var(--gap-n);
 }
 
 th, td {
@@ -360,6 +371,11 @@ form>table tr>* {
     position: absolute;
     top: 0;
     right: 0;
+}
+
+.close.l {
+    top: auto;
+    bottom: 0;
 }
 
 .fix {
@@ -601,7 +617,7 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
     top: 0;
     left: 0;
     width: 100%;
-    height: 3.2em;
+    height: 3.2rem;
     height: var(--topbar);
     align-items: center;
     transition: top .2s;
@@ -609,23 +625,28 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
     background-color: var(--bg);
 }
 
+.topbar.let {
+    z-index: 71;
+}
+
 .topbar.hide {
-    top: -3.3em;
-    top: calc(-0.1em - var(--topbar));
+    top: -3.3rem;
+    top: calc(-0.1rem - var(--topbar));
 }
 
 .topbar+* {
-    margin-top: 3.2em;
+    margin-top: 3.2rem;
     margin-top: var(--topbar);
 }
 
 h1[id]:before, h2[id]:before, h3[id]:before, h4[id]:before {
+    z-index: -1;
     display: block;
     content: "";
-    height: 3.7em;
-    height: calc(.5em + var(--topbar));
-    margin-top: -3.1em;
-    margin-top: calc(.1em - var(--topbar));
+    height: 3.7rem;
+    height: calc(.5rem + var(--topbar));
+    margin-top: -3.1rem;
+    margin-top: calc(.1rem - var(--topbar));
 }
 
 .bg, blockquote, pre, code, thead, tfoot {
@@ -748,22 +769,22 @@ mark {
         margin-left: auto;
     }
 
-    .nav:not(.let)>li.shift>ul, .nav:not(.let)>li.shift~li>ul,
-    body:not(.js) .pop>div.shift, .pop>div:not([id]).shift {
-        left: auto;
-        right: 0;
-    }
-
     .stick {
         z-index: 3;
         position: sticky;
-        top: 3.2em;
+        top: 3.2rem;
         top: var(--topbar);
-        max-height: calc(100vh - 3.2em);
+        max-height: calc(100vh - 3.2rem);
         max-height: calc(100vh - var(--topbar));
         align-self: flex-start;
         overflow: auto;
         box-sizing: border-box;
+    }
+
+    .nav:not(.let)>li.shift>ul, .nav:not(.let)>li.shift~li>ul,
+    body:not(.js) .pop>div.shift, .pop>div:not([id]).shift {
+        left: auto;
+        right: 0;
     }
 }
 

@@ -1,4 +1,4 @@
-/*! d1x v1.0.16 */
+/*! d1x v1.0.17 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1css v1.0.16 */
+/*! d1css v1.0.17 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -1271,39 +1271,37 @@ module.exports = new function () {
   this.y = null; //this.hashed = false;
 
   this.opt = {
-    gap: 20,
+    //gap: 20,
     cBox: 'box',
-    qTopbar: '.topbar.toggle' //qTopbarFixed: '.topbar:not(.toggle)'
+    qTopbar: '.topbar.let' //qTopbarFixed: '.topbar:not(.let)'
 
   };
 
   this.init = function () {
     var _this = this;
 
-    var t;
+    var t; //if(d1.q(this.opt.qTopbar)){
 
-    if (d1.q(this.opt.qTopbar)) {
-      d1.listen('hash', function (e) {
-        return _this.onHash(e);
-      });
-      var ons = d1.throttle(function () {
-        return _this.onScroll();
-      }, 500); //let ons = d1.throttle((h) => this.onScroll(h), 500);
-      //ons(); // forces reflow
+    d1.listen('hash', function (e) {
+      return _this.onHash(e);
+    });
+    var ons = d1.throttle(function () {
+      return _this.onScroll();
+    }, 500); //let ons = d1.throttle((h) => this.onScroll(h), 500);
+    //ons(); // forces reflow
 
-      setTimeout(function () {
-        return _this.onScroll();
-      }, 20);
-      d1.b([window], 'scroll', function (e) {
-        return ons();
-      });
-    }
+    setTimeout(function () {
+      return _this.onScroll();
+    }, 20);
+    d1.b([window], 'scroll', function (e) {
+      return ons();
+    }); //}
+
     /*
     else if(t = d1.q(this.opt.qTopbarFixed)){
       d1.listen('hash', e => this.fixScroll());
     }
     */
-
   };
 
   this.onHash = function (e) {
@@ -1323,7 +1321,7 @@ module.exports = new function () {
     var _this2 = this;
 
     //let mode = this.hashed ? 'hash' : (h ? 'fix' : 'scroll');
-    //d1.dbg(['scroll',mode,h,this.hashed]);
+    //d1.dbg(['scroll']); // ,mode,h,this.hashed
     if (this.y !== null
     /* && !h*/
     ) {
@@ -2116,6 +2114,8 @@ module.exports = new function () {
 
   this.name = 'tools';
   this.opt = {
+    qTop: 'h2[id], h3[id], h4[id], h5[id], h6[id]',
+    // h1[id],
     iTop: '&uarr;',
     minDesktop: 900
   };
@@ -2128,8 +2128,10 @@ module.exports = new function () {
     });
     d1.e('[data-class]', function (n) {
       return _this.toggleClass(n);
-    }); //d1.e('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]', n => this.addTopLink(n));
-
+    });
+    d1.e(this.opt.qTop, function (n) {
+      return _this.addTopLink(n);
+    });
     d1.listen('click', function (e) {
       return _this.onClick(e);
     });
@@ -2188,7 +2190,7 @@ module.exports = new function () {
     n.style.position = 'relative';
     var a = d1.ins('a', this.opt.iTop, {
       href: '#',
-      className: 'close pad'
+      className: 'close l text-n'
     }, n);
   };
 
