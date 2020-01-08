@@ -293,6 +293,8 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide){right:0;}
 .topbar.let{z-index:71;}
 .topbar.hide{top:calc(-.1rem - var(--topbar));}
 .topbar+*{margin-top:var(--topbar);}/*?*/
+	h1[id], h2[id], h3[id], h4[id], h4[id], h5[id]{margin-top:0;padding-top:calc(.5em + var(--topbar));}
+	/*
 	h1[id]:before, h2[id]:before, h3[id]:before, h4[id]:before
 	{z-index:-1;display:block;content:"";height:calc(.5rem + var(--topbar));margin-top:calc(.1rem - var(--topbar));}/*???*/
 
