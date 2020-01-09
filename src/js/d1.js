@@ -137,7 +137,7 @@ module.exports = new (function(){
   }
 
   this.attr = function(n, a, def){
-    return (n && n.hasAttribute(a)) ? n.getAttribute(a) : (def || '');
+    return (n && n.hasAttribute(a)) ? n.getAttribute(a) : (def !== undefined ? def : '');
   }
 
   //pos: -1=before, false=prepend, 0=append(default), 1=after

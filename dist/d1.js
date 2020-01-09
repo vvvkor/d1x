@@ -82,14 +82,14 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1css v1.0.17 */
+/*! d1css v0.0.0 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -245,7 +245,7 @@ module.exports = new function () {
   };
 
   this.attr = function (n, a, def) {
-    return n && n.hasAttribute(a) ? n.getAttribute(a) : def || '';
+    return n && n.hasAttribute(a) ? n.getAttribute(a) : def !== undefined ? def : '';
   }; //pos: -1=before, false=prepend, 0=append(default), 1=after
 
 
@@ -350,13 +350,14 @@ var map = {
 	"./dialog.js": 4,
 	"./example.js": 5,
 	"./fetch.js": 6,
-	"./form.js": 7,
-	"./gallery.js": 8,
-	"./scroll.js": 9,
-	"./tablex.js": 10,
-	"./theme.js": 11,
-	"./toggle.js": 12,
-	"./tools.js": 13
+	"./fliptable.js": 7,
+	"./form.js": 8,
+	"./gallery.js": 9,
+	"./scroll.js": 10,
+	"./tablex.js": 11,
+	"./theme.js": 12,
+	"./toggle.js": 13,
+	"./tools.js": 14
 };
 
 
@@ -780,7 +781,7 @@ module.exports = new function () {
       className: '-r bg small'
     }, cont);
     var cod = d1.ins('pre', '', {
-      className: 'let hide toggle',
+      className: 'fit pad hide toggle',
       id: id
     }, cont);
     cod.textContent = t;
@@ -851,7 +852,7 @@ module.exports = new function () {
       className: 'row bg'
     }, d);
     d1.ins('h3', h || '', {
-      className: 'let pad'
+      className: 'fit pad'
     }, hh);
     d1.x(hh, 0, 'pad hover col-0');
     var b = d1.ins('div', '', {
@@ -1065,6 +1066,61 @@ module.exports = new function () {
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/*! d1 responsive table */
+var d1 = __webpack_require__(0);
+
+module.exports = new function () {
+  "use strict";
+
+  this.name = 'fliptable';
+  this.opt = {
+    qFlipTable: 'table.flip'
+  };
+
+  this.init = function () {
+    var _this = this;
+
+    d1.e(this.opt.qFlipTable, function (n) {
+      return _this.prepareFlipTable(n);
+    });
+  };
+
+  this.prepareFlipTable = function (t) {
+    var ths = t.querySelectorAll('thead th');
+    var tds = t.querySelectorAll('tbody tr>*');
+    var order = (t.getAttribute('data-order') || '0 1 2 3').split(/\D+/);
+    t.parentNode.classList.remove('roll');
+
+    for (var i = 0; i < tds.length; i++) {
+      var td = tds[i];
+      var th = ths[td.cellIndex];
+      var ord = order.indexOf('' + td.cellIndex);
+      if (ord == -1) ord = 99;
+      td.style.order = ord;
+      var t = td.textContent.replace(/\s+$/, '');
+
+      if (t.length > 0) {
+        if (th) var h = d1.ins('div', th.textContent, {
+          className: 'hide-desktop bg text-n'
+        });
+        var v = document.createElement('div');
+
+        while (td.firstChild) {
+          v.appendChild(td.firstChild);
+        }
+
+        td.textContent = '';
+        if (th) td.appendChild(h);
+        td.appendChild(v);
+      }
+    }
+  };
+}();
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
 /*! d1 form tools */
 var d1 = __webpack_require__(0); //require('./toggle.js');
 
@@ -1128,7 +1184,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 gallery */
@@ -1258,7 +1314,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 example plugin */
@@ -1356,7 +1412,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1tablex */
@@ -1664,7 +1720,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 live theme configurator */
@@ -1774,7 +1830,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 example plugin */
@@ -2103,7 +2159,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 tools */
@@ -2163,9 +2219,11 @@ module.exports = new function () {
     }
   };
 
-  this.setClass = function (a, c, on, n, s) {
+  this.setClass = function (a, c, on, n, u) {
     d1.dbg(['setcls', n, c]);
-    if (s) n.className = on ? c : '';else c.split(/\s+/).forEach(function (cc) {
+    if (u !== false) n.className = on ? c : u || '';else c.split(/\s+/).filter(function (cc) {
+      return cc;
+    }).forEach(function (cc) {
       return n.classList[on ? 'add' : 'remove'](cc);
     });
     a.classList[on ? 'add' : 'remove'](d1.opt.cAct);
@@ -2176,8 +2234,8 @@ module.exports = new function () {
 
     var box = n.type == 'checkbox' || n.type == 'radio';
     var q = d1.attr(n, 'data-nodes', n.hash);
-    var c = d1.attr(n, 'data-class');
-    var s = n.hasAttribute('data-set');
+    var c = d1.attr(n, 'data-class', false);
+    var u = n.type == 'radio' ? '' : d1.attr(n, 'data-unclass', false);
     var on = box ? n.checked : n.classList.contains(d1.opt.cAct);
 
     if (e && !box) {
@@ -2185,8 +2243,8 @@ module.exports = new function () {
       e.preventDefault();
     }
 
-    if (c) d1.e(q, function (m) {
-      return _this2.setClass(n, c, on, m, s);
+    if (c !== false) d1.e(q, function (m) {
+      return _this2.setClass(n, c, on, m, u);
     });
   };
 
@@ -2209,12 +2267,12 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var d1 = __webpack_require__(0);
 
-['code', 'toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'calendar', 'tools', 'form', 'fetch', 'theme'].forEach(function (p) {
+['code', 'toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'calendar', 'tools', 'form', 'fliptable', 'fetch', 'theme'].forEach(function (p) {
   return d1.plug(__webpack_require__(1)("./" + p + ".js"));
 }); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
 

@@ -26,7 +26,7 @@ module.exports = new(function () {
     src.classList.add('pad');
     let id = 'code-' + d1.seq();
     d1.ins('div', d1.ins('a', this.opt.sCode, {className: 'pad', href: '#'+id}), {className: '-r bg small'}, cont);
-    let cod = d1.ins('pre', '', {className: 'let hide toggle', id: id}, cont);
+    let cod = d1.ins('pre', '', {className: 'fit pad hide toggle', id: id}, cont);
     cod.textContent = t;
   }
 

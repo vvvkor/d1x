@@ -46,7 +46,7 @@ module.exports = new(function () {
     let c, d = this.dlg;
     while(c=d.firstChild) d.removeChild(c);
     let hh = d1.ins('div', '', {className: 'row bg'}, d);
-    d1.ins('h3', h || '', {className: 'let pad'}, hh);
+    d1.ins('h3', h || '', {className: 'fit pad'}, hh);
     d1.x(hh, 0, 'pad hover col-0');
     let b = d1.ins('div', '', {className: 'pad'}, d);
     if(t) d1.ins('div', t, {}, b);
