@@ -11,6 +11,7 @@ module.exports = new (function(){
 
   this.opt = {
     debug: 0,
+    textIcons: false,
     cAct: 'act',
     cHide: 'hide',
     aCaption: 'data-caption',
@@ -19,7 +20,7 @@ module.exports = new (function(){
     cJs: 'js',
     hClose: '#cancel',
     hOk: '#ok',
-    iClose: '&#x2715;', //&times;
+    iClose: ['close', '&#x2715;'], //&times;
     sCancel: 'Cancel',
     sOk: 'OK',
     pSvg: 'svg-' //prefix
@@ -160,16 +161,17 @@ module.exports = new (function(){
   }
 
   this.x = function(d, pos, cls){
-    return this.ins('a', this.opt.iClose, {href: this.opt.hClose, className: (cls || '')}, d, pos);
+    return this.ins('a', d1.i(this.opt.iClose), {href: this.opt.hClose, className: (cls || '')}, d, pos);
   }
 
   this.svg = function(id, alt, c) {
-    if (!document.getElementById(id)) return this.ins('span', alt || '', {className: c || ''});
+    if (this.opt.textIcons || !document.getElementById(id)) return this.ins('span', alt || '', {className: c || ''});
     return this.ins('span', '<svg class="' + this.opt.cIcon + ' ' + (c || '') + '" width="24" height="24"><use xlink:href="#' + id + '"></use></svg>');
   }
   
   this.i = function(id, alt, c) {
-    return this.svg(id ? this.opt.pSvg + id : '', alt, c);
+    if(id instanceof Array) return this.i(...id);
+    return this.svg(id ? this.opt.pSvg + id : '', alt || '[' + id + ']', c);
   }
   
   this.vis = function(n){
@@ -211,6 +213,7 @@ module.exports = new (function(){
   }
 
   this.makeUrl = function(a, args){
+    if(!a.tagName) a = d1.ins('a', '', {href: a});
     let g = this.get(a);
     Object.keys(args).forEach(k => g[k] = args[k]);
     let q = Object.keys(g).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(g[k])).join('&');

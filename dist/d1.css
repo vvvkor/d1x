@@ -1,10 +1,11 @@
-/*! d1css v1.0.17 */
+/*! d1css v1.0.18 */
 
 :root {
     --text: #000;
     --bg: #fff;
     --bg-pane: rgba(0, 0, 0, .05);
     --border: thin solid rgba(0, 0, 0, .16);
+    --shade: 0 .2em .8em rgba(0, 0, 0, .3);
     --bg-hilite: rgba(0, 0, 0, .05);
     --text-hilite: inherit;
     --focus: rgba(0, 0, 0, .1);
@@ -14,7 +15,7 @@
     --rad: .3;
     --gap: 1;
     --gap-rate: .5;
-    --topbar: 3.5rem;
+    --topbar: 3.2rem;
     --text-danger: #c00;
     --text-warning: #c70;
     --text-info: #07a;
@@ -295,22 +296,6 @@ dd {
     margin-bottom: var(--gap-s);
 }
 
-ul.row {
-    list-style: none;
-    padding: 0;
-}
-
-ul.l, ul.l ul {
-    display: flex;
-    flex-wrap: wrap;
-    list-style: none;
-}
-
-ul.l li:not(:last-child) {
-    margin-right: 1em;
-    margin-right: var(--gap-n);
-}
-
 th, td {
     padding: .25em .5em;
     padding: var(--gaps-s);
@@ -398,13 +383,15 @@ body:not(.js) .tabs+div>:target~div, .gal *, a.act>.is-off, a:not(.act)>.is-on {
 }
 
 @media (max-width: 899px) {
-    body:not(.js) .hide-mobile:not(:target), .js .hide-mobile.hide {
+    body:not(.js) .hide-mobile:not(:target), .js .hide-mobile:not(.toggle),
+    .js .hide-mobile.hide {
         display: none;
     }
 }
 
 @media (min-width: 900px) {
-    body:not(.js) .hide-desktop:not(:target), .js .hide-desktop.hide {
+    body:not(.js) .hide-desktop:not(:target), .js .hide-desktop:not(.toggle),
+    .js .hide-desktop.hide {
         display: none;
     }
 }
@@ -602,7 +589,7 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
     top: 0;
     left: 0;
     width: 100%;
-    height: 3.5rem;
+    height: 3.2rem;
     height: var(--topbar);
     align-items: center;
     transition: top .2s;
@@ -615,25 +602,21 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
 }
 
 .topbar.hide {
-    top: -3.6rem;
+    top: -3.3rem;
     top: calc(-0.1rem - var(--topbar));
 }
 
 .topbar+* {
-    margin-top: 3.5rem;
+    margin-top: 3.2rem;
     margin-top: var(--topbar);
-}
-
-h1[id], h2[id], h3[id], h4[id], h4[id], h5[id] {
-    z-index: -1;
 }
 
 h1[id]:before, h2[id]:before, h3[id]:before, h4[id]:before {
     display: block;
     content: "";
-    height: 4rem;
+    height: 3.7rem;
     height: calc(.5rem + var(--topbar));
-    margin-top: -3.4rem;
+    margin-top: -3.1rem;
     margin-top: calc(.1rem - var(--topbar));
 }
 
@@ -658,6 +641,8 @@ mark {
 
 .row {
     display: flex;
+    list-style: none;
+    padding: 0;
 }
 
 .row.let {
@@ -764,9 +749,9 @@ mark {
     .stick {
         z-index: 3;
         position: sticky;
-        top: 3.5rem;
+        top: 3.2rem;
         top: var(--topbar);
-        max-height: calc(100vh - 3.5rem);
+        max-height: calc(100vh - 3.2rem);
         max-height: calc(100vh - var(--topbar));
         align-self: flex-start;
         overflow: auto;
@@ -837,7 +822,7 @@ mark {
         background-color: var(--bg-lite);
     }
 
-    [name]:invalid, [name]:invalid~.js-subinput>:first-child {
+    [name]:invalid, [name]:invalid~.js-subinput {
         border-color: #c00;
         border-color: var(--text-danger);
     }
@@ -847,7 +832,7 @@ mark {
         color: var(--text-danger);
     }
 
-    [name]:invalid:focus, [name]:invalid~.js-subinput>:first-child:focus {
+    [name]:invalid:focus, [name]:invalid~.js-subinput:focus {
         box-shadow: 0 0 0 .15em rgba(255, 100, 100, .3);
         box-shadow: 0 0 0 .15em var(--focus-danger);
     }
@@ -1007,14 +992,16 @@ mark {
 }
 
 .pop>div, .nav ul, .dlg, .drawer {
-    box-shadow: 0 .2em .8em rgba(0, 0, 0, .5);
+    box-shadow: 0 .2em .8em rgba(0, 0, 0, .3);
+    box-shadow: var(--shade);
     background-color: #fff;
     background-color: var(--bg);
     text-align: left;
 }
 
 .shade {
-    box-shadow: 0 .2em .8em rgba(0, 0, 0, .5);
+    box-shadow: 0 .2em .8em rgba(0, 0, 0, .3);
+    box-shadow: var(--shade);
 }
 
 .tabs li {
@@ -1040,7 +1027,7 @@ mark {
     border-radius: var(--radius) var(--radius) 0 0;
 }
 
-.pure {
+.fit {
     margin: 0;
     padding: 0;
     border: none;
@@ -1048,11 +1035,11 @@ mark {
     box-shadow: none;
 }
 
-ul.pure li {
+ul.fit li {
     list-style: none;
 }
 
-table.pure>*>tr>*, .roll>table.pure {
+table.fit>*>tr>*, .roll>table.fit {
     border: none;
 }
 
@@ -1103,4 +1090,41 @@ form .mar {
 
 .narrow {
     max-width: 16em;
+}
+
+@media (max-width: 899px) {
+    .js table.flip {
+        width: 100%;
+    }
+
+    .js table.flip thead {
+        display: none;
+    }
+
+    .js table.flip tr {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 1em 0;
+        margin: var(--gap-n) 0;
+        padding: 1em;
+        padding: var(--gap-n);
+        box-shadow: 0 .2em .8em rgba(0, 0, 0, .3);
+        box-shadow: var(--shade);
+        background-color: #fff;
+        background-color: var(--bg);
+    }
+
+    .js table.flip tr>* {
+        display: block;
+        width: 50%;
+        box-sizing: border-box;
+        text-align: left;
+        border: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .js table.flip tr>* {
+        width: 100%;
+    }
 }

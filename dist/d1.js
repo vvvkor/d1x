@@ -1,4 +1,4 @@
-/*! d1x v1.0.17 */
+/*! d1x v1.0.18 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,14 +82,22 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1css v0.0.0 */
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+/*! d1css v1.0.18 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -98,6 +106,7 @@ module.exports = new function () {
   this.handlers = {};
   this.opt = {
     debug: 0,
+    textIcons: false,
     cAct: 'act',
     cHide: 'hide',
     aCaption: 'data-caption',
@@ -106,7 +115,7 @@ module.exports = new function () {
     cJs: 'js',
     hClose: '#cancel',
     hOk: '#ok',
-    iClose: '&#x2715;',
+    iClose: ['close', '&#x2715;'],
     //&times;
     sCancel: 'Cancel',
     sOk: 'OK',
@@ -263,21 +272,22 @@ module.exports = new function () {
   };
 
   this.x = function (d, pos, cls) {
-    return this.ins('a', this.opt.iClose, {
+    return this.ins('a', d1.i(this.opt.iClose), {
       href: this.opt.hClose,
       className: cls || ''
     }, d, pos);
   };
 
   this.svg = function (id, alt, c) {
-    if (!document.getElementById(id)) return this.ins('span', alt || '', {
+    if (this.opt.textIcons || !document.getElementById(id)) return this.ins('span', alt || '', {
       className: c || ''
     });
     return this.ins('span', '<svg class="' + this.opt.cIcon + ' ' + (c || '') + '" width="24" height="24"><use xlink:href="#' + id + '"></use></svg>');
   };
 
   this.i = function (id, alt, c) {
-    return this.svg(id ? this.opt.pSvg + id : '', alt, c);
+    if (id instanceof Array) return this.i.apply(this, _toConsumableArray(id));
+    return this.svg(id ? this.opt.pSvg + id : '', alt || '[' + id + ']', c);
   };
 
   this.vis = function (n) {
@@ -323,6 +333,9 @@ module.exports = new function () {
   };
 
   this.makeUrl = function (a, args) {
+    if (!a.tagName) a = d1.ins('a', '', {
+      href: a
+    });
     var g = this.get(a);
     Object.keys(args).forEach(function (k) {
       return g[k] = args[k];
@@ -353,11 +366,12 @@ var map = {
 	"./fliptable.js": 7,
 	"./form.js": 8,
 	"./gallery.js": 9,
-	"./scroll.js": 10,
-	"./tablex.js": 11,
-	"./theme.js": 12,
-	"./toggle.js": 13,
-	"./tools.js": 14
+	"./lookup.js": 10,
+	"./scroll.js": 11,
+	"./tablex.js": 12,
+	"./theme.js": 13,
+	"./toggle.js": 14,
+	"./tools.js": 15
 };
 
 
@@ -398,7 +412,14 @@ module.exports = new function () {
     //y=Y-m-d, d=d.m.Y, m=m/d Y
     hashCancel: '#cancel',
     hashNow: '#now',
-    icons: [['date', '#'], ['now', '&#x2713;'], ['delete', '&#x2715;']],
+    icons: ['iDate', 'iNow', 'iClear'],
+    iDate: ['date', '#'],
+    iClear: ['delete', '&#x2715;'],
+    iNow: ['now', '&#x2713;'],
+    iPrev: ['prev', '&lsaquo;'],
+    iNext: ['next', '&rsaquo;'],
+    iPrev2: ['prev', '&laquo;'],
+    iNext2: ['next', '&raquo;'],
     idPicker: 'pick-date',
     minWidth: 801,
     qsCalendar: 'input.calendar',
@@ -489,7 +510,7 @@ module.exports = new function () {
 
       for (var i in this.opt.icons) {
         d1.ins('', ' ', {}, ic);
-        var ii = ic.appendChild(d1.i.apply(d1, this.opt.icons[i]));
+        var ii = ic.appendChild(d1.i(this.opt[this.opt.icons[i]]));
         ii.style.cursor = 'pointer';
         ico.push(ii);
       }
@@ -589,19 +610,19 @@ module.exports = new function () {
       p2 = d1.ins('p', '', {
         className: 'c'
       });
-      var ph = this.btn('#prev-hour', d1.i('prev', '&lsaquo;'), p2);
+      var ph = this.btn('#prev-hour', d1.i(this.opt.iPrev), p2);
       ch = d1.ins('span', this.n(x.getHours()), {
         className: 'pad'
       }, p2);
-      var nh = this.btn('#next-hour', d1.i('next', '&rsaquo;'), p2);
+      var nh = this.btn('#next-hour', d1.i(this.opt.iNext), p2);
       d1.ins('span', ':', {
         className: 'pad'
       }, p2);
-      var pi = this.btn('#prev-min', d1.i('prev', '&lsaquo;'), p2);
+      var pi = this.btn('#prev-min', d1.i(this.opt.iPrev), p2);
       ci = d1.ins('span', this.n(x.getMinutes()), {
         className: 'pad'
       }, p2);
-      var ni = this.btn('#next-min', d1.i('next', '&rsaquo;'), p2);
+      var ni = this.btn('#next-min', d1.i(this.opt.iNext), p2);
       d1.b(ph, 'click', function (e) {
         return _this3.setTime(n, ch, ci, -1, 'h', e);
       }, false);
@@ -624,15 +645,15 @@ module.exports = new function () {
     var p1 = d1.ins('p', '', {
       className: 'c'
     }, this.win);
-    var now = this.btn(this.opt.hashNow, d1.i('now', '&#x2713;'), p1);
-    var py = this.btn('#prev-year', d1.i('first', '&laquo;'), p1);
-    var pm = this.btn('#prev-month', d1.i('prev', '&lsaquo;'), p1);
+    var now = this.btn(this.opt.hashNow, d1.i(this.opt.iNow), p1);
+    var py = this.btn('#prev-year', d1.i(this.opt.iPrev2), p1);
+    var pm = this.btn('#prev-month', d1.i(this.opt.iPrev), p1);
     var cur = d1.ins('span', my, {
       className: 'pad'
     }, p1);
-    var nm = this.btn('#next-month', d1.i('next', '&rsaquo;'), p1);
-    var ny = this.btn('#next-year', d1.i('last', '&raquo;'), p1);
-    var cls = this.btn(this.opt.hashCancel, d1.i('close', '&#x2715;'), p1);
+    var nm = this.btn('#next-month', d1.i(this.opt.iNext), p1);
+    var ny = this.btn('#next-year', d1.i(this.opt.iNext2), p1);
+    var cls = this.btn(this.opt.hashCancel, d1.i(d1.opt.iClose), p1);
     d1.ins('hr', '', {}, this.win);
     d1.b(now, 'click', function (e) {
       return _this3.closeDialog(n, true, ch, ci, e);
@@ -1074,7 +1095,8 @@ module.exports = new function () {
 
   this.name = 'fliptable';
   this.opt = {
-    qFlipTable: 'table.flip'
+    qFlipTable: 'table.flip',
+    cCellHead: 'hide-desktop bg text-n'
   };
 
   this.init = function () {
@@ -1086,10 +1108,9 @@ module.exports = new function () {
   };
 
   this.prepareFlipTable = function (t) {
-    var ths = t.querySelectorAll('thead th');
-    var tds = t.querySelectorAll('tbody tr>*');
-    var order = (t.getAttribute('data-order') || '0 1 2 3').split(/\D+/);
-    t.parentNode.classList.remove('roll');
+    var ths = d1.qq('thead th', t);
+    var tds = d1.qq('tbody tr>*', t);
+    var order = (d1.attr(t, 'data-order') || '0 1 2 3').split(/\D+/); //t.parentNode.classList.remove('roll');
 
     for (var i = 0; i < tds.length; i++) {
       var td = tds[i];
@@ -1097,20 +1118,18 @@ module.exports = new function () {
       var ord = order.indexOf('' + td.cellIndex);
       if (ord == -1) ord = 99;
       td.style.order = ord;
-      var t = td.textContent.replace(/\s+$/, '');
 
-      if (t.length > 0) {
-        if (th) var h = d1.ins('div', th.textContent, {
-          className: 'hide-desktop bg text-n'
-        });
-        var v = document.createElement('div');
+      if (td.textContent.replace(/\s+$/, '').length > 0) {
+        var v = d1.ins('div');
 
         while (td.firstChild) {
           v.appendChild(td.firstChild);
         }
 
         td.textContent = '';
-        if (th) td.appendChild(h);
+        if (th) d1.ins('div', th.textContent, {
+          className: this.opt.cCellHead
+        }, td);
         td.appendChild(v);
       }
     }
@@ -1317,6 +1336,303 @@ module.exports = new function () {
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/*! d1 autocomplete lookups with data from XHTTP request */
+var d1 = __webpack_require__(0); //require('./toggle.js');
+//require('./fetch.js');
+
+
+module.exports = new function () {
+  "use strict";
+
+  this.name = 'lookup';
+  this.opt = {};
+  this.opt = {
+    aLabel: 'data-label',
+    aLookup: 'data-lookup',
+    aUrl: 'data-url',
+    aGoto: 'data-goto',
+    cacheLimit: 0,
+    iGoto: ['edit', '&rarr;'],
+    pList: 'lookup-list-',
+    max: 10,
+    wait: 300,
+    inPop: 0
+  };
+  this.seq = 0;
+  this.win = null;
+
+  this.init = function () {
+    var _this = this;
+
+    this.win = d1.ins('div', '', {
+      id: this.opt.pList + d1.seq(),
+      className: 'toggle'
+    });
+    this.closeList();
+    document.querySelector('body').appendChild(this.win);
+    var t = document.querySelectorAll('[' + this.opt.aLookup + ']');
+
+    for (var i = 0; i < t.length; i++) {
+      this.prepare(t[i]);
+    }
+
+    d1.b('[data-chain]', 'change', function (e) {
+      return _this.updateChain(e.target);
+    });
+    d1.e('[data-chain]', function (n) {
+      return _this.updateChain(n);
+    });
+    d1.listen('key', function (e) {
+      return _this.onKey(e);
+    });
+  };
+
+  this.prepare = function (n) {
+    var pop = d1.ins('div', '', {
+      className: 'pop l'
+    }, n, 1);
+    if (!this.opt.inPop) pop.style.verticalAlign = 'bottom';
+    n.thePop = pop;
+    n.classList.add('bg-n');
+    n.classList.add(d1.opt.cHide); //n.type = 'hidden';
+
+    n.vLabel = n.getAttribute(this.opt.aLabel) || n.value || ''; //@@
+
+    var m = d1.ins('input', '', {
+      type: 'text',
+      value: n.vLabel,
+      className: 'input-lookup js-subinput'
+    }, pop, this.opt.inPop ? 0 : 1);
+    m.name = 'lookup-' + n.name; //m.required = n.required;
+    //n.required = false;
+
+    if (n.id) {
+      m.id = 'lookup-' + n.id;
+      if (n.title) m.title = n.title;
+      d1.e('[for="' + n.id + '"]', function (lbl) {
+        return lbl.htmlFor = m.id;
+      });
+    }
+
+    if (n.placeholder) m.placeholder = n.placeholder;
+    m.autocomplete = 'off';
+    var i = null;
+
+    if (this.opt.iGoto && n.getAttribute(this.opt.aUrl)) {
+      var ic = d1.ins('span', '', {
+        className: 'input-tools'
+      }, this.opt.inPop ? pop : m, 1); //icons container
+
+      i = d1.ins('a', d1.i(this.opt.iGoto), {}, ic);
+      i.style.cursor = 'pointer';
+      d1.ins('', ' ', {}, ic, -1);
+    }
+
+    this.setHandlers(n, m, i);
+  };
+
+  this.setHandlers = function (n, m, i) {
+    var _this2 = this;
+
+    n.vCap = m; //todo: avoid
+
+    m.vId = n; //todo: avoid
+
+    d1.b(m, 'input', function (e) {
+      return _this2.planFind(n, 0);
+    }, false);
+    if (i) d1.b(i, 'click', function (e) {
+      return _this2.go(n, e);
+    }, false);
+  };
+
+  this.planFind = function (n, now) {
+    if (n.vCap.value === '') {
+      this.fix(n, '', '');
+    } else {
+      this.seq++;
+      n.vSeq = this.seq;
+      if (n.vWait) clearTimeout(n.vWait);
+      if (n.vCache && n.vCache[n.vCap.value]) this.openList(n, n.vCache[n.vCap.value]);else n.vWait = setTimeout(this.find.bind(this, n), now ? 0 : this.opt.wait);
+    }
+  };
+
+  this.find = function (n) {
+    var u = encodeURI(decodeURI(d1.makeUrl(d1.attr(n, this.opt.aLookup), {
+      //value: n.vCap.value,
+      seq: this.seq,
+      time: new Date().getTime()
+    })).replace(/\{q\}/, n.vCap.value));
+    n.vCur = null;
+    d1.plugins.fetch.fetch(u, this.list.bind(this, n.vCap.value, this.seq, n));
+  };
+
+  this.list = function (u, seq, n, req) {
+    var d = JSON.parse(req.responseText);
+    if (seq == n.vSeq) this.openList(n, d.data);
+    this.store(n, u, d);
+  };
+
+  this.openList = function (n, d, e) {
+    if (e) e.stopPropagation();
+    this.closeList();
+    var pop = n.thePop;
+    pop.appendChild(this.win); //.pop
+
+    this.win.vRel = n.vCap;
+    d1.plugins.toggle.toggle(this.win, true);
+    this.build(n, d);
+  };
+
+  this.closeList = function () {
+    d1.plugins.toggle.toggle(this.win, false);
+  };
+
+  this.build = function (n, d) {
+    var _this3 = this;
+
+    while (this.win.firstChild) {
+      this.win.removeChild(this.win.firstChild);
+    }
+
+    var ul = d1.ins('ul', '', {
+      className: 'nav let'
+    }, this.win);
+    var w,
+        j = 0;
+    var go = n.getAttribute(this.opt.aGoto);
+
+    var _loop = function _loop(i) {
+      w = d1.ins('li', '', {}, ul);
+      var a = d1.ins('a', '', {
+        href: go ? go.replace(/\{id\}/, d[i].id) : '#' + d[i].id,
+        className: '-pad -hover'
+      }, w);
+      d1.ins('span', d[i].nm, {}, a);
+
+      if (d[i].info) {
+        d1.ins('br', '', {}, a);
+        d1.ins('small', d[i].info, {
+          className: 'text-n'
+        }, a);
+      }
+
+      if (!go) d1.b(a, 'click', function (e) {
+        return _this3.choose(n, a, e);
+      }, false);
+      j++;
+      if (j >= _this3.opt.max) return "break";
+    };
+
+    for (var i in d) {
+      var _ret = _loop(i);
+
+      if (_ret === "break") break;
+    }
+
+    if (ul.firstChild) this.hilite(n, ul.firstChild.firstChild);
+  };
+
+  this.hilite = function (n, a) {
+    if (n.vCur) n.vCur.classList.remove(d1.opt.cAct);
+    a.classList.add(d1.opt.cAct);
+    n.vCur = a;
+  };
+
+  this.hiliteNext = function (n, prev) {
+    if (n.vCur) {
+      var a = n.vCur.parentNode[prev ? 'previousSibling' : 'nextSibling'];
+      if (!a) a = n.vCur.parentNode.parentNode[prev ? 'lastChild' : 'firstChild'];
+      a = a.firstChild;
+      this.hilite(n, a);
+    }
+  };
+
+  this.choose = function (n, a, e) {
+    if (e) e.preventDefault();
+    n.vCur = a;
+    this.fix(n, a.hash.substr(1), a.firstChild.textContent);
+  };
+
+  this.fix = function (n, v, c) {
+    n.vCur = null;
+    n.vSeq = 0;
+    if (n.vWait) clearTimeout(n.vWait);
+    n.value = v;
+    n.vLabel = n.vCap.value = c;
+    if (typeof Event === 'function') n.dispatchEvent(new Event('input')); //-ie
+
+    this.closeList();
+  };
+
+  this.onKey = function (e) {
+    var n = e.target.vId;
+
+    if (n) {
+      if (e.keyCode == 27) this.fix(n, n.value, n.vLabel);else if (e.keyCode == 40 && !d1.vis(this.win)) this.planFind(n, 1);else if (e.keyCode == 38 || e.keyCode == 40) this.hiliteNext(n, e.keyCode == 38); //else if(e.keyCode == 13) this.choose(n, n.vCur);
+      else if (e.keyCode == 13 && n.vCur) {
+          if (d1.vis(this.win)) e.preventDefault();
+          n.vCur.click();
+        }
+    }
+  };
+
+  this.go = function (n, e) {
+    e.preventDefault();
+    var u = n.getAttribute(this.opt.aUrl);
+    if (n.value.length > 0 && u) location.href = encodeURI(decodeURI(u).replace(/\{id\}/, n.value));
+  }; // update chain
+
+
+  this.updateChain = function (n) {
+    var m = d1.q(n.getAttribute('data-chain'), 0);
+
+    if (m) {
+      if (!n.value) this.setOptions(m, []);else {
+        var u = m.getAttribute('data-filter').replace(/\{q\}/, n.value);
+        if (m.vCache && m.vCache[u]) this.setOptions(m, m.vCache[u]);else d1.plugins.fetch.fetch(u, this.onChainData.bind(this, u, m));
+      }
+    }
+  };
+
+  this.onChainData = function (u, n, req) {
+    var d = JSON.parse(req.responseText);
+    this.setOptions(n, d.data);
+    this.store(n, u, d);
+  };
+
+  this.setOptions = function (n, a) {
+    while (n.firstChild) {
+      n.removeChild(n.firstChild);
+    }
+
+    var z = n.getAttribute('data-placeholder') || '';
+    if (!a || a.length == 0 || z) d1.ins('option', z || '-', {
+      value: ''
+    }, n);
+    if (a) for (var i = 0; i < a.length; i++) {
+      d1.ins('option', a[i].nm, {
+        value: a[i].id
+      }, n);
+    }
+  };
+
+  this.store = function (n, u, d) {
+    var c = n.getAttribute('data-cache');
+    if (c === undefined) c = this.opt.cacheLimit;
+    c = parseInt(c, 10);
+
+    if (c) {
+      if (!n.vCache || Object.keys(n.vCache).length >= c) n.vCache = {};
+      if (d) n.vCache[u] = d.data;
+    }
+  };
+}();
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
 /*! d1 example plugin */
 var d1 = __webpack_require__(0);
 
@@ -1412,7 +1728,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1tablex */
@@ -1720,7 +2036,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 live theme configurator */
@@ -1830,7 +2146,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 example plugin */
@@ -1862,7 +2178,7 @@ module.exports = new function () {
     qDrawer: '#menu',
     cMem: 'mem',
     cToggle: 'toggle',
-    iToggle: '[+]'
+    iToggle: ['open', '[+]']
   };
 
   this.init = function () {
@@ -1964,7 +2280,7 @@ module.exports = new function () {
 
   this.onHash = function (e) {
     d1.dbg(['hash', location.hash]);
-    if (location.hash == d1.opt.hClose) d1.fire('esc', e);else if (location.hash) {
+    if (location.hash === d1.opt.hClose) d1.fire('esc', e);else if (location.hash) {
       var d = d1.q(location.hash);
 
       if (d) {
@@ -1992,7 +2308,7 @@ module.exports = new function () {
     var n = e.target;
     var a = d1.closest(n, 'a');
     var d = a && a.matches('a[href^="#"]') ? d1.q(a.hash) : null;
-    if (a && a.hash == d1.opt.hClose) d1.fire('esc', e);else if (d && d.matches(this.opt.qTgl)) {
+    if (a && a.hash === d1.opt.hClose) d1.fire('esc', e);else if (d && d.matches(this.opt.qTgl)) {
       e.preventDefault();
       d = this.toggle(d);
       if (d1.vis(d) && this.opt.keepHash) this.addHistory(a.hash);else this.unhash();
@@ -2000,7 +2316,7 @@ module.exports = new function () {
     } else if (!a) {
       this.unhash();
     }
-    if (e.clientX < 5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
+    if (e.clientX <= 5 && e.clientY > 5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
   };
 
   this.attachSubNav = function (n) {
@@ -2010,7 +2326,7 @@ module.exports = new function () {
     });
     var a = aa.filter(function (v) {
       return !v.href;
-    })[0] || aa[0] || d1.ins('', ' ', {}, n.parentNode, false) && d1.ins('a', this.opt.iToggle, {}, n.parentNode, false);
+    })[0] || aa[0] || d1.ins('', ' ', {}, n.parentNode, false) && d1.ins('a', d1.i(this.opt.iToggle), {}, n.parentNode, false);
 
     if (a) {
       if (!n.id) n.id = 'ul-' + d1.seq();
@@ -2159,7 +2475,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 tools */
@@ -2172,7 +2488,7 @@ module.exports = new function () {
   this.opt = {
     qTop: 'h2[id], h3[id], h4[id], h5[id], h6[id]',
     // h1[id],
-    iTop: '&uarr;',
+    iTop: ['up', '&uarr;'],
     minDesktop: 900
   };
 
@@ -2250,7 +2566,7 @@ module.exports = new function () {
 
   this.addTopLink = function (n) {
     n.style.position = 'relative';
-    var a = d1.ins('a', this.opt.iTop, {
+    var a = d1.ins('a', d1.i(this.opt.iTop), {
       href: '#',
       className: 'close l text-n'
     }, n);
@@ -2267,12 +2583,12 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var d1 = __webpack_require__(0);
 
-['code', 'toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'calendar', 'tools', 'form', 'fliptable', 'fetch', 'theme'].forEach(function (p) {
+['code', 'toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'calendar', 'lookup', 'tools', 'form', 'fliptable', 'fetch', 'theme'].forEach(function (p) {
   return d1.plug(__webpack_require__(1)("./" + p + ".js"));
 }); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
 

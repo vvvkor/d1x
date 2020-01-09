@@ -9,7 +9,8 @@ module.exports = new(function () {
   this.name = 'fliptable';
 
   this.opt = {
-    qFlipTable: 'table.flip'
+    qFlipTable: 'table.flip',
+    cCellHead: 'hide-desktop bg text-n'
   };
 
   this.init = function () {
@@ -17,26 +18,24 @@ module.exports = new(function () {
   }
 
   this.prepareFlipTable = function(t){
-    var ths = t.querySelectorAll('thead th');
-    var tds = t.querySelectorAll('tbody tr>*');
-    var order = (t.getAttribute('data-order') || '0 1 2 3').split(/\D+/);
-    t.parentNode.classList.remove('roll');
-    for(var i=0;i<tds.length;i++){
+    var ths = d1.qq('thead th', t);
+    var tds = d1.qq('tbody tr>*', t);
+    var order = (d1.attr(t, 'data-order') || '0 1 2 3').split(/\D+/);
+    //t.parentNode.classList.remove('roll');
+    for(var i=0; i<tds.length; i++){
       var td = tds[i];
       var th = ths[td.cellIndex];
-      var ord = order.indexOf(''+td.cellIndex);
+      var ord = order.indexOf('' + td.cellIndex);
       if(ord==-1) ord = 99;
       td.style.order = ord;
-      var t = td.textContent.replace(/\s+$/,'');
-      if(t.length>0){
-        if(th) var h = d1.ins('div', th.textContent, {className: 'hide-desktop bg text-n'});
-        var v = document.createElement('div');
+      if(td.textContent.replace(/\s+$/, '').length>0){
+        var v = d1.ins('div');
         while(td.firstChild) v.appendChild(td.firstChild);
         td.textContent = '';
-        if(th) td.appendChild(h);
+        if(th) d1.ins('div', th.textContent, {className: this.opt.cCellHead}, td)
         td.appendChild(v);
       }
     }
   }
-  
+
 })();

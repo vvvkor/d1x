@@ -2,7 +2,7 @@ let d1 = require('./js/d1.js');
 
 [
 'code', 'toggle', 'dialog', 'gallery', 'tablex', 'scroll',
-'calendar',
+'calendar', 'lookup',
 'tools', 'form', 'fliptable', 'fetch', 'theme'
 ].forEach(p => d1.plug(require('./js/'+p+'.js')));
 

@@ -31,7 +31,7 @@ module.exports = new(function () {
 
     cMem: 'mem',
     cToggle : 'toggle',
-    iToggle: '[+]'
+    iToggle: ['open', '[+]']
   };
 
   this.init = function () {
@@ -83,7 +83,7 @@ module.exports = new(function () {
 
   this.onHash = function(e){
     d1.dbg(['hash', location.hash]);
-    if(location.hash==d1.opt.hClose) d1.fire('esc', e);
+    if(location.hash===d1.opt.hClose) d1.fire('esc', e);
     else if(location.hash){
       let d = d1.q(location.hash);
       if(d){
@@ -111,7 +111,7 @@ module.exports = new(function () {
     let a = d1.closest(n, 'a');
     let d = (a && a.matches('a[href^="#"]')) ? d1.q(a.hash) : null;
 
-    if(a && a.hash==d1.opt.hClose) d1.fire('esc', e);
+    if(a && a.hash===d1.opt.hClose) d1.fire('esc', e);
     else if(d && d.matches(this.opt.qTgl)){
       e.preventDefault();
       d = this.toggle(d);
@@ -122,14 +122,14 @@ module.exports = new(function () {
     else if(!a){
       this.unhash();
     }
-    if(e.clientX<5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
+    if(e.clientX<=5 && e.clientY>5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
   }
 
   this.attachSubNav = function(n){
     //let a = n.previousElementSibling;
     let aa = d1.a(n.parentNode.children).filter(v => v.tagName=='A');
     let a = aa.filter(v => !v.href)[0] || aa[0]
-      || (d1.ins('',' ',{},n.parentNode, false) && d1.ins('a', this.opt.iToggle, {}, n.parentNode, false));
+      || (d1.ins('',' ',{},n.parentNode, false) && d1.ins('a', d1.i(this.opt.iToggle), {}, n.parentNode, false));
     if(a){
       if(!n.id) n.id = 'ul-' + d1.seq();
       a.href = '#' + n.id;

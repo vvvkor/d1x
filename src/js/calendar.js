@@ -14,7 +14,14 @@ module.exports = new(function () {
     dateFormat: 'd', //y=Y-m-d, d=d.m.Y, m=m/d Y
     hashCancel: '#cancel',
     hashNow: '#now',
-    icons: [['date', '#'], ['now', '&#x2713;'], ['delete', '&#x2715;']],
+    icons: ['iDate', 'iNow', 'iClear'],
+    iDate: ['date', '#'],
+    iClear: ['delete', '&#x2715;'],
+    iNow: ['now', '&#x2713;'],
+    iPrev: ['prev', '&lsaquo;'],
+    iNext: ['next', '&rsaquo;'],
+    iPrev2: ['prev', '&laquo;'],
+    iNext2: ['next', '&raquo;'],
     idPicker: 'pick-date',
     minWidth: 801,
     qsCalendar: 'input.calendar',
@@ -76,7 +83,7 @@ module.exports = new(function () {
       var ic = d1.ins('span', '', {className:'input-tools'}, n, 1);//icons container
       for(let i in this.opt.icons){
         d1.ins('', ' ', {}, ic);
-        let ii = ic.appendChild(d1.i.apply(d1, this.opt.icons[i]));
+        let ii = ic.appendChild(d1.i(this.opt[this.opt.icons[i]]));
         ii.style.cursor = 'pointer';
         ico.push(ii);
       }
@@ -155,13 +162,13 @@ module.exports = new(function () {
     let p2 = null;
     if(n.vTime){
         p2 = d1.ins('p', '', {className: 'c'});
-        let ph = this.btn('#prev-hour', d1.i('prev', '&lsaquo;'), p2);
+        let ph = this.btn('#prev-hour', d1.i(this.opt.iPrev), p2);
         ch = d1.ins('span', this.n(x.getHours()), {className: 'pad'}, p2);
-        let nh = this.btn('#next-hour', d1.i('next', '&rsaquo;'), p2);
+        let nh = this.btn('#next-hour', d1.i(this.opt.iNext), p2);
         d1.ins('span', ':', {className: 'pad'}, p2);
-        let pi = this.btn('#prev-min', d1.i('prev', '&lsaquo;'), p2);
+        let pi = this.btn('#prev-min', d1.i(this.opt.iPrev), p2);
         ci = d1.ins('span', this.n(x.getMinutes()), {className: 'pad'}, p2);
-        let ni = this.btn('#next-min', d1.i('next', '&rsaquo;'), p2);
+        let ni = this.btn('#next-min', d1.i(this.opt.iNext), p2);
         d1.b(ph, 'click', e => this.setTime(n, ch, ci, -1, 'h', e), false);
         d1.b(nh, 'click', e => this.setTime(n, ch, ci, +1, 'h', e), false);
         d1.b(pi, 'click', e => this.setTime(n, ch, ci, -this.opt.stepMinutes, 'i', e), false);
@@ -173,13 +180,13 @@ module.exports = new(function () {
     let d = x.getDate();
     let my = this.n(m+1) + '.' + y;
     let p1 = d1.ins('p', '', {className: 'c'}, this.win);
-    let now = this.btn(this.opt.hashNow, d1.i('now', '&#x2713;'), p1);
-    let py = this.btn('#prev-year', d1.i('first', '&laquo;'), p1);
-    let pm = this.btn('#prev-month', d1.i('prev', '&lsaquo;'), p1);
+    let now = this.btn(this.opt.hashNow, d1.i(this.opt.iNow), p1);
+    let py = this.btn('#prev-year', d1.i(this.opt.iPrev2), p1);
+    let pm = this.btn('#prev-month', d1.i(this.opt.iPrev), p1);
     let cur = d1.ins('span', my, {className: 'pad'}, p1);
-    let nm = this.btn('#next-month', d1.i('next', '&rsaquo;'), p1);
-    let ny = this.btn('#next-year', d1.i('last', '&raquo;'), p1);
-    let cls = this.btn(this.opt.hashCancel, d1.i('close', '&#x2715;'), p1);
+    let nm = this.btn('#next-month', d1.i(this.opt.iNext), p1);
+    let ny = this.btn('#next-year', d1.i(this.opt.iNext2), p1);
+    let cls = this.btn(this.opt.hashCancel, d1.i(d1.opt.iClose), p1);
     d1.ins('hr', '', {}, this.win);
     d1.b(now, 'click', e => this.closeDialog(n, true, ch, ci, e), false);
     d1.b(cls, 'click', e => this.closeDialog(n, null, null, null, e), false);

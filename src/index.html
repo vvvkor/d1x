@@ -41,7 +41,7 @@ process:
 		console.log('d1=',d1);
 	</script>
 </head>
-<body class="-bg" data-d1='{"hOk":"#yes","debug":1,"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
+<body class="-bg" data-d1='{"hOk":"#yes","debug":1,"textIcons":false,"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
 
 <div class="topbar shade -let">
 	<a href="#menu" class="pad hide-desktop"><svg class="icon" width="32" height="32"><use xlink:href="#svg-menu"/></svg></a>
@@ -1181,7 +1181,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 
 <div class="code">
 <label for="lkp">Label</label>
-<input
+<input required
   type="text"
   name="id"
   id="lkp"
@@ -1421,38 +1421,40 @@ most important:
 - .hide.dlg .close
 -->
 
-<div class="roll">
-<table class="hover flip">
+<div class="roll" data-class-mobile="" data-class-desktop="roll">
+<table class="hover flip" data-order="0 1">
 <thead>
-	<tr><th>CSS class<th>Description<th>Used with<th>Modifications
+	<tr><th>Item<th>Description<th>Used with<th>Modifications
 </thead>
-<tr><td>.row<td><a href="#grid">Grid</a><td>div ul ul.fit .col-0 .col-2 .col-3<td>.flip .let <i>.shift .stick .center .wrap .read .narrow</i>
-<tr><td>.roll<td>Horizontal scroll<td><a href="#table">table</a>.hover .fit<td>
-<tr><td>button, a.btn<td><a href="#colors-buttons">Button</a><td><a href="#form">form</a> submit button a span<td>.bg-x <i>[data-target]</i>
-<tr><td>.nav<td><a href="#nav">Navigation</a><td>ul<td>.toggle .flip .hover .let .fit .bg .nav.tabs.mem<i>.act .shift</i>
-<tr><td>.drawer<td><a href="#toggle-drawer">Drawer</a><td>div a.close<td>.shift
-<tr><td>.topbar<td><a href="#scroll">Top bar</a><td><td>.let
-<tr><td>.flip<td>Responsive<td>.row .nav<td>
-<tr><td>.fix<td><a data-href="#fix">Fixed block</a><td><td>.r .l
-<tr><td>.hide<td><a href="#toggle">Togglable (hash)</a><td>div ul .close<td>.toggle .dlg.c.let .dlg.full.c .hide-mobile .hide-desktop <i>.pop .pop>.shift .tabs</i>
-<tr><td>.let<td>Specific modifications to components<td>.row, .nav, .dlg, .topbar<td>
-<!--tr><td>.switch<td><a href="#toggle-radio">Togglable (radio)</a><td>label div<td>.pop .tabs -->
-<tr><td>.gal<td><a href="#toggle-gallery">Gallery</a><td>a .close<td><i>[data-info]</i>
-<tr><td>.toggle<td><a href="#js">JavaScript toggle</a><td>ul ul.accordion div .js-control .js-hide<td>.mem <i>.act</i>
-<tr><td>.icon<td>Small image<td>img svg a button<td>
-<tr><td>.text-<td><a href="#colors">Text color</a><td>* .invert<td>.text-e .text-w .text-i .text-y .text-n
-<tr><td>.bg<td><a href="#colors">Background color</a><td>* .invert<td>.bg-e .bg-w .bg-i .bg-y .bg-n .yel
-<tr><td>.r .c .l<td>Align<td>*<td>
-<tr><td>.center<td>Centrify<td>* .row<td>
-<tr><td>.small<td>Small font<td>*<td>
-<tr><td>.fit<td>Remove formatting<td>*<td>.mar .pad .bord .rad .shade
-<tr><td>.mar<td>Vertical margin<td>*<td>
-<tr><td>.pad<td>Padding<td>*<td>
-<tr><td>.bord<td>Border<td>*<td>
-<tr><td>.rad<td>Border radius<td>*<td>
-<tr><td>.shade<td>Add shadow<td>*<td>
-<tr><td>.nobr<td>No wrapping<td>*<td>
-<tr><td>.hide-print .hide-screen<td>Show by media<td>*<td>
+<tbody>
+<tr><th>.row<td><a href="#grid">Grid</a><td>div ul ul.fit .col-0 .col-2 .col-3<td>.flip .let <i>.shift .stick .center .wrap .read .narrow</i>
+<tr><th>table<td><a href="#table">Table</a><td>.roll<td>.hover .fit .flip
+<tr><th>button, a.btn<td><a href="#colors-buttons">Button</a><td><a href="#form">form</a> submit button a span<td>.bg-x <i>[data-target]</i>
+<tr><th>.nav<td><a href="#nav">Navigation</a><td>ul<td>.toggle .flip .hover .let .fit .bg .nav.tabs.mem<i>.act .shift</i>
+<tr><th>.drawer<td><a href="#toggle-drawer">Drawer</a><td>div a.close<td>.shift
+<tr><th>.topbar<td><a href="#scroll">Top bar</a><td><td>.let
+<tr><th>.flip<td>Responsive<td>.row .nav<td>
+<tr><th>.fix<td><a data-href="#fix">Fixed block</a><td><td>.r .l
+<tr><th>.hide<td><a href="#toggle">Togglable (hash)</a><td>div ul .close<td>.toggle .dlg.c.let .dlg.full.c .hide-mobile .hide-desktop <i>.pop .pop>.shift .tabs</i>
+<tr><th>.let<td>Specific modifications to components<td>.row, .nav, .dlg, .topbar<td>
+<!--tr><th>.switch<td><a href="#toggle-radio">Togglable (radio)</a><td>label div<td>.pop .tabs -->
+<tr><th>.gal<td><a href="#toggle-gallery">Gallery</a><td>a .close<td><i>[data-info]</i>
+<tr><th>.toggle<td><a href="#js">JavaScript toggle</a><td>ul ul.accordion div .js-control .js-hide<td>.mem <i>.act</i>
+<tr><th>.icon<td>Small image<td>img svg a button<td>
+<tr><th>.text-<td><a href="#colors">Text color</a><td>* .invert<td>.text-e .text-w .text-i .text-y .text-n
+<tr><th>.bg<td><a href="#colors">Background color</a><td>* .invert<td>.bg-e .bg-w .bg-i .bg-y .bg-n .yel
+<tr><th>.r .c .l<td>Align<td>*<td>
+<tr><th>.center<td>Centrify<td>* .row<td>
+<tr><th>.small<td>Small font<td>*<td>
+<tr><th>.fit<td>Remove formatting<td>*<td>.mar .pad .bord .rad .shade
+<tr><th>.mar<td>Vertical margin<td>*<td>
+<tr><th>.pad<td>Padding<td>*<td>
+<tr><th>.bord<td>Border<td>*<td>
+<tr><th>.rad<td>Border radius<td>*<td>
+<tr><th>.shade<td>Add shadow<td>*<td>
+<tr><th>.nobr<td>No wrapping<td>*<td>
+<tr><th>.hide-print .hide-screen<td>Show by media<td>*<td>
+</tbody>
 </table>
 </div>
 
@@ -1572,6 +1574,9 @@ most important:
 <symbol id="svg-place" viewBox="0 0 10 10"><path d="M2 4a3 3 0 0 1 6 0q0 2 -3 5q-3-3-3-5zm3 -2a2 2 0 1 0 .01 0"/></symbol>
 <symbol id="svg-right" viewBox="0 0 10 10"><path d="M4 1l4 4-4 4-1-1 3-3-3-3z"/></symbol>
 <symbol id="svg-user" viewBox="0 0 8 8"><path d="M4 1a1.7 2.2 0 1 0 .01 0m-3 5.5q3 1 6 0-3 -2.5 -6 0z"/></symbol>
+
+<symbol id="svg-up" viewBox="0 0 10 10"><path d="M1 6l4-4 4 4-1 1-3-3-3 3z"/></symbol>
+<symbol id="svg-down" viewBox="0 0 10 10"><path d="M1 4l4 4 4-4-1-1-3 3-3-3z"/></symbol>
 </svg>
 
 <a class="fix r l pad hover hide-print" href="#">&uarr;</a>
