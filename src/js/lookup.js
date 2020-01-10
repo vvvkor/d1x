@@ -30,7 +30,7 @@ module.exports = new(function () {
   this.win = null;
 
   this.init = function() {
-    this.win = d1.ins('div', '', {id: this.opt.pList + d1.seq(), className: 'toggle'});
+    this.win = d1.ins('div', '', {id: this.opt.pList + d1.seq(), className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop});
     this.closeList();
     document.querySelector('body').appendChild(this.win);
 
@@ -49,7 +49,7 @@ module.exports = new(function () {
     n.classList.add(d1.opt.cHide);
     //n.type = 'hidden';
     n.vLabel = n.getAttribute(this.opt.aLabel) || n.value || '';//@@
-    let m = d1.ins('input', '', {type: 'text', value: n.vLabel, className:'input-lookup js-subinput'}, pop, this.opt.inPop ? 0 : 1);
+    let m = d1.ins('input', '', {type: 'text', value: n.vLabel, className:'input-lookup subinput'}, pop, this.opt.inPop ? 0 : 1);
     m.name = 'lookup-' + n.name;
     //m.required = n.required;
     //n.required = false;

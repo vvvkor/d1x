@@ -38,9 +38,9 @@ module.exports = new(function () {
     for(i in opt) this.opt[i] = opt[i];
 
     if(window.innerWidth < this.opt.minWidth) return;
-    this.win = d1.ins('div', '', {id: this.opt.idPicker, className: 'toggle pad'});//dlg hide pad
+    this.win = d1.ins('div', '', {id: this.opt.idPicker, className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop + ' pad'});//dlg hide pad
     this.win.style.whiteSpace = 'nowrap';
-    this.toggle(false);
+    //this.toggle(false);
     document.body.appendChild(this.win);
     
     let t = d1.qq(this.opt.qsCalendar);
@@ -57,7 +57,7 @@ module.exports = new(function () {
       if(m!==null) m = parseInt(m, 10);
       else m = this.opt.showModal || (Math.min(window.innerWidth, window.innerHeight) < this.opt.sizeLimit);
       if(on){
-        this.win.className = m ? 'dlg hide toggle pad' : 'toggle pad';
+        this.win.className = d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop + ' pad ' + (m ? 'dlg' : '');
         (m ? document.body : n.thePop).appendChild(this.win);
         if(m){
           var s = this.win.style;

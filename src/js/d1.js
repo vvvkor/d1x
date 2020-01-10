@@ -12,9 +12,12 @@ module.exports = new (function(){
   this.opt = {
     debug: 0,
     textIcons: false,
+    aCaption: 'data-caption',
     cAct: 'act',
     cHide: 'hide',
-    aCaption: 'data-caption',
+    cToggle: 'toggle',
+    cOff: 'off',
+    cUnpop: 'unpop',
     cClose: 'close',
     cIcon: 'icon',
     cJs: 'js',
@@ -175,7 +178,7 @@ module.exports = new (function(){
   }
   
   this.vis = function(n){
-    return !n.classList.contains(this.opt.cHide)
+    return !n.classList.contains(this.opt.cOff);
   }
 
   //func

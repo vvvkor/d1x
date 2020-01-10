@@ -52,19 +52,19 @@ process:
 
 <div class="-pad row -wrap -center flip">
 
-<div class="pad hide-mobile" data-class-mobile="drawer toggle hide pad" data-class-desktop="stick pad" id="menu">
+<div class="pad --hide-mobile target-mobile" data-class-mobile="drawer toggle-mobile off --hide pad" data-class-desktop="stick pad" id="menu">
 	<div class="hide-desktop">
 		<a href="#cancel" class="close pad text-n">&#x2715;</a>
 		<h3 class="mar">d1 frontend framework</h3>
 	</div>
-	<ul class="fit pad toggle mem -accordion">
+	<ul class="fit pad --toggle --tree mem -accordion">
 		<li><a href="#start">Get started</a>
 		<li><a href="#typo">Typography</a>
 		<li><a href="#grid">Grid</a>
 		<li><a href="#table">Table</a>
 		<li><a href="#buttons">Buttons</a>
 		<li><a href="#n-forms">Forms</a> &rsaquo;
-			<ul id="n-forms" class="hide">
+			<ul id="n-forms" class="--hide toggle ">
 			<li><a href="#form-inline">Inline</a>
 			<li><a href="#form-stacked">Stacked</a>
 			<li><a href="#form-grid">Grid</a>
@@ -72,14 +72,14 @@ process:
 			<!--li><a href="#form-validate">Validation</a-->
 			</ul>
 		<li><a href="#n-nav">Navigation</a> &rsaquo;
-			<ul id="n-nav" class="hide">
+			<ul id="n-nav" class="--hide toggle ">
 			<li><a href="#nav-horizontal">Horizontal</a>
 			<li><a href="#nav-vertical">Vertical</a>
 			<li><a href="#nav-responsive">Responsive</a>
 			<li><a href="#nav-hamburger">Hamburger</a>
 			</ul>
 		<li><a href="#n-togglers">Toggle</a> &rsaquo;
-			<ul id="n-togglers" class="hide">
+			<ul id="n-togglers" class="--hide toggle ">
 			<li><a href="#toggle">Overview</a>
 			<li><a href="#toggle-popup">Popup</a>
 			<li><a href="#toggle-div">Toggle</a>
@@ -97,7 +97,7 @@ process:
 		<li><a href="#js">Javascript</a>
 		<li><a href="#ajax">AJAX</a>
 		<li><a href="#n-plugins">Plugins</a> &rsaquo;
-			<ul id="n-plugins" class="hide">
+			<ul id="n-plugins" class="--hide toggle ">
 			<li><a href="#calendar">Calendar</a>
 			<li><a href="#dialog">Dialog</a>
 			<li><a href="#edit">Edit</a>
@@ -437,7 +437,7 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 	</div>
 	<fieldset>
 		<legend><a href="#fs0">Fieldset</a></legend>
-		<div id="fs0" class="hide toggle">
+		<div id="fs0" class="--hide --toggle target ">
 			<div class="row flip">
 				<label for="i3">Label two</label>
 				<div class="col-3"><input type="text" name="i3" id="i3"></div>
@@ -474,7 +474,7 @@ Table will become stacked on small screen.
 		<tr><td colspan="2">
 		<fieldset>
 			<legend><a href="#fs1">Input types</a></legend>
-			<table id="fs1" class="hide toggle mem">
+			<table id="fs1" class="--hide --toggle target mem">
 			
 			<tr>
 				<td><label for="lng">Select</label>
@@ -529,7 +529,7 @@ Table will become stacked on small screen.
 		<!--tr><td colspan="2"-->
 		<fieldset>
 			<legend><a href="#fs2">Switches</a></legend>
-			<table id="fs2" class="hide toggle mem">
+			<table id="fs2" class="--hide --toggle target mem">
 				<tr>
 					<td>Box
 					<td>
@@ -623,16 +623,16 @@ In this case, link's <code>href</code> must point to corresponding nested list's
 With JavaScript, nested lists are toggled on click.
 
 <div class="code">
-<ul class="nav hover flip toggle bg -let nav-resp">
+<ul class="nav hover flip --toggle bg -let nav-resp">
 	<li>
 		<a href="#">First</a>
 	</li>
 	<li>
-		<a href="#s-2">Second</a>
+		<a>Second</a>
 		<ul id="s-2">
-			<li><a href="#s-2-1">Subitem 2</a>
+			<li><a>Subitem 2</a>
 				<ul id="s-2-1">
-					<li><a href="#s-2-1-1">Subsubitem</a></li>
+					<li><a>Subsubitem</a></li>
 				</ul>
 			</li>
 		</ul>
@@ -662,8 +662,8 @@ and expand it to horizontal dropdown navbar on large screen (add <code>flip</cod
 <div class="hide-desktop">
 	<a href="#navi" class="pad hover" title="Menu">&equiv;</a>
 </div>
-<nav class="hide-mobile toggle" id="navi">
-	<ul class="nav hover flip toggle bg">
+<nav class=" --toggle --hide-mobile target-mobile " id="navi">
+	<ul class="nav hover flip --toggle bg">
 		<li>
 			<a href="#">First</a>
 		</li>
@@ -722,18 +722,18 @@ Optionally add <code>shift</code> class to the target element to pop up leftward
 
 <div class="pop hide">
 	<a href="#pop1">Nested popup</a>
-	<div id="pop1" class="toggle pad">
+	<div id="pop1" class=" --toggle pad">
 		Pop
 		<div class="pop">
 			<a href="#pop2">Internal popup</a>
-			<div id="pop2" class="toggle pad">Pops</div>
+			<div id="pop2" class=" --toggle pad">Pops</div>
 		</div>
 	</div>
 </div>
 <div class="code">
 <div class="pop">
 	<a href="#pop">Popup</a>
-	<div id="pop" class="toggle pad">Pop</div>
+	<div id="pop" class=" --toggle pad">Pop</div>
 </div>
 </div>
 
@@ -745,7 +745,7 @@ Use link pointing at element with <code>hide</code> class.
 
 <div class="code">
 <a href="#tog">Toggle</a>
-<div id="tog" class="hide pad bord yel toggle mem">Togglable</div>
+<div id="tog" class="--hide pad bord yel --toggle target mem">Togglable</div>
 </div>
 
 <h3 id="toggle-drawer">Drawer</h3>
@@ -775,7 +775,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 
 <div class="code">
 <a href="#modal">Dialog</a>
-<div id="modal" class="hide dlg rad c pad -let">
+<div id="modal" class="--hide dlg rad c pad -let">
 	<a class="close pad" href="#cancel">&times;</a>
 	<p>Dialog</p>
 </div>
@@ -839,15 +839,15 @@ Next sibling <code>div</code> should contain <code>div</code> tab panels.
 </p>
 
 <div class="code">
-<ul class="nav tabs rad toggle mem">
+<ul class="nav tabs rad mem">
 	<li><a href="#tab1">Tab1</a></li>
 	<li><a href="#tab2">Tab2</a></li>
 	<li><a href="#tab3">Tab3</a></li>
 </ul>
 <div class="bord pad">
-	<div id="tab2" class="hide">2<br>2</div>
-	<div id="tab3" class="hide">3<br>3<br>3</div>
-	<div id="tab1" class="hide">1</div>
+	<div id="tab2" class="--hide">2<br>2</div>
+	<div id="tab3" class="--hide">3<br>3<br>3</div>
+	<div id="tab1" class="--hide">1</div>
 </div>
 </div>
 
@@ -859,7 +859,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 </p>
 
 <div class="code">
-<ul class="toggle mem accordion">
+<ul class=" --toggle tree mem accordion">
 	<li><a href="#ul1">List 1</a>
 		<ul id="ul1">
 			<li>Item 1.1
@@ -1093,7 +1093,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 <a href="data.json" data-target="#dlg-inner">Load in modal</a><br>
 <a href="data.json" data-target="#">Load in generated modal</a>
 <pre class="bg-i" id="preview">(preview)</pre>
-<div id="preview-dlg" class="hide dlg pad"><a class="close pad" href="#cancel">&times;</a><div id="dlg-inner">(preview)</div></div>
+<div id="preview-dlg" class="dlg pad"><a class="close pad" href="#cancel">&times;</a><div id="dlg-inner">(preview)</div></div>
 </div>
 
 
@@ -1460,7 +1460,7 @@ most important:
 
 <h3><a href="#ref-alpha">Alphabetical reference</a></h3>
 
-<div id="ref-alpha" class="hide toggle mem">
+<div id="ref-alpha" class="--hide --toggle target mem">
 <ol>
 <li><code>.act</code> &mdash; active link
 <li><code>.bg</code> &mdash; light background
@@ -1580,6 +1580,7 @@ most important:
 </svg>
 
 <a class="fix r l pad hover hide-print" href="#">&uarr;</a>
+<a class="hide" href="#cancel" accesskey="x"></a>
 
 </body>
 </html>

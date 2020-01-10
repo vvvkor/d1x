@@ -97,7 +97,7 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
-/*! d1css v1.0.18 */
+/*! d1css v0.0.0 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -107,9 +107,12 @@ module.exports = new function () {
   this.opt = {
     debug: 0,
     textIcons: false,
+    aCaption: 'data-caption',
     cAct: 'act',
     cHide: 'hide',
-    aCaption: 'data-caption',
+    cToggle: 'toggle',
+    cOff: 'off',
+    cUnpop: 'unpop',
     cClose: 'close',
     cIcon: 'icon',
     cJs: 'js',
@@ -291,7 +294,7 @@ module.exports = new function () {
   };
 
   this.vis = function (n) {
-    return !n.classList.contains(this.opt.cHide);
+    return !n.classList.contains(this.opt.cOff);
   }; //func
 
 
@@ -442,11 +445,11 @@ module.exports = new function () {
     if (window.innerWidth < this.opt.minWidth) return;
     this.win = d1.ins('div', '', {
       id: this.opt.idPicker,
-      className: 'toggle pad'
+      className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop + ' pad'
     }); //dlg hide pad
 
-    this.win.style.whiteSpace = 'nowrap';
-    this.toggle(false);
+    this.win.style.whiteSpace = 'nowrap'; //this.toggle(false);
+
     document.body.appendChild(this.win);
     var t = d1.qq(this.opt.qsCalendar);
 
@@ -472,7 +475,7 @@ module.exports = new function () {
       if (m !== null) m = parseInt(m, 10);else m = this.opt.showModal || Math.min(window.innerWidth, window.innerHeight) < this.opt.sizeLimit;
 
       if (on) {
-        this.win.className = m ? 'dlg hide toggle pad' : 'toggle pad';
+        this.win.className = d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop + ' pad ' + (m ? 'dlg' : '');
         (m ? document.body : n.thePop).appendChild(this.win);
 
         if (m) {
@@ -802,7 +805,7 @@ module.exports = new function () {
       className: '-r bg small'
     }, cont);
     var cod = d1.ins('pre', '', {
-      className: 'fit pad hide toggle',
+      className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' fit pad',
       id: id
     }, cont);
     cod.textContent = t;
@@ -860,7 +863,7 @@ module.exports = new function () {
     var _this2 = this;
 
     if (!this.dlg) this.dlg = d1.ins('div', '', {
-      className: 'dlg toggle'
+      className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop + ' dlg'
     }, document.body);
     var c,
         d = this.dlg;
@@ -1366,7 +1369,7 @@ module.exports = new function () {
 
     this.win = d1.ins('div', '', {
       id: this.opt.pList + d1.seq(),
-      className: 'toggle'
+      className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop
     });
     this.closeList();
     document.querySelector('body').appendChild(this.win);
@@ -1401,7 +1404,7 @@ module.exports = new function () {
     var m = d1.ins('input', '', {
       type: 'text',
       value: n.vLabel,
-      className: 'input-lookup js-subinput'
+      className: 'input-lookup subinput'
     }, pop, this.opt.inPop ? 0 : 1);
     m.name = 'lookup-' + n.name; //m.required = n.required;
     //n.required = false;
@@ -1633,7 +1636,7 @@ module.exports = new function () {
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/*! d1 example plugin */
+/*! d1 scroll topbar */
 var d1 = __webpack_require__(0);
 
 module.exports = new function () {
@@ -1644,7 +1647,7 @@ module.exports = new function () {
 
   this.opt = {
     //gap: 20,
-    cBox: 'box',
+    cStart: 'shade',
     qTopbar: '.topbar.let' //qTopbarFixed: '.topbar:not(.let)'
 
   };
@@ -1709,14 +1712,14 @@ module.exports = new function () {
   };
 
   this.decorate = function (n, y, dy) {
-    n.classList[dy > 0 ? 'add' : 'remove'](d1.opt.cHide);
-    n.classList[y && dy <= 0 ? 'add' : 'remove'](this.opt.cBox);
+    n.classList[dy > 0 ? 'add' : 'remove'](d1.opt.cOff);
+    n.classList[y && dy <= 0 ? 'add' : 'remove'](this.opt.cStart);
   };
   /*
   this.fixScroll = function(){
     d1.dbg(['scroll-fix',location.hash]);
     if(d1.q(location.hash)){
-      //let t = d1.q(this.opt.qTopbar + ':not(.'+ d1.opt.cHide +')');
+      //let t = d1.q(this.opt.qTopbar + ':not(.'+ d1.opt.cOff +')');
       let t = d1.q(this.opt.qTopbarFixed);
       window.scrollBy(0, (t ? -t.offsetHeight : 0) - this.opt.gap);
     }
@@ -2068,7 +2071,7 @@ module.exports = new function () {
 
     this.drw = d1.ins('div', '', {
       id: 'theme',
-      className: 'drawer toggle hide pad shift theme-drawer'
+      className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop + ' drawer pad shift theme-drawer'
     }, document.body);
     d1.ins('a', '&#x2715;', {
       href: '#cancel',
@@ -2149,7 +2152,7 @@ module.exports = new function () {
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/*! d1 example plugin */
+/*! d1 togglable interactive components */
 // Interface components: dropdown, popup, toggle, modal dialog, tabs, drawer, tree, gallery
 // .nav, .pop, .toggle, .dlg, .tabs, .drawer, .tree, .gal
 var d1 = __webpack_require__(0);
@@ -2162,22 +2165,26 @@ module.exports = new function () {
   this.opt = {
     keepHash: 1,
     qTgl: '.toggle[id]',
+    qTrg: '.target[id]',
     qPop: '.pop>div[id]',
-    qNav: '.nav.toggle ul',
-    qDlg: '.dlg',
+    qNav: '.nav ul',
+    //auto id
+    qDlg: '.dlg[id]',
     qTab: '.tabs+div>[id]',
-    qTre: 'ul.toggle:not(.nav) ul',
-    //'.tree ul',
-    qDrw: '.drawer',
-    qAccRoot: 'ul.accordion',
-    qAcc: 'ul.accordion ul',
+    qTre: 'ul.tree ul',
+    //auto id
+    qDrw: '.drawer[id]',
+    qAccRoot: 'ul.tree.accordion',
+    qAcc: 'ul.tree.accordion ul',
     qGal: '.gal>a[id]',
     // dup of gallery.opt.qGal
     qSubMem: '.tabs.mem+div>[id], ul.mem:not(.nav) ul',
     qMedia: '.hide-mobile, .hide-desktop',
     qDrawer: '#menu',
     cMem: 'mem',
-    cToggle: 'toggle',
+    cTarget: 'target',
+    //cToggle: 'toggle',
+    //cUnpop: 'unpop',
     iToggle: ['open', '[+]']
   };
 
@@ -2204,26 +2211,25 @@ module.exports = new function () {
     }); //toggle
 
     var q = this.opt;
-    this.opt.qToggle = [q.qTgl, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw, q.qMedia
+    var togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw, q.qMedia
     /*, q.qGal*/
-    ].join(', ');
-    this.opt.qAutohide = [q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia
-    /*, q.qGal*/
-    ].join(', ');
-    this.opt.qUnpop = [q.qPop, q.qNav, q.qDlg, q.qDrw
-    /*, q.qGal*/
-    ].join(', ');
-    d1.e(this.opt.qToggle, function (n) {
-      return n.classList.add(_this.opt.cToggle);
-    }); //initialize togglers
+    ].join(', '); //let autohide = [        q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
 
-    d1.e(this.opt.qAutohide, function (n) {
-      return _this.tgl(n, 0);
-    }); //autohide
-
+    var unpop = [q.qPop, q.qNav, q.qDlg, q.qDrw
+    /*, q.qGal*/
+    ].join(', ');
     d1.e(this.opt.qNav + ', ' + this.opt.qTre, function (n) {
       return _this.attachSubNav(n);
     }); //nav, tree: attach to links
+
+    d1.e(togglers, function (n) {
+      return _this.initToggler(n);
+    }); //initialize togglers
+    //d1.e(autohide, n => this.tgl(n, 0)); //autohide
+
+    d1.e(unpop, function (n) {
+      return n.classList.add(d1.opt.cUnpop);
+    }); //initialize unpop
 
     d1.e(this.opt.qGal + ':last-child', function (n) {
       return d1.x(n, 1);
@@ -2237,7 +2243,7 @@ module.exports = new function () {
       return _this.restoreVisibility(n);
     }); //restore visibility
 
-    d1.e(this.opt.qTab + ':not(.hide) ~ [id]:not(.hide)', function (n) {
+    d1.e(this.opt.qTab + ':not(.' + d1.opt.cOff + ') ~ [id]:not(.' + d1.opt.cOff + ')', function (n) {
       return _this.tgl(n, 0);
     }); //undup tabs
 
@@ -2247,15 +2253,15 @@ module.exports = new function () {
       }).length ? null : _this.tgl(d1.q(d1.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1);
     }); //inactive tabs: show first
 
-    d1.e('.' + this.opt.cToggle + '[id]', function (n) {
+    d1.e('.' + d1.opt.cToggle + '[id]', function (n) {
       return _this.hiliteLinks(n);
     }); //init links state
   };
 
   this.after = function (n) {
-    this.shown = null; //let modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cHide+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
+    this.shown = null; //let modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
 
-    var modal = d1.q(this.opt.qDlg + ':not(.' + d1.opt.cHide + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
+    var modal = d1.q(this.opt.qDlg + ':not(.' + d1.opt.cOff + '), ' + this.opt.qGal + '[id="' + location.hash.substr(1) + '"]');
     var bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
 
     var s = document.body.style;
@@ -2319,6 +2325,12 @@ module.exports = new function () {
     if (e.clientX <= 5 && e.clientY > 5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
   };
 
+  this.initToggler = function (n) {
+    n.classList.remove(this.opt.cTarget);
+    n.classList.add(d1.opt.cToggle);
+    this.tgl(n, 0);
+  };
+
   this.attachSubNav = function (n) {
     //let a = n.previousElementSibling;
     var aa = d1.a(n.parentNode.children).filter(function (v) {
@@ -2342,7 +2354,7 @@ module.exports = new function () {
       if (d.matches(this.opt.qTab) && on === undefined) on = true; //tabs: show instead of toggle
       //console.log('toggle '+d.id, on, deep);
 
-      d.classList[on ? 'remove' : on === undefined ? 'toggle' : 'add'](d1.opt.cHide);
+      this.tgl(d, on);
       d1.dbg(['toggle' + (deep ? ' deep' : ''), on, d], deep ? 2 : 1);
 
       if (d1.vis(d)) {
@@ -2361,7 +2373,7 @@ module.exports = new function () {
   };
 
   this.tgl = function (d, on) {
-    if (d) d.classList[on ? 'remove' : on === undefined ? 'toggle' : 'add'](d1.opt.cHide);
+    if (d) d.classList[on ? 'remove' : on === undefined ? 'toggle' : 'add'](d1.opt.cOff);
   };
 
   this.toggleDependent = function (d) {
@@ -2394,7 +2406,7 @@ module.exports = new function () {
     }
 
     d1.dbg(['unpop', keep]);
-    d1.e(this.opt.qUnpop, function (n) {
+    d1.e('.' + d1.opt.cUnpop, function (n) {
       return keep && keep.filter(function (m) {
         return m && m.tagName && n.contains(m);
       }).length ? null : _this3.toggle(n, false, 1);

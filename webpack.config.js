@@ -19,10 +19,12 @@ module.exports = {
     filename: '[name].js'
   },
   optimization: {
+    //mangleExports: false,
     minimize: true,
     minimizer: [
       new TerserPlugin({
-        test: /\.min\.js$/i
+        test: /\.min\.js$/i,
+        //terserOptions: {mangle: false}
         //terserOptions: {output: {comments: false}}
       })
     ]

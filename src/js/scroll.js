@@ -1,4 +1,4 @@
-/*! d1 example plugin */
+/*! d1 scroll topbar */
 
 let d1 = require('./d1.js');
 
@@ -13,7 +13,7 @@ module.exports = new(function () {
   
   this.opt = {
     //gap: 20,
-    cBox: 'box',
+    cStart: 'shade',
     qTopbar: '.topbar.let',
     //qTopbarFixed: '.topbar:not(.let)'
   };
@@ -59,15 +59,15 @@ module.exports = new(function () {
   }
   
   this.decorate = function(n, y, dy){
-    n.classList[dy>0 ? 'add' : 'remove'](d1.opt.cHide)
-    n.classList[y && dy<=0 ? 'add' : 'remove'](this.opt.cBox)
+    n.classList[dy>0 ? 'add' : 'remove'](d1.opt.cOff)
+    n.classList[y && dy<=0 ? 'add' : 'remove'](this.opt.cStart)
   }
 
   /*
   this.fixScroll = function(){
     d1.dbg(['scroll-fix',location.hash]);
     if(d1.q(location.hash)){
-      //let t = d1.q(this.opt.qTopbar + ':not(.'+ d1.opt.cHide +')');
+      //let t = d1.q(this.opt.qTopbar + ':not(.'+ d1.opt.cOff +')');
       let t = d1.q(this.opt.qTopbarFixed);
       window.scrollBy(0, (t ? -t.offsetHeight : 0) - this.opt.gap);
     }
