@@ -52,7 +52,7 @@ process:
 
 <div class="-pad row -wrap -center flip">
 
-<div class="pad --hide-mobile target-mobile" data-class-mobile="drawer toggle-mobile off --hide pad" data-class-desktop="stick pad" id="menu">
+<div class="pad --hide-mobile target-mobile" data-class-mobile="drawer toggle-mobile off unpop --hide pad" data-class-desktop="stick pad" id="menu">
 	<div class="hide-desktop">
 		<a href="#cancel" class="close pad text-n">&#x2715;</a>
 		<h3 class="mar">d1 frontend framework</h3>
@@ -118,6 +118,15 @@ process:
 <h1 id="top">d1 <span class="text-n">frontend framework</span></h1>
 
 <hr>
+
+<!--
+	<a href="#xx1">a</a>
+	<a href="#xx2" class="hide-desktop">m</a>
+	<a href="#xx3" class="hide-mobile">d</a>
+	<div class="target" id="xx1">xx1a</div>
+	<div class="target-mobile" id="xx2">xx2m</div>
+	<div class="target-desktop" id="xx3">xx3d</div>
+-->
 
 <h2 id="start">Get started</h2>
 
@@ -733,7 +742,7 @@ Optionally add <code>shift</code> class to the target element to pop up leftward
 <div class="code">
 <div class="pop">
 	<a href="#pop">Popup</a>
-	<div id="pop" class=" --toggle pad">Pop</div>
+	<div id="pop" class=" --toggle pad shift">Pop</div>
 </div>
 </div>
 

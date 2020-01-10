@@ -1,4 +1,4 @@
-/*! d1css v1.0.18 */
+/*! d1css v1.0.19 */
 
 :root {
     --text: #000;
@@ -337,6 +337,18 @@ form>table tr>* {
     border: none;
 }
 
+.target, .toggle {
+    z-index: 10;
+}
+
+.pop>div {
+    z-index: 20;
+}
+
+.nav ul {
+    z-index: 30;
+}
+
 .close {
     position: absolute;
     top: 0;
@@ -363,37 +375,6 @@ form>table tr>* {
 .fix.l {
     top: auto;
     bottom: 0;
-}
-
-body:not(.js) .hide:not(:target), .js .hide:not(.hide-mobile):not(.hide-desktop),
-body:not(.js) .pop:not(:hover)>div, .pop:not(:hover)>div:not([id]),
-body:not(.js) .dlg:not(:target), body:not(.js) .nav li:not(:hover)>ul,
-.nav:not(.toggle) li:not(:hover)>ul,
-body:not(.js) .tabs+div>:not(:target):not(:last-child),
-body:not(.js) .tabs+div>:target~div, .gal *, a.act>.is-off, a:not(.act)>.is-on {
-    display: none;
-}
-
-.drawer, .gal a:target, .gal a:target~a:not([id]) {
-    display: block !important;
-}
-
-.topbar {
-    display: flex !important;
-}
-
-@media (max-width: 899px) {
-    body:not(.js) .hide-mobile:not(:target), .js .hide-mobile:not(.toggle),
-    .js .hide-mobile.hide {
-        display: none;
-    }
-}
-
-@media (min-width: 900px) {
-    body:not(.js) .hide-desktop:not(:target), .js .hide-desktop:not(.toggle),
-    .js .hide-desktop.hide {
-        display: none;
-    }
 }
 
 .nav li, .pop {
@@ -505,23 +486,11 @@ ul.nav, .nav ul {
     justify-content: center;
 }
 
-div.hide {
-    z-index: 10;
-}
-
-.pop>div {
-    z-index: 20;
-}
-
-.nav ul {
-    z-index: 30;
-}
-
 .drawer[class] {
     z-index: 80;
     position: fixed;
     top: 0;
-    left: -21em;
+    left: 0;
     height: 100vh;
     width: 80%;
     max-width: 20em;
@@ -530,18 +499,18 @@ div.hide {
     transition: left .3s;
 }
 
-body:not(.js) .drawer:target, body.js .drawer:not(.hide) {
-    left: 0;
+.drawer:not(:target):not([class*="toggle"]), .drawer.off {
+    left: -21em;
 }
 
-.drawer.shift[class][id] {
+.drawer.shift[id] {
     left: auto;
-    right: -21em;
+    right: 0;
     transition-property: right;
 }
 
-body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
-    right: 0;
+.drawer.shift:not(:target):not([class*="toggle"]), .drawer.shift.off {
+    right: -21em;
 }
 
 .gal a:target {
@@ -601,7 +570,7 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
     z-index: 71;
 }
 
-.topbar.hide {
+.topbar.off {
     top: -3.3rem;
     top: calc(-0.1rem - var(--topbar));
 }
@@ -611,13 +580,39 @@ body:not(.js) .drawer.shift:target, body.js .drawer.shift:not(.hide) {
     margin-top: var(--topbar);
 }
 
-h1[id]:before, h2[id]:before, h3[id]:before, h4[id]:before {
-    display: block;
-    content: "";
-    height: 3.7rem;
-    height: calc(.5rem + var(--topbar));
-    margin-top: -3.1rem;
-    margin-top: calc(.1rem - var(--topbar));
+.topbar~* h1[id], .topbar~* h2[id], .topbar~* h3[id], .topbar~* h4[id],
+.topbar~* h5[id], .topbar~* h6[id] {
+    margin-top: 0;
+    padding-top: 3.7rem;
+    padding-top: calc(.5rem + var(--topbar));
+}
+
+.hide[class], .gal>*, a.act>.is-off, a:not(.act)>.is-on, .target:not(:target),
+.tabs+div>:not(:target):not(:last-child):not(.toggle),
+.tabs+div>:target:not(.toggle)~*, .dlg:not(:target):not(.toggle),
+.drawer:not(:target):not(.toggle), .nav li:not(:hover)>ul:not(.toggle),
+.pop:not(:hover)>div:not(.toggle), .toggle.off {
+    display: none;
+}
+
+.drawer, .gal a:target, .gal a:target~a:not([id]) {
+    display: block !important;
+}
+
+.topbar {
+    display: flex !important;
+}
+
+@media (max-width: 899px) {
+    .hide-mobile[class], .target-mobile:not(:target), .toggle-mobile.off {
+        display: none;
+    }
+}
+
+@media (min-width: 900px) {
+    .hide-desktop[class], .target-desktop:not(:target), .toggle-desktop.off {
+        display: none;
+    }
 }
 
 .bg, blockquote, pre, code, thead, tfoot {
@@ -758,8 +753,8 @@ mark {
         box-sizing: border-box;
     }
 
-    .nav:not(.let)>li.shift>ul, .nav:not(.let)>li.shift~li>ul,
-    body:not(.js) .pop>div.shift, .pop>div:not([id]).shift {
+    .nav:not(.let)>li.shift>ul:not(.toggle),
+    .nav:not(.let)>li.shift~li>ul:not(.toggle), .pop>div.shift:not(.toggle) {
         left: auto;
         right: 0;
     }
@@ -822,7 +817,7 @@ mark {
         background-color: var(--bg-lite);
     }
 
-    [name]:invalid, [name]:invalid~.js-subinput {
+    [name]:invalid, [name]:invalid~.subinput {
         border-color: #c00;
         border-color: var(--text-danger);
     }
@@ -832,7 +827,7 @@ mark {
         color: var(--text-danger);
     }
 
-    [name]:invalid:focus, [name]:invalid~.js-subinput:focus {
+    [name]:invalid:focus, [name]:invalid~.subinput:focus {
         box-shadow: 0 0 0 .15em rgba(255, 100, 100, .3);
         box-shadow: 0 0 0 .15em var(--focus-danger);
     }

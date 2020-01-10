@@ -14,21 +14,22 @@ module.exports = new(function () {
 
   this.opt = {
     keepHash: 1,
+    mediaSuffixes: ['-mobile', '-desktop'],
 
-    qTgl: '.toggle[id]',
+    //qTgl: '.toggle[id]',
     
-    qTrg: '.target[id]',
+    qTrg: '[id].target',
     qPop: '.pop>div[id]',
-    qNav: '.nav ul',//auto id
-    qDlg: '.dlg[id]',
+    qNav: '.nav ul',//auto [id]
+    qDlg: '.dlg',//generated dialogs may have no [id]
     qTab: '.tabs+div>[id]',
-    qTre: 'ul.tree ul', //auto id
+    qTre: 'ul.tree ul', //auto [id]
     qDrw: '.drawer[id]',
     qAccRoot: 'ul.tree.accordion',
     qAcc: 'ul.tree.accordion ul',
     qGal: '.gal>a[id]', // dup of gallery.opt.qGal
     qSubMem: '.tabs.mem+div>[id], ul.mem:not(.nav) ul',
-    qMedia: '.hide-mobile, .hide-desktop',
+    //qMedia: '[id].target-mobile, [id].target-desktop',
     qDrawer: '#menu',
 
     cMem: 'mem',
@@ -47,11 +48,13 @@ module.exports = new(function () {
     d1.listen('after', e => this.after(e ? e.target : null));
     //toggle
     let q = this.opt;
-    let togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
+    this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(x => '[id].' + d1.opt.cToggle + x).join(', ')
+    let togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw/*, q.qMedia/*, q.qGal*/].join(', ');
     //let autohide = [        q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
     let unpop = [q.qPop, q.qNav, q.qDlg, q.qDrw/*, q.qGal*/].join(', ');
     d1.e(this.opt.qNav + ', ' + this.opt.qTre, n => this.attachSubNav(n)); //nav, tree: attach to links
     d1.e(togglers, n => this.initToggler(n)); //initialize togglers
+      this.opt.mediaSuffixes.forEach(x => d1.e(this.opt.qTrg + x, n => this.initToggler(n, x))); //initialize togglers by media
     //d1.e(autohide, n => this.tgl(n, 0)); //autohide
     d1.e(unpop, n => n.classList.add(d1.opt.cUnpop)); //initialize unpop
 
@@ -130,9 +133,9 @@ module.exports = new(function () {
     if(e.clientX<=5 && e.clientY>5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
   }
   
-  this.initToggler = function(n){
-    n.classList.remove(this.opt.cTarget);
-    n.classList.add(d1.opt.cToggle);
+  this.initToggler = function(n, suffix){
+    n.classList.remove(this.opt.cTarget + (suffix || ''));
+    n.classList.add(d1.opt.cToggle + (suffix || ''));
     this.tgl(n, 0);
   }
 

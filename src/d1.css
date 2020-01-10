@@ -7,9 +7,11 @@
 - .dlg.hide -> .dlg
 - .dlg -> .box -> shade
 - .full -> .full:not(.dlg)
+- (.hide) -> .off
+- (.hide-x) -> .target-x, .toggle-x
 - main nav as drawer
 - form>table, form>button / *?* /
-- table.flip ?
+- table.flip
 - table.let -> table.fit
 - hx.let -> hx.fit
 
@@ -17,12 +19,14 @@
 - .js
 - .js-unhint ?
 - .subinput
-- .toggle
+~ .hide(-x)
+- .target(-x)
+- .toggle(-x)
 - .off
 - .unpop
 - .mem
 - .gal
-- (.act)
++ (.act)
 - (.is-on)
 - (.is-off)
 
@@ -216,7 +220,6 @@ form>table tr>*{border:none;}
 
 
 
-
 /* coponents */
 
 /* z-index */	
@@ -259,10 +262,10 @@ ul.nav, .nav ul{list-style:none;padding:0;margin:0;}
 	.full.c{display:flex;align-items:center;justify-content:center;}
 
 /* drawer + effect */
-.drawer[class]{z-index:80;position:fixed;top:0;left:-21em;height:100vh;width:80%;max-width:20em;box-sizing:border-box;overflow-y:auto;transition:left .3s;}
-.drawer:target:not(.toggle), .drawer.toggle:not(.off){left:0;}
-.drawer.shift[class][id]{left:auto;right:-21em;transition-property:right;}
-.drawer.shift:target:not(.toggle), .drawer.shift.toggle:not(.off){right:0;}
+.drawer[class]{z-index:80;position:fixed;top:0;left:0;height:100vh;width:80%;max-width:20em;box-sizing:border-box;overflow-y:auto;transition:left .3s;}
+.drawer:not(:target):not([class*="toggle"]), .drawer.off{left:-21em;}/*hide*/
+.drawer.shift[id]{left:auto;right:0;transition-property:right;}
+.drawer.shift:not(:target):not([class*="toggle"]), .drawer.shift.off{right:-21em;}/*hide*/
 /* gallery */
 .gal a:target{z-index:90;color:#fff;background:#000 50% 50% / contain no-repeat;background-image:var(--img);position:fixed;left:0;top:0;width:100%;height:100vh;box-shadow:inset 0 3em 3em -1.5em rgba(0,0,0,.3);border-bottom:10em solid #000;outline:none;} /* current */
 	.gal a:target+a{background-image:var(--img);background-position:999em 999em;} /* preload next */
@@ -281,23 +284,21 @@ ul.nav, .nav ul{list-style:none;padding:0;margin:0;}
 
 
 /* hide */
-	/* all */
-	.hide[class],
-	.gal>*,
-	a.act>.is-off, a:not(.act)>.is-on,
-	/* css */ /* js may add id, should add .toggle(-mobile), should remove .target(-mobile) */
-	.target:not(:target):not(.toggle), /* .target[id] */
-    .tabs+div>:not(:target):not(:last-child):not(.toggle), /* .tabs+div>[id] */
-	.tabs+div>:target:not(.toggle)~*, /* tabs undup*/
-          .dlg:not(:target):not(.toggle), /* .dlg[id] */
-       .drawer:not(:target):not(.toggle), /* .drawer[id] */
-      /*.tree ul:not(.toggle):not(:target), /* .tree ul (auto id) */
-     .nav li:not(:hover)>ul:not(.toggle), /* .nav ul (auto id) */
-       .pop:not(:hover)>div:not(.toggle), /* .pop>div[id] */
-	/* js */
-	.toggle.off
-	/*.hide-mobile, .target-mobile:not(:target), .toggle-mobile.off,*/
-	/*.hide-desktop, .target-desktop:not(:target), .toggle-desktop.off,*/
+/* all */
+.hide[class],
+.gal>*,
+a.act>.is-off, a:not(.act)>.is-on,
+/* css */ /* js may add id, should add .toggle(-mobile), should remove .target(-mobile) */
+.target:not(:target)/*:not(.toggle)*/, /* .target[id] */
+.tabs+div>:not(:target):not(:last-child):not(.toggle), /* .tabs+div>[id] */
+      .tabs+div>:target:not(.toggle)~*, /* tabs undup*/
+	  .dlg:not(:target):not(.toggle), /* .dlg[id] */
+   .drawer:not(:target):not(.toggle), /* .drawer[id] */
+  /*.tree ul:not(.toggle):not(:target), /* .tree ul (auto id) */
+ .nav li:not(:hover)>ul:not(.toggle), /* .nav ul (auto id) */
+   .pop:not(:hover)>div:not(.toggle), /* .pop>div[id] */
+/* js */
+.toggle.off
 	{display:none;}
 
 /* show (override) */
@@ -310,21 +311,11 @@ ul.nav, .nav ul{list-style:none;padding:0;margin:0;}
 @media (max-width: 899px){
 	/* mobile */
 	.hide-mobile[class], .target-mobile:not(:target), .toggle-mobile.off {display:none;}
-	
-				body:not(.js) .hide-mobile:not(:target), /* css hide */
-				.js .hide-mobile:not(.toggle),
-				.js .hide-mobile.hide /* js hide */
-				{/*display:none;*/}
 }
 
 @media (min-width: 900px){
 	/* desktop */
 	.hide-desktop[class], .target-desktop:not(:target), .toggle-desktop.off {display:none;}
-	
-				body:not(.js) .hide-desktop:not(:target), /* css hide */
-				.js .hide-desktop:not(.toggle),
-				.js .hide-desktop.hide /* js hide */
-				{/*display:none;*/}
 }
 
 

@@ -1,4 +1,4 @@
-/*! d1x v1.0.18 */
+/*! d1x v1.0.19 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -97,7 +97,7 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
-/*! d1css v0.0.0 */
+/*! d1css v1.0.19 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -2164,22 +2164,24 @@ module.exports = new function () {
   this.shown = null;
   this.opt = {
     keepHash: 1,
-    qTgl: '.toggle[id]',
-    qTrg: '.target[id]',
+    mediaSuffixes: ['-mobile', '-desktop'],
+    //qTgl: '.toggle[id]',
+    qTrg: '[id].target',
     qPop: '.pop>div[id]',
     qNav: '.nav ul',
-    //auto id
-    qDlg: '.dlg[id]',
+    //auto [id]
+    qDlg: '.dlg',
+    //generated dialogs may have no [id]
     qTab: '.tabs+div>[id]',
     qTre: 'ul.tree ul',
-    //auto id
+    //auto [id]
     qDrw: '.drawer[id]',
     qAccRoot: 'ul.tree.accordion',
     qAcc: 'ul.tree.accordion ul',
     qGal: '.gal>a[id]',
     // dup of gallery.opt.qGal
     qSubMem: '.tabs.mem+div>[id], ul.mem:not(.nav) ul',
-    qMedia: '.hide-mobile, .hide-desktop',
+    //qMedia: '[id].target-mobile, [id].target-desktop',
     qDrawer: '#menu',
     cMem: 'mem',
     cTarget: 'target',
@@ -2211,8 +2213,11 @@ module.exports = new function () {
     }); //toggle
 
     var q = this.opt;
-    var togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw, q.qMedia
-    /*, q.qGal*/
+    this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(function (x) {
+      return '[id].' + d1.opt.cToggle + x;
+    }).join(', ');
+    var togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw
+    /*, q.qMedia/*, q.qGal*/
     ].join(', '); //let autohide = [        q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
 
     var unpop = [q.qPop, q.qNav, q.qDlg, q.qDrw
@@ -2225,6 +2230,12 @@ module.exports = new function () {
     d1.e(togglers, function (n) {
       return _this.initToggler(n);
     }); //initialize togglers
+
+    this.opt.mediaSuffixes.forEach(function (x) {
+      return d1.e(_this.opt.qTrg + x, function (n) {
+        return _this.initToggler(n, x);
+      });
+    }); //initialize togglers by media
     //d1.e(autohide, n => this.tgl(n, 0)); //autohide
 
     d1.e(unpop, function (n) {
@@ -2325,9 +2336,9 @@ module.exports = new function () {
     if (e.clientX <= 5 && e.clientY > 5 && this.opt.qDrawer) this.toggle(this.opt.qDrawer);
   };
 
-  this.initToggler = function (n) {
-    n.classList.remove(this.opt.cTarget);
-    n.classList.add(d1.opt.cToggle);
+  this.initToggler = function (n, suffix) {
+    n.classList.remove(this.opt.cTarget + (suffix || ''));
+    n.classList.add(d1.opt.cToggle + (suffix || ''));
     this.tgl(n, 0);
   };
 
