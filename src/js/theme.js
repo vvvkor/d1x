@@ -10,7 +10,7 @@ module.exports = new(function () {
   this.drw = null;
   
   this.init = function(){
-    this.restore(document.documentElement, 'theme-html');
+    //this.restore(document.documentElement, 'theme-html');
     this.restore(document.body, 'theme-body');
 
     //button
@@ -23,7 +23,7 @@ module.exports = new(function () {
     s.bottom = s.left = 'auto';
     s.margin = 0;
     //drawer
-    this.drw = d1.ins('div', '', {id: 'theme', className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop + ' drawer pad shift theme-drawer'}, document.body);
+    this.drw = d1.ins('div', '', {id: 'theme', className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' drawer pad shift theme-drawer'}, document.body);
     d1.ins('a', '&#x2715;', {href: '#cancel', className: 'pad hover close'}, this.drw);
     
     //menu
@@ -45,7 +45,8 @@ module.exports = new(function () {
   this.style = function(k, v, deep){
     if(k instanceof Array) k.forEach(w => this.style(w, v, 1));
     else{
-      let n = (k.substr(0, 2)=='--') ? document.documentElement : document.body;
+      //let n = (k.substr(0, 2)=='--') ? document.documentElement : document.body;
+      let n = document.body;
       n.style.setProperty(k, v);
       localStorage.setItem('theme-'+n.tagName.toLowerCase(), n.style.cssText);
     }
@@ -53,7 +54,7 @@ module.exports = new(function () {
   
   this.unstyle = function(e){
     e.preventDefault();
-    document.documentElement.style = document.body.style = '';
+    /*document.documentElement.style = */document.body.style = '';
     localStorage.removeItem('theme-html');
     localStorage.removeItem('theme-body');
   }

@@ -12,6 +12,10 @@ module.exports = new(function () {
   this.name = 'toggle';
   this.shown = null;
 
+  this.icons = {
+    toggle: ['', '[+]']
+  };
+  
   this.opt = {
     keepHash: 1,
     mediaSuffixes: ['-mobile', '-desktop'],
@@ -22,21 +26,19 @@ module.exports = new(function () {
     qPop: '.pop>div[id]',
     qNav: '.nav ul',//auto [id]
     qDlg: '.dlg',//generated dialogs may have no [id]
-    qTab: '.tabs+div>[id]',
+    qTab: '.tabs+div>div[id]',
     qTre: 'ul.tree ul', //auto [id]
     qDrw: '.drawer[id]',
     qAccRoot: 'ul.tree.accordion',
     qAcc: 'ul.tree.accordion ul',
     qGal: '.gal>a[id]', // dup of gallery.opt.qGal
-    qSubMem: '.tabs.mem+div>[id], ul.mem:not(.nav) ul',
+    qSubMem: '.tabs.mem+div>div[id], ul.mem:not(.nav) ul',
     //qMedia: '[id].target-mobile, [id].target-desktop',
     qDrawer: '#menu',
 
     cMem: 'mem',
-    cTarget: 'target',
+    cTarget: 'target'
     //cToggle: 'toggle',
-    //cUnpop: 'unpop',
-    iToggle: ['open', '[+]']
   };
 
   this.init = function () {
@@ -50,13 +52,12 @@ module.exports = new(function () {
     let q = this.opt;
     this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(x => '[id].' + d1.opt.cToggle + x).join(', ')
     let togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw/*, q.qMedia/*, q.qGal*/].join(', ');
-    //let autohide = [        q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
-    let unpop = [q.qPop, q.qNav, q.qDlg, q.qDrw/*, q.qGal*/].join(', ');
+    this.opt.qUnpop = [q.qPop, q.qNav, q.qDlg, q.qDrw/*, q.qGal*/].join(', ');
     d1.e(this.opt.qNav + ', ' + this.opt.qTre, n => this.attachSubNav(n)); //nav, tree: attach to links
     d1.e(togglers, n => this.initToggler(n)); //initialize togglers
       this.opt.mediaSuffixes.forEach(x => d1.e(this.opt.qTrg + x, n => this.initToggler(n, x))); //initialize togglers by media
+    //let autohide = [        q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
     //d1.e(autohide, n => this.tgl(n, 0)); //autohide
-    d1.e(unpop, n => n.classList.add(d1.opt.cUnpop)); //initialize unpop
 
     d1.e(this.opt.qGal + ':last-child', n => d1.x(n, 1));//gal: auto add close link
     d1.e(this.opt.qSubMem, n => n.classList.add(this.opt.cMem)); //initialize sub mem
@@ -143,7 +144,7 @@ module.exports = new(function () {
     //let a = n.previousElementSibling;
     let aa = d1.a(n.parentNode.children).filter(v => v.tagName=='A');
     let a = aa.filter(v => !v.href)[0] || aa[0]
-      || (d1.ins('',' ',{},n.parentNode, false) && d1.ins('a', d1.i(this.opt.iToggle), {}, n.parentNode, false));
+      || (d1.ins('',' ',{},n.parentNode, false) && d1.ins('a', d1.i('toggle'), {}, n.parentNode, false));
     if(a){
       if(!n.id) n.id = 'ul-' + d1.seq();
       a.href = '#' + n.id;
@@ -194,7 +195,7 @@ module.exports = new(function () {
         keep.push(d1.q(a.hash));
     }
     d1.dbg(['unpop', keep]);
-    d1.e('.' + d1.opt.cUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
+    d1.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
   }
 
   this.unhash = function(){

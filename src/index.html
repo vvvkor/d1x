@@ -6,12 +6,61 @@
 	<title>d1 - Docs and Demo</title>
 
 <!--
-todo:
-- js: unify icons usage (string/array)
-- js: code formatter
-- css: input: bg, color ?
-- css h2:before can cover preceding elements!!!
-- doc: "requires toggle.js"
+
+# todo
+ 
+## css
+
+~ /*?*/
+- .panel: rel, unmar, box-sizing:border-box
+- .pill: rad
+- .dropcap
+- input: bg, color ?
+? .hover.bg, .hover.shade
+? .hover.on
+= .btn.hover (no bg by default, like link)
+= --bg-hilite = --bg-pane
+= unuse --text-hilite
++~ h2:before can cover preceding elements!!!
++ .full.c -> .center
++ hr.fit (tabs)
++ .topbar~* .stick
++ code: padding
++ .nav: valign, logo
++ check color priority
++ .hover:not(table) a:hover, .hover:not(table) a.act, a.hover:hover, a.hover.act, table.hover tr:hover{--bg-pane}
++ invert --text-nav, --text-vis
++ .topbar.let?
++ table.let: lined, no first pad?
+ 
+## js
+
+- edit, valid, .unhint
+? gallery: unuse :target
+= .gal to js gallery: only if .toggle?
+= outline icons [ok]
+= onscroll only if has topbar
++ dinamic qUnpop, no cUnpop (theme, data-class-x)
++ .expand component = .target/.target-mobile/.target-desktop
++ .toggle/.toggle.off : toggle with js, visible without js
++ opt: disable plugins
++ icons array
+- new components: scrollspy, notify, sortable, icons?
+- alerts: close link
+- code formatter
+- optimize: addEventListener to d1.b(), bind to arrFunc, getAttribute to attr,
+  - var to let, querySelector(All) to q/qq, appendChild/insertBefore to ins
+ 
+## doc
+ 
+! "fitty"
+! overview test page https://getuikit.com/assets/uikit/tests/ , https://getuikit.com/v2/tests/overview.html
+! demo .row (flip, let, center, wrap)
+- customizer https://getuikit.com/v2/docs/customizer.html
++ js classes: .gallery, .pic
++ demo table: .roll by def
+- reference: js classes, components
+- "requires toggle.js"
 - doc structure:
   - typo, table, blocks, color
   - grid, media
@@ -20,7 +69,8 @@ todo:
   - plugins (js)
   - reference (classes, plugins)
 
-process:
+## process
+
 - (validate / lint)
 - package.json: update version
 - (html: use css & js from cdn, set new version)
@@ -28,6 +78,7 @@ process:
 - npm publish ./
 - git commit
 - (publish html)
+
 -->
 	
 	<!-- CDN --REMOVE->
@@ -41,9 +92,9 @@ process:
 		console.log('d1=',d1);
 	</script>
 </head>
-<body class="-bg" data-d1='{"hOk":"#yes","debug":1,"textIcons":false,"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
+<body class="-bg" data-d1='{"hOk":"#yes","debug":1,"textIcons":false,"disable":["-theme"],"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
 
-<div class="topbar shade -let">
+<div class="topbar -shade -let" id="topbar">
 	<a href="#menu" class="pad hide-desktop"><svg class="icon" width="32" height="32"><use xlink:href="#svg-menu"/></svg></a>
 	<a href="#top" class="pad"><b>d1</b> v0.0.0</a>
 	<code class="pad">npm install d1css</code>
@@ -223,14 +274,16 @@ Nothing special here. Mostly, default styling is kept.
 
 <h3 class="-l">Lists</h3>
 
-	<a href="#ul-fit" data-class="fit" data-nodes=".demo-list">Add</a> <code>fit</code> class to remove margins and list style.<br>
-	<a href="#ul-l" data-class="l" data-nodes=".demo-list">Add</a> <code>l</code> class for horizontal list.
-	<a href="#ul-row" data-class="row let -center" data-nodes=".demo-list">Add</a> <code>row</code> class for horizontal list.
+<p>
+	<label><input name="ul-fit" type="checkbox" data-nodes=".demo-list" data-class="fit"> Remove margins and list style <code>.fit</code></label><br>
+	<label><input name="ul-row" type="checkbox" data-nodes=".demo-list" data-class="row let"> Horizontal list <code>.row</code></label>
+</p>
+	
 	<div id="lists">
 	<ul class="-l -let demo-list">
 		<li>Unordered
 		<li>List
-			<ol class="demo-list">
+			<ol class="-demo-list">
 				<li>Ordered
 				<li>List
 			</ol>
@@ -267,7 +320,7 @@ Width limiting classes (<code>col-0, narrow, read</code>) can be combined with:
 <code>center</code> to centrify column in its available space,
 <code>shift</code> to shift column to the right.
 <p>
-Wrap your rows into <code>div</code> with <code>wrap</code> class to limit maximal width of the whole thing.
+Wrap your rows into <code>div</code> with <code>wrap</code> class to limit maximum width of the whole thing.
 </p>	
 	<!--
 	<div class="row flip">
@@ -322,16 +375,16 @@ Wrap your rows into <code>div</code> with <code>wrap</code> class to limit maxim
 <p>
 By default, <code>table</code> is styled with border, unless it is a direct descendant of <code>form</code>.
 <p>
-<a href="#table-hover" data-class="hover" data-nodes=".table-sample">Add</a> <code>hover</code> class to highlight hovered row.<br>
-<!--a href="#table-flip" data-class="flip" data-nodes=".table-sample">Add</a> <code>flip</code> class to stack cells on small screen; use <code>[data-order]</code>.<br-->
-<a href="#table-fit" data-class="fit" data-nodes=".table-sample">Add</a> <code>fit</code> class to hide borders.<br>
-<a href="#table-roll" data-class="roll" data-nodes=".roll-sample">Wrap</a> table inside <code>div</code> with class <code>roll</code> to have independent horizontal scrolling of table when it is too wide.<br>
+	<label><input type="checkbox" name="demo-table-hover" data-class="hover" data-nodes="#demo-table" checked> Highlight hovered row <code>.hover</code></label><br>
+	<label><input type="checkbox" name="demo-table-fit" data-class="fit" data-nodes="#demo-table"> Hide borders <code>.fit</code></label><br>
+	<label><input type="checkbox" name="demo-table-let" data-class="let" data-nodes="#demo-table"> Lined style <code>.let</code></label><br>
+	<label><input type="checkbox" name="demo-roll" data-class="roll" data-nodes="#demo-roll" checked> Scroll overflowing width <code>.roll &gt; table</code></label>
 </p>
 Add <code>r#, l#, #c</code> (where # is any number) classes to align cells of column number # to the right, left or center, respectively (JavaScript required).
 </p>
 
-	<div class="-roll roll-sample">
-	<table class="-flip -hover r1 c4 c5 table-sample" data-order-x="1 0">
+	<div class="roll" id="demo-roll">
+	<table class="hover r1 c4 c5" data-order-x="1 0" id="demo-table">
 		<caption>Table caption</caption>
 		<thead>
 		<tr><th>Component<th>Pure CSS<th>JS enhancements <code>.toggle</code><th>Remember state <code>.mem</code><th>Fix position<th>Close on Escape<th>Modifications
@@ -393,6 +446,13 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 	<svg class="icon" width="32" height="32"><use xlink:href="#svg-ok"/></svg>
 </button>
 <a href="#" class="btn"><svg class="icon" width="32" height="32"><use xlink:href="#svg-ok"/></svg> Link</a>
+<br>
+<input type="submit" value="Submit">
+	<!--
+	<input type="submit" value="S-hover" class="hover bg-w">
+	<button type="submit" class="hover bg-n">B-hover</button>
+	<a href="#" class="pad rad btn hover">L-hover</a>
+	-->
 <span class="btn bg-n">Span</span>
 <a href="#" class="pad rad hover">Link-pad-rad</a>
 <a href="#">Link</a>
@@ -754,7 +814,7 @@ Use link pointing at element with <code>hide</code> class.
 
 <div class="code">
 <a href="#tog">Toggle</a>
-<div id="tog" class="--hide pad bord yel --toggle target mem">Togglable</div>
+<div id="tog" class="pad bord yel target mem --toggle">Togglable</div>
 </div>
 
 <h3 id="toggle-drawer">Drawer</h3>
@@ -800,7 +860,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 
 <div class="code">
 <a href="#full">Fullscreen</a>
-<div id="full" class="dlg full c pad bg-w">
+<div id="full" class="dlg full center pad bg-w">
 	<a class="close pad" href="#cancel">&times;</a>
 	Full
 </div>
@@ -848,7 +908,7 @@ Next sibling <code>div</code> should contain <code>div</code> tab panels.
 </p>
 
 <div class="code">
-<ul class="nav tabs rad mem">
+<ul class="nav tabs rad mem hover">
 	<li><a href="#tab1">Tab1</a></li>
 	<li><a href="#tab2">Tab2</a></li>
 	<li><a href="#tab3">Tab3</a></li>
@@ -863,12 +923,14 @@ Next sibling <code>div</code> should contain <code>div</code> tab panels.
 <h3 id="toggle-tree">Tree</h3>
 
 <p>
-Inside list items, use links pointing at nested lists.<br>
-Optionally add <code>accordion</code> class for accordion behaviour.
+Inside list items, use links pointing at nested lists.
+</p>
+<p>
+<label><input type="checkbox" name="acc-demo" data-nodes="#demo-tree" data-class="accordion"> Accordion behaviour <code>.accordion</code></label>
 </p>
 
 <div class="code">
-<ul class=" --toggle tree mem accordion">
+<ul class=" --toggle tree mem accordion" id="demo-tree">
 	<li><a href="#ul1">List 1</a>
 		<ul id="ul1">
 			<li>Item 1.1
@@ -1050,7 +1112,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 <h3>Full height</h3>
 
 <div class="code">
-<div class="full bg-w c">Full</div>
+<div class="full bg-w center">Full</div>
 </div>
 
 <h3>Invert</h3>
@@ -1080,7 +1142,7 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 	<li>Toggle class: <code>a[href^='#'][data-class][data-unclass]</code>, <code id="test1">a[data-nodes][data-class][data-unclass]</code> (
 		<a href="#test1" data-class="text-e" data-unclass-x="text-i" data-nodes="#js-behaviours code" class="">test</a>
 		<input type="checkbox" name="chb" data-class="bg-w" data-nodes="#js-behaviours code">
-		<a href="#test2" data-class="invert" data-nodes="body" class="">invert</a>
+		<a href="#test2" data-class="invert" data-nodes="body" class="" accesskey="i">invert</a>
 		)
 	<li>Set value of target input: <code>a[href^='#'][data-value]</code>
 	<li>Show value of color input: <code>input[type="color"]</code>
@@ -1389,16 +1451,23 @@ Optionally add <code>accordion</code> class for accordion behaviour.
 <h3 id="scroll">Scroll</h3>
 
 <p>
-<label><input name="demo-top" type="radio" data-nodes="#demo-topbar" data-class="bg-n" checked> Disable demo top bar</label><br>
-<label><input name="demo-top" type="radio" data-nodes="#demo-topbar" data-class="topbar shade bg-i"> Fixed top bar</label><br>
-<label><input name="demo-top" type="radio" data-nodes="#demo-topbar" data-class="topbar shade let bg-w"> Scrollable top bar</label>
+<label><input name="demo-top" type="radio" data-nodes="#topbar" data-class="hide pad"> Disable top bar</label><br>
+<label><input name="demo-top" type="radio" data-nodes="#topbar" data-class="topbar shade" checked> Fixed top bar <code>.topbar</code></label><br>
+<label><input name="demo-top" type="radio" data-nodes="#topbar" data-class="topbar let shade"> Scrollable top bar <code>.topbar.let</code></label>
 </p>
 
-<div class="code">
+<div class="bord">
+	<div class="bg small"><a href="#code-topbar" class="pad">HTML</a></div>
+<pre id="code-topbar" class="target fit pad">&lt;div class="topbar let"&gt;
+  Topbar
+&lt;/div&gt;</pre>
+</div>
+
+<!--div class="code">
 	<div class="-topbar -let -shade -bg-w" id="demo-topbar">
 		<b class="pad">Topbar</b>
 	</div>
-</div>
+</div-->
 
 
 <h2 id="custom">Customization with CSS vars</h2>
@@ -1437,18 +1506,18 @@ most important:
 </thead>
 <tbody>
 <tr><th>.row<td><a href="#grid">Grid</a><td>div ul ul.fit .col-0 .col-2 .col-3<td>.flip .let <i>.shift .stick .center .wrap .read .narrow</i>
-<tr><th>table<td><a href="#table">Table</a><td>.roll<td>.hover .fit .flip
+<tr><th>table<td><a href="#table">Table</a><td>.roll<td>.hover .fit .let .flip
 <tr><th>button, a.btn<td><a href="#colors-buttons">Button</a><td><a href="#form">form</a> submit button a span<td>.bg-x <i>[data-target]</i>
 <tr><th>.nav<td><a href="#nav">Navigation</a><td>ul<td>.toggle .flip .hover .let .fit .bg .nav.tabs.mem<i>.act .shift</i>
 <tr><th>.drawer<td><a href="#toggle-drawer">Drawer</a><td>div a.close<td>.shift
 <tr><th>.topbar<td><a href="#scroll">Top bar</a><td><td>.let
 <tr><th>.flip<td>Responsive<td>.row .nav<td>
 <tr><th>.fix<td><a data-href="#fix">Fixed block</a><td><td>.r .l
-<tr><th>.hide<td><a href="#toggle">Togglable (hash)</a><td>div ul .close<td>.toggle .dlg.c.let .dlg.full.c .hide-mobile .hide-desktop <i>.pop .pop>.shift .tabs</i>
+<tr><th>.target<td><a href="#toggle">Togglable (hash)</a><td>div ul .close<td>.toggle .dlg.c.let .dlg.full.c .hide-mobile .hide-desktop <i>.pop .pop>.shift .tabs</i>
 <tr><th>.let<td>Specific modifications to components<td>.row, .nav, .dlg, .topbar<td>
 <!--tr><th>.switch<td><a href="#toggle-radio">Togglable (radio)</a><td>label div<td>.pop .tabs -->
 <tr><th>.gal<td><a href="#toggle-gallery">Gallery</a><td>a .close<td><i>[data-info]</i>
-<tr><th>.toggle<td><a href="#js">JavaScript toggle</a><td>ul ul.accordion div .js-control .js-hide<td>.mem <i>.act</i>
+<tr><th>.target<td><a href="#js">JavaScript toggle</a><td>ul ul.accordion div .toggle .off<td>.mem <i>.act</i>
 <tr><th>.icon<td>Small image<td>img svg a button<td>
 <tr><th>.text-<td><a href="#colors">Text color</a><td>* .invert<td>.text-e .text-w .text-i .text-y .text-n
 <tr><th>.bg<td><a href="#colors">Background color</a><td>* .invert<td>.bg-e .bg-w .bg-i .bg-y .bg-n .yel
@@ -1501,14 +1570,13 @@ most important:
 <li><code>.hover</code> &mdash; highlight link or table row on hover
 <li><code>.icon</code> &mdash; small image
 <li><code>.invert</code> &mdash; invert colors
-<li><code>.js-control</code> &mdash; visibility is controlled by JavaScript, shown by default
-<li><code>.js-hide</code> &mdash; hidden with JavaScript
 <li><code>.l</code> &mdash; align content to the left 
 <li><code>.let</code> &mdash; specific modifications to components
 <li><code>.mar</code> &mdash; add vertical margins
 <li><code>.narrow</code> &mdash; narrow block width
 <li><code>.nav</code> &mdash; horizontal dropdown navigation
 <li><code>.nobr</code> &mdash; prevent automatic text wrapping
+<li><code>.off</code> &mdash; hidden with JavaScript
 <li><code>.pad</code> &mdash; add padding
 <li><code>.pop</code> &mdash; popup component wrapper
 <li><code>.r</code> &mdash; align content to the right
@@ -1527,6 +1595,7 @@ most important:
 <li><code>.text-n</code> &mdash; nominal "gray" text color
 <li><code>.text-w</code> &mdash; nominal "yellow" text color
 <li><code>.text-y</code> &mdash; nominal "green" text color
+<li><code>.toggle</code> &mdash; visibility is controlled by JavaScript, shown by default
 <li><code>.topbar</code> &mdash; sticky top app bar>
 <li><code>.wrap</code> &mdash; reasonable page width limit
 <li><code>.yel</code> &mdash; temporary highlight targeted block
@@ -1585,6 +1654,7 @@ most important:
 <symbol id="svg-user" viewBox="0 0 8 8"><path d="M4 1a1.7 2.2 0 1 0 .01 0m-3 5.5q3 1 6 0-3 -2.5 -6 0z"/></symbol>
 
 <symbol id="svg-up" viewBox="0 0 10 10"><path d="M1 6l4-4 4 4-1 1-3-3-3 3z"/></symbol>
+	<symbol id="svg-up-line" viewBox="0 0 100 100"><polyline points="10,60 50,20 90,60"/></symbol>
 <symbol id="svg-down" viewBox="0 0 10 10"><path d="M1 4l4 4 4-4-1-1-3 3-3-3z"/></symbol>
 </svg>
 

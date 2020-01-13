@@ -8,6 +8,17 @@ module.exports = new (function(){
   this.sequence = 0;
   this.plugins = {};
   this.handlers = {};
+  this.icons = {
+    close: ['close', '&#x2715;'],//&times;
+    menu:  ['menu',  '&equiv;'],
+    add:   ['add',   '+'],
+    edit:  ['edit',  '*'],
+    ok:    ['ok',    '&check;'],//&#x2713;
+    left:  ['left',  '&larr;'],
+    right: ['right', '&rarr;'],
+    up:    ['up',    '&uarr;'],
+    down:  ['down',  '&darr;']
+  };
 
   this.opt = {
     debug: 0,
@@ -17,16 +28,14 @@ module.exports = new (function(){
     cHide: 'hide',
     cToggle: 'toggle',
     cOff: 'off',
-    cUnpop: 'unpop',
     cClose: 'close',
     cIcon: 'icon',
     cJs: 'js',
     hClose: '#cancel',
     hOk: '#ok',
-    iClose: ['close', '&#x2715;'], //&times;
     sCancel: 'Cancel',
     sOk: 'OK',
-    pSvg: 'svg-' //prefix
+    pSvg: 'svg-', //prefix
   };
 
   this.init = function(opt){
@@ -71,8 +80,9 @@ module.exports = new (function(){
 
   this.initPlugins = function(opt){
     this.dbg(['plugins', this.plugins]);
-    Object.keys(this.plugins).forEach(k => {
+    Object.keys(this.plugins).filter(p => !this.opt.disable || this.opt.disable.indexOf(p)==-1).forEach(k => {
         if(opt && opt.plug && opt.plug[k]) this.setOpt(this.plugins[k], opt.plug[k]);
+        if(this.plugins[k].icons) Object.keys(this.plugins[k].icons).forEach(i => this.icons[i] = this.plugins[k].icons[i]);
         this.plugins[k].init();
     });
   }
@@ -164,17 +174,18 @@ module.exports = new (function(){
   }
 
   this.x = function(d, pos, cls){
-    return this.ins('a', d1.i(this.opt.iClose), {href: this.opt.hClose, className: (cls || '')}, d, pos);
+    return this.ins('a', d1.i('close'), {href: this.opt.hClose, className: (cls || '')}, d, pos);
   }
 
   this.svg = function(id, alt, c) {
-    if (this.opt.textIcons || !document.getElementById(id)) return this.ins('span', alt || '', {className: c || ''});
+    if (!id || this.opt.textIcons || !document.getElementById(id)) return this.ins('span', alt || '', {className: c || ''});
     return this.ins('span', '<svg class="' + this.opt.cIcon + ' ' + (c || '') + '" width="24" height="24"><use xlink:href="#' + id + '"></use></svg>');
   }
   
-  this.i = function(id, alt, c) {
-    if(id instanceof Array) return this.i(...id);
-    return this.svg(id ? this.opt.pSvg + id : '', alt || '[' + id + ']', c);
+  this.i = function(ico, c) {
+    //if(ico.constructor !== Array)
+    if(typeof ico === 'string') ico = this.icons[ico] || [ico, ''];
+    return this.svg(ico[0] ? this.opt.pSvg + ico[0] : '', ico[1] || '[' + ico[0] + ']', c);
   }
   
   this.vis = function(n){

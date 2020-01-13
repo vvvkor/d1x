@@ -10,7 +10,6 @@ module.exports = new(function () {
 
   this.opt = {
     qTop: 'h2[id], h3[id], h4[id], h5[id], h6[id]', // h1[id],
-    iTop: ['up', '&uarr;'],
     minDesktop: 900
   };
 
@@ -46,6 +45,7 @@ module.exports = new(function () {
   }
 
   this.toggleClass = function(n, e) {
+    if(n.type == 'radio' && !n.checked) return;
     let box = (n.type == 'checkbox' || n.type == 'radio');
     let q = d1.attr(n, 'data-nodes', n.hash);
     let c = d1.attr(n, 'data-class', false);
@@ -60,7 +60,7 @@ module.exports = new(function () {
 
   this.addTopLink = function(n){
     n.style.position = 'relative';
-    let a = d1.ins('a', d1.i(this.opt.iTop), {href:'#', className: 'close l text-n'}, n);
+    let a = d1.ins('a', d1.i('up'), {href:'#', className: 'close l text-n'}, n);
   }
 
   this.onResize = function() {

@@ -10,7 +10,8 @@ module.exports = new(function () {
 
   this.name = 'lookup';
 
-  this.opt = {
+  this.icons = {
+    goto: ['', '&rarr;']
   };
 
   this.opt = {
@@ -19,7 +20,6 @@ module.exports = new(function () {
     aUrl: 'data-url',
     aGoto: 'data-goto',
     cacheLimit: 0,
-    iGoto: ['edit', '&rarr;'],
     pList: 'lookup-list-',
     max: 10,
     wait: 300,
@@ -30,7 +30,7 @@ module.exports = new(function () {
   this.win = null;
 
   this.init = function() {
-    this.win = d1.ins('div', '', {id: this.opt.pList + d1.seq(), className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop});
+    this.win = d1.ins('div', '', {id: this.opt.pList + d1.seq(), className: d1.opt.cToggle + ' ' + d1.opt.cOff});
     this.closeList();
     document.querySelector('body').appendChild(this.win);
 
@@ -48,7 +48,7 @@ module.exports = new(function () {
     n.classList.add('bg-n');
     n.classList.add(d1.opt.cHide);
     //n.type = 'hidden';
-    n.vLabel = n.getAttribute(this.opt.aLabel) || n.value || '';//@@
+    n.vLabel = d1.attr(n, this.opt.aLabel) || n.value || '';//@@
     let m = d1.ins('input', '', {type: 'text', value: n.vLabel, className:'input-lookup subinput'}, pop, this.opt.inPop ? 0 : 1);
     m.name = 'lookup-' + n.name;
     //m.required = n.required;
@@ -61,9 +61,9 @@ module.exports = new(function () {
     if(n.placeholder) m.placeholder = n.placeholder;
     m.autocomplete = 'off';
     let i = null;
-    if(this.opt.iGoto && n.getAttribute(this.opt.aUrl)){
+    if(d1.attr(n, this.opt.aUrl)){
       let ic = d1.ins('span', '', {className:'input-tools'}, this.opt.inPop ? pop : m, 1);//icons container
-      i = d1.ins('a', d1.i(this.opt.iGoto), {}, ic);
+      i = d1.ins('a', d1.i('goto'), {}, ic);
       i.style.cursor = 'pointer';
       d1.ins('', ' ', {}, ic, -1);
     }
@@ -114,6 +114,7 @@ module.exports = new(function () {
     this.win.vRel = n.vCap;
     d1.plugins.toggle.toggle(this.win, true);
     this.build(n, d);
+    d1.plugins.toggle.shown = null;
   }
   
   this.closeList = function(){
@@ -122,9 +123,9 @@ module.exports = new(function () {
   
   this.build = function(n, d){
     while(this.win.firstChild) this.win.removeChild(this.win.firstChild);
-    let ul = d1.ins('ul', '', {className: 'nav let'}, this.win);
+    let ul = d1.ins('ul', '', {className: 'nav let hover'}, this.win);
     let w, j = 0;
-    let go = n.getAttribute(this.opt.aGoto);
+    let go = d1.attr(n, this.opt.aGoto);
     for(let i in d){
       w = d1.ins('li', '', {}, ul);
       let a = d1.ins('a', '', {href: go ? go.replace(/\{id\}/, d[i].id) : '#' + d[i].id, className: '-pad -hover'}, w);
@@ -187,7 +188,7 @@ module.exports = new(function () {
   
   this.go = function(n, e){
     e.preventDefault();
-    let u = n.getAttribute(this.opt.aUrl);
+    let u = d1.attr(n, this.opt.aUrl);
     if(n.value.length>0 && u) location.href = encodeURI(decodeURI(u).replace(/\{id\}/, n.value));
   }
 

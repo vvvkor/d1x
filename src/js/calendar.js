@@ -8,20 +8,23 @@ module.exports = new(function () {
   "use strict";
 
   this.name = 'calendar';
+  
+  this.icons = {
+    date:  ['date', '#'],
+    now:   ['now', '&check;'],
+    clear: ['delete', '&#x2715;'],
+    prev:  ['', '&lsaquo;'],
+    next:  ['', '&rsaquo;'],
+    prev2: ['', '&laquo;'],
+    next2: ['', '&raquo;']
+  }
 
   this.opt = {
     cBtn: 'pad hover',
     dateFormat: 'd', //y=Y-m-d, d=d.m.Y, m=m/d Y
     hashCancel: '#cancel',
     hashNow: '#now',
-    icons: ['iDate', 'iNow', 'iClear'],
-    iDate: ['date', '#'],
-    iClear: ['delete', '&#x2715;'],
-    iNow: ['now', '&#x2713;'],
-    iPrev: ['prev', '&lsaquo;'],
-    iNext: ['next', '&rsaquo;'],
-    iPrev2: ['prev', '&laquo;'],
-    iNext2: ['next', '&raquo;'],
+    addIcons: ['date', 'now', 'clear'],
     idPicker: 'pick-date',
     minWidth: 801,
     qsCalendar: 'input.calendar',
@@ -38,7 +41,7 @@ module.exports = new(function () {
     for(i in opt) this.opt[i] = opt[i];
 
     if(window.innerWidth < this.opt.minWidth) return;
-    this.win = d1.ins('div', '', {id: this.opt.idPicker, className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop + ' pad'});//dlg hide pad
+    this.win = d1.ins('div', '', {id: this.opt.idPicker, className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' pad'});//dlg hide pad
     this.win.style.whiteSpace = 'nowrap';
     //this.toggle(false);
     document.body.appendChild(this.win);
@@ -57,7 +60,7 @@ module.exports = new(function () {
       if(m!==null) m = parseInt(m, 10);
       else m = this.opt.showModal || (Math.min(window.innerWidth, window.innerHeight) < this.opt.sizeLimit);
       if(on){
-        this.win.className = d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop + ' pad ' + (m ? 'dlg' : '');
+        this.win.className = d1.opt.cToggle + ' ' + d1.opt.cOff + ' pad ' + (m ? 'dlg' : '');
         (m ? document.body : n.thePop).appendChild(this.win);
         if(m){
           var s = this.win.style;
@@ -78,12 +81,12 @@ module.exports = new(function () {
     let pop = d1.ins('div', '', {className:'pop l'}, n, -1); //''
     if(!this.opt.inPop) pop.style.verticalAlign = 'bottom';
     n.thePop = pop;
-    if(this.opt.icons.length>0){
+    if(this.opt.addIcons.length>0){
       let ico = [];
       var ic = d1.ins('span', '', {className:'input-tools'}, n, 1);//icons container
-      for(let i in this.opt.icons){
+      for(let i in this.opt.addIcons){
         d1.ins('', ' ', {}, ic);
-        let ii = ic.appendChild(d1.i(this.opt[this.opt.icons[i]]));
+        let ii = ic.appendChild(d1.i(this.opt.addIcons[i]));
         ii.style.cursor = 'pointer';
         ico.push(ii);
       }
@@ -162,13 +165,13 @@ module.exports = new(function () {
     let p2 = null;
     if(n.vTime){
         p2 = d1.ins('p', '', {className: 'c'});
-        let ph = this.btn('#prev-hour', d1.i(this.opt.iPrev), p2);
+        let ph = this.btn('#prev-hour', d1.i('prev'), p2);
         ch = d1.ins('span', this.n(x.getHours()), {className: 'pad'}, p2);
-        let nh = this.btn('#next-hour', d1.i(this.opt.iNext), p2);
+        let nh = this.btn('#next-hour', d1.i('next'), p2);
         d1.ins('span', ':', {className: 'pad'}, p2);
-        let pi = this.btn('#prev-min', d1.i(this.opt.iPrev), p2);
+        let pi = this.btn('#prev-min', d1.i('prev'), p2);
         ci = d1.ins('span', this.n(x.getMinutes()), {className: 'pad'}, p2);
-        let ni = this.btn('#next-min', d1.i(this.opt.iNext), p2);
+        let ni = this.btn('#next-min', d1.i('next'), p2);
         d1.b(ph, 'click', e => this.setTime(n, ch, ci, -1, 'h', e), false);
         d1.b(nh, 'click', e => this.setTime(n, ch, ci, +1, 'h', e), false);
         d1.b(pi, 'click', e => this.setTime(n, ch, ci, -this.opt.stepMinutes, 'i', e), false);
@@ -180,13 +183,13 @@ module.exports = new(function () {
     let d = x.getDate();
     let my = this.n(m+1) + '.' + y;
     let p1 = d1.ins('p', '', {className: 'c'}, this.win);
-    let now = this.btn(this.opt.hashNow, d1.i(this.opt.iNow), p1);
-    let py = this.btn('#prev-year', d1.i(this.opt.iPrev2), p1);
-    let pm = this.btn('#prev-month', d1.i(this.opt.iPrev), p1);
+    let now = this.btn(this.opt.hashNow, d1.i('now'), p1);
+    let py = this.btn('#prev-year', d1.i('prev2'), p1);
+    let pm = this.btn('#prev-month', d1.i('prev'), p1);
     let cur = d1.ins('span', my, {className: 'pad'}, p1);
-    let nm = this.btn('#next-month', d1.i(this.opt.iNext), p1);
-    let ny = this.btn('#next-year', d1.i(this.opt.iNext2), p1);
-    let cls = this.btn(this.opt.hashCancel, d1.i(d1.opt.iClose), p1);
+    let nm = this.btn('#next-month', d1.i('next'), p1);
+    let ny = this.btn('#next-year', d1.i('next2'), p1);
+    let cls = this.btn(this.opt.hashCancel, d1.i('close'), p1);
     d1.ins('hr', '', {}, this.win);
     d1.b(now, 'click', e => this.closeDialog(n, true, ch, ci, e), false);
     d1.b(cls, 'click', e => this.closeDialog(n, null, null, null, e), false);

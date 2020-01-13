@@ -15,6 +15,7 @@ module.exports = new(function () {
   this.dlg = null;
   
   this.opt = {
+    ccDlg: 'dlg rad',
     customDialog: 1,
     aConfirm: '_confirm',
     aPrompt: 'data-prompt',
@@ -42,7 +43,7 @@ module.exports = new(function () {
   }
 
   this.initDlg = function(n, h, t, f, def, rev){
-    if(!this.dlg) this.dlg = d1.ins('div', '', {className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop + ' dlg'}, document.body);
+    if(!this.dlg) this.dlg = d1.ins('div', '', {className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + this.opt.ccDlg}, document.body);
     let c, d = this.dlg;
     while(c=d.firstChild) d.removeChild(c);
     let hh = d1.ins('div', '', {className: 'row bg'}, d);

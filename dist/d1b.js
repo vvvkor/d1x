@@ -89,14 +89,6 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
 /*! d1css v1.0.19 */
 // (() => {
 //let main = new (function(){
@@ -104,6 +96,19 @@ module.exports = new function () {
   this.sequence = 0;
   this.plugins = {};
   this.handlers = {};
+  this.icons = {
+    close: ['close', '&#x2715;'],
+    //&times;
+    menu: ['menu', '&equiv;'],
+    add: ['add', '+'],
+    edit: ['edit', '*'],
+    ok: ['ok', '&check;'],
+    //&#x2713;
+    left: ['left', '&larr;'],
+    right: ['right', '&rarr;'],
+    up: ['up', '&uarr;'],
+    down: ['down', '&darr;']
+  };
   this.opt = {
     debug: 0,
     textIcons: false,
@@ -112,14 +117,11 @@ module.exports = new function () {
     cHide: 'hide',
     cToggle: 'toggle',
     cOff: 'off',
-    cUnpop: 'unpop',
     cClose: 'close',
     cIcon: 'icon',
     cJs: 'js',
     hClose: '#cancel',
     hOk: '#ok',
-    iClose: ['close', '&#x2715;'],
-    //&times;
     sCancel: 'Cancel',
     sOk: 'OK',
     pSvg: 'svg-' //prefix
@@ -179,8 +181,13 @@ module.exports = new function () {
     var _this2 = this;
 
     this.dbg(['plugins', this.plugins]);
-    Object.keys(this.plugins).forEach(function (k) {
+    Object.keys(this.plugins).filter(function (p) {
+      return !_this2.opt.disable || _this2.opt.disable.indexOf(p) == -1;
+    }).forEach(function (k) {
       if (opt && opt.plug && opt.plug[k]) _this2.setOpt(_this2.plugins[k], opt.plug[k]);
+      if (_this2.plugins[k].icons) Object.keys(_this2.plugins[k].icons).forEach(function (i) {
+        return _this2.icons[i] = _this2.plugins[k].icons[i];
+      });
 
       _this2.plugins[k].init();
     });
@@ -275,22 +282,23 @@ module.exports = new function () {
   };
 
   this.x = function (d, pos, cls) {
-    return this.ins('a', d1.i(this.opt.iClose), {
+    return this.ins('a', d1.i('close'), {
       href: this.opt.hClose,
       className: cls || ''
     }, d, pos);
   };
 
   this.svg = function (id, alt, c) {
-    if (this.opt.textIcons || !document.getElementById(id)) return this.ins('span', alt || '', {
+    if (!id || this.opt.textIcons || !document.getElementById(id)) return this.ins('span', alt || '', {
       className: c || ''
     });
     return this.ins('span', '<svg class="' + this.opt.cIcon + ' ' + (c || '') + '" width="24" height="24"><use xlink:href="#' + id + '"></use></svg>');
   };
 
-  this.i = function (id, alt, c) {
-    if (id instanceof Array) return this.i.apply(this, _toConsumableArray(id));
-    return this.svg(id ? this.opt.pSvg + id : '', alt || '[' + id + ']', c);
+  this.i = function (ico, c) {
+    //if(ico.constructor !== Array)
+    if (typeof ico === 'string') ico = this.icons[ico] || [ico, ''];
+    return this.svg(ico[0] ? this.opt.pSvg + ico[0] : '', ico[1] || '[' + ico[0] + ']', c);
   };
 
   this.vis = function (n) {
@@ -409,20 +417,22 @@ module.exports = new function () {
   "use strict";
 
   this.name = 'calendar';
+  this.icons = {
+    date: ['date', '#'],
+    now: ['now', '&check;'],
+    clear: ['delete', '&#x2715;'],
+    prev: ['', '&lsaquo;'],
+    next: ['', '&rsaquo;'],
+    prev2: ['', '&laquo;'],
+    next2: ['', '&raquo;']
+  };
   this.opt = {
     cBtn: 'pad hover',
     dateFormat: 'd',
     //y=Y-m-d, d=d.m.Y, m=m/d Y
     hashCancel: '#cancel',
     hashNow: '#now',
-    icons: ['iDate', 'iNow', 'iClear'],
-    iDate: ['date', '#'],
-    iClear: ['delete', '&#x2715;'],
-    iNow: ['now', '&#x2713;'],
-    iPrev: ['prev', '&lsaquo;'],
-    iNext: ['next', '&rsaquo;'],
-    iPrev2: ['prev', '&laquo;'],
-    iNext2: ['next', '&raquo;'],
+    addIcons: ['date', 'now', 'clear'],
     idPicker: 'pick-date',
     minWidth: 801,
     qsCalendar: 'input.calendar',
@@ -445,7 +455,7 @@ module.exports = new function () {
     if (window.innerWidth < this.opt.minWidth) return;
     this.win = d1.ins('div', '', {
       id: this.opt.idPicker,
-      className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop + ' pad'
+      className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' pad'
     }); //dlg hide pad
 
     this.win.style.whiteSpace = 'nowrap'; //this.toggle(false);
@@ -475,7 +485,7 @@ module.exports = new function () {
       if (m !== null) m = parseInt(m, 10);else m = this.opt.showModal || Math.min(window.innerWidth, window.innerHeight) < this.opt.sizeLimit;
 
       if (on) {
-        this.win.className = d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop + ' pad ' + (m ? 'dlg' : '');
+        this.win.className = d1.opt.cToggle + ' ' + d1.opt.cOff + ' pad ' + (m ? 'dlg' : '');
         (m ? document.body : n.thePop).appendChild(this.win);
 
         if (m) {
@@ -505,15 +515,15 @@ module.exports = new function () {
     if (!this.opt.inPop) pop.style.verticalAlign = 'bottom';
     n.thePop = pop;
 
-    if (this.opt.icons.length > 0) {
+    if (this.opt.addIcons.length > 0) {
       var ico = [];
       var ic = d1.ins('span', '', {
         className: 'input-tools'
       }, n, 1); //icons container
 
-      for (var i in this.opt.icons) {
+      for (var i in this.opt.addIcons) {
         d1.ins('', ' ', {}, ic);
-        var ii = ic.appendChild(d1.i(this.opt[this.opt.icons[i]]));
+        var ii = ic.appendChild(d1.i(this.opt.addIcons[i]));
         ii.style.cursor = 'pointer';
         ico.push(ii);
       }
@@ -613,19 +623,19 @@ module.exports = new function () {
       p2 = d1.ins('p', '', {
         className: 'c'
       });
-      var ph = this.btn('#prev-hour', d1.i(this.opt.iPrev), p2);
+      var ph = this.btn('#prev-hour', d1.i('prev'), p2);
       ch = d1.ins('span', this.n(x.getHours()), {
         className: 'pad'
       }, p2);
-      var nh = this.btn('#next-hour', d1.i(this.opt.iNext), p2);
+      var nh = this.btn('#next-hour', d1.i('next'), p2);
       d1.ins('span', ':', {
         className: 'pad'
       }, p2);
-      var pi = this.btn('#prev-min', d1.i(this.opt.iPrev), p2);
+      var pi = this.btn('#prev-min', d1.i('prev'), p2);
       ci = d1.ins('span', this.n(x.getMinutes()), {
         className: 'pad'
       }, p2);
-      var ni = this.btn('#next-min', d1.i(this.opt.iNext), p2);
+      var ni = this.btn('#next-min', d1.i('next'), p2);
       d1.b(ph, 'click', function (e) {
         return _this3.setTime(n, ch, ci, -1, 'h', e);
       }, false);
@@ -648,15 +658,15 @@ module.exports = new function () {
     var p1 = d1.ins('p', '', {
       className: 'c'
     }, this.win);
-    var now = this.btn(this.opt.hashNow, d1.i(this.opt.iNow), p1);
-    var py = this.btn('#prev-year', d1.i(this.opt.iPrev2), p1);
-    var pm = this.btn('#prev-month', d1.i(this.opt.iPrev), p1);
+    var now = this.btn(this.opt.hashNow, d1.i('now'), p1);
+    var py = this.btn('#prev-year', d1.i('prev2'), p1);
+    var pm = this.btn('#prev-month', d1.i('prev'), p1);
     var cur = d1.ins('span', my, {
       className: 'pad'
     }, p1);
-    var nm = this.btn('#next-month', d1.i(this.opt.iNext), p1);
-    var ny = this.btn('#next-year', d1.i(this.opt.iNext2), p1);
-    var cls = this.btn(this.opt.hashCancel, d1.i(d1.opt.iClose), p1);
+    var nm = this.btn('#next-month', d1.i('next'), p1);
+    var ny = this.btn('#next-year', d1.i('next2'), p1);
+    var cls = this.btn(this.opt.hashCancel, d1.i('close'), p1);
     d1.ins('hr', '', {}, this.win);
     d1.b(now, 'click', function (e) {
       return _this3.closeDialog(n, true, ch, ci, e);
@@ -829,6 +839,7 @@ module.exports = new function () {
   this.name = 'dialog';
   this.dlg = null;
   this.opt = {
+    ccDlg: 'dlg rad',
     customDialog: 1,
     aConfirm: '_confirm',
     aPrompt: 'data-prompt',
@@ -863,7 +874,7 @@ module.exports = new function () {
     var _this2 = this;
 
     if (!this.dlg) this.dlg = d1.ins('div', '', {
-      className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop + ' dlg'
+      className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + this.opt.ccDlg
     }, document.body);
     var c,
         d = this.dlg;
@@ -1348,14 +1359,15 @@ module.exports = new function () {
   "use strict";
 
   this.name = 'lookup';
-  this.opt = {};
+  this.icons = {
+    "goto": ['', '&rarr;']
+  };
   this.opt = {
     aLabel: 'data-label',
     aLookup: 'data-lookup',
     aUrl: 'data-url',
     aGoto: 'data-goto',
     cacheLimit: 0,
-    iGoto: ['edit', '&rarr;'],
     pList: 'lookup-list-',
     max: 10,
     wait: 300,
@@ -1369,7 +1381,7 @@ module.exports = new function () {
 
     this.win = d1.ins('div', '', {
       id: this.opt.pList + d1.seq(),
-      className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop
+      className: d1.opt.cToggle + ' ' + d1.opt.cOff
     });
     this.closeList();
     document.querySelector('body').appendChild(this.win);
@@ -1399,7 +1411,7 @@ module.exports = new function () {
     n.classList.add('bg-n');
     n.classList.add(d1.opt.cHide); //n.type = 'hidden';
 
-    n.vLabel = n.getAttribute(this.opt.aLabel) || n.value || ''; //@@
+    n.vLabel = d1.attr(n, this.opt.aLabel) || n.value || ''; //@@
 
     var m = d1.ins('input', '', {
       type: 'text',
@@ -1421,12 +1433,12 @@ module.exports = new function () {
     m.autocomplete = 'off';
     var i = null;
 
-    if (this.opt.iGoto && n.getAttribute(this.opt.aUrl)) {
+    if (d1.attr(n, this.opt.aUrl)) {
       var ic = d1.ins('span', '', {
         className: 'input-tools'
       }, this.opt.inPop ? pop : m, 1); //icons container
 
-      i = d1.ins('a', d1.i(this.opt.iGoto), {}, ic);
+      i = d1.ins('a', d1.i('goto'), {}, ic);
       i.style.cursor = 'pointer';
       d1.ins('', ' ', {}, ic, -1);
     }
@@ -1485,6 +1497,7 @@ module.exports = new function () {
     this.win.vRel = n.vCap;
     d1.plugins.toggle.toggle(this.win, true);
     this.build(n, d);
+    d1.plugins.toggle.shown = null;
   };
 
   this.closeList = function () {
@@ -1499,11 +1512,11 @@ module.exports = new function () {
     }
 
     var ul = d1.ins('ul', '', {
-      className: 'nav let'
+      className: 'nav let hover'
     }, this.win);
     var w,
         j = 0;
-    var go = n.getAttribute(this.opt.aGoto);
+    var go = d1.attr(n, this.opt.aGoto);
 
     var _loop = function _loop(i) {
       w = d1.ins('li', '', {}, ul);
@@ -1582,7 +1595,7 @@ module.exports = new function () {
 
   this.go = function (n, e) {
     e.preventDefault();
-    var u = n.getAttribute(this.opt.aUrl);
+    var u = d1.attr(n, this.opt.aUrl);
     if (n.value.length > 0 && u) location.href = encodeURI(decodeURI(u).replace(/\{id\}/, n.value));
   }; // update chain
 
@@ -1737,8 +1750,6 @@ module.exports = new function () {
 /*! d1tablex */
 // Filter and sort HTML table
 // table.sort[data-filter] [data-filter-report][data-case][data-filter-cols]
-// todo: optimize: addEventListener to d1.b(), bind to arrFunc, getAttribute to attr,
-//       var to let, querySelector(All) to q/qq, appendChild/insertBefore to ins
 var d1 = __webpack_require__(0);
 
 module.exports = new function () {
@@ -2054,7 +2065,7 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
-    this.restore(document.documentElement, 'theme-html');
+    //this.restore(document.documentElement, 'theme-html');
     this.restore(document.body, 'theme-body'); //button
 
     var a = d1.ins('a', 'Theme', {
@@ -2071,7 +2082,7 @@ module.exports = new function () {
 
     this.drw = d1.ins('div', '', {
       id: 'theme',
-      className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' ' + d1.opt.cUnpop + ' drawer pad shift theme-drawer'
+      className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' drawer pad shift theme-drawer'
     }, document.body);
     d1.ins('a', '&#x2715;', {
       href: '#cancel',
@@ -2104,7 +2115,8 @@ module.exports = new function () {
     if (k instanceof Array) k.forEach(function (w) {
       return _this2.style(w, v, 1);
     });else {
-      var n = k.substr(0, 2) == '--' ? document.documentElement : document.body;
+      //let n = (k.substr(0, 2)=='--') ? document.documentElement : document.body;
+      var n = document.body;
       n.style.setProperty(k, v);
       localStorage.setItem('theme-' + n.tagName.toLowerCase(), n.style.cssText);
     }
@@ -2112,7 +2124,9 @@ module.exports = new function () {
 
   this.unstyle = function (e) {
     e.preventDefault();
-    document.documentElement.style = document.body.style = '';
+    /*document.documentElement.style = */
+
+    document.body.style = '';
     localStorage.removeItem('theme-html');
     localStorage.removeItem('theme-body');
   };
@@ -2162,6 +2176,9 @@ module.exports = new function () {
 
   this.name = 'toggle';
   this.shown = null;
+  this.icons = {
+    toggle: ['', '[+]']
+  };
   this.opt = {
     keepHash: 1,
     mediaSuffixes: ['-mobile', '-desktop'],
@@ -2172,7 +2189,7 @@ module.exports = new function () {
     //auto [id]
     qDlg: '.dlg',
     //generated dialogs may have no [id]
-    qTab: '.tabs+div>[id]',
+    qTab: '.tabs+div>div[id]',
     qTre: 'ul.tree ul',
     //auto [id]
     qDrw: '.drawer[id]',
@@ -2180,14 +2197,12 @@ module.exports = new function () {
     qAcc: 'ul.tree.accordion ul',
     qGal: '.gal>a[id]',
     // dup of gallery.opt.qGal
-    qSubMem: '.tabs.mem+div>[id], ul.mem:not(.nav) ul',
+    qSubMem: '.tabs.mem+div>div[id], ul.mem:not(.nav) ul',
     //qMedia: '[id].target-mobile, [id].target-desktop',
     qDrawer: '#menu',
     cMem: 'mem',
-    cTarget: 'target',
-    //cToggle: 'toggle',
-    //cUnpop: 'unpop',
-    iToggle: ['open', '[+]']
+    cTarget: 'target' //cToggle: 'toggle',
+
   };
 
   this.init = function () {
@@ -2218,9 +2233,8 @@ module.exports = new function () {
     }).join(', ');
     var togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw
     /*, q.qMedia/*, q.qGal*/
-    ].join(', '); //let autohide = [        q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
-
-    var unpop = [q.qPop, q.qNav, q.qDlg, q.qDrw
+    ].join(', ');
+    this.opt.qUnpop = [q.qPop, q.qNav, q.qDlg, q.qDrw
     /*, q.qGal*/
     ].join(', ');
     d1.e(this.opt.qNav + ', ' + this.opt.qTre, function (n) {
@@ -2236,11 +2250,8 @@ module.exports = new function () {
         return _this.initToggler(n, x);
       });
     }); //initialize togglers by media
+    //let autohide = [        q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
     //d1.e(autohide, n => this.tgl(n, 0)); //autohide
-
-    d1.e(unpop, function (n) {
-      return n.classList.add(d1.opt.cUnpop);
-    }); //initialize unpop
 
     d1.e(this.opt.qGal + ':last-child', function (n) {
       return d1.x(n, 1);
@@ -2349,7 +2360,7 @@ module.exports = new function () {
     });
     var a = aa.filter(function (v) {
       return !v.href;
-    })[0] || aa[0] || d1.ins('', ' ', {}, n.parentNode, false) && d1.ins('a', d1.i(this.opt.iToggle), {}, n.parentNode, false);
+    })[0] || aa[0] || d1.ins('', ' ', {}, n.parentNode, false) && d1.ins('a', d1.i('toggle'), {}, n.parentNode, false);
 
     if (a) {
       if (!n.id) n.id = 'ul-' + d1.seq();
@@ -2417,7 +2428,7 @@ module.exports = new function () {
     }
 
     d1.dbg(['unpop', keep]);
-    d1.e('.' + d1.opt.cUnpop, function (n) {
+    d1.e(this.opt.qUnpop, function (n) {
       return keep && keep.filter(function (m) {
         return m && m.tagName && n.contains(m);
       }).length ? null : _this3.toggle(n, false, 1);
@@ -2511,7 +2522,6 @@ module.exports = new function () {
   this.opt = {
     qTop: 'h2[id], h3[id], h4[id], h5[id], h6[id]',
     // h1[id],
-    iTop: ['up', '&uarr;'],
     minDesktop: 900
   };
 
@@ -2571,6 +2581,7 @@ module.exports = new function () {
   this.toggleClass = function (n, e) {
     var _this2 = this;
 
+    if (n.type == 'radio' && !n.checked) return;
     var box = n.type == 'checkbox' || n.type == 'radio';
     var q = d1.attr(n, 'data-nodes', n.hash);
     var c = d1.attr(n, 'data-class', false);
@@ -2589,7 +2600,7 @@ module.exports = new function () {
 
   this.addTopLink = function (n) {
     n.style.position = 'relative';
-    var a = d1.ins('a', d1.i(this.opt.iTop), {
+    var a = d1.ins('a', d1.i('up'), {
       href: '#',
       className: 'close l text-n'
     }, n);
