@@ -56,14 +56,14 @@ module.exports = new(function () {
   
   this.toggle = function(on, n){
     if(n){
-      var m = d1.attr(n, 'data-modal');
+      let m = d1.attr(n, 'data-modal');
       if(m!==null) m = parseInt(m, 10);
       else m = this.opt.showModal || (Math.min(window.innerWidth, window.innerHeight) < this.opt.sizeLimit);
       if(on){
         this.win.className = d1.opt.cToggle + ' ' + d1.opt.cOff + ' pad ' + (m ? 'dlg' : '');
         (m ? document.body : n.thePop).appendChild(this.win);
         if(m){
-          var s = this.win.style;
+          let s = this.win.style;
           s.left = s.right = s.top = s.bottom = '';
         }
         this.win.vRel = m ? null : n;
@@ -83,7 +83,7 @@ module.exports = new(function () {
     n.thePop = pop;
     if(this.opt.addIcons.length>0){
       let ico = [];
-      var ic = d1.ins('span', '', {className:'input-tools'}, n, 1);//icons container
+      let ic = d1.ins('span', '', {className:'input-tools'}, n, 1);//icons container
       for(let i in this.opt.addIcons){
         d1.ins('', ' ', {}, ic);
         let ii = ic.appendChild(d1.i(this.opt.addIcons[i]));
@@ -100,11 +100,11 @@ module.exports = new(function () {
   this.switchMonth = function(n, y, m, d, ch, ci, e){
     e.preventDefault();
     if(d>28){
-      var days = (new Date(y, m+1, 0)).getDate();//days in month
+      let days = (new Date(y, m+1, 0)).getDate();//days in month
       d = Math.min(d, days);
     }
-    var h = ch ? parseInt(ch.textContent, 10) : 0;
-    var i = ci ? parseInt(ci.textContent, 10) : 0;
+    let h = ch ? parseInt(ch.textContent, 10) : 0;
+    let i = ci ? parseInt(ci.textContent, 10) : 0;
     this.openDialog(n, new Date(y, m, d, h, i), e);
   }
   

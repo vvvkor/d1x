@@ -18,18 +18,18 @@ module.exports = new(function () {
   }
 
   this.prepareFlipTable = function(t){
-    var ths = d1.qq('thead th', t);
-    var tds = d1.qq('tbody tr>*', t);
-    var order = (d1.attr(t, 'data-order') || '0 1 2 3').split(/\D+/);
+    let ths = d1.qq('thead th', t);
+    let tds = d1.qq('tbody tr>*', t);
+    let order = (d1.attr(t, 'data-order') || '0 1 2 3').split(/\D+/);
     //t.parentNode.classList.remove('roll');
-    for(var i=0; i<tds.length; i++){
-      var td = tds[i];
-      var th = ths[td.cellIndex];
-      var ord = order.indexOf('' + td.cellIndex);
+    for(let i=0; i<tds.length; i++){
+      let td = tds[i];
+      let th = ths[td.cellIndex];
+      let ord = order.indexOf('' + td.cellIndex);
       if(ord==-1) ord = 99;
       td.style.order = ord;
       if(td.textContent.replace(/\s+$/, '').length>0){
-        var v = d1.ins('div');
+        let v = d1.ins('div');
         while(td.firstChild) v.appendChild(td.firstChild);
         td.textContent = '';
         if(th) d1.ins('div', th.textContent, {className: this.opt.cCellHead}, td)

@@ -82,14 +82,14 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 17);
+/******/ 	return __webpack_require__(__webpack_require__.s = 19);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1css v1.0.19 */
+/*! d1css v0.0.0 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -344,7 +344,7 @@ module.exports = new function () {
   };
 
   this.makeUrl = function (a, args) {
-    if (!a.tagName) a = d1.ins('a', '', {
+    if (!a.tagName) a = this.ins('a', '', {
       href: a
     });
     var g = this.get(a);
@@ -372,17 +372,19 @@ var map = {
 	"./code.js": 3,
 	"./d1.js": 0,
 	"./dialog.js": 4,
-	"./example.js": 5,
-	"./fetch.js": 6,
-	"./fliptable.js": 7,
-	"./form.js": 8,
-	"./gallery.js": 9,
-	"./lookup.js": 10,
-	"./scroll.js": 11,
-	"./tablex.js": 12,
-	"./theme.js": 13,
-	"./toggle.js": 14,
-	"./tools.js": 15
+	"./edit.js": 5,
+	"./example.js": 6,
+	"./fetch.js": 7,
+	"./fliptable.js": 8,
+	"./form.js": 9,
+	"./gallery.js": 10,
+	"./lookup.js": 11,
+	"./scroll.js": 12,
+	"./tablex.js": 13,
+	"./theme.js": 14,
+	"./toggle.js": 15,
+	"./tools.js": 16,
+	"./valid.js": 17
 };
 
 
@@ -1010,6 +1012,280 @@ module.exports = new function () {
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/*! d1 wysiwyg text editor */
+var d1 = __webpack_require__(0); //require('./toggle.js');
+
+
+module.exports = new function () {
+  "use strict";
+
+  this.name = 'edit';
+  this.opt = {
+    qAdjust: 'textarea.adjust',
+    qEdit: 'textarea.edit',
+    height: 30,
+    //em
+    tools: '/*@xbi_.#123p|c,s^vdqf~T(=)j+-'
+  };
+  this.btn = {
+    // key: [command, html, icon, title]
+    '/': ['src', '', '/', 'Source'],
+    // &lt;/&gt;
+    '*': ['insertimage', '~', '*', 'Image'],
+    '@': ['createlink', '~', '@', 'Link'],
+    'x': ['unlink', '', '&times;', 'Unlink'],
+    'b': ['bold', '', '<b>B</b>', 'Bold'],
+    'i': ['italic', '', '<i>I</i>', 'Italic'],
+    '_': ['removeformat', '', '_', 'Unformat'],
+    '.': ['insertUnorderedList', '', '&bull;', 'List'],
+    '#': ['insertOrderedList', '', '#', 'Ordered'],
+    '1': ['formatblock', '<h1>', 'H1', 'Head 1'],
+    '2': ['formatblock', '<h2>', 'H2', 'Head 2'],
+    '3': ['formatblock', '<h3>', 'H3', 'Head 3'],
+    'p': ['formatblock', '<p>', '&sect;', 'Paragraph'],
+    '|': ['tools', '', '&hellip;', 'Tools'],
+    //more
+    //inline
+    'c': ['inserthtml', '<code>^</code>', '{}', 'Code'],
+    ',': ['inserthtml', '<abbr title="~">^</abbr>', 'A.B.', 'Abbreviation'],
+    's': ['strikeThrough', '', '<s>S</s>', 'Strike through'],
+    '^': ['subscript', '', 'a<sub>x</sub>', 'Subscript'],
+    'v': ['superscript', '', 'a<sup>x</sup>', 'Superscript'],
+    //block
+    'd': ['formatblock', '<div>', 'D', 'Div'],
+    'q': ['formatblock', '<blockquote>', '&#8220;', 'Block quote'],
+    'f': ['formatblock', '<pre>', '[]', 'Preformatted'],
+    '~': ['inserthorizontalrule', '', '&minus;', 'Horizontal ruler'],
+    'T': ['inserthtml', '<table><tr><th>#<th>#<tr><td>-<td>-</table>', 'T', 'Table'],
+    //more
+    '(': ['justifyLeft', '', '&lt;', 'Justify left'],
+    '=': ['justifyCenter', '', '=', 'Justify center'],
+    ')': ['justifyRight', '', '&gt;', 'Justify right'],
+    'j': ['justifyFull', '', '&equiv;', 'Justify full'],
+    '+': ['indent', '', '&raquo;', 'Increase indent'],
+    '-': ['outdent', '', '&laquo;', 'Decrease indent']
+    /*
+    'u': ['underline', '', 'U', 'Underline'],
+    'C': ['foreColor','~','TC','Text color','#c00'],
+    'h': ['hiliteColor','~','HC','Hilite color','#ff0'],
+    'B': ['backColor','~','BC','Back color','#eee'],
+    'S': ['fontSize','~','FS','Font size',4],
+    'F': ['fontName','~','FN','Font name','serif'],
+    'L': ['inserthtml','<div class="pad bg left">^</div>','FL','Float left'],
+    'R': ['inserthtml','<div class="pad bg right">^</div>','FR','Float right']
+    */
+
+  };
+
+  this.init = function () {
+    var _this = this;
+
+    d1.e(this.opt.qEdit, function (n) {
+      return _this.prepare(n);
+    });
+    d1.e(this.opt.qAdjust, function (n) {
+      return _this.setStyle(n);
+    });
+    this.adjustAll();
+    d1.b(this.opt.qAdjust, 'input', function (e) {
+      return _this.adjust(e.target);
+    });
+    d1.b(this.opt.qAdjust, 'mouseup', function (e) {
+      return _this.resized(e.target);
+    });
+    d1.b([window], 'resize', function (e) {
+      return _this.adjustAll();
+    });
+  };
+
+  this.prepare = function (n) {
+    var _this2 = this;
+
+    if (!n.theWys) {
+      (function () {
+        var m = d1.ins('nav', '', {
+          className: 'bg'
+        },
+        /*d*/
+        n, -1);
+        var mm = d1.ins('div', '', {
+          className: d1.opt.cToggle + ' ' + d1.opt.cOff
+        }); //let zc = d1.ins('div', '', {className:'subinput'}, n, 1)
+
+        var z = d1.ins('div', '', {
+          className: d1.opt.cToggle + ' bord pad subinput'
+        }, n, 1
+        /*zc*/
+        );
+        z.setAttribute('contenteditable', true);
+        z.theArea = n;
+        z.theNav = m;
+        n.theWys = z;
+        n.classList.add(d1.opt.cToggle);
+
+        if (n.id) {
+          z.id = 'wys-' + n.id;
+          d1.b('[for="' + n.id + '"]', 'click', function (e) {
+            return d1.vis(z) ? z.focus() : null;
+          });
+        }
+
+        var t = (d1.attr(n, 'data-tools') || _this2.opt.tools).split('');
+
+        var to = m;
+
+        var _loop = function _loop(i) {
+          var b = _this2.btn[t[i]];
+          var a = d1.ins('a', b[2], {
+            href: '#cmd-' + b[0]
+            /*i*/
+            ,
+            title: b[3],
+            className: d1.opt.cToggle + ' pad hover'
+          }, to);
+          if (b[0] == 'tools') to = mm;
+          d1.b(a, 'click', function (e) {
+            return _this2.cmd(z, b, a, e);
+          });
+        };
+
+        for (var i in t) {
+          _loop(i);
+        }
+
+        m.appendChild(mm); //d1.b(d1.qq('a', m), 'click', e => this.cmd(z));
+
+        n.className += ' bord pad';
+        n.style.width = '100%';
+
+        _this2.setStyle(n);
+
+        _this2.setStyle(z);
+
+        var l = d1.closest(n, 'label') || n;
+        d1.b([z], 'blur', function (e) {
+          return _this2.up(0, e.target);
+        });
+        d1.b([z], 'input', function (e) {
+          return _this2.up(0, e.target);
+        }); //for validation
+        //d1.b([n], 'input', e => this.adjust(e.target));
+      })();
+    }
+
+    this.up(1, n.theWys);
+    this.modeAuto(n);
+  };
+
+  this.modeAuto = function (n) {
+    var t = (d1.attr(n, 'data-tools') || this.opt.tools).split('');
+    var wys = d1.attr(n, 'data-wys', false);
+    if (wys === false) wys = t.indexOf('/') == -1 || n.value.match(/(>|&\w+;)/) && !n.value.match(/<script/i);
+    this.mode(n.theWys, wys);
+  };
+
+  this.cmd = function (z, b, n, e) {
+    d1.dbg(['cmd', arguments]);
+
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    } //let b = this.btn[n.hash.substr(4)];
+
+
+    if (b[0] == 'src') this.mode(z, !d1.vis(z));else if (b[0] == 'tools') {
+      var mm = d1.q('div', n.parentNode);
+      if (mm) d1.plugins.toggle.toggle(mm);
+    } else {
+      var arg = b[1];
+
+      if (arg.match(/~/)) {
+        var q = prompt(b[3], b[4] || '');
+        arg = q === null ? q : arg.replace(/~/, q);
+        if (arg && arg.match(/@/)) arg = 'mailto:' + arg;
+      }
+
+      if (arg) arg = arg.replace('^', document.getSelection());
+      z.focus();
+      if (arg !== null) document.execCommand(b[0], false, arg);
+
+      if (b[2] == '*') {
+        this.up(0, z);
+        this.up(1, z);
+      }
+    }
+  };
+
+  this.up = function (w, z) {
+    if (w) z.innerHTML = z.theArea.value;else z.theArea.value = z.innerHTML.replace(/(\shref=")!/ig, ' target="_blank"$1').replace(/(\ssrc="[^"]+#[a-z]*)(\d+%?)"/ig, ' width="$2"$1"'); //.replace(/(\ssrc="[^"]+)#([lrc])"/ig,' class="$2"$1"');
+
+    if (!w && typeof Event === 'function') z.theArea.dispatchEvent(new Event('input')); //-ie
+  };
+
+  this.mode = function (z, w) {
+    d1.plugins.toggle.toggle(z, w);
+    d1.plugins.toggle.toggle(z.theArea, !w);
+
+    if (!w) {
+      if (z.style.height) z.theArea.style.height = z.style.height;else this.adjust(z.theArea);
+    }
+
+    this.up(w, z);
+    d1.e(d1.qq('a', z.theNav), function (n) {
+      return n.hash == '#cmd-src' ? null : d1.plugins.toggle.toggle(n, w);
+    });
+    z.theArea.theManual = 0;
+    z.theArea.style.width = '100%';
+  };
+
+  this.setStyle = function (n) {
+    //n.style.resize = 'vertical'; //both
+    n.style.overflow = 'auto';
+    n.style.minHeight = '3em';
+    n.style.maxHeight = '80vh'; //n.type ? '80vh' : this.opt.height + 'em';
+
+    this.storeSize(n);
+  };
+
+  this.storeSize = function (n) {
+    n.theH = n.clientHeight;
+    n.theW = n.clientWidth;
+  };
+
+  this.resized = function (n) {
+    if (n.theH !== n.clientHeight || n.theW !== n.clientWidth) n.theManual = 1;
+  };
+
+  this.adjustAll = function () {
+    var _this3 = this;
+
+    d1.e(this.opt.qAdjust, function (n) {
+      return _this3.adjust(n);
+    });
+  };
+
+  this.adjust = function (n) {
+    if (n.theManual) return; //1. jumps
+    //n.style.height = 'auto';
+    //n.style.height = (24 + n.scrollHeight) + 'px';
+    //2. not exact
+    //n.style.height = (1.5 * (2 + Math.max(n.value.length/50, (n.value.match(/\n/g) || []).length))) + 'em';
+    //3. better
+
+    var a = n.value.split(/\n/).map(function (v) {
+      return Math.ceil(10 * (1 + v.length) / (n.clientWidth || 500));
+    }).reduce(function (v, r) {
+      return r + v;
+    });
+    n.style.height = Math.min(1.5 * (2 + a), parseFloat(this.opt.height)) + 'em';
+    this.storeSize(n);
+  };
+}();
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
 /*! d1 example plugin */
 var d1 = __webpack_require__(0);
 
@@ -1031,7 +1307,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 async fetch */
@@ -1098,7 +1374,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 responsive table */
@@ -1151,7 +1427,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 form tools */
@@ -1217,7 +1493,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 gallery */
@@ -1347,7 +1623,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 autocomplete lookups with data from XHTTP request */
@@ -1384,13 +1660,10 @@ module.exports = new function () {
       className: d1.opt.cToggle + ' ' + d1.opt.cOff
     });
     this.closeList();
-    document.querySelector('body').appendChild(this.win);
-    var t = document.querySelectorAll('[' + this.opt.aLookup + ']');
-
-    for (var i = 0; i < t.length; i++) {
-      this.prepare(t[i]);
-    }
-
+    document.body.appendChild(this.win);
+    d1.e('[' + this.opt.aLookup + ']', function (n) {
+      return _this.prepare(n);
+    });
     d1.b('[data-chain]', 'change', function (e) {
       return _this.updateChain(e.target);
     });
@@ -1601,11 +1874,11 @@ module.exports = new function () {
 
 
   this.updateChain = function (n) {
-    var m = d1.q(n.getAttribute('data-chain'), 0);
+    var m = d1.q(d1.attr(n, 'data-chain'), 0);
 
     if (m) {
       if (!n.value) this.setOptions(m, []);else {
-        var u = m.getAttribute('data-filter').replace(/\{q\}/, n.value);
+        var u = d1.attr(m, 'data-filter').replace(/\{q\}/, n.value);
         if (m.vCache && m.vCache[u]) this.setOptions(m, m.vCache[u]);else d1.plugins.fetch.fetch(u, this.onChainData.bind(this, u, m));
       }
     }
@@ -1622,7 +1895,7 @@ module.exports = new function () {
       n.removeChild(n.firstChild);
     }
 
-    var z = n.getAttribute('data-placeholder') || '';
+    var z = d1.attr(n, 'data-placeholder') || '';
     if (!a || a.length == 0 || z) d1.ins('option', z || '-', {
       value: ''
     }, n);
@@ -1634,7 +1907,7 @@ module.exports = new function () {
   };
 
   this.store = function (n, u, d) {
-    var c = n.getAttribute('data-cache');
+    var c = d1.attr(n, 'data-cache');
     if (c === undefined) c = this.opt.cacheLimit;
     c = parseInt(c, 10);
 
@@ -1646,7 +1919,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 scroll topbar */
@@ -1744,7 +2017,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1tablex */
@@ -2050,7 +2323,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 live theme configurator */
@@ -2163,7 +2436,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 togglable interactive components */
@@ -2509,7 +2782,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! d1 tools */
@@ -2617,8 +2890,112 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 16 */,
 /* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! d1 custom form validation */
+var d1 = __webpack_require__(0);
+
+module.exports = new function () {
+  "use strict";
+
+  this.name = 'valid';
+  this.opt = {
+    aHint: 'data-hint',
+    qValidate: 'form',
+    // set custom text for browser tooltips
+    cUnhint: 'js-unhint',
+    // turn off browser tooltips
+    cLiveVal: 'js-live-val' // live validation, disable submit buttons if invalid
+
+  };
+
+  this.init = function () {
+    var _this = this;
+
+    //let q = this.opt.qValidate;
+    //let dh = '[' + this.opt.aHint + ']';
+    //d1.e(q + ' input' + dh + ', ' + q + ' textarea' + dh + ', '+ q +' select' + dh, n => this.initInput(n));
+    var inputs = ['input', 'textarea', 'select'].map(function (s) {
+      return _this.opt.qValidate + ' ' + s + '[' + _this.opt.aHint + ']';
+    }).join(', ');
+    d1.e(inputs + ', .' + this.opt.cLiveVal + ' [name]', function (n) {
+      return _this.initInput(n);
+    });
+    d1.e('form.' + this.opt.cUnhint, function (n) {
+      return _this.unhint(n);
+    });
+    d1.e('form.' + this.opt.cLiveVal, function (n) {
+      return _this.validateForm(n);
+    });
+    d1.b('form.' + this.opt.cUnhint, 'submit', function (e) {
+      return _this.validateForm(e.target, e);
+    });
+  };
+
+  this.initInput = function (n) {
+    var _this2 = this;
+
+    if (n.willValidate) {
+      if (n.tagName == 'select' || n.type == 'radio' || n.type == 'checkbox') d1.b(n, 'change', function (e) {
+        return _this2.validateInput(e.target);
+      });else d1.b([n], 'input', function (e) {
+        return _this2.validateInput(e.target);
+      });
+      d1.b([n], 'invalid', function (e) {
+        return _this2.setCustomMessage(e.target);
+      });
+    }
+  };
+
+  this.isLive = function (f) {
+    return f && f.classList.contains(this.opt.cLiveVal);
+  };
+
+  this.validateInput = function (n) {
+    if (n.type == 'radio') d1.e(d1.qq('[name="' + n.name + '"]', n.form), function (m) {
+      return m.setCustomValidity('');
+    });else n.setCustomValidity('');
+    n.checkValidity();
+    if (this.isLive(n.form)) this.validateForm(n.form);
+  };
+
+  this.setCustomMessage = function (n) {
+    var t = n.getAttribute('data-hint') || ''; // || n.title;
+
+    t = t.replace(/%([\w\-]+)%/g, function (m, v) {
+      return n.getAttribute(v);
+    });
+    n.setCustomValidity(t);
+  };
+
+  this.unhint = function (n) {
+    n.setAttribute('novalidate', true);
+  };
+
+  this.validateForm = function (n, e) {
+    if (e) n.classList.remove(this.opt.cUnhint);
+    var ok = n.checkValidity(); //!==false
+
+    if (!ok && e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var f = d1.q(':invalid', n);
+      if (f) f.focus();
+    }
+
+    if (this.isLive(n)) {
+      //d1.e(d1.qq('[type="submit"]', n), m => m.disabled = !ok);//if no cUnhint
+      d1.e(d1.qq('[type="submit"]', n), function (m) {
+        return m.classList[ok ? 'remove' : 'add']('bg-n');
+      }); //if cUnhint used
+    }
+  };
+}();
+
+/***/ }),
+/* 18 */,
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var d1 = __webpack_require__(0);

@@ -187,7 +187,7 @@ module.exports = new (function(){
     if(typeof ico === 'string') ico = this.icons[ico] || [ico, ''];
     return this.svg(ico[0] ? this.opt.pSvg + ico[0] : '', ico[1] || '[' + ico[0] + ']', c);
   }
-  
+
   this.vis = function(n){
     return !n.classList.contains(this.opt.cOff);
   }
@@ -227,7 +227,7 @@ module.exports = new (function(){
   }
 
   this.makeUrl = function(a, args){
-    if(!a.tagName) a = d1.ins('a', '', {href: a});
+    if(!a.tagName) a = this.ins('a', '', {href: a});
     let g = this.get(a);
     Object.keys(args).forEach(k => g[k] = args[k]);
     let q = Object.keys(g).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(g[k])).join('&');

@@ -32,10 +32,9 @@ module.exports = new(function () {
   this.init = function() {
     this.win = d1.ins('div', '', {id: this.opt.pList + d1.seq(), className: d1.opt.cToggle + ' ' + d1.opt.cOff});
     this.closeList();
-    document.querySelector('body').appendChild(this.win);
+    document.body.appendChild(this.win);
 
-    let t = document.querySelectorAll('[' + this.opt.aLookup + ']');
-    for (let i = 0; i < t.length; i++) this.prepare(t[i]);
+    d1.e('[' + this.opt.aLookup + ']', n => this.prepare(n));
     d1.b('[data-chain]', 'change', e => this.updateChain(e.target));
     d1.e('[data-chain]', n => this.updateChain(n));
     d1.listen('key', e => this.onKey(e))
@@ -195,11 +194,11 @@ module.exports = new(function () {
   // update chain
   
   this.updateChain = function(n){
-    let m = d1.q(n.getAttribute('data-chain'),0);
+    let m = d1.q(d1.attr(n, 'data-chain'),0);
     if(m){
       if(!n.value) this.setOptions(m,[]);
       else{
-        let u = m.getAttribute('data-filter').replace(/\{q\}/,n.value);
+        let u = d1.attr(m, 'data-filter').replace(/\{q\}/,n.value);
         if(m.vCache && m.vCache[u]) this.setOptions(m,m.vCache[u]);
         else d1.plugins.fetch.fetch(u, this.onChainData.bind(this, u, m));
       }
@@ -214,13 +213,13 @@ module.exports = new(function () {
 
   this.setOptions = function(n,a){
     while(n.firstChild) n.removeChild(n.firstChild);
-    let z = n.getAttribute('data-placeholder') || '';
+    let z = d1.attr(n, 'data-placeholder') || '';
     if(!a || a.length==0 || z) d1.ins('option',z||'-',{value:''},n);
     if(a) for(let i=0;i<a.length;i++) d1.ins('option',a[i].nm,{value:a[i].id},n);
   }
   
   this.store = function(n,u,d){
-    let c = n.getAttribute('data-cache');
+    let c = d1.attr(n, 'data-cache');
     if(c===undefined) c = this.opt.cacheLimit;
     c = parseInt(c, 10);
     if(c){
