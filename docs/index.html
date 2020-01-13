@@ -48,8 +48,8 @@
 - new components: scrollspy, notify, sortable, icons?
 - alerts: close link
 - code formatter
-- optimize: addEventListener to d1.b(), bind to arrFunc, getAttribute to attr,
-  - var to let, querySelector(All) to q/qq, appendChild/insertBefore to ins
+~ optimize: !addEventListener to d1.b(), !bind to arrFunc, getAttribute to attr,
+  - var to let, querySelector(All) to q/qq, !appendChild/insertBefore to ins
  
 ## doc
  
@@ -82,8 +82,8 @@
 -->
 	
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.19/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.19/dist/d1.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.20/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.20/dist/d1.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/d1.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -92,11 +92,11 @@
 		console.log('d1=',d1);
 	</script>
 </head>
-<body class="-bg" data-d1='{"hOk":"#yes","debug":1,"textIcons":false,"disable":["-theme"],"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
+<body class="-bg" data-d1='{"hOk":"#yes","debug":1,"textIcons":false,"disable":["-theme","-valid"],"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
 
 <div class="topbar -shade -let" id="topbar">
 	<a href="#menu" class="pad hide-desktop"><svg class="icon" width="32" height="32"><use xlink:href="#svg-menu"/></svg></a>
-	<a href="#top" class="pad"><b>d1</b> v1.0.19</a>
+	<a href="#top" class="pad"><b>d1</b> v1.0.20</a>
 	<code class="pad">npm install d1css</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1" title="GitHub" class="pad">GitHub</a>
 </div>
@@ -585,7 +585,7 @@ Table will become stacked on small screen.
 				<td><input type="url" name="ur" id="ur" value="">
 			<tr>
 				<td><label for="msg">Textarea</label>
-				<td><textarea class="wys" name="msg" id="msg" cols="20" rows="5" required></textarea>
+				<td><textarea class="edit adjust" data-tools="/*@xbi_.pqf" name="msg" id="msg" cols="20" rows="5" required></textarea>
 			<tr>
 				<td>Upload
 				<td><label class="drop" title="Drop image" for="up"><input id="up" type="file" name="up[]" multiple></label>
@@ -1225,7 +1225,7 @@ Inside list items, use links pointing at nested lists.
   id="wys"
   name="wys"
   class="edit adjust"
-  data-tools="/*@xbi_.pqf"
+  data-tools-x="/*@xbi_.pqf"
   data-wys="1"
   cols="50"
   rows="5">Write <b>formatted</b> text.</textarea>
@@ -1387,7 +1387,7 @@ Inside list items, use links pointing at nested lists.
   &lt;p class="small text-e">Value required&lt;/p&gt;</pre-->
 
 <div class="code">
-	<form method="post" class="js-unhint">
+	<form method="post" class="js-unhint -js-live-val">
 		<table>
 		<tbody>
 		<!--

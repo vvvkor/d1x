@@ -1,4 +1,4 @@
-/*! d1css v1.0.19 */
+/*! d1css v1.0.20 */
 
 body {
     --text: #000;
@@ -79,6 +79,7 @@ body {
 
 button, input, select, textarea {
     margin: 0;
+    box-sizing: border-box;
 }
 
 html {

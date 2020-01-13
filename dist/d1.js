@@ -1,4 +1,4 @@
-/*! d1x v1.0.19 */
+/*! d1x v1.0.20 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1css v0.0.0 */
+/*! d1css v1.0.20 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
