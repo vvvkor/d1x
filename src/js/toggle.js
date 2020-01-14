@@ -1,9 +1,9 @@
-/*! d1 togglable interactive components */
+/*! toggle - togglable interactive components */
 
 // Interface components: dropdown, popup, toggle, modal dialog, tabs, drawer, tree, gallery
 // .nav, .pop, .toggle, .dlg, .tabs, .drawer, .tree, .gal
 
-let d1 = require('./d1.js');
+let app = require('./app.js');
 
 module.exports = new(function () {
 
@@ -34,7 +34,7 @@ module.exports = new(function () {
     qGal: '.gal>a[id]', // dup of gallery.opt.qGal
     qSubMem: '.tabs.mem+div>div[id], ul.mem:not(.nav) ul',
     //qMedia: '[id].target-mobile, [id].target-desktop',
-    qDrawer: '#menu',
+    qDrawer: '.drawer[id]:not(.shift)',
 
     cMem: 'mem',
     cTarget: 'target'
@@ -42,43 +42,43 @@ module.exports = new(function () {
   };
 
   this.init = function () {
-    d1.listen('esc', e => this.esc(e));
-    d1.listen('hash', e => this.onHash(e));
-    d1.listen('key', e => this.onKey(e));
-    d1.listen('click', e => this.onClick(e));
-    d1.listen('clicked', e => this.unpop(e.target));
-    d1.listen('after', e => this.after(e ? e.target : null));
+    app.listen('esc', e => this.esc(e));
+    app.listen('hash', e => this.onHash(e));
+    app.listen('key', e => this.onKey(e));
+    app.listen('click', e => this.onClick(e));
+    app.listen('clicked', e => this.unpop(e.target));
+    app.listen('after', e => this.after(e ? e.target : null));
     //toggle
     let q = this.opt;
-    this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(x => '[id].' + d1.opt.cToggle + x).join(', ')
+    this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(x => '[id].' + app.opt.cToggle + x).join(', ')
     let togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw/*, q.qMedia/*, q.qGal*/].join(', ');
     this.opt.qUnpop = [q.qPop, q.qNav, q.qDlg, q.qDrw/*, q.qGal*/].join(', ');
-    d1.e(this.opt.qNav + ', ' + this.opt.qTre, n => this.attachSubNav(n)); //nav, tree: attach to links
-    d1.e(togglers, n => this.initToggler(n)); //initialize togglers
-      this.opt.mediaSuffixes.forEach(x => d1.e(this.opt.qTrg + x, n => this.initToggler(n, x))); //initialize togglers by media
+    app.e(this.opt.qNav + ', ' + this.opt.qTre, n => this.attachSubNav(n)); //nav, tree: attach to links
+    app.e(togglers, n => this.initToggler(n)); //initialize togglers
+      this.opt.mediaSuffixes.forEach(x => app.e(this.opt.qTrg + x, n => this.initToggler(n, x))); //initialize togglers by media
     //let autohide = [        q.qPop, q.qNav, q.qDlg, q.qTab, q.qAcc, q.qDrw, q.qMedia/*, q.qGal*/].join(', ');
-    //d1.e(autohide, n => this.tgl(n, 0)); //autohide
+    //app.e(autohide, n => this.tgl(n, 0)); //autohide
 
-    d1.e(this.opt.qGal + ':last-child', n => d1.x(n, 1));//gal: auto add close link
-    d1.e(this.opt.qSubMem, n => n.classList.add(this.opt.cMem)); //initialize sub mem
-    d1.e('[id]', n => this.restoreVisibility(n));//restore visibility
-    d1.e(this.opt.qTab + ':not(.'+d1.opt.cOff+') ~ [id]:not(.'+d1.opt.cOff+')', n => this.tgl(n, 0)); //undup tabs
-    d1.e(this.opt.qTab + ':first-child', n => d1.a(n.parentNode.children).filter(m => d1.vis(m)).length ? null : this.tgl(d1.q(d1.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1));//inactive tabs: show first
-    d1.e('.' + d1.opt.cToggle + '[id]', n => this.hiliteLinks(n));//init links state
+    app.e(this.opt.qGal + ':last-child', n => app.x(n, 1));//gal: auto add close link
+    app.e(this.opt.qSubMem, n => n.classList.add(this.opt.cMem)); //initialize sub mem
+    app.e('[id]', n => this.restoreVisibility(n));//restore visibility
+    app.e(this.opt.qTab + ':not(.'+app.opt.cOff+') ~ [id]:not(.'+app.opt.cOff+')', n => this.tgl(n, 0)); //undup tabs
+    app.e(this.opt.qTab + ':first-child', n => app.a(n.parentNode.children).filter(m => app.vis(m)).length ? null : this.tgl(app.q(app.q('a[href^="#"]', n.parentNode.previousElementSibling).hash), 1));//inactive tabs: show first
+    app.e('.' + app.opt.cToggle + '[id]', n => this.hiliteLinks(n));//init links state
   }
 
   this.after = function(n){
     this.shown = null;
-    //let modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
-    let modal = d1.q(this.opt.qDlg+':not(.'+d1.opt.cOff+'), '+this.opt.qGal+'[id="' + location.hash.substr(1) + '"]');
+    //let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+':target'); // :target not updated after Esc key
+    let modal = app.q(this.opt.qDlg+':not(.'+app.opt.cOff+'), '+this.opt.qGal+'[id="' + location.hash.substr(1) + '"]');
     let bar = window.innerWidth - document.documentElement.clientWidth; //scroll bar width
     let s = document.body.style;
     s.overflow = modal ? 'hidden' : '';
     if(!(modal && s.paddingRight)) s.paddingRight = modal ? '' + bar + 'px' : ''; // avoid width reflow
-    d1.dbg(['after', n, modal, s.paddingRight]);
+    app.dbg(['after', n, modal, s.paddingRight]);
     if(modal){
-      //let f = d1.q('input, a:not(.' + d1.opt.cClose + ')', modal);
-      let f = d1.q('input, a:not([href="' + d1.opt.hClose + '"])', modal);
+      //let f = app.q('input, a:not(.' + app.opt.cClose + ')', modal);
+      let f = app.q('input, a:not([href="' + app.opt.hClose + '"])', modal);
       if(f) f.focus();
     }
   }
@@ -91,10 +91,10 @@ module.exports = new(function () {
   }
 
   this.onHash = function(e){
-    d1.dbg(['hash', location.hash]);
-    if(location.hash===d1.opt.hClose) d1.fire('esc', e);
+    app.dbg(['hash', location.hash]);
+    if(location.hash===app.opt.hClose) app.fire('esc', e);
     else if(location.hash){
-      let d = d1.q(location.hash);
+      let d = app.q(location.hash);
       if(d){
         let t = d.matches(this.opt.qTgl);
         let g = d.matches(this.opt.qGal);
@@ -104,27 +104,27 @@ module.exports = new(function () {
           if(!this.opt.keepHash) this.unhash();
         }
         if(t || g) this.after();
-        else this.unpop();//d1.fire('esc', e);
+        else this.unpop();//app.fire('esc', e);
       }
     }
   }
 
   this.onKey = function(e){
     let k = e.keyCode;
-    d1.dbg(['key', k]);
-    if(k==27) d1.fire('esc', e);
+    app.dbg(['key', k]);
+    if(k==27) app.fire('esc', e);
   }
 
   this.onClick = function(e){
     let n = e.target;
-    let a = d1.closest(n, 'a');
-    let d = (a && a.matches('a[href^="#"]')) ? d1.q(a.hash) : null;
+    let a = app.closest(n, 'a');
+    let d = (a && a.matches('a[href^="#"]')) ? app.q(a.hash) : null;
 
-    if(a && a.hash===d1.opt.hClose) d1.fire('esc', e);
+    if(a && a.hash===app.opt.hClose) app.fire('esc', e);
     else if(d && d.matches(this.opt.qTgl)){
       e.preventDefault();
       d = this.toggle(d);
-      if(d1.vis(d) && this.opt.keepHash) this.addHistory(a.hash);
+      if(app.vis(d) && this.opt.keepHash) this.addHistory(a.hash);
       else this.unhash();
       return d;
     }
@@ -136,30 +136,30 @@ module.exports = new(function () {
   
   this.initToggler = function(n, suffix){
     n.classList.remove(this.opt.cTarget + (suffix || ''));
-    n.classList.add(d1.opt.cToggle + (suffix || ''));
+    n.classList.add(app.opt.cToggle + (suffix || ''));
     this.tgl(n, 0);
   }
 
   this.attachSubNav = function(n){
     //let a = n.previousElementSibling;
-    let aa = d1.a(n.parentNode.children).filter(v => v.tagName=='A');
+    let aa = app.a(n.parentNode.children).filter(v => v.tagName=='A');
     let a = aa.filter(v => !v.href)[0] || aa[0]
-      || (d1.ins('',' ',{},n.parentNode, false) && d1.ins('a', d1.i('toggle'), {}, n.parentNode, false));
+      || (app.ins('',' ',{},n.parentNode, false) && app.ins('a', app.i('toggle'), {}, n.parentNode, false));
     if(a){
-      if(!n.id) n.id = 'ul-' + d1.seq();
+      if(!n.id) n.id = 'ul-' + app.seq();
       a.href = '#' + n.id;
     }
   }
 
   //deep: -1=prepare, 0=click|hash, 1=deps|clo
   this.toggle = function(h, on, deep){
-    let d = h ? (h.tagName ? h : d1.q(h)) : null;
+    let d = h ? (h.tagName ? h : app.q(h)) : null;
     if(d){
       if(d.matches(this.opt.qTab) && on===undefined) on = true; //tabs: show instead of toggle
       //console.log('toggle '+d.id, on, deep);
       this.tgl(d, on);
-      d1.dbg(['toggle' + (deep ? ' deep' : ''), on, d], deep ? 2 : 1);
-      if(d1.vis(d)){
+      app.dbg(['toggle' + (deep ? ' deep' : ''), on, d], deep ? 2 : 1);
+      if(app.vis(d)){
         this.fixPosition(d);
         if(!deep) this.shown = d;
       }
@@ -174,35 +174,35 @@ module.exports = new(function () {
   }
 
   this.tgl = function(d, on){
-    if(d) d.classList[on ? 'remove' : (on===undefined ? 'toggle' : 'add')](d1.opt.cOff);
+    if(d) d.classList[on ? 'remove' : (on===undefined ? 'toggle' : 'add')](app.opt.cOff);
   }
 
   this.toggleDependent = function(d){
-    if(d1.vis(d)){
-      if(d.matches(this.opt.qDlg)) d1.e(this.opt.qDlg, n => n==d ? null : this.toggle(n, false, 1)); //hide other dialogs
-      else if(d.matches(this.opt.qTab)) d1.e(d.parentNode.children, n => n==d ? null : this.toggle(n, false, 1)); //hide sibling tabs
-      else if(d.matches(this.opt.qAcc)) d1.e(d1.qq(this.opt.qAcc, d1.closest(d, this.opt.qAccRoot)), n => n.contains(d) ? null : this.toggle(n, false, 1)); //hide other ul
+    if(app.vis(d)){
+      if(d.matches(this.opt.qDlg)) app.e(this.opt.qDlg, n => n==d ? null : this.toggle(n, false, 1)); //hide other dialogs
+      else if(d.matches(this.opt.qTab)) app.e(d.parentNode.children, n => n==d ? null : this.toggle(n, false, 1)); //hide sibling tabs
+      else if(d.matches(this.opt.qAcc)) app.e(app.qq(this.opt.qAcc, app.closest(d, this.opt.qAccRoot)), n => n.contains(d) ? null : this.toggle(n, false, 1)); //hide other ul
     }
   }
 
   this.unpop = function(x){
     let keep = [x];
     keep.push(this.shown);
-    let a = x ? d1.closest(x, 'a') : null;
+    let a = x ? app.closest(x, 'a') : null;
     if(a && a.hash){
-      //if(a.hash==d1.opt.hClose) keep = []; //to close all, even container
+      //if(a.hash==app.opt.hClose) keep = []; //to close all, even container
       //else
-        keep.push(d1.q(a.hash));
+        keep.push(app.q(a.hash));
     }
-    d1.dbg(['unpop', keep]);
-    d1.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
+    app.dbg(['unpop', keep]);
+    app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
   }
 
   this.unhash = function(){
     //v1.
-    if(location.hash) location.hash = d1.opt.hClose;
+    if(location.hash) location.hash = app.opt.hClose;
     //v2.
-    this.addHistory(location.pathname + location.search /* + d1.opt.hClose*/);
+    this.addHistory(location.pathname + location.search /* + app.opt.hClose*/);
   }
 
   this.addHistory = function(h) {
@@ -214,7 +214,7 @@ module.exports = new(function () {
 
   this.storeVisibility = function(n){
     if(n.classList.contains(this.opt.cMem)){
-      localStorage.setItem('vis#'+n.id, d1.vis(n) ? 1 : -1);
+      localStorage.setItem('vis#'+n.id, app.vis(n) ? 1 : -1);
     }
   }
 
@@ -226,8 +226,8 @@ module.exports = new(function () {
   }
 
   this.hiliteLinks = function(d){
-    let op = d1.vis(d) ? 'add' : 'remove';
-    d1.e('a[href="#'+d.id+'"]', a => a.classList[op](d1.opt.cAct));
+    let op = app.vis(d) ? 'add' : 'remove';
+    app.e('a[href="#'+d.id+'"]', a => a.classList[op](app.opt.cAct));
   }
 
   this.fixPosition = function(n){
@@ -267,7 +267,5 @@ module.exports = new(function () {
       }
     }
   }
-
-  //d1.plug(this);
 
 })();

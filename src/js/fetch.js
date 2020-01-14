@@ -1,8 +1,8 @@
-/*! d1 async fetch */
+/*! fetch - asynchronous requests */
 
-let d1 = require('./d1.js');
-//require('./dialog.js');
-//require('./toggle.js');
+let app = require('./app.js');
+let toggle = require('./toggle.js');
+let dialog = require('./dialog.js');
 
 module.exports = new(function () {
 
@@ -14,11 +14,11 @@ module.exports = new(function () {
   };
 
   this.init = function () {
-    d1.listen('click', e => this.onClick(e));
+    app.listen('click', e => this.onClick(e));
   }
 
   this.onClick = function(e){
-    let a = d1.closest(e.target, 'a[data-target]');
+    let a = app.closest(e.target, 'a[data-target]');
     if(a){
       e.preventDefault();
       this.fetchBy(a);
@@ -26,7 +26,7 @@ module.exports = new(function () {
   }
 
   this.fetchBy = function(n, f) {
-    this.fetch(d1.attr(n, 'href'), r => f ? f(n, r) : this.recv(n, r));
+    this.fetch(app.attr(n, 'href'), r => f ? f(n, r) : this.recv(n, r));
   }
 
   this.fetch = function(url, f) {
@@ -38,19 +38,19 @@ module.exports = new(function () {
 
   this.recv = function(n, req, e) {
     // JSON.parse(req.responseText)
-    let d = d1.q(d1.attr(n, 'data-target'));
+    let d = app.q(app.attr(n, 'data-target'));
     if (req.status == '200') {
       if (d) {
         d.innerHTML = req.responseText;
-        let dlg = d1.closest(d, '.dlg[id]');
-        if (dlg) d1.plugins.toggle.toggle(dlg, true);
+        let dlg = app.closest(d, '.dlg[id]');
+        if (dlg) toggle.toggle(dlg, true);
       }
       else {
-        d1.plugins.dialog.initDlg(null, '', req.responseText);
+        dialog.initDlg(null, '', req.responseText);
       }
     }
     else console.error('XHTTP request failed', req);
-    d1.fire('after', e);
+    app.fire('after', e);
   }
 
 })();

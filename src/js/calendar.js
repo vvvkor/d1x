@@ -1,7 +1,7 @@
-/*! d1 calendar */
+/*! calendar - replacement of standard date and datetime-local inputs */
 
-let d1 = require('./d1.js');
-//require('./toggle.js');
+let app = require('./app.js');
+let toggle = require('./toggle.js');
 
 module.exports = new(function () {
 
@@ -41,26 +41,26 @@ module.exports = new(function () {
     for(i in opt) this.opt[i] = opt[i];
 
     if(window.innerWidth < this.opt.minWidth) return;
-    this.win = d1.ins('div', '', {id: this.opt.idPicker, className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' pad'});//dlg hide pad
+    this.win = app.ins('div', '', {id: this.opt.idPicker, className: app.opt.cToggle + ' ' + app.opt.cOff + ' pad'});//dlg hide pad
     this.win.style.whiteSpace = 'nowrap';
     //this.toggle(false);
     document.body.appendChild(this.win);
     
-    let t = d1.qq(this.opt.qsCalendar);
+    let t = app.qq(this.opt.qsCalendar);
     for (let i = 0; i < t.length; i++){
       this.preparePick(t[i]);
-      d1.b(t[i], 'click', e => this.openDialog(t[i], null, e), false);
-      d1.b(t[i], 'input', e => this.validate(t[i], 0), false);
+      app.b(t[i], 'click', e => this.openDialog(t[i], null, e), false);
+      app.b(t[i], 'input', e => this.validate(t[i], 0), false);
     }
   }
   
   this.toggle = function(on, n){
     if(n){
-      let m = d1.attr(n, 'data-modal');
+      let m = app.attr(n, 'data-modal');
       if(m!==null) m = parseInt(m, 10);
       else m = this.opt.showModal || (Math.min(window.innerWidth, window.innerHeight) < this.opt.sizeLimit);
       if(on){
-        this.win.className = d1.opt.cToggle + ' ' + d1.opt.cOff + ' pad ' + (m ? 'dlg' : '');
+        this.win.className = app.opt.cToggle + ' ' + app.opt.cOff + ' pad ' + (m ? 'dlg' : '');
         (m ? document.body : n.thePop).appendChild(this.win);
         if(m){
           let s = this.win.style;
@@ -69,8 +69,8 @@ module.exports = new(function () {
         this.win.vRel = m ? null : n;
       }
     }
-    d1.plugins.toggle.toggle(this.win, on);
-    d1.fire('after');
+    toggle.toggle(this.win, on);
+    app.fire('after');
   }
   
   this.preparePick = function(n){
@@ -78,21 +78,21 @@ module.exports = new(function () {
     n.type = 'text';
     n.autocomplete = 'off';
     if(n.value) n.value = this.fmt(this.parse(n.value), 0, n.vTime);
-    let pop = d1.ins('div', '', {className:'pop l'}, n, -1); //''
+    let pop = app.ins('div', '', {className:'pop l'}, n, -1); //''
     if(!this.opt.inPop) pop.style.verticalAlign = 'bottom';
     n.thePop = pop;
     if(this.opt.addIcons.length>0){
       let ico = [];
-      let ic = d1.ins('span', '', {className:'input-tools'}, n, 1);//icons container
+      let ic = app.ins('span', '', {className:'input-tools'}, n, 1);//icons container
       for(let i in this.opt.addIcons){
-        d1.ins('', ' ', {}, ic);
-        let ii = ic.appendChild(d1.i(this.opt.addIcons[i]));
+        app.ins('', ' ', {}, ic);
+        let ii = ic.appendChild(app.i(this.opt.addIcons[i]));
         ii.style.cursor = 'pointer';
         ico.push(ii);
       }
-      if(ico[0]) d1.b(ico[0], 'click', e => this.openDialog(n, null, e), false);
-      if(ico[1]) d1.b(ico[1], 'click', e => this.closeDialog(n, true, null, null, e), false);
-      if(ico[2]) d1.b(ico[2], 'click', e => this.closeDialog(n, '', null, null, e), false);
+      if(ico[0]) app.b(ico[0], 'click', e => this.openDialog(n, null, e), false);
+      if(ico[1]) app.b(ico[1], 'click', e => this.closeDialog(n, true, null, null, e), false);
+      if(ico[2]) app.b(ico[2], 'click', e => this.closeDialog(n, '', null, null, e), false);
     }
     if(this.opt.inPop) pop.appendChild(n);
   }
@@ -137,7 +137,7 @@ module.exports = new(function () {
   }
   
   this.getLimit = function(n, a, t){
-    let r = d1.attr(n, a);
+    let r = app.attr(n, a);
     return r ? this.fmt(this.parse(r), 0, t, 'y') : (a == 'max' ? '9999' : '0000');
   }
   
@@ -156,7 +156,7 @@ module.exports = new(function () {
   
   this.build = function(n, x){
     while(this.win.firstChild) this.win.removeChild(this.win.firstChild);
-    if (typeof x === 'string') x = this.parse(x || d1.attr(n, 'data-def'));
+    if (typeof x === 'string') x = this.parse(x || app.attr(n, 'data-def'));
     let min = this.getLimit(n, 'min', 0);
     let max = this.getLimit(n, 'max', 0);
     //time
@@ -164,39 +164,39 @@ module.exports = new(function () {
     let ci = null;
     let p2 = null;
     if(n.vTime){
-        p2 = d1.ins('p', '', {className: 'c'});
-        let ph = this.btn('#prev-hour', d1.i('prev'), p2);
-        ch = d1.ins('span', this.n(x.getHours()), {className: 'pad'}, p2);
-        let nh = this.btn('#next-hour', d1.i('next'), p2);
-        d1.ins('span', ':', {className: 'pad'}, p2);
-        let pi = this.btn('#prev-min', d1.i('prev'), p2);
-        ci = d1.ins('span', this.n(x.getMinutes()), {className: 'pad'}, p2);
-        let ni = this.btn('#next-min', d1.i('next'), p2);
-        d1.b(ph, 'click', e => this.setTime(n, ch, ci, -1, 'h', e), false);
-        d1.b(nh, 'click', e => this.setTime(n, ch, ci, +1, 'h', e), false);
-        d1.b(pi, 'click', e => this.setTime(n, ch, ci, -this.opt.stepMinutes, 'i', e), false);
-        d1.b(ni, 'click', e => this.setTime(n, ch, ci, +this.opt.stepMinutes, 'i', e), false);
+        p2 = app.ins('p', '', {className: 'c'});
+        let ph = this.btn('#prev-hour', app.i('prev'), p2);
+        ch = app.ins('span', this.n(x.getHours()), {className: 'pad'}, p2);
+        let nh = this.btn('#next-hour', app.i('next'), p2);
+        app.ins('span', ':', {className: 'pad'}, p2);
+        let pi = this.btn('#prev-min', app.i('prev'), p2);
+        ci = app.ins('span', this.n(x.getMinutes()), {className: 'pad'}, p2);
+        let ni = this.btn('#next-min', app.i('next'), p2);
+        app.b(ph, 'click', e => this.setTime(n, ch, ci, -1, 'h', e), false);
+        app.b(nh, 'click', e => this.setTime(n, ch, ci, +1, 'h', e), false);
+        app.b(pi, 'click', e => this.setTime(n, ch, ci, -this.opt.stepMinutes, 'i', e), false);
+        app.b(ni, 'click', e => this.setTime(n, ch, ci, +this.opt.stepMinutes, 'i', e), false);
     }
    //buttons
     let y = x.getFullYear();
     let m = x.getMonth();
     let d = x.getDate();
     let my = this.n(m+1) + '.' + y;
-    let p1 = d1.ins('p', '', {className: 'c'}, this.win);
-    let now = this.btn(this.opt.hashNow, d1.i('now'), p1);
-    let py = this.btn('#prev-year', d1.i('prev2'), p1);
-    let pm = this.btn('#prev-month', d1.i('prev'), p1);
-    let cur = d1.ins('span', my, {className: 'pad'}, p1);
-    let nm = this.btn('#next-month', d1.i('next'), p1);
-    let ny = this.btn('#next-year', d1.i('next2'), p1);
-    let cls = this.btn(this.opt.hashCancel, d1.i('close'), p1);
-    d1.ins('hr', '', {}, this.win);
-    d1.b(now, 'click', e => this.closeDialog(n, true, ch, ci, e), false);
-    d1.b(cls, 'click', e => this.closeDialog(n, null, null, null, e), false);
-    d1.b(py, 'click', e => this.switchMonth(n, y-1, m, d, ch, ci, e), false);
-    d1.b(ny, 'click', e => this.switchMonth(n, y+1, m, d, ch, ci, e), false);
-    d1.b(pm, 'click', e => this.switchMonth(n, y, m-1, d, ch, ci, e), false);
-    d1.b(nm, 'click', e => this.switchMonth(n, y, m+1, d, ch, ci, e), false);
+    let p1 = app.ins('p', '', {className: 'c'}, this.win);
+    let now = this.btn(this.opt.hashNow, app.i('now'), p1);
+    let py = this.btn('#prev-year', app.i('prev2'), p1);
+    let pm = this.btn('#prev-month', app.i('prev'), p1);
+    let cur = app.ins('span', my, {className: 'pad'}, p1);
+    let nm = this.btn('#next-month', app.i('next'), p1);
+    let ny = this.btn('#next-year', app.i('next2'), p1);
+    let cls = this.btn(this.opt.hashCancel, app.i('close'), p1);
+    app.ins('hr', '', {}, this.win);
+    app.b(now, 'click', e => this.closeDialog(n, true, ch, ci, e), false);
+    app.b(cls, 'click', e => this.closeDialog(n, null, null, null, e), false);
+    app.b(py, 'click', e => this.switchMonth(n, y-1, m, d, ch, ci, e), false);
+    app.b(ny, 'click', e => this.switchMonth(n, y+1, m, d, ch, ci, e), false);
+    app.b(pm, 'click', e => this.switchMonth(n, y, m-1, d, ch, ci, e), false);
+    app.b(nm, 'click', e => this.switchMonth(n, y, m+1, d, ch, ci, e), false);
     //dates
     let days = (new Date(y, m+1, 0)).getDate();//days in month
     let skip = ((new Date(y, m, 1)).getDay() + 6) % 7;//skip weekdays
@@ -207,23 +207,23 @@ module.exports = new(function () {
     let row;
     for(let i=-skip+1; i<=maxd; i++){
       wd = ((skip+i-1)%7)+1;
-      if(wd == 1) row = d1.ins('div', '', {className:'row'}, this.win);
-      if(i<1 || i>days) c = d1.ins('a', '', {className: 'pad c center'}, row);
+      if(wd == 1) row = app.ins('div', '', {className:'row'}, this.win);
+      if(i<1 || i>days) c = app.ins('a', '', {className: 'pad c center'}, row);
       else{
         let v = this.fmt(x, i);
         vv = this.fmt(x, i, 0, 'y');
         sel = (v == xd);
         today = false;//(v == cd);
         off = (min && vv<min) || (max && vv>max);
-        c = d1.ins('a', i, {className: 'pad c center ' + (sel ? 'bg-w ' : '') + (today ? 'bg-y ' : '') + (off ? 'text-n ' : 'hover ') + (wd>5 ? 'text-e ' : '')}, row);
+        c = app.ins('a', i, {className: 'pad c center ' + (sel ? 'bg-w ' : '') + (today ? 'bg-y ' : '') + (off ? 'text-n ' : 'hover ') + (wd>5 ? 'text-e ' : '')}, row);
         if(!off){
           c.href = '#' + i;
-          d1.b(c, 'click', e => this.closeDialog(n, v, ch, ci, e), false);
+          app.b(c, 'click', e => this.closeDialog(n, v, ch, ci, e), false);
         }
       }
     }
     if(n.vTime){
-      d1.ins('hr', '', {}, this.win);
+      app.ins('hr', '', {}, this.win);
       this.win.appendChild(p2);
     }
   }
@@ -262,7 +262,7 @@ module.exports = new(function () {
   }
   
   this.btn = function(h, s, p){
-    return d1.ins('a', s, {href: h, className: this.opt.cBtn}, p);
+    return app.ins('a', s, {href: h, className: this.opt.cBtn}, p);
   }
 
 })();

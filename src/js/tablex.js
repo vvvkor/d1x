@@ -1,9 +1,8 @@
-/*! d1tablex */
+/*! tablex - filter and sort HTML table */
 
-// Filter and sort HTML table
 // table.sort[data-filter] [data-filter-report][data-case][data-filter-cols]
 
-let d1 = require('./d1.js');
+let app = require('./app.js');
 
 module.exports = new(function() {
 
@@ -27,12 +26,12 @@ module.exports = new(function() {
   };
 
   this.init = function() {
-    this.lang = d1.attr(document.documentElement, 'lang') || 'en';
+    this.lang = app.attr(document.documentElement, 'lang') || 'en';
     this.skipComma = (this.lang=='en');
     //let t = document.querySelectorAll(this.opt.qSort + ', table[' + this.opt.aFilter + ']');
     //t.forEach(this.prepare.bind(this));
     //for (i = 0; i < t.length; i++) this.prepare(t[i]);
-    d1.e(this.opt.qSort + ', table[' + this.opt.aFilter + ']', this.prepare.bind(this))
+    app.e(this.opt.qSort + ', table[' + this.opt.aFilter + ']', this.prepare.bind(this))
   }
 
   this.prepare = function(n) {
@@ -50,7 +49,7 @@ module.exports = new(function() {
       h[j] = rh.cells[j];
       //if (this.opt.cSort && this.isSortable(rh.cells[j])) h[j].classList.add(this.opt.cSort);
     }
-    //let inp = d1.ins('input','',{type:'search',size:4},rh.cells[0]);
+    //let inp = app.ins('input','',{type:'search',size:4},rh.cells[0]);
     n.vCase = (n.getAttribute('data-case') !== null);
     let fq = n.getAttribute(this.opt.aFilter);
     n.vInp = fq
@@ -144,7 +143,7 @@ module.exports = new(function() {
         s = '|' + data.join('|') + '|';
         hide = !this.matches(s, q, n.vCase);
       }
-      if(d1.opt.cHide) n.vData[i].n.classList[hide ? 'add' : 'remove'](d1.opt.cHide);
+      if(app.opt.cHide) n.vData[i].n.classList[hide ? 'add' : 'remove'](app.opt.cHide);
       else n.vData[i].n.style.display = hide ? 'none' : '';
       if(this.opt.cShow) n.vData[i].n.classList[hide ? 'remove' : 'add'](this.opt.cShow);
       if (!hide) cnt++;

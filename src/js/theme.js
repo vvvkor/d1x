@@ -1,6 +1,6 @@
-/*! d1 live theme configurator */
+/*! theme - live theme configurator */
 
-let d1 = require('./d1.js');
+let app = require('./app.js');
 
 module.exports = new(function () {
 
@@ -14,7 +14,7 @@ module.exports = new(function () {
     this.restore(document.body, 'theme-body');
 
     //button
-    let a = d1.ins('a', 'Theme', {href: '#theme', className: 'fix pad btn theme-btn'}, document.body);
+    let a = app.ins('a', 'Theme', {href: '#theme', className: 'fix pad btn theme-btn'}, document.body);
     let s = a.style;
     s.transform = 'rotate(-90deg)';
     s.transformOrigin = '100% 100%';
@@ -23,12 +23,12 @@ module.exports = new(function () {
     s.bottom = s.left = 'auto';
     s.margin = 0;
     //drawer
-    this.drw = d1.ins('div', '', {id: 'theme', className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' drawer pad shift theme-drawer'}, document.body);
-    d1.ins('a', '&#x2715;', {href: '#cancel', className: 'pad hover close'}, this.drw);
+    this.drw = app.ins('div', '', {id: 'theme', className: app.opt.cToggle + ' ' + app.opt.cOff + ' drawer pad shift theme-drawer'}, document.body);
+    app.ins('a', '&#x2715;', {href: '#cancel', className: 'pad hover close'}, this.drw);
     
     //menu
     this.h('Theme', 2);
-    d1.b([d1.ins('a', 'Reset to default', {href:'#', className: ''}, this.drw)], 'click', e => this.unstyle(e));
+    app.b([app.ins('a', 'Reset to default', {href:'#', className: ''}, this.drw)], 'click', e => this.unstyle(e));
     this.put('Background', ['#fff', '#eee', '#ffeee6', '#ffe', '#efe', '#e6fcf9', '#e3eeff', '#f9e9ff'], '--bg');
     this.put('Menu', ['rgba(255,255,255,0)', 'rgba(0,0,0,.1)', 'hsla(1,100%,55%,.3)', 'hsla(45,100%,50%,.3)', 'hsla(120,100%,35%,.3)', 'hsla(180,100%,35%,.3)', 'hsla(220,100%,55%,.3)', 'hsla(290,100%,50%,.3)'], ['--bg-pane', '--bg-hilite']);
     this.put('Links', ['#000', '#777', '#c00', '#c60', '#090', '#088', '#00c', '#909'], ['--link', '--visited', '--hover']);
@@ -60,7 +60,7 @@ module.exports = new(function () {
   }
   
   this.h = function(s, l){
-    d1.ins('h'+(l || 1), s, {className: 'mar'}, this.drw);
+    app.ins('h'+(l || 1), s, {className: 'mar'}, this.drw);
   }
   
   this.put = function(hh, arr, func){
@@ -68,12 +68,12 @@ module.exports = new(function () {
     let c = [];
     arr.forEach((v/*, k*/) => {
       let color = v.match(/[#(]/);
-      let a = d1.ins('a', color ? '' : v, {href:'#', title: v, className: color ? 'pad hover bord' : 'pad hover'}, this.drw);
+      let a = app.ins('a', color ? '' : v, {href:'#', title: v, className: color ? 'pad hover bord' : 'pad hover'}, this.drw);
       if(color) a.style.backgroundColor = v;
       else if(typeof func === 'string') a.style[func] = v;
       c.push(a);
     });
-    d1.b(c, 'click', (func instanceof Function
+    app.b(c, 'click', (func instanceof Function
       ? func
       : e => {
           e.preventDefault();

@@ -1,6 +1,6 @@
-/*! d1 responsive table */
+/*! fliptable - responsive table */
 
-let d1 = require('./d1.js');
+let app = require('./app.js');
 
 module.exports = new(function () {
 
@@ -14,13 +14,13 @@ module.exports = new(function () {
   };
 
   this.init = function () {
-    d1.e(this.opt.qFlipTable, n => this.prepareFlipTable(n)); 
+    app.e(this.opt.qFlipTable, n => this.prepareFlipTable(n)); 
   }
 
   this.prepareFlipTable = function(t){
-    let ths = d1.qq('thead th', t);
-    let tds = d1.qq('tbody tr>*', t);
-    let order = (d1.attr(t, 'data-order') || '0 1 2 3').split(/\D+/);
+    let ths = app.qq('thead th', t);
+    let tds = app.qq('tbody tr>*', t);
+    let order = (app.attr(t, 'data-order') || '0 1 2 3').split(/\D+/);
     //t.parentNode.classList.remove('roll');
     for(let i=0; i<tds.length; i++){
       let td = tds[i];
@@ -29,10 +29,10 @@ module.exports = new(function () {
       if(ord==-1) ord = 99;
       td.style.order = ord;
       if(td.textContent.replace(/\s+$/, '').length>0){
-        let v = d1.ins('div');
+        let v = app.ins('div');
         while(td.firstChild) v.appendChild(td.firstChild);
         td.textContent = '';
-        if(th) d1.ins('div', th.textContent, {className: this.opt.cCellHead}, td)
+        if(th) app.ins('div', th.textContent, {className: this.opt.cCellHead}, td)
         td.appendChild(v);
       }
     }

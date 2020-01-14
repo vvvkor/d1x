@@ -1,7 +1,7 @@
-/*! d1 wysiwyg text editor */
+/*! edit - wysiwyg text editor */
 
-let d1 = require('./d1.js');
-//require('./toggle.js');
+let app = require('./app.js');
+let toggle = require('./toggle.js');
 
 module.exports = new(function () {
 
@@ -65,70 +65,70 @@ module.exports = new(function () {
   };
 
   this.init = function () {
-    d1.e(this.opt.qEdit, n => this.prepare(n));
-    d1.e(this.opt.qAdjust, n => this.setStyle(n));
+    app.e(this.opt.qEdit, n => this.prepare(n));
+    app.e(this.opt.qAdjust, n => this.setStyle(n));
     this.adjustAll();
-    d1.b(this.opt.qAdjust, 'input', e => this.adjust(e.target));
-    d1.b(this.opt.qAdjust, 'mouseup', e => this.resized(e.target));
-    d1.b([window], 'resize', e => this.adjustAll());
+    app.b(this.opt.qAdjust, 'input', e => this.adjust(e.target));
+    app.b(this.opt.qAdjust, 'mouseup', e => this.resized(e.target));
+    app.b([window], 'resize', e => this.adjustAll());
   }
 
   this.prepare = function (n) {
     if(!n.theWys){
-      let m = d1.ins('nav', '', {className: 'bg'}, /*d*/ n, -1);
-      let mm = d1.ins('div', '', {className: d1.opt.cToggle + ' ' + d1.opt.cOff});
-      //let zc = d1.ins('div', '', {className:'subinput'}, n, 1)
-      let z = d1.ins('div', '', {className: d1.opt.cToggle + ' bord pad subinput'}, n, 1/*zc*/);
+      let m = app.ins('nav', '', {className: 'bg'}, /*d*/ n, -1);
+      let mm = app.ins('div', '', {className: app.opt.cToggle + ' ' + app.opt.cOff});
+      //let zc = app.ins('div', '', {className:'subinput'}, n, 1)
+      let z = app.ins('div', '', {className: app.opt.cToggle + ' bord pad subinput'}, n, 1/*zc*/);
       z.setAttribute('contenteditable', true);
       z.theArea = n;
       z.theNav = m;
       n.theWys = z;
-      n.classList.add(d1.opt.cToggle);
+      n.classList.add(app.opt.cToggle);
       if(n.id) {
         z.id = 'wys-' + n.id;
-        d1.b('[for="' + n.id + '"]', 'click', e => d1.vis(z) ? z.focus() : null);
+        app.b('[for="' + n.id + '"]', 'click', e => app.vis(z) ? z.focus() : null);
       }
-      let t = (d1.attr(n, 'data-tools') || this.opt.tools).split('');
+      let t = (app.attr(n, 'data-tools') || this.opt.tools).split('');
       let to = m;
       for (let i in t) {
         let b = this.btn[t[i]];
-        let a = d1.ins('a', b[2], {href: '#cmd-' + b[0]/*i*/, title: b[3], className: d1.opt.cToggle + ' pad hover'}, to);
+        let a = app.ins('a', b[2], {href: '#cmd-' + b[0]/*i*/, title: b[3], className: app.opt.cToggle + ' pad hover'}, to);
         if(b[0] == 'tools') to = mm;
-        d1.b(a, 'click', e => this.cmd(z, b, a, e));
+        app.b(a, 'click', e => this.cmd(z, b, a, e));
       }
       m.appendChild(mm);
-      //d1.b(d1.qq('a', m), 'click', e => this.cmd(z));
+      //app.b(app.qq('a', m), 'click', e => this.cmd(z));
       n.className += ' bord pad';
       n.style.width = '100%';
       this.setStyle(n);
       this.setStyle(z);
-      let l = d1.closest(n, 'label') || n;
-      d1.b([z], 'blur', e => this.up(0, e.target));
-      d1.b([z], 'input', e => this.up(0, e.target));//for validation
-      //d1.b([n], 'input', e => this.adjust(e.target));
+      let l = app.closest(n, 'label') || n;
+      app.b([z], 'blur', e => this.up(0, e.target));
+      app.b([z], 'input', e => this.up(0, e.target));//for validation
+      //app.b([n], 'input', e => this.adjust(e.target));
     }
     this.up(1, n.theWys);
     this.modeAuto(n);
   }
   
   this.modeAuto = function(n){
-    let t = (d1.attr(n, 'data-tools') || this.opt.tools).split('');
-    let wys = d1.attr(n, 'data-wys', false);
+    let t = (app.attr(n, 'data-tools') || this.opt.tools).split('');
+    let wys = app.attr(n, 'data-wys', false);
     if(wys===false) wys = (t.indexOf('/')==-1) || (n.value.match(/(>|&\w+;)/) && !n.value.match(/<script/i));
     this.mode(n.theWys, wys);
   }
 
   this.cmd = function (z, b, n, e) {
-    d1.dbg(['cmd', arguments]);
+    app.dbg(['cmd', arguments]);
     if(e){
       e.preventDefault();
       e.stopPropagation();
     }
     //let b = this.btn[n.hash.substr(4)];
-    if (b[0] == 'src') this.mode(z, !d1.vis(z));
+    if (b[0] == 'src') this.mode(z, !app.vis(z));
     else if (b[0] == 'tools'){
-      let mm = d1.q('div', n.parentNode);
-      if(mm) d1.plugins.toggle.toggle(mm);
+      let mm = app.q('div', n.parentNode);
+      if(mm) toggle.toggle(mm);
     }
     else {
       let arg = b[1];
@@ -157,14 +157,14 @@ module.exports = new(function () {
   }
 
   this.mode = function (z, w) {
-    d1.plugins.toggle.toggle(z, w);
-    d1.plugins.toggle.toggle(z.theArea, !w);
+    toggle.toggle(z, w);
+    toggle.toggle(z.theArea, !w);
     if(!w){
       if(z.style.height) z.theArea.style.height = z.style.height;
       else this.adjust(z.theArea);
     }
     this.up(w, z);
-    d1.e(d1.qq('a', z.theNav), n => (n.hash=='#cmd-src') ? null : d1.plugins.toggle.toggle(n, w));
+    app.e(app.qq('a', z.theNav), n => (n.hash=='#cmd-src') ? null : toggle.toggle(n, w));
     z.theArea.theManual = 0;
     z.theArea.style.width = '100%';
   }
@@ -187,7 +187,7 @@ module.exports = new(function () {
   }
 
   this.adjustAll = function(){
-    d1.e(this.opt.qAdjust, n => this.adjust(n));
+    app.e(this.opt.qAdjust, n => this.adjust(n));
   }
 
   this.adjust = function(n){

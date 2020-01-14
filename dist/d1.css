@@ -374,7 +374,6 @@ form>table tr>* {
 ul.nav {
     display: flex;
     flex-wrap: wrap;
-    align-items: stretch;
 }
 
 .nav.let {
@@ -397,6 +396,11 @@ ul.nav, .nav ul {
     padding: var(--gaps-n);
     height: 100%;
     box-sizing: border-box;
+}
+
+.nav.center li>:not(ul) {
+    display: flex;
+    align-items: center;
 }
 
 .nav li>form {
@@ -659,7 +663,7 @@ mark {
         font-size: medium;
     }
 
-    .row.flip {
+    ul.flip, .flip {
         display: block;
     }
 
@@ -678,10 +682,6 @@ mark {
 
     form>table tr {
         padding-bottom: var(--gap-s);
-    }
-
-    .nav.flip {
-        display: block;
     }
 
     .nav.flip ul {
@@ -981,6 +981,10 @@ ul.fit li {
 
 table.fit>*>tr>*, .roll>table.fit {
     border: none;
+}
+
+a.fit {
+    color: inherit;
 }
 
 .center {

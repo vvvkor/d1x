@@ -1,6 +1,6 @@
-/*! d1 example plugin */
+/*! example - plugin template */
 
-let d1 = require('./d1.js');
+let app = require('./app.js');
 
 module.exports = new(function () {
 
@@ -12,7 +12,7 @@ module.exports = new(function () {
   };
 
   this.init = function () {
-    //d1.listen('click', e => this.onClick(e));
+    //app.listen('click', e => this.onClick(e));
   }
 
   /*
@@ -21,6 +21,6 @@ module.exports = new(function () {
   }
   */
 
-  //d1.plug(this);
+  //app.plug(this);
 
 })();

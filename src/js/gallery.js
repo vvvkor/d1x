@@ -1,9 +1,8 @@
-/*! d1 gallery */
+/*! gallery - image gallery */
 
-// Lighweight image gallery
 // .gallery a.pic 
 
-let d1 = require('./d1.js');
+let app = require('./app.js');
 
 module.exports = new(function () {
 
@@ -21,10 +20,10 @@ module.exports = new(function () {
   };
   
   this.init = function () {
-    d1.listen('hash', e => this.onHash(e));
-    d1.listen('key', e => this.onKey(e));
-    d1.listen('click', e => this.onClick(e));
-    d1.e(this.opt.qGallery, n => this.prepare(n));
+    app.listen('hash', e => this.onHash(e));
+    app.listen('key', e => this.onKey(e));
+    app.listen('click', e => this.onClick(e));
+    app.e(this.opt.qGallery, n => this.prepare(n));
   }
   
   this.onClick = function(e){
@@ -38,16 +37,16 @@ module.exports = new(function () {
   }
   
   this.prevImg = function(n) {
-    let p = n.previousElementSibling || d1.qq('a[id]', n.parentNode).pop();
+    let p = n.previousElementSibling || app.qq('a[id]', n.parentNode).pop();
     if(p.id) location.hash = '#' + p.id;
     return p.id;
   }
   
   this.onHash = function() {
-    let n = d1.q(location.hash);
+    let n = app.q(location.hash);
     if(n) {
       this.loadImg(n);
-      this.loadImg(d1.q(n.hash));
+      this.loadImg(app.q(n.hash));
     }
   }
   
@@ -59,33 +58,33 @@ module.exports = new(function () {
   }
   
   this.prepare = function (n) {
-    let g = d1.ins('div', '', {className: this.opt.cGal});
-    let a = d1.qq(this.opt.qLinks, n);
+    let g = app.ins('div', '', {className: this.opt.cGal});
+    let a = app.qq(this.opt.qLinks, n);
     let z = a.length;
     let first = 0;
     for(let i=0; i<z; i++) if(!a[i].vDone) {
-      let s = d1.seq();
+      let s = app.seq();
       if(!i) first = s;
-      let p = d1.ins('a', '', {
+      let p = app.ins('a', '', {
           id: this.opt.idPrefix + s,
           href: '#' + this.opt.idPrefix + (i==z-1 ? first : s+1)
           }, g);
-      //p.style.setProperty('--img', 'url("' + d1.attr(a[i], 'href') + '")');
-      //p.style.backgroundImage = 'url("' + d1.attr(a[i], 'href') + '")';//preload all
-      p.vLink = d1.attr(a[i], 'href');//real link
-      p.vImg = d1.attr(a[i], 'href');//preload prev & next
-      p.setAttribute(d1.opt.aCaption, (this.opt.num ? (i+1)+'/'+z+(a[i].title ? ' - ' : '') : '') + (a[i].title || ''));
+      //p.style.setProperty('--img', 'url("' + app.attr(a[i], 'href') + '")');
+      //p.style.backgroundImage = 'url("' + app.attr(a[i], 'href') + '")';//preload all
+      p.vLink = app.attr(a[i], 'href');//real link
+      p.vImg = app.attr(a[i], 'href');//preload prev & next
+      p.setAttribute(app.opt.aCaption, (this.opt.num ? (i+1)+'/'+z+(a[i].title ? ' - ' : '') : '') + (a[i].title || ''));
       a[i].href = '#' + p.id;
       a[i].vDone = 1;
     }
-    d1.x(g);
-    d1.b(d1.qq('a[id]', g), 'click', d1.gotoPrev);
+    app.x(g);
+    app.b(app.qq('a[id]', g), 'click', app.gotoPrev);
     document.body.appendChild(g);
   }
 
   this.onKey = function(e) {
     if(location.hash) {
-      let a = d1.q(location.hash);
+      let a = app.q(location.hash);
       if(a && a.hash){
         let k = e.keyCode;
         if (k==37 || k==38) this.prevImg(a);

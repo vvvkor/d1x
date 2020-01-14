@@ -82,7 +82,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 18);
+/******/ 	return __webpack_require__(__webpack_require__.s = 19);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -3003,12 +3003,13 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 18 */
+/* 18 */,
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var app = __webpack_require__(0);
 
-['code', 'toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'calendar', 'lookup', 'edit', 'valid', 'tools', 'form', 'fliptable', 'fetch', 'theme'].forEach(function (p) {
+['toggle', 'dialog', 'gallery'].forEach(function (p) {
   return app.plug(__webpack_require__(4)("./" + p + ".js"));
 }); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
 

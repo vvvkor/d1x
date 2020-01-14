@@ -1,6 +1,7 @@
-/*! d1 scroll topbar */
+/*! scroll - scrolling behaviours (topbar, drawer) */
 
-let d1 = require('./d1.js');
+let app = require('./app.js');
+let toggle = require('./toggle.js');
 
 module.exports = new(function () {
 
@@ -15,22 +16,23 @@ module.exports = new(function () {
     //gap: 20,
     cStart: 'shade',
     qTopbar: '.topbar.let',
+    qEnable: '.topbar, .drawer'
     //qTopbarFixed: '.topbar:not(.let)'
   };
   
   this.init = function () {
     let t;
-    //if(d1.q(this.opt.qTopbar)){
-      d1.listen('hash', e => this.onHash(e));
-      let ons = d1.throttle(() => this.onScroll(), 500);
-      //let ons = d1.throttle((h) => this.onScroll(h), 500);
+    if(app.q(this.opt.qEnable)){
+      app.listen('hash', e => this.onHash(e));
+      let ons = app.throttle(() => this.onScroll(), 500);
+      //let ons = app.throttle((h) => this.onScroll(h), 500);
       //ons(); // forces reflow
       setTimeout(() => this.onScroll(), 20);
-      d1.b([window], 'scroll', e => ons(/*this.hashed*/));
-    //}
+      app.b([window], 'scroll', e => ons(/*this.hashed*/));
+    }
     /*
-    else if(t = d1.q(this.opt.qTopbarFixed)){
-      d1.listen('hash', e => this.fixScroll());
+    else if(t = app.q(this.opt.qTopbarFixed)){
+      app.listen('hash', e => this.fixScroll());
     }
     */
   }
@@ -38,8 +40,8 @@ module.exports = new(function () {
   this.onHash = function(e){
     //to hide topbar on hash change
     // fires before onscroll, but page is already scrolled
-    d1.dbg(['scroll hash',location.hash,e]);
-    if(e && location.hash && d1.q(location.hash)){
+    app.dbg(['scroll hash', location.hash,e]);
+    if(e && location.hash && app.q(location.hash)){
       this.y = window.scrollY - 10;
       //this.y = 1;
       //this.hashed = true;
@@ -48,10 +50,11 @@ module.exports = new(function () {
   
   this.onScroll = function(/*h*/){
     //let mode = this.hashed ? 'hash' : (h ? 'fix' : 'scroll');
-    //d1.dbg(['scroll']); // ,mode,h,this.hashed
+    let dy = window.scrollY ===null ? null : window.scrollY - this.y;
+    app.dbg(['scroll', window.scrollY, dy]); // ,mode,h,this.hashed
     if(this.y!==null/* && !h*/){
-      let dy = window.scrollY - this.y;
-      d1.e(this.opt.qTopbar, n => this.decorate(n, window.scrollY, dy));
+      app.e(this.opt.qTopbar, n => this.decorate(n, window.scrollY, dy));
+      app.e(toggle.opt.qDrw, n => toggle.toggle(n, false));
     }
     this.y = window.scrollY; // forces reflow
     //if(this.hashed) this.fixScroll();
@@ -59,16 +62,16 @@ module.exports = new(function () {
   }
   
   this.decorate = function(n, y, dy){
-    n.classList[dy>0 ? 'add' : 'remove'](d1.opt.cOff)
+    n.classList[dy>0 ? 'add' : 'remove'](app.opt.cOff)
     n.classList[y && dy<=0 ? 'add' : 'remove'](this.opt.cStart)
   }
 
   /*
   this.fixScroll = function(){
-    d1.dbg(['scroll-fix',location.hash]);
-    if(d1.q(location.hash)){
-      //let t = d1.q(this.opt.qTopbar + ':not(.'+ d1.opt.cOff +')');
-      let t = d1.q(this.opt.qTopbarFixed);
+    app.dbg(['scroll-fix', location.hash]);
+    if(app.q(location.hash)){
+      //let t = app.q(this.opt.qTopbar + ':not(.'+ app.opt.cOff +')');
+      let t = app.q(this.opt.qTopbarFixed);
       window.scrollBy(0, (t ? -t.offsetHeight : 0) - this.opt.gap);
     }
     //this.hashed = false;

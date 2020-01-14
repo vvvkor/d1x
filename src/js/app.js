@@ -1,4 +1,4 @@
-/*! d1css v0.0.0 */
+/*! d1 app v0.0.0 */
 
 // (() => {
 //let main = new (function(){
@@ -174,7 +174,7 @@ module.exports = new (function(){
   }
 
   this.x = function(d, pos, cls){
-    return this.ins('a', d1.i('close'), {href: this.opt.hClose, className: (cls || '')}, d, pos);
+    return this.ins('a', this.i('close'), {href: this.opt.hClose, className: (cls || '')}, d, pos);
   }
 
   this.svg = function(id, alt, c) {

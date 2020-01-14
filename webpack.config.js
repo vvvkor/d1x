@@ -7,10 +7,10 @@ var banner = pkg.name + ' v' + pkg.version;
 
 module.exports = {
   entry:{
-    d1: './src/index.js',
-    d1b: './src/basic.js',
+    'd1': './src/index.js',
+    'd1-basic': './src/basic.js',
     'd1.min': './src/index.js',
-    'd1b.min': './src/basic.js'
+    'd1-basic.min': './src/basic.js'
   },
   mode: 'production',
   target: 'web',

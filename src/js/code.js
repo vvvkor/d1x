@@ -1,6 +1,6 @@
-/*! d1 code sample */
+/*! code - source code sample */
 
-let d1 = require('./d1.js');
+let app = require('./app.js');
 
 module.exports = new(function () {
 
@@ -13,7 +13,7 @@ module.exports = new(function () {
   };
 
   this.init = function () {
-    d1.e('.code', n => this.showCode(n));
+    app.e('.code', n => this.showCode(n));
   }
 
   this.showCode = function(src){
@@ -21,12 +21,12 @@ module.exports = new(function () {
       replace(/^\s*\r?\n|\s+$/g, '').
       replace(/\t/g, '  ').
       replace(/=""/g, '');
-    let cont = d1.ins('div', '', {classList: 'bord'}, src, 1);
+    let cont = app.ins('div', '', {classList: 'bord'}, src, 1);
     cont.appendChild(src);
     src.classList.add('pad');
-    let id = 'code-' + d1.seq();
-    d1.ins('div', d1.ins('a', this.opt.sCode, {className: 'pad', href: '#'+id}), {className: '-r bg small'}, cont);
-    let cod = d1.ins('pre', '', {className: d1.opt.cToggle + ' ' + d1.opt.cOff + ' fit pad', id: id}, cont);
+    let id = 'code-' + app.seq();
+    app.ins('div', app.ins('a', this.opt.sCode, {className: 'pad', href: '#'+id}), {className: '-r bg small'}, cont);
+    let cod = app.ins('pre', '', {className: app.opt.cToggle + ' ' + app.opt.cOff + ' fit pad', id: id}, cont);
     cod.textContent = t;
   }
 
