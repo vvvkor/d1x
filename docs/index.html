@@ -4,7 +4,22 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<title>d1 - Docs and Demo</title>
-
+<!--
+<link  href="//www.jsdelivr.com/package/npm/prismjs/themes/prism.css" rel="stylesheet" />
+<script src="//www.jsdelivr.com/package/npm/prismjs/components/prism-core.min.js"></script>
+<script src="//www.jsdelivr.com/package/npm/prismjs/components/prism-markup.min.js"></script>
+-->
+<!--
+<link  href="../arc/prism/prism.css" rel="stylesheet" />
+<script src="../arc/prism/prism-core.min.js"></script>
+<script src="../arc/prism/prism-markup.min.js"></script>
+-->
+<!--
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/default.min.css">
+<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+-->
+<!--script src="https://www.jsdelivr.com/package/npm/prismjs/plugins/autoloader/prism-autoloader.min.js"></script-->
 <!--
 
 # todo
@@ -52,7 +67,7 @@
 + icons array
 - new components: scrollspy, notify, sortable, icons?
 - alerts: close link
-- code formatter
+- code formatter/highlighter (prismjs, highlight.js)
 ~ optimize: !addEventListener to d1.b(), !bind to arrFunc, getAttribute to attr,
   - var to let, querySelector(All) to q/qq, !appendChild/insertBefore to ins
  
@@ -60,12 +75,13 @@
 
 !? "fitty" / "d1app" / "d1ui" / "d1web"
 ! overview test page https://getuikit.com/assets/uikit/tests/ , https://getuikit.com/v2/tests/overview.html
-! demo .row (flip, let, center, wrap)
 - customizer https://getuikit.com/v2/docs/customizer.html
++ demo table:simplify
++ demo .row (flip, let, center, mar >center, >shift, >col-0123/wrap/read/narrow)
 + diff d1 d2 (see d1.css)
 + js classes: .gallery, .pic
 + demo table: .roll by def
-- reference: js classes, components
+~ reference: js classes, components
 - "requires toggle.js"
 - doc structure:
   - typo, table, blocks, color
@@ -88,8 +104,8 @@
 -->
 	
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.20/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.20/dist/d1.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.21/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.21/dist/d1.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/d1.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -99,10 +115,9 @@
 	</script>
 </head>
 <body class="-bg" data-d1='{"hOk":"#yes","debug":1,"textIcons":false,"disable":["-theme","-valid"],"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
-
 <div class="topbar -shade -let" id="topbar">
 	<a href="#menu" class="pad hide-desktop"><svg class="icon" width="32" height="32"><use xlink:href="#svg-menu"/></svg></a>
-	<a href="#top" class="pad"><b>d1</b> v1.0.20</a>
+	<a href="#top" class="pad"><b>d1</b> v1.0.21</a>
 	<code class="pad">npm install d1css</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1" title="GitHub" class="pad">GitHub</a>
 </div>
@@ -222,11 +237,12 @@ Nothing special here. Mostly, default styling is kept.
 
 <h3>Headings</h3>
 
-	<p>
+<fieldset>
+<legend>Options</legend>
 	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-class="" checked> Default margins</label><br>
 	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-class="mar"> Smaller margins: <code>h1.mar</code></label><br>
 	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-class="fit"> No margins: <code>h1.fit</code></label>
-	</p>
+</fieldset>
 	
 	<div id="headings">
 	<h1>Heading 1</h1>
@@ -272,15 +288,16 @@ Nothing special here. Mostly, default styling is kept.
 	<pre class="-l">Preformatted <code>code</code></pre>
 	<blockquote class="-l">Blockqoute</blockquote>
 
-<h3 class="-l">Lists</h3>
+<h3 id="list">Lists</h3>
 
-<p>
+<fieldset class="mar">
+<legend>Options</legend>
 	<label><input name="ul-fit" type="checkbox" data-nodes=".demo-list" data-class="fit"> Remove margins and list style <code>.fit</code></label><br>
 	<label><input name="ul-row" type="checkbox" data-nodes=".demo-list" data-class="row let"> Horizontal list <code>.row</code></label>
-</p>
-	
-	<div id="lists">
-	<ul class="-l -let demo-list">
+</fieldset>
+
+<div id="lists" class="code">
+	<ul class="demo-list">
 		<li>Unordered
 		<li>List
 			<ol class="-demo-list">
@@ -288,118 +305,102 @@ Nothing special here. Mostly, default styling is kept.
 				<li>List
 			</ol>
 	</ul>
-	<dl class="-let demo-list">
+	<dl class="demo-list">
 		<dt>Term</dt>
 		<dd>Definition</dd>
 		<dt>Another term</dt>
 		<dd>Another definition</dd>
 	</dl>
-	</div>
+</div>
 	
 <h2 id="grid" class="-let">Grid</h2>
 
 <p>
-For the container, add <code>row</code> class.
+To create a grid row add <code>row</code> class to the container <code>div</code>.
 Direct descendants of the container are columns.
 By default, they all have equal width.
-<p>
-To stack columns on small screen, add <code>flip</code> class to the container.
-<p>
-To allow row wrapping add <code>let</code> class to the container.
-<p>
-To centrify items vertically, add <code>center</code> class to the container.
-<p>
-To set various proportions, add following classes to the columns:
-<code>col-0</code> for minimal required width,
-<code>col-2</code> for double width,
-<code>col-3</code> for triple width,
-<code>narrow</code> for narrow width,
-<code>read</code> to limit maximal width for comfortable reading.
-<p>
-Width limiting classes (<code>col-0, narrow, read</code>) can be combined with:
-<code>center</code> to centrify column in its available space,
-<code>shift</code> to shift column to the right.
-<p>
-Wrap your rows into <code>div</code> with <code>wrap</code> class to limit maximum width of the whole thing.
-</p>	
-	<!--
-	<div class="row flip">
-		<div class="bg wrap center">wrap</div>
-	</div>
-	<div class="row">
-		<div class="bg-w narrow">narrow</div>
-		<div class="bg-y read center">read</div>
-	</div>
-	-->
+</p>
+
+<fieldset>
+<legend>Options</legend>
+<label><input name="grid-flip" type="checkbox" data-nodes="#cols" data-class="flip"> Stack on small screen <code>.flip</code></label><br>
+<label><input name="grid-center" type="checkbox" data-nodes="#cols" data-class="center"> Center columns vertically <code>.center</code></label><br>
+<label><input name="grid-mar" type="checkbox" data-nodes="#cols" data-class="mar"> Add vertical margins <code>.mar</code></label><br>
+<label><input name="grid-main-over" type="checkbox" data-nodes="#col-main-over" data-class="bg text-e pad mar nobr" data-unclass="hide"> Overflow content</label><br>
+<label><input name="grid-let" type="checkbox" data-nodes="#cols" data-class="let"> Allow columns wrapping <code>.let</code></label> (disables column width modifiers)
+</fieldset>
+<fieldset>
+<legend>Column width options (applied on central column here)</legend>
+<label><input name="grid-main" type="radio" data-nodes="#col-main" data-class="pad bg-y col-0"> Auto <code>.row &gt; .col-0</code></label><br>
+<label><input name="grid-main" type="radio" data-nodes="#col-main" data-class="pad bg-y"> Single <code>.row &gt; div</code></label><br>
+<label><input name="grid-main" type="radio" data-nodes="#col-main" data-class="pad bg-y col-2" checked> Double <code>.row &gt; .col-2</code></label><br>
+<label><input name="grid-main" type="radio" data-nodes="#col-main" data-class="pad bg-y col-3"> Triple <code>.row &gt; .col-3</code></label><br>
+</fieldset>
+</p>
+
 <div class="code">
-	<div class="row mar flip -center">
-		<div class="bg col-0">div.col-0</div>
-		<div class="bg">div<br>line</div>
+	<div class="row flip" id="cols">
+		<div class="pad bg-w">Left</div>
+		<div class="pad bg-y col-2" id="col-main">
+			Central<br>column
+			<div id="col-main-over">Very wide content required to overflow available column width</div>
+		</div>
+		<div class="pad bg-i">Right</div>
 	</div>
-	<div class="row mar flip">
-		<div class="bg">div</div>
-		<div class="bg">div</div>
+</div>
+
+<p>
+<fieldset>
+<legend>Column position options (applied on central column here)</legend>
+<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-class="pad bg-y"> Fill <code>.row &gt; div</code></label><br>
+<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-class="pad bg-y col-0"> Auto <code>.row &gt; .col-0</code></label><br>
+<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-class="pad bg-y col-0 center" checked> Centrify <code>.row &gt; .col-0.center</code></label><br>
+<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-class="pad bg-y col-0 shift"> Shift right <code>.row &gt; .col-0.shift</code> (with subsequent columns)</label><br>
+</fieldset>
+</p>
+
+<div class="code">
+	<div class="row" id="cols2">
+		<div class="pad bg-w col-0" id="col-left">Left</div>
+		<div class="pad bg-y col-0 center" id="col-center">Central<br>column</div>
+		<div class="pad bg-i col-0" id="col-right">Right</div>
 	</div>
-	<div class="row mar">
-		<div class="bg-w col-2">div.col-2</div>
-		<div class="bg-y col-3">div.col-3</div>
-	</div>
-	<div class="row mar flip">
-		<div class="bg">div</div>
-		<div class="bg col-2">div.col-2</div>
-	</div>
-	<div class="row mar">
-		<div class="bg-w">div</div>
-		<div class="bg-y col-3">div.col-3</div>
-	</div>
-	<div class="row mar flip">
-		<div class="bg">div</div>
-		<div class="bg">div</div>
-		<div class="bg">div</div>
-		<div class="bg">div</div>
-		<div class="bg">div</div>
-		<div class="bg">div</div>
-	</div>
-	<div class="row let mar flip">
-		<div class="bg-i">aaaaaaaaaaaaaaa</div>
-		<div class="bg-i">bbbbbbbbbbbbbbbbbb</div>
-		<div class="bg-i">ccccccccccccccc</div>
-		<div class="bg-i">ddddddddddddddd</div>
-		<div class="bg-i">eeeeeeeeeeeeeeee</div>
-		<div class="bg-i">wwwwwwwwwwrap!</div>
-	</div>
-</div>	
-	
+</div>
+
+
 <h2 id="table">Table</h2>
 
 <p>
 By default, <code>table</code> is styled with border, unless it is a direct descendant of <code>form</code>.
-<p>
+<fieldset>
+<legend>Options</legend>
 	<label><input type="checkbox" name="demo-table-hover" data-class="hover" data-nodes="#demo-table" checked> Highlight hovered row <code>.hover</code></label><br>
-	<label><input type="checkbox" name="demo-table-fit" data-class="fit" data-nodes="#demo-table"> Hide borders <code>.fit</code></label><br>
+	<label><input type="checkbox" name="demo-table-fit" data-class="fit" data-nodes="#demo-table"> Hide borders <code>.fit</code> <!--(for responsive: heading and value on one line)--> </label><br>
 	<label><input type="checkbox" name="demo-table-let" data-class="let" data-nodes="#demo-table"> Lined style <code>.let</code></label><br>
+	<label><input type="checkbox" name="demo-table-flip" data-class="flip" data-nodes="#demo-table" checked> Responsive (turn rows into cards on small screen) <code>.flip</code></label><br>
 	<label><input type="checkbox" name="demo-roll" data-class="roll" data-nodes="#demo-roll" checked> Scroll overflowing width <code>.roll &gt; table</code></label>
-</p>
+</fieldset>
+<p>
 Add <code>r#, l#, #c</code> (where # is any number) classes to align cells of column number # to the right, left or center, respectively (JavaScript required).
 </p>
 
-	<div class="roll" id="demo-roll">
+<div class="roll" data-class-mobilex="" data-class-desktopx="roll" id="demo-roll">
 	<table class="hover r1 c4 c5" data-order-x="1 0" id="demo-table">
 		<caption>Table caption</caption>
 		<thead>
-		<tr><th>Component<th>Pure CSS<th>JS enhancements <code>.toggle</code><th>Remember state <code>.mem</code><th>Fix position<th>Close on Escape<th>Modifications
+		<tr><th>Component<th>Code<th>Pure CSS<th>JS<th>Remember state <code>.mem</code><th>Fix position<th>Close on Escape<th>Modifications
 		</thead>
 		<tbody>
-		<tr>	<th>Dropdown	<td>Ht	<td>H/T	<td>-	<td>+	<td>+	<td><code>li.shift, .let</code>
-		<tr>	<th>Tree		<td>t	<td>T	<td>+	<td>-	<td>-	<td><code>.accordion</code>
-		<tr>	<th>Toggle		<td>t	<td>T	<td>+	<td>-	<td>-	<td>
-		<tr>	<th>Popup		<td>Ht	<td>H/T<td>-	<td>+	<td>+	<td><code>.shift</code>
-		<tr>	<th>Tabs		<td>t	<td>T	<td>+	<td>-	<td>-	<td>
-		<!--tr>	<th>Tooltip		<td>HF	<td>HF	<td>-	<td>+	<td>+	<td-->
-		<tr>	<th>Modal		<td>T	<td>=	<td>-	<td>-	<td>+	<td><code>.full, .let</code>
-		<tr>	<th>Drawer		<td>T	<td>=	<td>-	<td>-	<td>+	<td><code>.shift</code>
-		<tr>	<th>Gallery		<td>T	<td>=	<td>-	<td>-	<td>+	<td>
-		<tr>	<th>Topbar		<td>V	<td>S	<td>-	<td>-	<td>-	<td><code>.let</code>
+		<tr>	<th>Dropdown	<td><code>.nav</code>	<td>Ht	<td>J	<td>-	<td>+	<td>+	<td><code>.flip, .let, .hover, .center, li.shift</code>
+		<tr>	<th>Tree		<td><code>.tree</code>	<td>t	<td>J	<td>+	<td>-	<td>-	<td><code>.accordion .fit</code>
+		<tr>	<th>Toggle		<td><code>.target</code><td>t	<td>J	<td>+	<td>-	<td>-	<td>
+		<tr>	<th>Popup		<td><code>.pop</code>	<td>Ht	<td>HJ<td>-	<td>+	<td>+	<td><code>.shift</code>
+		<tr>	<th>Tabs		<td><code>.tabs</code>	<td>t	<td>J	<td>+	<td>-	<td>-	<td>
+		<!--tr>	<th>Tooltip		<td><code></code>		<td>HF	<td>HF	<td>-	<td>+	<td>+	<td-->
+		<tr>	<th>Modal		<td><code>.dlg</code>	<td>T	<td>J	<td>-	<td>-	<td>+	<td><code>.full, .let</code>
+		<tr>	<th>Drawer		<td><code>.drawer</code><td>T	<td>J	<td>-	<td>-	<td>+	<td><code>.shift</code>
+		<tr>	<th>Gallery		<td><code>.gal</code>	<td>T	<td>T	<td>-	<td>-	<td>+	<td>
+		<tr>	<th>Topbar		<td><code>.topbar</code><td>V	<td>S	<td>-	<td>-	<td>-	<td><code>.let</code>
 		</tbody>
 	</table>
 	</div>
@@ -409,6 +410,7 @@ Add <code>r#, l#, #c</code> (where # is any number) classes to align cells of co
 		H &mdash; <code>:hover</code><br>
 		<!--F &mdash; <code>:focus</code><br>-->
 		T &mdash; <code>:target</code> (t &mdash; with undesirable scroll)<br>
+		J &mdash; javascript toggle<br>
 		V &mdash; visible<br>
 		S &mdash; scroll<br>
 	</p>
@@ -495,11 +497,11 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 <form method="post">
 	<div class="row flip">
 		<label for="i1">Label one</label>
-		<div class="col-3"><input type="text" name="i1" id="i1"></div>
+		<div class="-col-3"><input type="text" name="i1" id="i1"></div>
 	</div>
 	<div class="row flip">
 		<div aria-hidden="true"></div>
-		<div class="col-3">
+		<div class="-col-3">
 			<input type="checkbox" name="i2" id="i2">
 			<label for="i2">Box</label>
 		</div>
@@ -509,13 +511,13 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 		<div id="fs0" class="--hide --toggle target ">
 			<div class="row flip">
 				<label for="i3">Label two</label>
-				<div class="col-3"><input type="text" name="i3" id="i3"></div>
+				<div class="-col-3"><input type="text" name="i3" id="i3"></div>
 			</div>
 		</div>
 	</fieldset>
 	<div class="row flip">
 		<div aria-hidden="true"></div>
-		<div class="col-3"><input type="submit" value="Submit"></div>
+		<div class="-col-3"><input type="submit" value="Submit"></div>
 	</div>
 </form>
 </div>
@@ -650,19 +652,23 @@ Table will become stacked on small screen.
 <h2 id="nav">Navigation</h2>
 
 <p>
+To create a navigarion bar add <code>nav</code> class to the <code>ul</code> element.
+<p>
 With pure CSS, nested lists are shown on hover.
 With JavaScript, nested lists are toggled on click.
 Following code shows how to collapse navigation to a single hamburger icon on small screen,
 and expand it to dropdown navbar on large screen.
 </p>
-<p>
+<fieldset>
+<legend>Options</legend>
 <label><input name="nav-bg" type="checkbox" data-nodes="#navi" data-class="bg" checked> Add background <code>.bg</code></label><br>
 <label><input name="nav-hover" type="checkbox" data-nodes="#navi" data-class="hover" checked> Highlight active items <code>.hover</code></label><br>
 <label><input name="nav-flip" type="checkbox" data-nodes="#navi" data-class="flip" checked> Stack items on small screen <code>.flip</code></label><br>
 <label><input name="nav-let" type="checkbox" data-nodes="#navi" data-class="let"> Stack items on any screen <code>.let</code></label><br>
 <label><input name="nav-center" type="checkbox" data-nodes="#navi" data-class="center"> Center items vertically <code>.center</code></label><br>
 <label><input name="nav-subtitles" type="checkbox" data-nodes="#navi small" data-class="text-n" data-unclass="hide" checked> Show subtitles</label><br>
-<label><input name="nav-shift" type="checkbox" data-nodes="#navi-search" data-class="shift" checked> Shift some list item(s) to the right <code>li.shift</code></label><br>
+<label><input name="nav-shift" type="checkbox" data-nodes="#navi-search" data-class="shift" checked> Shift some list item(s) to the right <code>li.shift</code></label>
+</fieldset>
 </p>
 
 <div class="code">
@@ -745,12 +751,12 @@ Optionally add <code>shift</code> class to the target element to pop up leftward
 <h3 id="toggle-div">Toggle</h3>
 
 <p>
-Use link pointing at element with <code>hide</code> class.
+Use link pointing at element with <code>target</code> class.
 </p>
 
 <div class="code">
 <a href="#tog">Toggle</a>
-<div id="tog" class="pad bord yel target mem --toggle">Togglable</div>
+<div id="tog" class="pad bord yel target mem">Togglable</div>
 </div>
 
 <h3 id="toggle-drawer">Drawer</h3>
@@ -861,9 +867,11 @@ Next sibling <code>div</code> should contain <code>div</code> tab panels.
 <p>
 Inside list items, use links pointing at nested lists.
 </p>
-<p>
-<label><input type="checkbox" name="acc-demo" data-nodes="#demo-tree" data-class="accordion"> Accordion behaviour <code>.accordion</code></label>
-</p>
+<fieldset class="mar">
+<legend>Options</legend>
+<label><input type="checkbox" name="acc-demo" data-nodes="#demo-tree" data-class="accordion"> Accordion behaviour <code>.accordion</code></label><br>
+<label><input type="checkbox" name="acc-demo" data-nodes="#demo-tree" data-class="fit"> Remove margins and list-style <code>.fit</code></label>
+</fieldset>
 
 <div class="code">
 <ul class=" --toggle tree mem accordion" id="demo-tree">
@@ -1395,9 +1403,9 @@ Inside list items, use links pointing at nested lists.
 
 <div class="bord">
 	<div class="bg small"><a href="#code-topbar" class="pad">HTML</a></div>
-<pre id="code-topbar" class="target fit pad">&lt;div class="topbar let"&gt;
+<pre id="code-topbar" class="target fit pad"><code class="language-html">&lt;div class="topbar let"&gt;
   Topbar
-&lt;/div&gt;</pre>
+&lt;/div&gt;</code></pre>
 </div>
 
 <!--div class="code">
@@ -1442,24 +1450,29 @@ most important:
 	<tr><th>Item<th>Description<th>Used with<th>Modifications
 </thead>
 <tbody>
-<tr><th>.row<td><a href="#grid">Grid</a><td>div ul ul.fit .col-0 .col-2 .col-3<td>.flip .let <i>.shift .stick .center .wrap .read .narrow</i>
+<tr><th>.row<td><a href="#grid">Grid</a><td>div ul .col-0 .col-2 .col-3<td>.flip .let .center<i>.shift .stick .center .wrap .read .narrow</i>
 <tr><th>table<td><a href="#table">Table</a><td>.roll<td>.hover .fit .let .flip
-<tr><th>button, a.btn<td><a href="#colors-buttons">Button</a><td><a href="#form">form</a> submit button a span<td>.bg-x <i>[data-target]</i>
+<tr><th>ul, ol, dl<td><a href="#list">List</a><td><td>.fit .row
+<tr><th>button, a.btn<td><a href="#colors-buttons">Button</a><td><a href="#form-table">form</a> submit button a span<td>.bg-x <i>[data-target]</i>
+<tr><th>.flip<td>Responsive<td>.row .nav table<td>
+<tr><th>.hide<td>Visibility by media<td>div<td>.hide-mobile .hide-desktop .hide-print .hide-screen
+<tr><th>.target<td><a href="#toggle-div">Toggle</a><td>div<td>.toggle .off .mem <i>.act</i>
+<tr><th>.pop<td><a href="#toggle-popup">Popup</a><td><td>.pop>.shift
+<tr><th>.dlg<td><a href="#toggle-dlg">Modal</a><td>.close<td>.dlg.c.let .dlg.full.center
 <tr><th>.nav<td><a href="#nav">Navigation</a><td>ul<td>.flip .hover .let .bg .center .nav.tabs.mem<i>.act .shift</i>
+<tr><th>.tabs<td><a href="#toggle-tabs">Tabs</a><td>ul.nav<td>
+<tr><th>.tree<td><a href="#toggle-tree">Tree</a><td>ul<td>.accordion .fit
+<tr><th>.gal<td><a href="#toggle-gallery">Gallery</a><td>a .close<td><i>[data-info]</i>
 <tr><th>.drawer<td><a href="#toggle-drawer">Drawer</a><td>div a.close<td>.shift
 <tr><th>.topbar<td><a href="#scroll">Top bar</a><td><td>.let
-<tr><th>.flip<td>Responsive<td>.row .nav<td>
-<tr><th>.fix<td><a data-href="#fix">Fixed block</a><td><td>.r .l
-<tr><th>.target<td><a href="#toggle">Togglable (hash)</a><td>div ul .close<td>.dlg.c.let .dlg.full.center .hide-mobile .hide-desktop <i>.pop .pop>.shift .tabs</i>
-<tr><th>.let<td>Specific modifications to components<td>.row, .nav, .dlg, .topbar<td>
+<tr><th>.let<td>Specific modifications to components<td>.row, .nav, .dlg, .topbar, table<td>
 <!--tr><th>.switch<td><a href="#toggle-radio">Togglable (radio)</a><td>label div<td>.pop .tabs -->
-<tr><th>.gal<td><a href="#toggle-gallery">Gallery</a><td>a .close<td><i>[data-info]</i>
-<tr><th>.target<td><a href="#js">JavaScript toggle</a><td>ul ul.accordion div .toggle .off<td>.mem <i>.act</i>
 <tr><th>.icon<td>Small image<td>img svg a button<td>
+<tr><th>.fix<td><a data-href="#fix">Fixed block</a><td><td>.r .l
 <tr><th>.text-<td><a href="#colors">Text color</a><td>* .invert<td>.text-e .text-w .text-i .text-y .text-n
 <tr><th>.bg<td><a href="#colors">Background color</a><td>* .invert<td>.bg-e .bg-w .bg-i .bg-y .bg-n .yel
 <tr><th>.r .c .l<td>Align<td>*<td>
-<tr><th>.center<td>Centrify<td>* .row<td>
+<tr><th>.center<td>Centrify<td>* .row .nav .full<td>
 <tr><th>.small<td>Small font<td>*<td>
 <tr><th>.fit<td>Remove formatting<td>*<td>.mar .pad .bord .rad .shade
 <tr><th>.mar<td>Vertical margin<td>*<td>
@@ -1468,7 +1481,6 @@ most important:
 <tr><th>.rad<td>Border radius<td>*<td>
 <tr><th>.shade<td>Add shadow<td>*<td>
 <tr><th>.nobr<td>No wrapping<td>*<td>
-<tr><th>.hide-print .hide-screen<td>Show by media<td>*<td>
 </tbody>
 </table>
 </div>

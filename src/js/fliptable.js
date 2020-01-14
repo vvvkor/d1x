@@ -10,7 +10,7 @@ module.exports = new(function () {
 
   this.opt = {
     qFlipTable: 'table.flip',
-    cCellHead: 'hide-desktop bg text-n'
+    ccCellHead: 'bg text-n hide th-dup'
   };
 
   this.init = function () {
@@ -32,7 +32,7 @@ module.exports = new(function () {
         let v = app.ins('div');
         while(td.firstChild) v.appendChild(td.firstChild);
         td.textContent = '';
-        if(th) app.ins('div', th.textContent, {className: this.opt.cCellHead}, td)
+        if(th) app.ins('div', th.textContent, {className: this.opt.ccCellHead}, td)
         td.appendChild(v);
       }
     }

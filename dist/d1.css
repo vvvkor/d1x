@@ -1,4 +1,4 @@
-/*! d1css v1.0.20 */
+/*! d1css v1.0.21 */
 
 body {
     --text: #000;
@@ -16,7 +16,7 @@ body {
     --rad: .2;
     --gap: 1;
     --gap-rate: .5;
-    --topbar: 3.2rem;
+    --topbar: 60px;
     --text-danger: #c00;
     --text-warning: #c70;
     --text-info: #07a;
@@ -625,18 +625,6 @@ mark {
     padding: 0;
 }
 
-.row.let {
-    flex-wrap: wrap;
-}
-
-.row.let>* {
-    flex: none;
-}
-
-.row.center {
-    align-items: center;
-}
-
 .row>* {
     flex: 1;
     min-width: 0;
@@ -656,6 +644,18 @@ mark {
 
 .row>.col-3 {
     flex: 3;
+}
+
+.row.let {
+    flex-wrap: wrap;
+}
+
+.row.let>* {
+    flex: none;
+}
+
+.row.center {
+    align-items: center;
 }
 
 @media (max-width: 899px) {
@@ -694,11 +694,12 @@ mark {
     form>.row>:first-child:not(:only-child),
     fieldset>*>.row>:first-child:not(:only-child) {
         text-align: right;
+        flex: .3;
     }
 
     form>table td:first-child:not([colspan]) {
-        width: 12em;
         text-align: right;
+        width: 12em;
     }
 
     fieldset table td:first-child:not([colspan]) {
@@ -1034,6 +1035,7 @@ form .mar {
 @media (max-width: 899px) {
     .js table.flip {
         width: 100%;
+        box-sizing: border-box;
     }
 
     .js table.flip thead {
@@ -1049,12 +1051,21 @@ form .mar {
         background-color: var(--bg);
     }
 
+    .js table.flip.let tr {
+        box-shadow: none;
+        border: var(--border);
+    }
+
     .js table.flip tr>* {
         display: block;
         width: 50%;
         box-sizing: border-box;
         text-align: left;
         border: none;
+    }
+
+    .js table.flip .th-dup {
+        display: block;
     }
 }
 

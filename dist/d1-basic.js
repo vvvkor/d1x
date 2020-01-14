@@ -1,4 +1,4 @@
-/*! d1x v1.0.20 */
+/*! d1x v1.0.21 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1 app v1.0.20 */
+/*! d1 app v1.0.21 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -1411,10 +1411,13 @@ module.exports = new function () {
     }), {
       className: '-r bg small'
     }, cont);
-    var cod = app.ins('pre', '', {
+    var pre = app.ins('pre', '', {
       className: app.opt.cToggle + ' ' + app.opt.cOff + ' fit pad',
       id: id
     }, cont);
+    var cod = app.ins('code', '', {
+      className: 'language-html'
+    }, pre);
     cod.textContent = t;
   };
 }();
@@ -1731,7 +1734,7 @@ module.exports = new function () {
   this.name = 'fliptable';
   this.opt = {
     qFlipTable: 'table.flip',
-    cCellHead: 'hide-desktop bg text-n'
+    ccCellHead: 'bg text-n hide th-dup'
   };
 
   this.init = function () {
@@ -1763,7 +1766,7 @@ module.exports = new function () {
 
         td.textContent = '';
         if (th) app.ins('div', th.textContent, {
-          className: this.opt.cCellHead
+          className: this.opt.ccCellHead
         }, td);
         td.appendChild(v);
       }

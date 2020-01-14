@@ -26,7 +26,8 @@ module.exports = new(function () {
     src.classList.add('pad');
     let id = 'code-' + app.seq();
     app.ins('div', app.ins('a', this.opt.sCode, {className: 'pad', href: '#'+id}), {className: '-r bg small'}, cont);
-    let cod = app.ins('pre', '', {className: app.opt.cToggle + ' ' + app.opt.cOff + ' fit pad', id: id}, cont);
+    let pre = app.ins('pre', '', {className: app.opt.cToggle + ' ' + app.opt.cOff + ' fit pad', id: id}, cont);
+    let cod = app.ins('code', '', {className: 'language-html'}, pre);
     cod.textContent = t;
   }
 

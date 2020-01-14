@@ -10,7 +10,6 @@
 - .full -> .full:not(.dlg)
 - .hid) -> .hide / .target / .off
 - .hide-x -> .target-x / .toggle-x
-? form>table, form>button / *?* /
 - (none) -> table.flip
 - table.let -> table.fit
 - (none) -> table.let
@@ -19,12 +18,15 @@
 - .full.c -> .full.center
 - (none) -> hr.fit
 - .topbar -> .topbar(.let)
+- (.col-3) -> form>.row>:first-child
+= form>table, form>button / *?* /
 
 # js classes
 - .js
 - .js-unhint ?
 - .js-live-val
 - .subinput
+- .th-dup
 ~ .hide(-x)
 - .target(-x)
 - .toggle(-x)
@@ -56,7 +58,7 @@ body{
 --rad: .2; /* em */
 --gap: 1; /* em */
 --gap-rate: .5;
---topbar: 3.2rem;
+--topbar: 60px; /*3.2rem;*/ /* px are to be used, othewise sticky drawer will have blurred text */
 /* status (cur/hue/old) */
 --text-danger:  #c00; /*#c00;*/ /*#d00;*/
 --text-warning: #c70; /*#c70;*/ /*#c60;*/
@@ -342,14 +344,14 @@ mark{background-color:var(--bg-warning);}
 
 /* grid */
 .row{display:flex;  /*for lists*/list-style:none;padding:0;}
-	.row.let{flex-wrap:wrap;}
-	.row.let>*{flex:none;}
-	.row.center{align-items:center;}
 .row>*{flex:1;/*1 0 auto;*/min-width:0;}
 .row>*:not(:last-child):not(.center){margin-right:var(--gap-n);}
 .row>.col-0{flex:0 1 auto;/*for ie*/ /*flex:initial;*/}
 .row>.col-2{flex:2;}
 .row>.col-3{flex:3;}
+	.row.let{flex-wrap:wrap;}
+	.row.let>*{flex:none;}
+	.row.center{align-items:center;}
 
 
 /* media */
@@ -367,8 +369,8 @@ mark{background-color:var(--bg-warning);}
 
 @media (min-width: 900px){
 	/* desktop */
-	form>.row>:first-child:not(:only-child), fieldset>*>.row>:first-child:not(:only-child){text-align:right;}
-	form>table td:first-child:not([colspan]){/*min-*/width:12em;text-align:right;}
+	form>.row>:first-child:not(:only-child), fieldset>*>.row>:first-child:not(:only-child){text-align:right;flex:.3;}
+	form>table td:first-child:not([colspan]){text-align:right;/*min-*/width:12em;}
 		fieldset table td:first-child:not([colspan]){/*min-*/width:calc(12em - var(--gap-n) - var(--gap-s));}
 	.dlg{min-width:20em;}
 	.dlg.pad{padding:var(--gaps-l);}
@@ -474,12 +476,19 @@ mark{background-color:var(--bg-warning);}
 
 /* flex table */
 
+
 @media (max-width: 899px){
 	/* mobile */
-	.js table.flip{width:100%;}
+	.js table.flip{width:100%;box-sizing:border-box;}
 	.js table.flip thead{display:none;}
 	.js table.flip tr{display:flex;flex-wrap:wrap;margin:var(--gap-n) 0;padding:var(--gap-n);box-shadow:var(--shade);background-color:var(--bg);}
+		.js table.flip.let tr{box-shadow:none;border:var(--border);}
+		/*
+		.js table.flip.fit tr>*{display:flex;}
+		.js table.flip.fit tr>*>*{flex:1;margin-right:var(--gap-n);}
+		*/
 	.js table.flip tr>*{display:block;width:50%;box-sizing:border-box;text-align:left;border:none;}
+	.js table.flip .th-dup{display:block;}
 }
 
 @media (max-width: 640px){
