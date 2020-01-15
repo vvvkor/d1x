@@ -83,7 +83,7 @@ module.exports = new(function () {
     n.thePop = pop;
     if(this.opt.addIcons.length>0){
       let ico = [];
-      let ic = app.ins('span', '', {className:'input-tools'}, n, 1);//icons container
+      let ic = app.ins('span', '', {className:'input-tools nobr'}, n, 1);//icons container
       for(let i in this.opt.addIcons){
         app.ins('', ' ', {}, ic);
         let ii = ic.appendChild(app.i(this.opt.addIcons[i]));

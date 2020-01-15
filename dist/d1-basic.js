@@ -219,7 +219,8 @@ module.exports = new function () {
 
   this.closest = function (n, q) {
     //including self
-    //return n.parentNode.closest(q); //-ie
+    if (!n) return n; //return n.parentNode.closest(q); //-ie
+
     do {
       if (n.matches && n.matches(q)) return n;
     } while (n = n.parentNode);
@@ -1115,7 +1116,7 @@ module.exports = new function () {
     if (this.opt.addIcons.length > 0) {
       var ico = [];
       var ic = app.ins('span', '', {
-        className: 'input-tools'
+        className: 'input-tools nobr'
       }, n, 1); //icons container
 
       for (var i in this.opt.addIcons) {
@@ -1385,40 +1386,124 @@ module.exports = new function () {
   "use strict";
 
   this.name = 'code';
+  this.langs = {
+    html: {
+      nm: 'HTML',
+      e: /[a-z0-9_\-]+(?==")/g,
+      // attr name
+      w: /".*?"/g,
+      // attr value
+      i: /&lt;[^!A-Z].*?&gt;/g,
+      // tag |&amp;[\w#]+;
+      n: /&lt;\!.*?&gt;/g // comment
+
+    },
+    js: {
+      nm: 'Javascript',
+      e: /(\b|\b\d+\.|\.)\d+\b/g,
+      // number
+      w: /".*?"/g,
+      // string // |'.*?'
+      y: /[{}()\[\]]/g,
+      // bracket
+      i: /\b(break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|function|if|import|in|instanceof|new|return|super|switch|this|throw|try|typeof|var|void|while|with|yield|let|await|null|undefined|true|false|arguments|get|set)\b/g,
+      // keyword
+      n: /\/\*[\s\S]*?\*\/|(\/\/|#\!)[^\n]*/g // comment
+
+    },
+    css: {
+      nm: 'CSS',
+      e: /#[\w\-]+/g,
+      // id, color
+      w: /((@\w+|\!important)|\b(none|inherit|initial|unset|attr|url|calc|var|rgba?|hsla?))\b/g,
+      // keyword
+      y: /[{}()]/g,
+      // brackets
+      i: /\.[\w\-]+/g,
+      // class
+      n: /\/\*.*?\*\//g // comment
+
+    }
+  };
   this.opt = {
-    sCode: 'HTML'
+    aLang: 'data-lang',
+    defLang: 'html',
+    qCode: '.code'
   };
 
   this.init = function () {
     var _this = this;
 
-    app.e('.code', function (n) {
+    app.e(this.opt.qCode, function (n) {
       return _this.showCode(n);
+    });
+    app.e('code[class*="language-"]', function (n) {
+      return n.innerHTML = _this.hilite(_this.spaces(n.textContent), app.a(n.classList).filter(function (c) {
+        return c.match(/language-/);
+      })[0].substr(9));
+    });
+    app.listen('updated', function (e) {
+      return _this.update(e.q);
     });
   };
 
   this.showCode = function (src) {
-    var t = src.innerHTML.replace(/^\s*\r?\n|\s+$/g, '').replace(/\t/g, '  ').replace(/=""/g, '');
-    var cont = app.ins('div', '', {
-      classList: 'bord'
-    }, src, 1);
-    cont.appendChild(src);
-    src.classList.add('pad');
-    var id = 'code-' + app.seq();
-    app.ins('div', app.ins('a', this.opt.sCode, {
-      className: 'pad',
-      href: '#' + id
-    }), {
-      className: '-r bg small'
-    }, cont);
-    var pre = app.ins('pre', '', {
-      className: app.opt.cToggle + ' ' + app.opt.cOff + ' fit pad',
-      id: id
-    }, cont);
-    var cod = app.ins('code', '', {
-      className: 'language-html'
-    }, pre);
-    cod.textContent = t;
+    var lang = app.attr(src, this.opt.aLang, this.opt.defLang);
+    var t = this.spaces(src.innerHTML);
+
+    if (!src.vCode) {
+      var cont = app.ins('div', '', {
+        classList: 'bord'
+      }, src, 1);
+      cont.appendChild(src);
+      src.classList.add('pad');
+      var id = 'code-' + app.seq();
+      app.ins('div', app.ins('a', (this.langs[lang] ? this.langs[lang].nm : lang) || lang, {
+        className: 'pad',
+        href: '#' + id
+      }), {
+        className: '-r bg small'
+      }, cont);
+      var pre = app.ins('pre', '', {
+        className: app.opt.cToggle + ' ' + app.opt.cOff + ' fit pad',
+        id: id
+      }, cont);
+      var cod = app.ins('code', '', {
+        className: 'language-' + lang
+      }, pre);
+      src.vCode = cod;
+    } //src.vCode.textContent = t;
+
+
+    src.vCode.innerHTML = this.hilite(t, lang);
+  };
+
+  this.spaces = function (s) {
+    return s.replace(/^\s*\r?\n|\s+$/g, '').replace(/\t/g, '  '); //.replace(/=""/g, '');
+  };
+
+  this.update = function (q) {
+    var p = app.closest(app.q(q), this.opt.qCode);
+    if (p) this.showCode(p);
+  };
+
+  this.hilite = function (t, lang, pre) {
+    var _this2 = this;
+
+    var l = this.langs[lang];
+    var d = app.ins('div');
+    d.textContent = t;
+    t = d.innerHTML;
+    if (l) ['e', 'w', 'y', 'i', 'n'].forEach(function (c) {
+      return t = l[c] ? t.replace(l[c], function (m) {
+        return _this2.token(c, m);
+      }) : t;
+    });
+    return t;
+  };
+
+  this.token = function (c, m) {
+    return "<Span Class='text-" + c + "'>" + m + "</Span>";
   };
 }();
 
@@ -2058,7 +2143,7 @@ module.exports = new function () {
 
     if (app.attr(n, this.opt.aUrl)) {
       var ic = app.ins('span', '', {
-        className: 'input-tools'
+        className: 'input-tools nobr'
       }, this.opt.inPop ? pop : m, 1); //icons container
 
       i = app.ins('a', app.i('goto'), {}, ic);
@@ -2878,9 +2963,14 @@ module.exports = new function () {
       e.preventDefault();
     }
 
-    if (c !== false) app.e(q, function (m) {
-      return _this2.setClass(n, c, on, m, u);
-    });
+    if (c !== false) {
+      app.e(q, function (m) {
+        return _this2.setClass(n, c, on, m, u);
+      });
+      app.fire('updated', {
+        q: q
+      });
+    }
   };
 
   this.addTopLink = function (n) {

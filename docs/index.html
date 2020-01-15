@@ -23,7 +23,11 @@
 <!--
 
 # todo
- 
+
+## git
+
+- branch
+
 ## css
 
 ~ /*?*/
@@ -33,11 +37,14 @@
 - input: bg, color ?
 ? .hover.bg, .hover.shade
 ? .hover.on
+= sticky: topbar, bottom
 = css filters
 = .btn.hover (no bg by default, like link)
 = --bg-hilite = --bg-pane
 = unuse --text-hilite
 +~ h2:before can cover preceding elements!!!
++ index.css
++ .row&nav .shift@mob
 + #invert
 + .full.c -> .center
 + hr.fit (tabs)
@@ -52,12 +59,19 @@
  
 ## js
 
-- .remove: add X link to remove element itself
+- icons.js: ins([paths]), icons[]
+? code: ".class" always
+- a#copy#del#hide ^ul,tr,div
+	- .remove: add X link to remove element itself
 - better .js-live-val
 ? gallery: unuse :target
+?= require in browser (dev)
 = .gal to js gallery: only if .toggle?
 = outline icons [ok]
 = onscroll only if has topbar
++ hilite html attrLang
++ update .code after apply options
++ calendar: tools: nobr
 + d1 -> app, d1.plugins -> require
 + edit, valid, .unhint
 + dinamic qUnpop, no cUnpop (theme, data-class-x)
@@ -73,12 +87,21 @@
  
 ## doc
 
+- demo icons
+- customize: vars list
+- options as table
+- write on plugins: code, theme
+- .table: .r5
+! use .code only where js not involved (no .toggle, etc.)
+! fliptable, .accordion? separately
 !? "fitty" / "d1app" / "d1ui" / "d1web"
 ! overview test page https://getuikit.com/assets/uikit/tests/ , https://getuikit.com/v2/tests/overview.html
 - customizer https://getuikit.com/v2/docs/customizer.html
++ table .r5
++ unlink h2#plugins
 + demo table:simplify
 + demo .row (flip, let, center, mar >center, >shift, >col-0123/wrap/read/narrow)
-+ diff d1 d2 (see d1.css)
++ diff d1 d2 (see index.css)
 + js classes: .gallery, .pic
 + demo table: .roll by def
 ~ reference: js classes, components
@@ -105,13 +128,13 @@
 	
 	<!-- CDN -->
 	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.21/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.21/dist/d1.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.21/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
-	<link href="../src/d1.css" rel="stylesheet">
+	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
 	<!-- -->
 	<script>
-		console.log('d1=',d1);
+		console.log('d1=', d1);
 	</script>
 </head>
 <body class="-bg" data-d1='{"hOk":"#yes","debug":1,"textIcons":false,"disable":["-theme","-valid"],"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
@@ -132,8 +155,18 @@
 	<ul class="fit pad --toggle --tree mem -accordion">
 		<li><a href="#start">Get started</a>
 		<li><a href="#typo">Typography</a>
+		<li><a href="#n-list">Lists</a> &rsaquo;
+			<ul id="n-list" class="--hide toggle ">
+			<li><a href="#list-basic">Basic</a>
+			<li><a href="#list-tree">Tree</a>
+			</ul>
+		<li><a href="#n-table">Tables</a> &rsaquo;
+			<ul id="n-table" class="--hide toggle ">
+			<li><a href="#table-basic">Basic</a>
+			<li><a href="#table-responsive">Responsive</a>
+			<li><a href="#table-interactive">Interactive</a>
+			</ul>
 		<li><a href="#grid">Grid</a>
-		<li><a href="#table">Table</a>
 		<li><a href="#buttons">Buttons</a>
 		<li><a href="#n-forms">Forms</a> &rsaquo;
 			<ul id="n-forms" class="--hide toggle ">
@@ -141,39 +174,36 @@
 			<li><a href="#form-stacked">Stacked</a>
 			<li><a href="#form-grid">Grid</a>
 			<li><a href="#form-table">Table</a>
+			<li><a href="#calendar">Calendar</a>
+			<li><a href="#edit">Edit</a>
+			<li><a href="#lookup">Lookup</a>
+			<li><a href="#valid">Valid</a>
 			<!--li><a href="#form-validate">Validation</a-->
 			</ul>
-		<li><a href="#nav">Navigation</a>
-		<li><a href="#n-togglers">Toggle</a> &rsaquo;
-			<ul id="n-togglers" class="--hide toggle ">
-			<li><a href="#toggle">Overview</a>
-			<li><a href="#toggle-popup">Popup</a>
+		<li><a href="#n-components">Components</a> &rsaquo;
+			<ul id="n-components" class="--hide toggle ">
+			<li><a href="#components">Overview</a>
 			<li><a href="#toggle-div">Toggle</a>
-			<li><a href="#toggle-drawer">Drawer</a>
-			<li><a href="#toggle-dlg">Dialog</a>
-			<li><a href="#toggle-full">Fullscreen</a>
-			<li><a href="#toggle-gallery">Gallery</a>
+			<li><a href="#toggle-popup">Popup</a>
+			<li><a href="#nav">Navigation</a>
 			<li><a href="#toggle-tabs">Tabs</a>
-			<li><a href="#toggle-tree">Tree</a>
+			<li><a href="#toggle-dlg">Modal</a>
+			<li><a href="#toggle-full">Fullscreen</a>
+			<li><a href="#dialog">Dialog</a>
+			<li><a href="#gallery">Gallery</a>
+			<li><a href="#toggle-drawer">Drawer</a>
+			<li><a href="#topbars">Topbar</a>
+			<li><a href="#fetch">Fetch</a>
+			<li><a href="#util">Utilities</a>
 			<li><a href="#toggle-details">Details</a>
 			</ul>
-		<li><a href="#colors">Colors</a>
-		<li><a href="#blocks">Blocks</a>
-		<!--li><a href="#blocks">Images and icons</a-->
-		<li><a href="#js">Javascript</a>
-		<li><a href="#ajax">AJAX</a>
-		<li><a href="#n-plugins">Plugins</a> &rsaquo;
-			<ul id="n-plugins" class="--hide toggle ">
-			<li><a href="#calendar">Calendar</a>
-			<li><a href="#dialog">Dialog</a>
-			<li><a href="#edit">Edit</a>
-			<li><a href="#gallery">Gallery</a>
-			<li><a href="#lookup">Lookup</a>
-			<li><a href="#tablex">Tablex</a>
-			<li><a href="#valid">Valid</a>
-			<li><a href="#scroll">Scroll</a>
+		<li><a href="#n-style">Style</a> &rsaquo;
+			<ul id="n-style" class="--hide toggle ">
+			<li><a href="#colors">Colors</a>
+			<li><a href="#blocks">Blocks</a>
+			<li><a href="#custom">Customization</a>
 			</ul>
-		<li><a href="#custom">Customization</a>
+		<!--li><a href="#blocks">Images and icons</a-->
 		<li><a href="#ref">Reference</a>
 	</ul>
 </div>
@@ -203,55 +233,40 @@ It aims to implement most widely used interface components with less code.
 <p>Install to your repository:
 <pre>npm install d1css</pre>
 <p>Then use in your CSS file:
-<pre>@import "../node_modules/d1css/dist/d1.min.css";</pre>
+<pre><code class="language-css-x">@import "../node_modules/d1css/dist/d1.min.css";</code></pre>
 <p>And optionally bundle into your JavaScript file:
-<pre>var d1 = require("d1css");
-d1.load();</pre>
+<pre><code class="language-js">let d1 = require("d1css");</code></pre>
 
 <h3>CDN</h3>
-<p>To use from CDN just add following code to the <code>head</code> of your page.
+<p>Add CDN links to the <code>head</code> of your document.
 
-<pre>
-&lt;link href="https://cdn.jsdelivr.net/npm/d1css/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;!-- optional --&gt;
+<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1css/dist/d1.min.css" rel="stylesheet"&gt;
 &lt;script src="https://cdn.jsdelivr.net/npm/d1css/dist/d1.min.js"&gt;&lt;/script&gt;
-&lt;script&gt; d1.load(); &lt;/script&gt;
-</pre>
+</code></pre>
 
 <h3>Install manually</h3>
 
-<p><a href="https://github.com/vvvkor/d1/archive/master.zip">Download from GitHub</a><span class="hide-screen">:<br> https://github.com/vvvkor/d1</span>
+<p>Add the <a href="https://github.com/vvvkor/d1/archive/master.zip">distributed</a> CSS and JavaScript to the <code>head</code> of your document.</p>
 
-<p>Add following code to the <code>head</code> of your page:
-<pre>
-&lt;link href="d1.min.css" rel="stylesheet"&gt;
-&lt;!-- optional --&gt;
-&lt;script src="d1.min.js"&gt;&lt;/script&gt;
-&lt;script&gt; d1.load(); &lt;/script&gt;
-</pre>
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;title&gt;Title&lt;/title&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta name="viewport" 
+      content="width=device-width, initial-scale=1"&gt;
+    &lt;link rel="stylesheet" href="css/d1.min.css"&gt;
+    &lt;script src="js/d1.min.js"&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 
 <h2 id="typo">Typography</h2>
 
 <p>
-Nothing special here. Mostly, default styling is kept.
-
-<h3>Headings</h3>
-
-<fieldset>
-<legend>Options</legend>
-	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-class="" checked> Default margins</label><br>
-	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-class="mar"> Smaller margins: <code>h1.mar</code></label><br>
-	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-class="fit"> No margins: <code>h1.fit</code></label>
-</fieldset>
-	
-	<div id="headings">
-	<h1>Heading 1</h1>
-	<h2>Heading 2</h2>
-	<h3>Heading 3</h3>
-	<h4>Heading 4</h4>
-	<h5>Heading 5</h5>
-	<h6>Heading 6</h6>
-	</div>
+Mostly, default styling is kept.
 
 <h3>Inline</h3>
 
@@ -278,8 +293,27 @@ Nothing special here. Mostly, default styling is kept.
 	<samp>Samp</samp>
 	
 	<br>
-	<a href="https://ya.ru">Link</a>
+	<a href="#x">Link</a>
+	<a>Link without href</a>
 
+
+<h3>Headings</h3>
+
+<fieldset class="mar">
+<legend>Options</legend>
+	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-class="" checked> Default margins</label><br>
+	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-class="mar"> Smaller margins: <code>h1.mar</code></label><br>
+	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-class="fit"> No margins: <code>h1.fit</code></label>
+</fieldset>
+
+<div id="headings" class="code">
+	<h1>Heading 1</h1>
+	<h2>Heading 2</h2>
+	<h3>Heading 3</h3>
+	<h4>Heading 4</h4>
+	<h5>Heading 5</h5>
+	<h6>Heading 6</h6>
+</div>
 
 <h3>Blocks</h3>
 
@@ -288,31 +322,171 @@ Nothing special here. Mostly, default styling is kept.
 	<pre class="-l">Preformatted <code>code</code></pre>
 	<blockquote class="-l">Blockqoute</blockquote>
 
-<h3 id="list">Lists</h3>
+<h2 id="list">Lists</h2>
+
+<h3 id="list-basic">Basic lists</h3>
 
 <fieldset class="mar">
 <legend>Options</legend>
-	<label><input name="ul-fit" type="checkbox" data-nodes=".demo-list" data-class="fit"> Remove margins and list style <code>.fit</code></label><br>
-	<label><input name="ul-row" type="checkbox" data-nodes=".demo-list" data-class="row let"> Horizontal list <code>.row</code></label>
+	<label><input name="ul-demo" type="radio" data-nodes="#lists>*" data-class="" checked> Default</label><br>
+	<label><input name="ul-demo" type="radio" data-nodes="#lists>*" data-class="fit"> Remove margins and list style <code>.fit</code></label><br>
+	<label><input name="ul-demo" type="radio" data-nodes="#lists>*" data-class="row"> Wide horizontal <code>.row</code></label><br>
+	<label><input name="ul-demo" type="radio" data-nodes="#lists>*" data-class="row let"> Compact horizontal <code>.row.let</code></label>
 </fieldset>
 
 <div id="lists" class="code">
-	<ul class="demo-list">
+	<ul>
 		<li>Unordered
 		<li>List
-			<ol class="-demo-list">
+			<ol>
 				<li>Ordered
-				<li>List
+				<li>Sub-list
 			</ol>
 	</ul>
-	<dl class="demo-list">
+	<dl>
 		<dt>Term</dt>
 		<dd>Definition</dd>
+		<dd>Another definition</dd>
 		<dt>Another term</dt>
 		<dd>Another definition</dd>
 	</dl>
 </div>
+
+
+<h3 id="list-tree">Tree</h3>
+
+<p>
+Expandable nested lists <code>ul.tree</code>.
+<p>
+Inside list items, use links pointing at nested lists, or links without <code>[href]</code>.
+When no such link is found, it is generated.
+<p>
+For accordion behaviour, use <code>.accordion</code>.<br>
+To remember state, use <code>.mem</code>.
+</p>
+
+<div class="code">
+<ul class="tree accordion mem fit">
+	<li><a href="#ul1">Computer</a>
+		<ul id="ul1">
+			<li>Programming
+				<ul class="small">
+					<li>JavaScript</li>
+					<li>PHP</li>
+				</ul>
+			</li>
+			<li>Markup
+				<ul class="small">
+					<li>HTML</li>
+					<li>CSS</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li><a>Human</a>
+		<ul id="ul2">
+			<li>English</li>
+			<li>Spanish</li>
+		</ul>
+	</li>
+</ul>
+</div>
+
+
+
+<h2 id="table">Tables</h2>
+
+<h3 id="table-basic">Basic table</h3>
+
+<p>
+By default, <code>table</code> is styled with border, unless it is a direct descendant of <code>form</code>.
+<fieldset>
+<legend>Options</legend>
+	<label><input type="checkbox" name="demo-table-hover" data-class="hover" data-nodes="#demo-table" checked> Highlight hovered row <code>.hover</code></label><br>
+	<label><input type="checkbox" name="demo-table-fit" data-class="fit" data-nodes="#demo-table"> Hide borders <code>.fit</code> <!--(for responsive: heading and value on one line)--> </label><br>
+	<label><input type="checkbox" name="demo-table-let" data-class="let" data-nodes="#demo-table"> Lined style <code>.let</code></label><br>
+	<label><input type="checkbox" name="demo-roll" data-class="roll" data-nodes="#demo-roll" checked> Scroll overflowing width <code>.roll &gt; table</code></label>
+</fieldset>
+<p>
+Add <code>r#, l#, c#</code> (where # is any number) classes to align cells of column number # to the right, left or center, respectively (JavaScript required).
+</p>
+
+<div class="code">
+<div class="roll" id="demo-roll">
+	<table class="hover r1 c4 c5" data-order-x="1 0" id="demo-table">
+		<caption>Table caption</caption>
+		<thead>
+		<tr><th>Component<th>Code<th>Pure CSS<th>JS<th>Remember state <code>.mem</code><th>Fix position<th>Close on Escape<th>Modifications
+		</thead>
+		<tbody>
+		<tr>	<th>Dropdown	<td><code>.nav</code>	<td>Ht	<td>J	<td>-	<td>+	<td>+	<td><code>.flip, .let, .hover, .center, li.shift</code>
+		<tr>	<th>Tree		<td><code>.tree</code>	<td>t	<td>J	<td>+	<td>-	<td>-	<td><code>.accordion .fit</code>
+		<tr>	<th>Toggle		<td><code>.target</code><td>t	<td>J	<td>+	<td>-	<td>-	<td>
+		<tr>	<th>Popup		<td><code>.pop</code>	<td>Ht	<td>HJ<td>-	<td>+	<td>+	<td><code>.shift</code>
+		<tr>	<th>Tabs		<td><code>.tabs</code>	<td>t	<td>J	<td>+	<td>-	<td>-	<td>
+		<!--tr>	<th>Tooltip		<td><code></code>		<td>HF	<td>HF	<td>-	<td>+	<td>+	<td-->
+		<tr>	<th>Modal		<td><code>.dlg</code>	<td>T	<td>J	<td>-	<td>-	<td>+	<td><code>.full, .let</code>
+		<tr>	<th>Drawer		<td><code>.drawer</code><td>T	<td>J	<td>-	<td>-	<td>+	<td><code>.shift</code>
+		<tr>	<th>Gallery		<td><code>.gal</code>	<td>T	<td>T	<td>-	<td>-	<td>+	<td>
+		<tr>	<th>Topbar		<td><code>.topbar</code><td>V	<td>S	<td>-	<td>-	<td>-	<td><code>.let</code>
+		</tbody>
+	</table>
+</div>
+</div>
 	
+	<p class="pad bg-n">
+		<b>Legend</b><br>
+		H &mdash; <code>:hover</code><br>
+		<!--F &mdash; <code>:focus</code><br>-->
+		T &mdash; <code>:target</code> (t &mdash; with undesirable scroll)<br>
+		J &mdash; javascript toggle<br>
+		V &mdash; visible<br>
+		S &mdash; scroll<br>
+	</p>
+
+<h3 id="table-responsive">Responsive table</h3>
+
+<p>Turn rows into cards on small screen <code>table.flip</code>.
+
+<div class="code">
+<table class="flip">
+	<caption>Web languages</caption>
+	<thead>
+		<tr><th>Language</th><th>Type</th><th>Year</th></tr>
+	</thead>
+	<tbody>
+		<tr><td>HTML</td><td>Markup</td><td>1993</td></tr>
+		<tr><td>JavaScript</td><td>Programming</td><td>1995</td></tr>
+		<tr><td>CSS</td><td>Style</td><td>1996</td></tr>
+	</tbody>
+</table>
+</div>
+
+<h3 id="table-interactive">Interactive table</h3>
+
+<p>Filter and sort table rows <code>table.sort, table[data-filter]</code>.
+
+<div class="code">
+<p>
+	<input name="q" value="" type="search" id="srch" placeholder="filter table" autocomplete="off">
+	<span id="rep"></span>
+</p>
+<table class="sort" data-filter="#srch" data-filter-report="#rep" data-filter-cols="0 2 4" data-case>
+	<thead>
+	<tr><th>String<th>Number<th>Bytes<th>Interval<th>Date
+	</thead>
+	<tbody>
+		<tr><td>HTML</td><td>4</td><td>9 B</td><td>9d</td><td>1993-07-09</td></tr>
+		<tr><td>JavaScript</td><td>10.1</td><td>1 MB</td><td>5m</td><td>12/4/1995</td></tr>
+		<tr><td>CSS</td><td>3</td><td>3 KB</td><td>1y</td><td>17.12.1996</td></tr>
+	</tbody>
+	<tfoot>
+	<tr><th>Totals<th>144.301<th>2.33 MB<th>1y 2m 6d 4h<th>-
+	</tfoot>
+</table>
+</div>
+
+
 <h2 id="grid" class="-let">Grid</h2>
 
 <p>
@@ -339,11 +513,16 @@ By default, they all have equal width.
 </p>
 
 <div class="code">
+	<!-- grid -->
 	<div class="row flip" id="cols">
 		<div class="pad bg-w">Left</div>
 		<div class="pad bg-y col-2" id="col-main">
-			Central<br>column
-			<div id="col-main-over">Very wide content required to overflow available column width</div>
+			Central<br>
+			column
+			<div id="col-main-over">
+				Very wide content &mdash; required to
+				overflow available column width
+			</div>
 		</div>
 		<div class="pad bg-i">Right</div>
 	</div>
@@ -368,66 +547,7 @@ By default, they all have equal width.
 </div>
 
 
-<h2 id="table">Table</h2>
 
-<p>
-By default, <code>table</code> is styled with border, unless it is a direct descendant of <code>form</code>.
-<fieldset>
-<legend>Options</legend>
-	<label><input type="checkbox" name="demo-table-hover" data-class="hover" data-nodes="#demo-table" checked> Highlight hovered row <code>.hover</code></label><br>
-	<label><input type="checkbox" name="demo-table-fit" data-class="fit" data-nodes="#demo-table"> Hide borders <code>.fit</code> <!--(for responsive: heading and value on one line)--> </label><br>
-	<label><input type="checkbox" name="demo-table-let" data-class="let" data-nodes="#demo-table"> Lined style <code>.let</code></label><br>
-	<label><input type="checkbox" name="demo-table-flip" data-class="flip" data-nodes="#demo-table" checked> Responsive (turn rows into cards on small screen) <code>.flip</code></label><br>
-	<label><input type="checkbox" name="demo-roll" data-class="roll" data-nodes="#demo-roll" checked> Scroll overflowing width <code>.roll &gt; table</code></label>
-</fieldset>
-<p>
-Add <code>r#, l#, #c</code> (where # is any number) classes to align cells of column number # to the right, left or center, respectively (JavaScript required).
-</p>
-
-<div class="roll" data-class-mobilex="" data-class-desktopx="roll" id="demo-roll">
-	<table class="hover r1 c4 c5" data-order-x="1 0" id="demo-table">
-		<caption>Table caption</caption>
-		<thead>
-		<tr><th>Component<th>Code<th>Pure CSS<th>JS<th>Remember state <code>.mem</code><th>Fix position<th>Close on Escape<th>Modifications
-		</thead>
-		<tbody>
-		<tr>	<th>Dropdown	<td><code>.nav</code>	<td>Ht	<td>J	<td>-	<td>+	<td>+	<td><code>.flip, .let, .hover, .center, li.shift</code>
-		<tr>	<th>Tree		<td><code>.tree</code>	<td>t	<td>J	<td>+	<td>-	<td>-	<td><code>.accordion .fit</code>
-		<tr>	<th>Toggle		<td><code>.target</code><td>t	<td>J	<td>+	<td>-	<td>-	<td>
-		<tr>	<th>Popup		<td><code>.pop</code>	<td>Ht	<td>HJ<td>-	<td>+	<td>+	<td><code>.shift</code>
-		<tr>	<th>Tabs		<td><code>.tabs</code>	<td>t	<td>J	<td>+	<td>-	<td>-	<td>
-		<!--tr>	<th>Tooltip		<td><code></code>		<td>HF	<td>HF	<td>-	<td>+	<td>+	<td-->
-		<tr>	<th>Modal		<td><code>.dlg</code>	<td>T	<td>J	<td>-	<td>-	<td>+	<td><code>.full, .let</code>
-		<tr>	<th>Drawer		<td><code>.drawer</code><td>T	<td>J	<td>-	<td>-	<td>+	<td><code>.shift</code>
-		<tr>	<th>Gallery		<td><code>.gal</code>	<td>T	<td>T	<td>-	<td>-	<td>+	<td>
-		<tr>	<th>Topbar		<td><code>.topbar</code><td>V	<td>S	<td>-	<td>-	<td>-	<td><code>.let</code>
-		</tbody>
-	</table>
-	</div>
-	
-	<p class="pad bg-n">
-		<b>Legend</b><br>
-		H &mdash; <code>:hover</code><br>
-		<!--F &mdash; <code>:focus</code><br>-->
-		T &mdash; <code>:target</code> (t &mdash; with undesirable scroll)<br>
-		J &mdash; javascript toggle<br>
-		V &mdash; visible<br>
-		S &mdash; scroll<br>
-	</p>
-
-<div class="code">
-<div class="roll">
-	<table class="hover">
-		<caption>Caption</caption>
-		<thead>
-			<tr><th>Heading</th></tr>
-		</thead>
-		<tbody>
-			<tr class="bg-w"><td>Cell</td></tr>
-		</tbody>
-	</table>
-</div>
-</div>
 
 <h2 id="buttons">Buttons</h2>
 
@@ -626,497 +746,8 @@ Table will become stacked on small screen.
 	</form>
 </div>
 
-<!--
-<h3 id="form-validate">Validation</h3>
 
-<p>To customize input validation messages, provide validation hint in <code>data-hint</code> attribute of input element. Placeholders inside percent characters are replaced with value of corresponding attribute of input element.
-
-<pre class="">&lt;input
-  type="text"
-  name="nm"
-  required
-  pattern="[A-Za-z]{2,}"
-  data-hint="Enter %minlength% up to %maxlength% letters"
-  title="Two up to four letters"
-  minlength="2"
-  maxlength="4"&gt;</pre>
-
-<p>Another option is to add sibling element with class <code>small</code> after <code>input</code>. It will be visible only if input value is not valid.
-<p>To improve usability, add class <code>js-unhint</code> to <code>form</code>. This will disble default brower-specific tooltips and disables reporting empty required inputs as invalid until submitting.
-
-<pre class="">
-  &lt;input type="text" name="nm" required&gt;
-  &lt;p class="small text-e">Value required&lt;/p&gt;</pre>
--->
-  
-<h2 id="nav">Navigation</h2>
-
-<p>
-To create a navigarion bar add <code>nav</code> class to the <code>ul</code> element.
-<p>
-With pure CSS, nested lists are shown on hover.
-With JavaScript, nested lists are toggled on click.
-Following code shows how to collapse navigation to a single hamburger icon on small screen,
-and expand it to dropdown navbar on large screen.
-</p>
-<fieldset>
-<legend>Options</legend>
-<label><input name="nav-bg" type="checkbox" data-nodes="#navi" data-class="bg" checked> Add background <code>.bg</code></label><br>
-<label><input name="nav-hover" type="checkbox" data-nodes="#navi" data-class="hover" checked> Highlight active items <code>.hover</code></label><br>
-<label><input name="nav-flip" type="checkbox" data-nodes="#navi" data-class="flip" checked> Stack items on small screen <code>.flip</code></label><br>
-<label><input name="nav-let" type="checkbox" data-nodes="#navi" data-class="let"> Stack items on any screen <code>.let</code></label><br>
-<label><input name="nav-center" type="checkbox" data-nodes="#navi" data-class="center"> Center items vertically <code>.center</code></label><br>
-<label><input name="nav-subtitles" type="checkbox" data-nodes="#navi small" data-class="text-n" data-unclass="hide" checked> Show subtitles</label><br>
-<label><input name="nav-shift" type="checkbox" data-nodes="#navi-search" data-class="shift" checked> Shift some list item(s) to the right <code>li.shift</code></label>
-</fieldset>
-</p>
-
-<div class="code">
-<div class="hide-desktop">
-	<a href="#navi" class="pad hover" title="Menu">&equiv;</a>
-</div>
-<ul class="nav flip bg hover target-mobile" id="navi">
-	<li><a href="n0" class="fit"><b>Logo</b></a></li>
-	<li>
-		<a href="#n1">Item</a>
-	</li>
-	<li>
-		<a><span>Parent<small class="text-n"><br>nested</small></span></a>
-		<ul>
-			<li><a><span>Subitem<small class="text-n"><br>info</small></span></a>
-				<ul>
-					<li><a href="#n2">Deep</a></li>
-				</ul>
-			</li>
-		</ul>
-	</li>
-	<li id="navi-search" class="shift">
-		<form>
-			<input type="search" size="5" title="search string" class="rad">&nbsp;<input type="submit" value="Find">
-		</form>
-	</li>
-	<li>
-		<a>Last</a>
-		<ul>
-			<li><a href="#n3">Subitem</a></li>
-		</ul>
-	</li>
-</ul>
-</div>
-
-
-
-<h2 id="toggle">Toggle</h2>
-
-<p>
-Pure CSS togglers based on <code>:target</code> behaviour.
-This approach is semantic, but has some drawbacks:
-<ul>
-<li>only one togglable block can be active (open) at the moment
-<li>nested togglable blocks are not possible
-<li>styling of active link is not possible
-<li>on/off behaviour of the link is not possible
-<li>page scrolls, which is in most cases undesirable
-</ul>
-<p>
-To overcome these drawbacks, <a href="#js">JavaScript can be used</a>.
-To control elements with Javascript, add <code>toggle</code> class like in following examples for popup, toggle, tabs, tree.
-To store elements state in local storage, add <code>mem</code> class like in following examples for toggle, tabs, tree.
-Dialogs and drawers do not require such enhancements.
-
-<h3 id="toggle-popup">Popup</h3>
-
-<p>
-Inside <code>div</code> with <code>pop</code> class, use link pointing at sibling element.<br>
-Optionally add <code>shift</code> class to the target element to pop up leftwards.
-</p>
-
-<div class="pop hide">
-	<a href="#pop1">Nested popup</a>
-	<div id="pop1" class=" --toggle pad">
-		Pop
-		<div class="pop">
-			<a href="#pop2">Internal popup</a>
-			<div id="pop2" class=" --toggle pad">Pops</div>
-		</div>
-	</div>
-</div>
-<div class="code">
-<div class="pop">
-	<a href="#pop">Popup</a>
-	<div id="pop" class=" --toggle pad shift">Pop</div>
-</div>
-</div>
-
-<h3 id="toggle-div">Toggle</h3>
-
-<p>
-Use link pointing at element with <code>target</code> class.
-</p>
-
-<div class="code">
-<a href="#tog">Toggle</a>
-<div id="tog" class="pad bord yel target mem">Togglable</div>
-</div>
-
-<h3 id="toggle-drawer">Drawer</h3>
-
-<p>
-Use link pointing at element with <code>drawer</code> class.<br>
-Optionally add <code>shift</code> class to the drawer element for right side drawer.<br>
-Optionally use closing link pointing at <code>#cancel</code> inside target element.
-</p>
-
-<div class="code">
-<a class="pad hover" href="#drw">&equiv;</a>
-<div class="drawer shift pad" id="drw">
-	<a class="close pad" href="#cancel">&times;</a>
-	Demo drawer
-</div>
-</div>
-
-
-<h3 id="toggle-dlg">Modal dialog</h3>
-
-<p>
-Use link pointing at element with <code>hide dlg</code> classes.<br>
-Add <code>let</code> class for larger width.<br>
-Optionally use closing link pointing at <code>#cancel</code> inside target element.
-</p>
-
-<div class="code">
-<a href="#modal">Dialog</a>
-<div id="modal" class="--hide dlg rad c pad -let">
-	<a class="close pad" href="#cancel">&times;</a>
-	<p>Dialog</p>
-</div>
-</div>
-	
-		
-<h3 id="toggle-full">Modal fullscreen</h3>
-
-<p>
-Use link pointing at element with <code>hide full</code> classes.<br>
-Optionally use closing link pointing at <code>#cancel</code> inside target element.
-</p>
-
-<div class="code">
-<a href="#full">Fullscreen</a>
-<div id="full" class="dlg full center pad bg-w">
-	<a class="close pad" href="#cancel">&times;</a>
-	Full
-</div>
-</div>
-
-<h3 id="toggle-gallery">Gallery</h3>
-
-<div class="hide">
-	Hidden gallery: non-CSS fallback
-	<a href="https://picsum.photos/id/360/1000/700.jpg">#1</a>
-	<a href="https://picsum.photos/id/830/1000/700.jpg">#2</a>
-	<a href="https://picsum.photos/id/844/1000/700.jpg">#3</a>
-</div>
-
-<p>
-Inside <code>div</code> with class <code>gal</code>, add sequence of links, each one pointing at the next and having <code>style</code> attribute with <code>--img</code> CSS proprty pointing at image.
-Lastly, add closing link pointing at <code>#cancel</code>.
-<br>
-Also see <a href="#gallery">gallery plugin</a>.
-</p>
-
-<p>Pure CSS gallery is based on CSS variables.
-Images are lazy loaded.
-Next image is preloaded.
-Enter key press navigates to the next image (depends on browser).
-<p>
-<i class="bg-w">Warning</i>: for IE support, use <code>background-image</code> instead of <code>--img</code> in <code>style</code> attribute; no lazy-loading in this case.
-
-<div class="code">
-<a href="#gal1">Open gallery</a>
-<div class="gal">
-	<a id="gal1" href="#gal2" style="--img:url(https://picsum.photos/id/360/1000/700.jpg)" data-caption="1/3 - Sunset"  ></a>
-	<a id="gal2" href="#gal3" style="--img:url(https://picsum.photos/id/830/1000/700.jpg)" data-caption="2/3 - Boat"></a>
-	<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/844/1000/700.jpg)" data-caption-x="3/3 - Ocean" ></a>
-	<a class="close" href="#cancel">&times;</a>
-</div>
-</div>
-
-<h3 id="toggle-tabs">Tabs</h3>
-
-<p>
-Use list with <code>nav tabs</code> classes as tabs headers.<br>
-Each list item should contain a link pointing at tab panel.<br>
-Next sibling <code>div</code> should contain <code>div</code> tab panels.
-</p>
-
-<div class="code">
-<ul class="nav tabs rad mem hover">
-	<li><a href="#tab1">Tab1</a></li>
-	<li><a href="#tab2">Tab2</a></li>
-	<li><a href="#tab3">Tab3</a></li>
-</ul>
-<div class="bord pad">
-	<div id="tab2" class="--hide">2<br>2</div>
-	<div id="tab3" class="--hide">3<br>3<br>3</div>
-	<div id="tab1" class="--hide">1</div>
-</div>
-</div>
-
-<h3 id="toggle-tree">Tree</h3>
-
-<p>
-Inside list items, use links pointing at nested lists.
-</p>
-<fieldset class="mar">
-<legend>Options</legend>
-<label><input type="checkbox" name="acc-demo" data-nodes="#demo-tree" data-class="accordion"> Accordion behaviour <code>.accordion</code></label><br>
-<label><input type="checkbox" name="acc-demo" data-nodes="#demo-tree" data-class="fit"> Remove margins and list-style <code>.fit</code></label>
-</fieldset>
-
-<div class="code">
-<ul class=" --toggle tree mem accordion" id="demo-tree">
-	<li><a href="#ul1">List 1</a>
-		<ul id="ul1">
-			<li>Item 1.1
-			<ul>
-				<li>Item 1.1.1</li>
-				<li>Item 1.1.2</li>
-			</ul>
-			</li>
-			<li>Item 1.2</li>
-		</ul>
-	</li>
-	<li><a href="#ul2">List 2</a>
-		<ul id="ul2">
-			<li>Item 1.1</li>
-			<li>Item 1.2</li>
-		</ul>
-	</li>
-</ul>
-</div>
-
-<h3 id="toggle-details">Details</h3>
-
-<p>This element natively has similar functionality.<br>
-<i class="bg-w">Warning</i>: not supported in IE and Edge.
-
-<div class="code">
-<details>
-	<summary>Summary</summary>
-	<div class="bg pad">Details</div>
-</details>
-</div>
-
-
-<h2 id="colors">Colors</h2>
-
-<h3 id="colors-inline">Inline</h3>
-
-<div class="code">
-	<a href="#" class="text-e">Error</a>
-	<a href="#" class="text-w">Warning</a>
-	<a href="#" class="text-i">Info</a>
-	<a href="#" class="text-y">Yes</a>
-	<a href="#" class="text-n">No</a>
-	<a href="#">Normal</a>
-	<br>
-	<a href="#" class="bg-e">Error</a>
-	<a href="#" class="bg-w">Warning</a>
-	<a href="#" class="bg-i">Info</a>
-	<a href="#" class="bg-y">Yes</a>
-	<a href="#" class="bg-n">No</a>
-	<a href="#">Normal</a>
-	<br>
-	<a href="#" class="text-e bg-e">Error</a>
-	<a href="#" class="text-w bg-w">Warning</a>
-	<a href="#" class="text-i bg-i">Info</a>
-	<a href="#" class="text-y bg-y">Yes</a>
-	<a href="#" class="text-n bg-n">No</a>
-	<a href="#">Normal</a>
-	<br>
-	<span class="bg-e">Error</span>
-	<span class="bg-w">Warning</span>
-	<span class="bg-i">Info</span>
-	<span class="bg-y">Yes</span>
-	<span class="bg-n">No</span>
-	<span tabindex="0">Normal</span>
-</div>
-	
-<h3 id="colors-buttons">Buttons</h3>
-
-<div class="code">
-<button type="button" class="bg-e">Error</button>
-<button type="button" class="bg-w">Warning</button>
-<button type="button" class="bg-i">Info</button>
-<button type="button" class="bg-y">Yes</button>
-<button type="button" class="bg-n">No</button>
-<button type="button">Normal</button>
-<button type="button" disabled>Disabled</button>
-</div>
-
-<h3 id="colors-blocks">Blocks</h3>
-
-<div class="code">
-<p class="pad bg-e">Error<span class="text-e">Error</span></p>
-<p class="pad bg-w">Warning<span class="text-w">Warning</span></p>
-<p class="pad bg-i">Info<span class="text-i">Info</span></p>
-<p class="pad bg-y">Yes<span class="text-y">Yes</span></p>
-<p class="pad bg-n">No<span class="text-n">No</span></p>
-<p class="pad bg">Bg</p>
-<p class="pad bord">Border</p>
-<p class="pad bg bord">Bg+Border</p>
-<p class="pad bg-i bord">Status+Border</p>
-<p class="btn bg-y">Button-like</p>
-</div>
-	
-<h3 id="colors-icons">Links and Icons</h3>
-
-<div class="bg pad">
-	Icons:
-	<svg class="icon"><use xlink:href="#svg-ok"/></svg>
-	<svg class="icon text-y"><use xlink:href="#svg-ok"/></svg>
-	<br>
-	Simple links:
-	<a href="https://ya.ru" class=""><svg class="icon"><use xlink:href="#svg-ok"/></svg> Default</a>
-	<a href="https://ya.ru" class=""><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Icon</a>
-	<a href="https://ya.ru" class="text-w"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Link</a>
-	<a href="https://ya.ru" class="text-w"><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Both</a>
-	<br>
-	Hover links:
-	<a href="https://ya.ru" class="hover"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Default</a>
-	<a href="https://ya.ru" class="hover"><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Icon</a>
-	<a href="https://ya.ru" class="hover text-w"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Link</a>
-	<a href="https://ya.ru" class="hover text-w"><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Both</a>
-	<table class="hover">
-		<tr><td>Table:
-		<td><a href="https://ya.ru" class=""><svg class="icon"><use xlink:href="#svg-ok"/></svg> Default</a>
-		<td><a href="https://ya.ru" class=""><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Icon</a>
-		<td><a href="https://ya.ru" class="text-w"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Link</a>
-		<td><a href="https://ya.ru" class="text-w"><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Both</a>	
-	</table>
-	<ul class="nav -flip -let">
-		<li><a>Nav:</a>
-		<li><a href="https://ya.ru" class=""><svg class="icon"><use xlink:href="#svg-ok"/></svg> Default</a>
-		<li><a href="https://ya.ru" class=""><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Icon</a>
-		<li><a href="https://ya.ru" class="text-w"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Link</a>
-		<li><a href="https://ya.ru" class="text-w"><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Both</a>
-	</ul>
-	Buttons:
-	<a href="https://ya.ru" class="btn bg-i"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Default</a>
-	<a href="https://ya.ru" class="btn bg-i"><svg class="icon text-e"><use xlink:href="#svg-ok"/></svg> Icon</a>
-	<a href="https://ya.ru" class="btn bg-i text-e"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Link</a>
-	<a href="https://ya.ru" class="btn bg-i text-e"><svg class="icon text-e"><use xlink:href="#svg-ok"/></svg> Both</a>
-</div>
-
-<h2 id="blocks">Blocks</h2>
-
-<h3>Media object</h3>
-
-<div class="code">
-<div class="row">
-	<a href="#media" class="col-0">
-		<svg class="text-w" width="80" height="80">
-			<use xlink:href="#svg-place"/>
-		</svg>
-	</a>
-	<div>
-		Some description
-		<br>
-		<time class="text-n" datetime="1970-01-01">January 1970</time>
-		<br>
-		<a href="#media" class="-btn -inv">Link</a>
-	</div>
-</div>
-</div>
-	
-<h3>Figure</h3>
-
-<div class="code">
-	<figure class="bg c pad">
-		<svg class="text-i" width="80" height="80">
-			<use xlink:href="#svg-place"/>
-		</svg>
-		<figcaption>
-			Figure caption
-		</figcaption>
-	</figure>
-</div>
-	
-<h3>Box</h3>
-
-<div class="code">
-	<div class="shade -dlg c pad rad">
-		<svg class="text-n" width="80" height="80"><use xlink:href="#svg-place"/></svg>
-		<p><b>No items yet</b>
-		<p>Click the button to create new item</p>
-		<a href="#add" class="btn bg-i">Add new item</a>
-	</div>
-</div>
-	
-<h3>Full height</h3>
-
-<div class="code">
-<div class="full bg-w center">Full</div>
-</div>
-
-<h3>Invert</h3>
-
-<div class="code">
-<div class="invert pad">
-  Inverted text
-  <a href="#">link</a>
-  <span class="bg-e text-e">colors</span>
-</div>
-</div>
-
-<h2 id="js">JavaScript enhancements</h2>
-
-<ul id="js-behaviours">
-	<li>Dropdown <code>.toggle</code> &mdash; toggle, escape
-	<li>Tree <code>.toggle</code> &mdash; multiple, unscroll, toggle, remember (<code>.mem</code>), <code>.accordion</code>
-	<li>Toggle <code>.toggle</code> &mdash; multiple, unscroll, toggle, remember (<code>.mem</code>)
-	<li>Popup <code>.toggle</code> &mdash; multiple, unscroll, toggle, escape
-	<li>Tabs <code>.toggle</code> &mdash; multiple, unscroll, remember (<code>.mem</code>)
-	<li>Dialog &mdash; escape
-	<li>Gallery &mdash; previous, escape
-	<li>Output HTML code: <code>div.code</code>
-	<li>Link or button with confirmation: <code>.dialog[title][data-caption]</code>
-	<li>Link with prompt: <code>a.dialog[title][data-caption][data-prompt]</code>
-	<li>Check group of boxes: <code>input[data-group]</code>, <code>[class~="data-group"]</code>
-	<li>Toggle class: <code>a[href^='#'][data-class][data-unclass]</code>, <code id="test1">a[data-nodes][data-class][data-unclass]</code> (
-		<a href="#test1" data-class="text-e" data-unclass-x="text-i" data-nodes="#js-behaviours code" class="">test</a>
-		<input type="checkbox" name="chb" data-class="bg-w" data-nodes="#js-behaviours code">
-		<a href="#test2" data-class="invert" data-nodes="body" class="">invert</a>
-		<a href="#test3" data-class="invert" data-nodes="body" class="hide" accesskey="i">(invert)</a>
-		)
-	<li>Set value of target input: <code>a[href^='#'][data-value]</code>
-	<li>Show value of color input: <code>input[type="color"]</code>
-	<!--
-	<li>Submit target button: <code>a[href^='#'][data-submit]</code>
-	<li>Submit form: <code>(select|[type="checkbox"]|[type="search"])[data-submit]</code>
-	-->
-	<li>Align table columns: <code>table.r5</code>
-	<li>Class depending on resize 
-		(<code data-class-mobile="text-y" data-class-desktop="text-n">[data-class-mobile]</code> or 
-		 <code data-class-desktop="text-y" data-class-mobile="text-n">[data-class-desktop]</code>).
-	<li>Asynchronous request: <code>[data-target]</code>
-</ul>
-
-<h2 id="ajax">AJAX</h2>
-
-<div class="code">
-<a href="data.json" data-target="#preview">Load</a><br>
-<a href="data.json" data-target="#dlg-inner">Load in modal</a><br>
-<a href="data.json" data-target="#">Load in generated modal</a>
-<pre class="bg-i" id="preview">(preview)</pre>
-<div id="preview-dlg" class="dlg pad"><a class="close pad" href="#cancel">&times;</a><div id="dlg-inner">(preview)</div></div>
-</div>
-
-
-
-<h2 id="plugins">Plugins</h2>
-	
-	<h3 id="calendar"><a href="https://github.com/vvvkor/d1calendar">Calendar</a></h3>
+	<h3 id="calendar">Calendar</h3>
 	
 	<p>Replacement of standard HTML date inputs.
 
@@ -1131,29 +762,7 @@ Inside list items, use links pointing at nested lists.
 	</form>
 </div>
 
-
-	<h3 id="dialog"><a href="https://github.com/vvvkor/d1dialog">Dialog</a></h3>
-	
-	<p>Replacement for standard Javascript dialogs.</p>
-
-<div class="code">
-<p>
-	<a href="#done" class="alert" title="Hello!">Alert</a>,
-	<a href="?a=1&b=2" class="dialog" title="Continue?">Confirm link</a>,
-	<a href="?a=1&b=2" class="dialog" title="Continue new tab?" target="_blank">Confirm link to new tab</a>,
-	<a href="#calendar" class="dialog" title="Continue?">Confirm hash</a>,
-	<a href="?a=1&b=привет+вам!&c=3" class="dialog text-w" data-prompt="b" data-caption="Quantity:" data-ok="Fine" data-cancel="No way" data-reverse="">Prompt link</a>.
-</p>
-<form class="mar">
-	<input type="text" name="nm" id="nms" value="qq" required pattern="[A-Za-z]{2,}" title="Two or more letters">
-	<input type="submit" name="s1" value="OK">
-	<input type="submit" name="s2" value="Confirm form" class="dialog bg-w" title="Warning!" data-prompt="nm">
-	<a href="?nm=" class="dialog" data-prompt="nm" data-caption="Name:" data-src="#nms">Prompt from input</a>
-</form>
-</div>
-
-	
-	<h3 id="edit"><a href="https://github.com/vvvkor/d1edit">Edit</a></h3>
+	<h3 id="edit">Edit</h3>
 
 	<p>
 	Add class <code>adjust</code> to <code>textarea</code> for height auto-adjustment to content.
@@ -1176,22 +785,7 @@ Inside list items, use links pointing at nested lists.
   rows="5">Write <b>formatted</b> text.</textarea>
 </div>
 
-	<h3 id="gallery"><a href="https://github.com/vvvkor/d1gallery">Gallery</a></h3>
-	
-	<p>
-	Place links with class <code>pic</code> inside <code>div</code> with class <code>gallery</code>
-	to generate gallery similar to <a href="#toggle-gallery">pure CSS gallery</a>.
-	</p>
-	
-<div class="code">
-<div class="gallery">
-	<a href="https://picsum.photos/id/360/1000/700.jpg" class="btn pic" title="Sunset">#1</a>
-	<a href="https://picsum.photos/id/830/1000/700.jpg" class="btn pic" title="Boat">#2</a>
-	<a href="https://picsum.photos/id/844/1000/700.jpg" class="btn pic" title="Ocean">#3</a>
-</div>
-</div>
-
-	<h3 id="lookup"><a href="https://github.com/vvvkor/d1lookup">Lookup</a></h3>
+	<h3 id="lookup">Lookup</h3>
 	
 	<p>Autocomplete lookups with data from XHTTP request.
 
@@ -1221,35 +815,7 @@ Inside list items, use links pointing at nested lists.
   <select name="town" id="town" data-filter="{q}.json" data-placeholder="..." data-cache="10"></select>
 </div>
 
-<h3 id="tablex"><a href="https://github.com/vvvkor/d1tablex">Tablex</a></h3>
-	
-	<p>Filter and sort HTML table.
-
-<div class="code">
-<p>
-	<input name="q" value="" type="search" id="srch" placeholder="filter table" autocomplete="off">
-	<span id="rep"></span>
-</p>
-<div class="roll">
-<table class="sort" data-filter="#srch" data-filter-report="#rep" data-filter-cols="0 2 4" data-case>
-	<thead>
-	<tr><th>String<th>Number<th>Bytes<th>Interval<th>Date
-	</thead>
-	<tbody>
-	<tr><td>beta<td>.001<td>9 b<td>1y<td>2.1.2018
-	<tr><td>Alpha<td>9<td>10 kb<td>2m<td>1/15/2018
-	<tr><td>kappa<td>123<td>2KB<td>4 h<td>2018-01-05
-	<tr><td>Gamma<td>12.3<td>1.2 MB<td>3d<td>21.01.2018
-	<tr><td>delta<td>1&nbsp;2,4<td>1.12 MB<td>3d<td>21.01.2018
-	</tbody>
-	<tfoot>
-	<tr><th>Totals<th>144.301<th>2.33 MB<th>1y 2m 6d 4h<th>-
-	</tfoot>
-</table>
-</div>
-</div>
-
-<h3 id="valid"><a href="https://github.com/vvvkor/d1valid">Valid</a></h3>
+<h3 id="valid">Valid</h3>
 
 <p>Custom form validation.
 
@@ -1393,7 +959,291 @@ Inside list items, use links pointing at nested lists.
 
 </div>
 
-<h3 id="scroll">Scroll</h3>
+<!--
+<h3 id="form-validate">Validation</h3>
+
+<p>To customize input validation messages, provide validation hint in <code>data-hint</code> attribute of input element. Placeholders inside percent characters are replaced with value of corresponding attribute of input element.
+
+<pre class="">&lt;input
+  type="text"
+  name="nm"
+  required
+  pattern="[A-Za-z]{2,}"
+  data-hint="Enter %minlength% up to %maxlength% letters"
+  title="Two up to four letters"
+  minlength="2"
+  maxlength="4"&gt;</pre>
+
+<p>Another option is to add sibling element with class <code>small</code> after <code>input</code>. It will be visible only if input value is not valid.
+<p>To improve usability, add class <code>js-unhint</code> to <code>form</code>. This will disble default brower-specific tooltips and disables reporting empty required inputs as invalid until submitting.
+
+<pre class="">
+  &lt;input type="text" name="nm" required&gt;
+  &lt;p class="small text-e">Value required&lt;/p&gt;</pre>
+-->
+  
+
+
+<h2 id="components">Components</h2>
+
+<p>
+Pure CSS togglers based on <code>:target</code> behaviour.
+This approach is semantic, but has some drawbacks:
+<ul>
+<li>only one togglable block can be active (open) at the moment
+<li>nested togglable blocks are not possible
+<li>styling of active link is not possible
+<li>on/off behaviour of the link is not possible
+<li>page scrolls, which is in most cases undesirable
+</ul>
+<p>
+To overcome these drawbacks, <a href="#js">JavaScript can be used</a>.
+To control elements with Javascript, add <code>toggle</code> class like in following examples for popup, toggle, tabs, tree.
+To store elements state in local storage, add <code>mem</code> class like in following examples for toggle, tabs, tree.
+Dialogs and drawers do not require such enhancements.
+
+
+<h3 id="toggle-div">Toggle</h3>
+
+<p>
+Use link pointing at element with <code>target</code> class.
+</p>
+
+<div class="code">
+<a href="#tog">Toggle</a>
+<div id="tog" class="pad bord yel target mem">Togglable</div>
+</div>
+
+<h3 id="toggle-popup">Popup</h3>
+
+<p>
+Inside <code>div</code> with <code>pop</code> class, use link pointing at sibling element.<br>
+Optionally add <code>shift</code> class to the target element to pop up leftwards.
+</p>
+
+<div class="code">
+<div class="pop">
+	<a href="#pop">Popup</a>
+	<div id="pop" class="pad shift">Pop</div>
+</div>
+</div>
+
+<p>
+
+<div class="code">
+<div class="pop">
+	<a href="#pop1">Nested hover popup</a>
+	<div class="pad">
+		Pop
+		<div class="pop">
+			<a href="#pop2">Internal popup</a>
+			<div class="pad shift">Pop left</div>
+		</div>
+	</div>
+</div>
+</div>
+
+<h3 id="nav">Navigation</h3>
+
+<p>
+To create a navigarion bar add <code>nav</code> class to the <code>ul</code> element.
+<p>
+With pure CSS, nested lists are shown on hover.
+With JavaScript, nested lists are toggled on click.
+Following code shows how to collapse navigation to a single hamburger icon on small screen,
+and expand it to dropdown navbar on large screen.
+</p>
+<fieldset>
+<legend>Options</legend>
+<label><input name="nav-bg" type="checkbox" data-nodes="#navi" data-class="bg" checked> Add background <code>.bg</code></label><br>
+<label><input name="nav-hover" type="checkbox" data-nodes="#navi" data-class="hover" checked> Highlight active items <code>.hover</code></label><br>
+<label><input name="nav-flip" type="checkbox" data-nodes="#navi" data-class="flip" checked> Stack items on small screen <code>.flip</code></label><br>
+<label><input name="nav-let" type="checkbox" data-nodes="#navi" data-class="let"> Stack items on any screen <code>.let</code></label><br>
+<label><input name="nav-center" type="checkbox" data-nodes="#navi" data-class="center"> Center items vertically <code>.center</code></label><br>
+<label><input name="nav-subtitles" type="checkbox" data-nodes="#navi small" data-class="text-n" data-unclass="hide" checked> Show subtitles</label><br>
+<label><input name="nav-shift" type="checkbox" data-nodes="#navi-search" data-class="shift" checked> Shift some list item(s) to the right <code>li.shift</code></label>
+</fieldset>
+</p>
+
+<div class="code">
+<div class="hide-desktop">
+	<a href="#navi" class="pad hover" title="Menu">&equiv;</a>
+</div>
+<ul class="nav flip bg hover target-mobile" id="navi">
+	<li><a href="n0" class="fit"><b>Logo</b></a></li>
+	<li>
+		<a href="#n1">Item</a>
+	</li>
+	<li>
+		<a><span>Parent<small class="text-n"><br>nested</small></span></a>
+		<ul>
+			<li><a><span>Subitem<small class="text-n"><br>info</small></span></a>
+				<ul>
+					<li><a href="#n2">Deep</a></li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li id="navi-search" class="shift">
+		<form>
+			<input type="search" size="5" title="search string" class="rad">&nbsp;<input type="submit" value="Find">
+		</form>
+	</li>
+	<li>
+		<a>Last</a>
+		<ul>
+			<li><a href="#n3">Subitem</a></li>
+		</ul>
+	</li>
+</ul>
+</div>
+
+
+<h3 id="toggle-tabs">Tabs</h3>
+
+<p>
+Use list with <code>nav tabs</code> classes as tabs headers.<br>
+Each list item should contain a link pointing at tab panel.<br>
+Next sibling <code>div</code> should contain <code>div</code> tab panels.
+</p>
+
+<div class="code">
+<ul class="nav tabs rad mem hover">
+	<li><a href="#tab1">Tab1</a></li>
+	<li><a href="#tab2">Tab2</a></li>
+	<li><a href="#tab3">Tab3</a></li>
+</ul>
+<div class="bord pad">
+	<div id="tab2" class="--hide">2<br>2</div>
+	<div id="tab3" class="--hide">3<br>3<br>3</div>
+	<div id="tab1" class="--hide">1</div>
+</div>
+</div>
+
+
+<h3 id="toggle-dlg">Modal</h3>
+
+<p>
+Use link pointing at element with <code>hide dlg</code> classes.<br>
+Add <code>let</code> class for larger width.<br>
+Optionally use closing link pointing at <code>#cancel</code> inside target element.
+</p>
+
+<div class="code">
+<a href="#modal">Open modal</a>
+<div id="modal" class="--hide dlg rad c pad -let">
+	<a class="close pad" href="#cancel">&times;</a>
+	<p>Modal</p>
+</div>
+</div>
+	
+		
+<h3 id="toggle-full">Modal fullscreen</h3>
+
+<p>
+Use link pointing at element with <code>hide full</code> classes.<br>
+Optionally use closing link pointing at <code>#cancel</code> inside target element.
+</p>
+
+<div class="code">
+<a href="#full">Open fullscreen modal</a>
+<div id="full" class="dlg full center pad bg-w">
+	<a class="close pad" href="#cancel">&times;</a>
+	Fullscreen modal
+</div>
+</div>
+
+	<h3 id="dialog">Dialog</h3>
+	
+	<p>Replacement for standard Javascript dialogs.</p>
+
+<div class="code">
+<p>
+	<a href="#done" class="alert" title="Hello!">Alert</a>,
+	<a href="?a=1&b=2" class="dialog" title="Continue?">Confirm link</a>,
+	<a href="?a=1&b=2" class="dialog" title="Continue new tab?" target="_blank">Confirm link to new tab</a>,
+	<a href="#calendar" class="dialog" title="Continue?">Confirm hash</a>,
+	<a href="?a=1&b=привет+вам!&c=3" class="dialog text-w" data-prompt="b" data-caption="Quantity:" data-ok="Fine" data-cancel="No way" data-reverse="">Prompt link</a>.
+</p>
+<form class="mar">
+	<input type="text" name="nm" id="nms" value="qq" required pattern="[A-Za-z]{2,}" title="Two or more letters">
+	<input type="submit" name="s1" value="OK">
+	<input type="submit" name="s2" value="Confirm form" class="dialog bg-w" title="Warning!" data-prompt="nm">
+	<a href="?nm=" class="dialog" data-prompt="nm" data-caption="Name:" data-src="#nms">Prompt from input</a>
+</form>
+</div>
+
+
+
+<h3 id="gallery">Gallery</h3>
+
+
+<div class="hide">
+	Hidden gallery: non-CSS fallback
+	<a href="https://picsum.photos/id/360/1000/700.jpg">#1</a>
+	<a href="https://picsum.photos/id/830/1000/700.jpg">#2</a>
+	<a href="https://picsum.photos/id/844/1000/700.jpg">#3</a>
+</div>
+
+<h4 id="toggle-gallery">Pure CSS gallery</h4>
+
+<p>
+Inside <code>div</code> with class <code>gal</code>, add sequence of links, each one pointing at the next and having <code>style</code> attribute with <code>--img</code> CSS proprty pointing at image.
+Lastly, add closing link pointing at <code>#cancel</code>.
+</p>
+
+<p>Pure CSS gallery is based on CSS variables.
+Images are lazy loaded.
+Next image is preloaded.
+Enter key press navigates to the next image (depends on browser).
+<p>
+<i class="bg-w">Warning</i>: for IE support, use <code>background-image</code> instead of <code>--img</code> in <code>style</code> attribute; no lazy-loading in this case.
+
+<div class="code">
+<a href="#gal1">Open gallery</a>
+<div class="gal">
+	<a id="gal1" href="#gal2" style="--img:url(https://picsum.photos/id/360/1000/700.jpg)" data-caption="1/3 - Sunset"  ></a>
+	<a id="gal2" href="#gal3" style="--img:url(https://picsum.photos/id/830/1000/700.jpg)" data-caption="2/3 - Boat"></a>
+	<a id="gal3" href="#gal1" style="--img:url(https://picsum.photos/id/844/1000/700.jpg)" data-caption-x="3/3 - Ocean" ></a>
+	<a class="close" href="#cancel">&times;</a>
+</div>
+</div>
+
+	<h4 id="gen-gallery">Generated gallery</h4>
+	
+	<p>
+	Place links with class <code>pic</code> inside <code>div</code> with class <code>gallery</code>
+	to generate gallery similar to <a href="#toggle-gallery">pure CSS gallery</a>.
+	</p>
+	
+<div class="code">
+<div class="gallery">
+	<a href="https://picsum.photos/id/360/1000/700.jpg" class="btn pic" title="Sunset">#1</a>
+	<a href="https://picsum.photos/id/830/1000/700.jpg" class="btn pic" title="Boat">#2</a>
+	<a href="https://picsum.photos/id/844/1000/700.jpg" class="btn pic" title="Ocean">#3</a>
+</div>
+</div>
+
+
+
+<h3 id="toggle-drawer">Drawer</h3>
+
+<p>
+Use link pointing at element with <code>drawer</code> class.<br>
+Optionally add <code>shift</code> class to the drawer element for right side drawer.<br>
+Optionally use closing link pointing at <code>#cancel</code> inside target element.
+</p>
+
+<div class="code">
+<a class="pad hover" href="#drw">&equiv;</a>
+<div class="drawer shift pad" id="drw">
+	<a class="close pad" href="#cancel">&times;</a>
+	Demo drawer
+</div>
+</div>
+
+
+<h3 id="topbars">Topbar</h3>
 
 <p>
 <label><input name="demo-top" type="radio" data-nodes="#topbar" data-class="hide pad"> Disable top bar</label><br>
@@ -1414,8 +1264,227 @@ Inside list items, use links pointing at nested lists.
 	</div>
 </div-->
 
+<h3 id="fetch">Fetch</h3>
 
-<h2 id="custom">Customization with CSS vars</h2>
+<div class="code">
+<a href="data.json" data-target="#preview">Fetch into preview area</a><br>
+<a href="data.json" data-target="#dlg-inner">Fetch into modal dialog</a><br>
+<a href="data.json" data-target="#">Fetch into generated modal dialog</a>
+<pre class="bg-i" id="preview">[preview area]</pre>
+<div id="preview-dlg" class="dlg pad"><a class="close pad" href="#cancel">&times;</a><div id="dlg-inner">(preview)</div></div>
+</div>
+
+
+<h3 id="util">Utilities</h3>
+
+<ul id="js-behaviours">
+	<li>Dropdown <code>.toggle</code> &mdash; toggle, escape
+	<li>Tree <code>.toggle</code> &mdash; multiple, unscroll, toggle, remember (<code>.mem</code>), <code>.accordion</code>
+	<li>Toggle <code>.toggle</code> &mdash; multiple, unscroll, toggle, remember (<code>.mem</code>)
+	<li>Popup <code>.toggle</code> &mdash; multiple, unscroll, toggle, escape
+	<li>Tabs <code>.toggle</code> &mdash; multiple, unscroll, remember (<code>.mem</code>)
+	<li>Dialog &mdash; escape
+	<li>Gallery &mdash; previous, escape
+	<li>Output HTML code: <code>div.code</code>
+	<li>Link or button with confirmation: <code>.dialog[title][data-caption]</code>
+	<li>Link with prompt: <code>a.dialog[title][data-caption][data-prompt]</code>
+	<li>Check group of boxes: <code>input[data-group]</code>, <code>[class~="data-group"]</code>
+	<li>Toggle class: <code>a[href^='#'][data-class][data-unclass]</code>, <code id="test1">a[data-nodes][data-class][data-unclass]</code> (
+		<a href="#test1" data-class="text-e" data-unclass-x="text-i" data-nodes="#js-behaviours code" class="">test</a>
+		<input type="checkbox" name="chb" data-class="bg-w" data-nodes="#js-behaviours code">
+		<a href="#test2" data-class="invert" data-nodes="body" class="">invert</a>
+		<a href="#test3" data-class="invert" data-nodes="body" class="hide" accesskey="i">(invert)</a>
+		)
+	<li>Set value of target input: <code>a[href^='#'][data-value]</code>
+	<li>Show value of color input: <code>input[type="color"]</code>
+	<!--
+	<li>Submit target button: <code>a[href^='#'][data-submit]</code>
+	<li>Submit form: <code>(select|[type="checkbox"]|[type="search"])[data-submit]</code>
+	-->
+	<li>Align table columns: <code>table.r5</code>
+	<li>Class depending on resize 
+		(<code data-class-mobile="text-y" data-class-desktop="text-n">[data-class-mobile]</code> or 
+		 <code data-class-desktop="text-y" data-class-mobile="text-n">[data-class-desktop]</code>).
+	<li>Asynchronous request: <code>[data-target]</code>
+</ul>
+
+<h3 id="toggle-details">Details</h3>
+
+<p><i class="bg-w">Warning</i>: limited browser support.
+
+<div class="code">
+<details>
+	<summary>Summary</summary>
+	<div class="bg pad">Details</div>
+</details>
+</div>
+
+
+<h2 id="style">Style</h2>
+
+<h3 id="colors">Colors</h3>
+
+<h4 id="colors-inline">Inline</h4>
+
+<div class="code">
+	<a href="#" class="text-e">Error</a>
+	<a href="#" class="text-w">Warning</a>
+	<a href="#" class="text-i">Info</a>
+	<a href="#" class="text-y">Yes</a>
+	<a href="#" class="text-n">No</a>
+	<a href="#">Normal</a>
+	<br>
+	<a href="#" class="bg-e">Error</a>
+	<a href="#" class="bg-w">Warning</a>
+	<a href="#" class="bg-i">Info</a>
+	<a href="#" class="bg-y">Yes</a>
+	<a href="#" class="bg-n">No</a>
+	<a href="#">Normal</a>
+	<br>
+	<a href="#" class="text-e bg-e">Error</a>
+	<a href="#" class="text-w bg-w">Warning</a>
+	<a href="#" class="text-i bg-i">Info</a>
+	<a href="#" class="text-y bg-y">Yes</a>
+	<a href="#" class="text-n bg-n">No</a>
+	<a href="#">Normal</a>
+	<br>
+	<span class="bg-e">Error</span>
+	<span class="bg-w">Warning</span>
+	<span class="bg-i">Info</span>
+	<span class="bg-y">Yes</span>
+	<span class="bg-n">No</span>
+	<span tabindex="0">Normal</span>
+</div>
+	
+<h4 id="colors-buttons">Buttons</h4>
+
+<div class="code">
+<button type="button" class="bg-e">Error</button>
+<button type="button" class="bg-w">Warning</button>
+<button type="button" class="bg-i">Info</button>
+<button type="button" class="bg-y">Yes</button>
+<button type="button" class="bg-n">No</button>
+<button type="button">Normal</button>
+<button type="button" disabled>Disabled</button>
+</div>
+
+<h4 id="colors-blocks">Blocks</h4>
+
+<div class="code">
+<p class="pad bg-e">Error<span class="text-e">Error</span></p>
+<p class="pad bg-w">Warning<span class="text-w">Warning</span></p>
+<p class="pad bg-i">Info<span class="text-i">Info</span></p>
+<p class="pad bg-y">Yes<span class="text-y">Yes</span></p>
+<p class="pad bg-n">No<span class="text-n">No</span></p>
+<p class="pad bg">Bg</p>
+<p class="pad bord">Border</p>
+<p class="pad bg bord">Bg+Border</p>
+<p class="pad bg-i bord">Status+Border</p>
+<p class="btn bg-y">Button-like</p>
+</div>
+	
+<h4 id="colors-icons">Links and Icons</h4>
+
+<div class="bg pad">
+	Icons:
+	<svg class="icon"><use xlink:href="#svg-ok"/></svg>
+	<svg class="icon text-y"><use xlink:href="#svg-ok"/></svg>
+	<br>
+	Simple links:
+	<a href="#x" class=""><svg class="icon"><use xlink:href="#svg-ok"/></svg> Default</a>
+	<a href="#x" class=""><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Icon</a>
+	<a href="#x" class="text-w"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Link</a>
+	<a href="#x" class="text-w"><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Both</a>
+	<br>
+	Hover links:
+	<a href="#x" class="hover"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Default</a>
+	<a href="#x" class="hover"><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Icon</a>
+	<a href="#x" class="hover text-w"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Link</a>
+	<a href="#x" class="hover text-w"><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Both</a>
+	<table class="hover">
+		<tr><td>Table:
+		<td><a href="#x" class=""><svg class="icon"><use xlink:href="#svg-ok"/></svg> Default</a>
+		<td><a href="#x" class=""><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Icon</a>
+		<td><a href="#x" class="text-w"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Link</a>
+		<td><a href="#x" class="text-w"><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Both</a>	
+	</table>
+	<ul class="nav -flip -let">
+		<li><a>Nav:</a>
+		<li><a href="#x" class=""><svg class="icon"><use xlink:href="#svg-ok"/></svg> Default</a>
+		<li><a href="#x" class=""><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Icon</a>
+		<li><a href="#x" class="text-w"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Link</a>
+		<li><a href="#x" class="text-w"><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Both</a>
+	</ul>
+	Buttons:
+	<a href="#x" class="btn bg-i"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Default</a>
+	<a href="#x" class="btn bg-i"><svg class="icon text-e"><use xlink:href="#svg-ok"/></svg> Icon</a>
+	<a href="#x" class="btn bg-i text-e"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Link</a>
+	<a href="#x" class="btn bg-i text-e"><svg class="icon text-e"><use xlink:href="#svg-ok"/></svg> Both</a>
+</div>
+
+<h4>Invert</h4>
+
+<div class="code">
+<div class="invert pad">
+  Inverted text
+  <a href="#">link</a>
+  <span class="bg-e text-e">colors</span>
+</div>
+</div>
+
+	<h3 id="blocks">Blocks</h3>
+
+<h4>Media object</h4>
+
+<div class="code">
+<div class="row">
+	<a href="#media" class="col-0">
+		<svg class="text-w" width="80" height="80">
+			<use xlink:href="#svg-place"/>
+		</svg>
+	</a>
+	<div>
+		Some description
+		<br>
+		<time class="text-n" datetime="1970-01-01">January 1970</time>
+		<br>
+		<a href="#media" class="-btn -inv">Link</a>
+	</div>
+</div>
+</div>
+	
+<h4>Figure</h4>
+
+<div class="code">
+	<figure class="bg c pad">
+		<svg class="text-i" width="80" height="80">
+			<use xlink:href="#svg-place"/>
+		</svg>
+		<figcaption>
+			Figure caption
+		</figcaption>
+	</figure>
+</div>
+	
+<h4>Box</h4>
+
+<div class="code">
+	<div class="shade -dlg c pad rad">
+		<svg class="text-n" width="80" height="80"><use xlink:href="#svg-place"/></svg>
+		<p><b>No items yet</b>
+		<p>Click the button to create new item</p>
+		<a href="#add" class="btn bg-i">Add new item</a>
+	</div>
+</div>
+	
+<h4>Full height</h4>
+
+<div class="code">
+<div class="full bg-w center">Full</div>
+</div>
+
+
+<h3 id="custom">Customization with CSS vars</h3>
 
 <ul>
 <li><code>--text</code> - base text color; default: <code>#222</code></li>
@@ -1433,6 +1502,9 @@ Inside list items, use links pointing at nested lists.
 </ul>
 
 <a class="btn bg-i" href="#theme">Customize</a>
+
+
+
 
 <h2 id="ref">Reference</h2>
 
@@ -1453,16 +1525,16 @@ most important:
 <tr><th>.row<td><a href="#grid">Grid</a><td>div ul .col-0 .col-2 .col-3<td>.flip .let .center<i>.shift .stick .center .wrap .read .narrow</i>
 <tr><th>table<td><a href="#table">Table</a><td>.roll<td>.hover .fit .let .flip
 <tr><th>ul, ol, dl<td><a href="#list">List</a><td><td>.fit .row
+<tr><th>.tree<td><a href="#list-tree">Tree</a><td>ul<td>.accordion .fit
 <tr><th>button, a.btn<td><a href="#colors-buttons">Button</a><td><a href="#form-table">form</a> submit button a span<td>.bg-x <i>[data-target]</i>
 <tr><th>.flip<td>Responsive<td>.row .nav table<td>
 <tr><th>.hide<td>Visibility by media<td>div<td>.hide-mobile .hide-desktop .hide-print .hide-screen
 <tr><th>.target<td><a href="#toggle-div">Toggle</a><td>div<td>.toggle .off .mem <i>.act</i>
 <tr><th>.pop<td><a href="#toggle-popup">Popup</a><td><td>.pop>.shift
-<tr><th>.dlg<td><a href="#toggle-dlg">Modal</a><td>.close<td>.dlg.c.let .dlg.full.center
 <tr><th>.nav<td><a href="#nav">Navigation</a><td>ul<td>.flip .hover .let .bg .center .nav.tabs.mem<i>.act .shift</i>
 <tr><th>.tabs<td><a href="#toggle-tabs">Tabs</a><td>ul.nav<td>
-<tr><th>.tree<td><a href="#toggle-tree">Tree</a><td>ul<td>.accordion .fit
-<tr><th>.gal<td><a href="#toggle-gallery">Gallery</a><td>a .close<td><i>[data-info]</i>
+<tr><th>.dlg<td><a href="#toggle-dlg">Modal</a><td>.close<td>.dlg.c.let .dlg.full.center
+<tr><th>.gal<td><a href="#gallery">Gallery</a><td>a .close<td><i>[data-info]</i>
 <tr><th>.drawer<td><a href="#toggle-drawer">Drawer</a><td>div a.close<td>.shift
 <tr><th>.topbar<td><a href="#scroll">Top bar</a><td><td>.let
 <tr><th>.let<td>Specific modifications to components<td>.row, .nav, .dlg, .topbar, table<td>

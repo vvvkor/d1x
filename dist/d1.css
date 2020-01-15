@@ -16,7 +16,7 @@ body {
     --rad: .2;
     --gap: 1;
     --gap-rate: .5;
-    --topbar: 60px;
+    --topbar: 3.2rem;
     --text-danger: #c00;
     --text-warning: #c70;
     --text-info: #07a;
@@ -207,6 +207,10 @@ code {
     padding: 0 var(--gap-xs);
 }
 
+pre code {
+    padding: 0;
+}
+
 abbr {
     border-bottom: thin dotted;
 }
@@ -281,7 +285,7 @@ dt {
     font-weight: bold;
 }
 
-dd {
+dt, dd {
     margin-bottom: var(--gap-s);
 }
 
@@ -658,6 +662,10 @@ mark {
     align-items: center;
 }
 
+.shift {
+    margin-left: auto;
+}
+
 @media (max-width: 899px) {
     body {
         font-size: medium;
@@ -688,6 +696,12 @@ mark {
         left: 3em;
         top: 90%;
     }
+
+    .nav:not(.let):not(.flip)>li.shift>ul:not(.toggle),
+    .nav:not(.let):not(.flip)>li.shift~li>ul:not(.toggle) {
+        left: auto;
+        right: 0;
+    }
 }
 
 @media (min-width: 900px) {
@@ -712,10 +726,6 @@ mark {
 
     .dlg.pad {
         padding: var(--gaps-l);
-    }
-
-    .shift {
-        margin-left: auto;
     }
 
     .stick {
@@ -1042,7 +1052,7 @@ form .mar {
         display: none;
     }
 
-    .js table.flip tr {
+    .js table.flip tr:not(.hide) {
         display: flex;
         flex-wrap: wrap;
         margin: var(--gap-n) 0;

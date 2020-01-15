@@ -1,6 +1,6 @@
 {
   "use": ["postcss-custom-properties", "postcss-calc", "postcss-discard-comments", "perfectionist"],
-  "input": "src/d1.css",
+  "input": "src/index.css",
   "output": "dist/d1.css",
   "local-plugins": "true",
   "postcss-custom-properties": {

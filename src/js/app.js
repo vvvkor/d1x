@@ -110,6 +110,7 @@ module.exports = new (function(){
   }
 
   this.closest = function(n, q){ //including self
+    if(!n) return n;
     //return n.parentNode.closest(q); //-ie
     do{
       if (n.matches && n.matches(q)) return n;

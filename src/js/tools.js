@@ -55,7 +55,10 @@ module.exports = new(function () {
       on = !on;
       e.preventDefault();
     }
-    if (c !== false) app.e(q, m => this.setClass(n, c, on, m, u));
+    if (c !== false){
+      app.e(q, m => this.setClass(n, c, on, m, u));
+      app.fire('updated', {q: q});
+    }
   }
 
   this.addTopLink = function(n){
