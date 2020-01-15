@@ -38,8 +38,8 @@ module.exports = new(function () {
 
   this.initDlg = function(n, h, t, f, def, rev){
     if(!this.dlg) this.dlg = app.ins('div', '', {className: app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg}, document.body);
-    let c, d = this.dlg;
-    while(c=d.firstChild) d.removeChild(c);
+    let d = this.dlg;
+    app.clr(d);
     let hh = app.ins('div', '', {className: 'row bg'}, d);
     app.ins('h3', h || '', {className: 'fit pad'}, hh);
     app.x(hh, 0, 'pad hover col-0');

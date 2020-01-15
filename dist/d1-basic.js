@@ -1,4 +1,4 @@
-/*! d1x v1.0.21 */
+/*! d1x v1.0.22 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,14 +82,14 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 19);
+/******/ 	return __webpack_require__(__webpack_require__.s = 21);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1 app v1.0.21 */
+/*! d1 app v1.0.22 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -270,16 +270,22 @@ module.exports = new function () {
 
 
   this.ins = function (tag, t, attrs, n, pos) {
-    var c = document.createElement(tag || 'span');
-    if (t && t.tagName) c.appendChild(t);else if (t) c.innerHTML = t; //c.appendChild(document.createTextNode(t||''));
+    var c = tag === false && !(t && t.tagName) ? document.createTextNode(t || '') : document.createElement(tag || 'span');
+    if (t && t.tagName) c.appendChild(t);else if (t && tag !== false) c.innerHTML = t;
 
-    if (attrs) {
+    if (attrs && c.tagName) {
       for (var i in attrs) {
         if (i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);else c[i] = attrs[i];
       }
     }
 
     return n ? pos ? n.parentNode.insertBefore(c, pos < 0 ? n : n.nextSibling) : pos === false ? n.insertBefore(c, n.firstChild) : n.appendChild(c) : c;
+  };
+
+  this.clr = function (n) {
+    if (n) while (n.firstChild) {
+      n.removeChild(n.firstChild);
+    }
   };
 
   this.x = function (d, pos, cls) {
@@ -759,13 +765,8 @@ module.exports = new function () {
     if (!this.dlg) this.dlg = app.ins('div', '', {
       className: app.opt.cToggle + ' ' + app.opt.cOff + ' ' + this.opt.ccDlg
     }, document.body);
-    var c,
-        d = this.dlg;
-
-    while (c = d.firstChild) {
-      d.removeChild(c);
-    }
-
+    var d = this.dlg;
+    app.clr(d);
     var hh = app.ins('div', '', {
       className: 'row bg'
     }, d);
@@ -973,13 +974,15 @@ var map = {
 	"./fliptable.js": 9,
 	"./form.js": 10,
 	"./gallery.js": 11,
-	"./lookup.js": 12,
-	"./scroll.js": 13,
-	"./tablex.js": 14,
-	"./theme.js": 15,
+	"./icons.js": 12,
+	"./items.js": 13,
+	"./lookup.js": 14,
+	"./scroll.js": 15,
+	"./tablex.js": 16,
+	"./theme.js": 17,
 	"./toggle.js": 1,
-	"./tools.js": 16,
-	"./valid.js": 17
+	"./tools.js": 18,
+	"./valid.js": 19
 };
 
 
@@ -1205,10 +1208,7 @@ module.exports = new function () {
   this.build = function (n, x) {
     var _this3 = this;
 
-    while (this.win.firstChild) {
-      this.win.removeChild(this.win.firstChild);
-    }
-
+    app.clr(this.win);
     if (typeof x === 'string') x = this.parse(x || app.attr(n, 'data-def'));
     var min = this.getLimit(n, 'min', 0);
     var max = this.getLimit(n, 'max', 0); //time
@@ -1434,17 +1434,20 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
+    app.e('code[class*="language-"]', function (n) {
+      return _this.hiliteNode(n);
+    });
     app.e(this.opt.qCode, function (n) {
       return _this.showCode(n);
     });
-    app.e('code[class*="language-"]', function (n) {
-      return n.innerHTML = _this.hilite(_this.spaces(n.textContent), app.a(n.classList).filter(function (c) {
-        return c.match(/language-/);
-      })[0].substr(9));
-    });
     app.listen('updated', function (e) {
-      return _this.update(e.q);
+      return _this.updateCode(e);
     });
+  };
+
+  this.updateCode = function (e) {
+    var p = app.closest(e.n ? e.n : app.q(e.q), this.opt.qCode);
+    if (p) this.showCode(p);
   };
 
   this.showCode = function (src) {
@@ -1475,19 +1478,20 @@ module.exports = new function () {
     } //src.vCode.textContent = t;
 
 
-    src.vCode.innerHTML = this.hilite(t, lang);
+    src.vCode.innerHTML = this.hiliteText(t, lang);
   };
 
   this.spaces = function (s) {
     return s.replace(/^\s*\r?\n|\s+$/g, '').replace(/\t/g, '  '); //.replace(/=""/g, '');
   };
 
-  this.update = function (q) {
-    var p = app.closest(app.q(q), this.opt.qCode);
-    if (p) this.showCode(p);
+  this.hiliteNode = function (n) {
+    n.innerHTML = this.hiliteText(this.spaces(n.textContent), app.a(n.classList).filter(function (c) {
+      return c.match(/language-/);
+    })[0].substr(9));
   };
 
-  this.hilite = function (t, lang, pre) {
+  this.hiliteText = function (t, lang) {
     var _this2 = this;
 
     var l = this.langs[lang];
@@ -2059,6 +2063,109 @@ module.exports = new function () {
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/*! icons - include svg icons */
+var app = __webpack_require__(0);
+
+module.exports = new function () {
+  "use strict";
+
+  this.name = 'icons';
+  this.opt = {
+    aReplace: 'data-ico',
+    aAdd: 'data-icon'
+  };
+  this.icons = {
+    'user': ['user', ':)'],
+    'find': ['find', '?'],
+    'config': ['config', '*'],
+    'open': ['add', '+'],
+    'world': ['place', '%']
+  };
+
+  this.init = function () {
+    var _this = this;
+
+    app.e('[' + this.opt.aReplace + ']', function (n) {
+      return _this.addIcon(n, app.attr(n, _this.opt.aReplace), true);
+    });
+    app.e('[' + this.opt.aAdd + ']', function (n) {
+      return _this.addIcon(n, app.attr(n, _this.opt.aAdd));
+    });
+  };
+
+  this.addIcon = function (n, i, clr) {
+    var t = n.textContent;
+    if (clr) app.clr(n);
+    var s = n.insertBefore(app.i(i), n.firstChild);
+    if (s.nextSibling) app.ins(false, ' ', {}, s);else if (!n.title) n.title = t;
+  };
+}();
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! items - copy, hide, delete items */
+var app = __webpack_require__(0);
+
+module.exports = new function () {
+  "use strict";
+
+  this.name = 'items';
+  this.opt = {
+    qItem: 'li, tr, .item' // div
+
+  };
+
+  this.init = function () {
+    var _this = this;
+
+    app.listen('click', function (e) {
+      return _this.onClick(e);
+    });
+  };
+
+  this.onClick = function (e) {
+    var n = app.closest(e.target, 'a[href^="#"]');
+
+    if (n && n.hash) {
+      var d = app.closest(e.target, this.opt.qItem);
+
+      if (d) {
+        var cont = d.parentNode;
+
+        if (this.process(d, n.hash.substr(1))) {
+          app.fire('updated', {
+            n: cont
+          });
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }
+    }
+  };
+
+  this.process = function (n, x) {
+    var r = true;
+
+    if (x == 'copy') {
+      n.parentNode.insertBefore(n.cloneNode(true), n.nextSibling);
+    } else if (x == 'del') {
+      if (n.parentNode.children.length > 1) n.parentNode.removeChild(n);
+    } else if (x == 'delete') {
+      n.parentNode.removeChild(n);
+    } else if (x == 'hide') {
+      n.classList.add(app.opt.cHide);
+    } else r = false;
+
+    return r;
+  };
+}();
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
 /*! lookup - autocomplete lookups with data from XHTTP request */
 var app = __webpack_require__(0);
 
@@ -2215,10 +2322,7 @@ module.exports = new function () {
   this.build = function (n, d) {
     var _this3 = this;
 
-    while (this.win.firstChild) {
-      this.win.removeChild(this.win.firstChild);
-    }
-
+    app.clr(this.win);
     var ul = app.ins('ul', '', {
       className: 'nav let hover'
     }, this.win);
@@ -2326,10 +2430,7 @@ module.exports = new function () {
   };
 
   this.setOptions = function (n, a) {
-    while (n.firstChild) {
-      n.removeChild(n.firstChild);
-    }
-
+    app.clr(n);
     var z = app.attr(n, 'data-placeholder') || '';
     if (!a || a.length == 0 || z) app.ins('option', z || '-', {
       value: ''
@@ -2354,7 +2455,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! scroll - scrolling behaviours (topbar, drawer) */
@@ -2461,7 +2562,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! tablex - filter and sort HTML table */
@@ -2766,7 +2867,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! theme - live theme configurator */
@@ -2879,7 +2980,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! tools - miscellaneous utilities */
@@ -2890,6 +2991,10 @@ module.exports = new function () {
 
   this.name = 'tools';
   this.opt = {
+    aNodes: 'data-nodes',
+    aSet: 'data-set',
+    aUnset: 'data-unset',
+    aAttr: 'data-attr',
     qTop: 'h2[id], h3[id], h4[id], h5[id], h6[id]',
     // h1[id],
     minDesktop: 900
@@ -2901,7 +3006,7 @@ module.exports = new function () {
     app.e('table[class]', function (n) {
       return _this.alignCells(n);
     });
-    app.e('[data-class]', function (n) {
+    app.e('[' + this.opt.aSet + ']', function (n) {
       return _this.toggleClass(n);
     });
     app.e(this.opt.qTop, function (n) {
@@ -2918,7 +3023,7 @@ module.exports = new function () {
 
   this.onClick = function (e) {
     var n = e.target;
-    var a = app.closest(n, '[data-class]');
+    var a = app.closest(n, '[' + this.opt.aSet + ']');
     if (a) this.toggleClass(n, e);
   };
 
@@ -2938,14 +3043,16 @@ module.exports = new function () {
     }
   };
 
-  this.setClass = function (a, c, on, n, u) {
-    app.dbg(['setclass', n, c]);
-    if (u !== false) n.className = on ? c : u || '';else c.split(/\s+/).filter(function (cc) {
+  this.setClass = function (n, on, m, c) {
+    app.dbg(['setclass', m, c]);
+    var u = n.type == 'radio' ? '' : app.attr(n, this.opt.aUnset, false);
+    var attr = app.attr(n, this.opt.aAttr) || 'class';
+    if (attr !== 'class') m.setAttribute(attr, on ? c : u || '');else if (u !== false) m.className = on ? c : u || '';else c.split(/\s+/).filter(function (cc) {
       return cc;
     }).forEach(function (cc) {
-      return n.classList[on ? 'add' : 'remove'](cc);
+      return m.classList[on ? 'add' : 'remove'](cc);
     });
-    a.classList[on ? 'add' : 'remove'](app.opt.cAct);
+    n.classList[on ? 'add' : 'remove'](app.opt.cAct);
   };
 
   this.toggleClass = function (n, e) {
@@ -2953,9 +3060,8 @@ module.exports = new function () {
 
     if (n.type == 'radio' && !n.checked) return;
     var box = n.type == 'checkbox' || n.type == 'radio';
-    var q = app.attr(n, 'data-nodes', n.hash);
-    var c = app.attr(n, 'data-class', false);
-    var u = n.type == 'radio' ? '' : app.attr(n, 'data-unclass', false);
+    var q = app.attr(n, this.opt.aNodes, n.hash);
+    var c = app.attr(n, this.opt.aSet, false);
     var on = box ? n.checked : n.classList.contains(app.opt.cAct);
 
     if (e && !box) {
@@ -2965,7 +3071,7 @@ module.exports = new function () {
 
     if (c !== false) {
       app.e(q, function (m) {
-        return _this2.setClass(n, c, on, m, u);
+        return _this2.setClass(n, on, m, c);
       });
       app.fire('updated', {
         q: q
@@ -2992,7 +3098,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! valid - custom form validation messages */
@@ -3096,8 +3202,8 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 18 */,
-/* 19 */
+/* 20 */,
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var app = __webpack_require__(0);

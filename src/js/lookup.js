@@ -121,7 +121,7 @@ module.exports = new(function () {
   }
   
   this.build = function(n, d){
-    while(this.win.firstChild) this.win.removeChild(this.win.firstChild);
+    app.clr(this.win);
     let ul = app.ins('ul', '', {className: 'nav let hover'}, this.win);
     let w, j = 0;
     let go = app.attr(n, this.opt.aGoto);
@@ -212,7 +212,7 @@ module.exports = new(function () {
   }
 
   this.setOptions = function(n,a){
-    while(n.firstChild) n.removeChild(n.firstChild);
+    app.clr(n);
     let z = app.attr(n, 'data-placeholder') || '';
     if(!a || a.length==0 || z) app.ins('option',z||'-',{value:''},n);
     if(a) for(let i=0;i<a.length;i++) app.ins('option',a[i].nm,{value:a[i].id},n);

@@ -155,7 +155,7 @@ module.exports = new(function () {
   }
   
   this.build = function(n, x){
-    while(this.win.firstChild) this.win.removeChild(this.win.firstChild);
+    app.clr(this.win);
     if (typeof x === 'string') x = this.parse(x || app.attr(n, 'data-def'));
     let min = this.getLimit(n, 'min', 0);
     let max = this.getLimit(n, 'max', 0);

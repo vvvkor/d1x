@@ -19,6 +19,7 @@
 - (none) -> hr.fit
 - .topbar -> .topbar(.let)
 - (.col-3) -> form>.row>:first-child
+- [data-class] -> [data-set]
 = form>table, form>button / *?* /
 
 # js classes
@@ -36,6 +37,7 @@
 - .mem
 - .gallery
 - .pic
+- .item
 + (.act)
 - (.is-on)
 - (.is-off)
@@ -249,7 +251,7 @@ form>table tr>*{border:none;}
 .fix.l{top:auto;bottom:0;}
 
 /* nav */
-.nav li, .pop{position:relative;}
+.nav li, .pop, .item{position:relative;}
 ul.nav{display:flex;flex-wrap:wrap;}
 	.nav.let{display:block;}
 	.nav.let ul{top:90%;left:3em;}
@@ -263,7 +265,6 @@ ul.nav, .nav ul{list-style:none;padding:0;margin:0;}
 
 /* pop, nav */
 .pop{display:inline-block;}
-.nav li, .pop{position:relative;}
 .nav ul, .pop>div{background:var(--bg);background-clip:padding-box;}
 	.nav ul, .pop>div{position:absolute;left:0;top:100%;min-width:12em;max-width:80vw;}
 	.nav ul ul{left:100%;top:0;}

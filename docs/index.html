@@ -61,14 +61,13 @@
 
 - icons.js: ins([paths]), icons[]
 ? code: ".class" always
-- a#copy#del#hide ^ul,tr,div
-	- .remove: add X link to remove element itself
 - better .js-live-val
 ? gallery: unuse :target
 ?= require in browser (dev)
 = .gal to js gallery: only if .toggle?
 = outline icons [ok]
 = onscroll only if has topbar
++ a#copy#del#delete#hide ^ul,tr,.item
 + hilite html attrLang
 + update .code after apply options
 + calendar: tools: nobr
@@ -127,8 +126,8 @@
 -->
 	
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.21/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.21/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.22/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.22/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -137,10 +136,10 @@
 		console.log('d1=', d1);
 	</script>
 </head>
-<body class="-bg" data-d1='{"hOk":"#yes","debug":1,"textIcons":false,"disable":["-theme","-valid"],"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
+<body class="-bg" data-d1='{"hOk":"#yes","debug":1,"textIcons":false,"disable":["-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
 <div class="topbar -shade -let" id="topbar">
 	<a href="#menu" class="pad hide-desktop"><svg class="icon" width="32" height="32"><use xlink:href="#svg-menu"/></svg></a>
-	<a href="#top" class="pad"><b>d1</b> v1.0.21</a>
+	<a href="#top" class="pad"><b>d1</b> v1.0.22</a>
 	<code class="pad">npm install d1css</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1" title="GitHub" class="pad">GitHub</a>
 </div>
@@ -195,6 +194,8 @@
 			<li><a href="#topbars">Topbar</a>
 			<li><a href="#fetch">Fetch</a>
 			<li><a href="#util">Utilities</a>
+			<li><a href="#items">Items</a>
+			<li><a href="#icons">Icons</a>
 			<li><a href="#toggle-details">Details</a>
 			</ul>
 		<li><a href="#n-style">Style</a> &rsaquo;
@@ -301,9 +302,9 @@ Mostly, default styling is kept.
 
 <fieldset class="mar">
 <legend>Options</legend>
-	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-class="" checked> Default margins</label><br>
-	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-class="mar"> Smaller margins: <code>h1.mar</code></label><br>
-	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-class="fit"> No margins: <code>h1.fit</code></label>
+	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="" checked> Default margins</label><br>
+	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="mar"> Smaller margins: <code>h1.mar</code></label><br>
+	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="fit"> No margins: <code>h1.fit</code></label>
 </fieldset>
 
 <div id="headings" class="code">
@@ -328,10 +329,10 @@ Mostly, default styling is kept.
 
 <fieldset class="mar">
 <legend>Options</legend>
-	<label><input name="ul-demo" type="radio" data-nodes="#lists>*" data-class="" checked> Default</label><br>
-	<label><input name="ul-demo" type="radio" data-nodes="#lists>*" data-class="fit"> Remove margins and list style <code>.fit</code></label><br>
-	<label><input name="ul-demo" type="radio" data-nodes="#lists>*" data-class="row"> Wide horizontal <code>.row</code></label><br>
-	<label><input name="ul-demo" type="radio" data-nodes="#lists>*" data-class="row let"> Compact horizontal <code>.row.let</code></label>
+	<label><input name="ul-demo" type="radio" data-nodes="#lists>*" data-set="" checked> Default</label><br>
+	<label><input name="ul-demo" type="radio" data-nodes="#lists>*" data-set="fit"> Remove margins and list style <code>.fit</code></label><br>
+	<label><input name="ul-demo" type="radio" data-nodes="#lists>*" data-set="row"> Wide horizontal <code>.row</code></label><br>
+	<label><input name="ul-demo" type="radio" data-nodes="#lists>*" data-set="row let"> Compact horizontal <code>.row.let</code></label>
 </fieldset>
 
 <div id="lists" class="code">
@@ -402,10 +403,10 @@ To remember state, use <code>.mem</code>.
 By default, <code>table</code> is styled with border, unless it is a direct descendant of <code>form</code>.
 <fieldset>
 <legend>Options</legend>
-	<label><input type="checkbox" name="demo-table-hover" data-class="hover" data-nodes="#demo-table" checked> Highlight hovered row <code>.hover</code></label><br>
-	<label><input type="checkbox" name="demo-table-fit" data-class="fit" data-nodes="#demo-table"> Hide borders <code>.fit</code> <!--(for responsive: heading and value on one line)--> </label><br>
-	<label><input type="checkbox" name="demo-table-let" data-class="let" data-nodes="#demo-table"> Lined style <code>.let</code></label><br>
-	<label><input type="checkbox" name="demo-roll" data-class="roll" data-nodes="#demo-roll" checked> Scroll overflowing width <code>.roll &gt; table</code></label>
+	<label><input type="checkbox" name="demo-table-hover" data-set="hover" data-nodes="#demo-table" checked> Highlight hovered row <code>.hover</code></label><br>
+	<label><input type="checkbox" name="demo-table-fit" data-set="fit" data-nodes="#demo-table"> Hide borders <code>.fit</code> <!--(for responsive: heading and value on one line)--> </label><br>
+	<label><input type="checkbox" name="demo-table-let" data-set="let" data-nodes="#demo-table"> Lined style <code>.let</code></label><br>
+	<label><input type="checkbox" name="demo-roll" data-set="roll" data-nodes="#demo-roll" checked> Scroll overflowing width <code>.roll &gt; table</code></label>
 </fieldset>
 <p>
 Add <code>r#, l#, c#</code> (where # is any number) classes to align cells of column number # to the right, left or center, respectively (JavaScript required).
@@ -497,18 +498,18 @@ By default, they all have equal width.
 
 <fieldset>
 <legend>Options</legend>
-<label><input name="grid-flip" type="checkbox" data-nodes="#cols" data-class="flip"> Stack on small screen <code>.flip</code></label><br>
-<label><input name="grid-center" type="checkbox" data-nodes="#cols" data-class="center"> Center columns vertically <code>.center</code></label><br>
-<label><input name="grid-mar" type="checkbox" data-nodes="#cols" data-class="mar"> Add vertical margins <code>.mar</code></label><br>
-<label><input name="grid-main-over" type="checkbox" data-nodes="#col-main-over" data-class="bg text-e pad mar nobr" data-unclass="hide"> Overflow content</label><br>
-<label><input name="grid-let" type="checkbox" data-nodes="#cols" data-class="let"> Allow columns wrapping <code>.let</code></label> (disables column width modifiers)
+<label><input name="grid-flip" type="checkbox" data-nodes="#cols" data-set="flip"> Stack on small screen <code>.flip</code></label><br>
+<label><input name="grid-center" type="checkbox" data-nodes="#cols" data-set="center"> Center columns vertically <code>.center</code></label><br>
+<label><input name="grid-mar" type="checkbox" data-nodes="#cols" data-set="mar"> Add vertical margins <code>.mar</code></label><br>
+<label><input name="grid-main-over" type="checkbox" data-nodes="#col-main-over" data-set="bg text-e pad mar nobr" data-unset="hide"> Overflow content</label><br>
+<label><input name="grid-let" type="checkbox" data-nodes="#cols" data-set="let"> Allow columns wrapping <code>.let</code></label> (disables column width modifiers)
 </fieldset>
 <fieldset>
 <legend>Column width options (applied on central column here)</legend>
-<label><input name="grid-main" type="radio" data-nodes="#col-main" data-class="pad bg-y col-0"> Auto <code>.row &gt; .col-0</code></label><br>
-<label><input name="grid-main" type="radio" data-nodes="#col-main" data-class="pad bg-y"> Single <code>.row &gt; div</code></label><br>
-<label><input name="grid-main" type="radio" data-nodes="#col-main" data-class="pad bg-y col-2" checked> Double <code>.row &gt; .col-2</code></label><br>
-<label><input name="grid-main" type="radio" data-nodes="#col-main" data-class="pad bg-y col-3"> Triple <code>.row &gt; .col-3</code></label><br>
+<label><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y col-0"> Auto <code>.row &gt; .col-0</code></label><br>
+<label><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y"> Single <code>.row &gt; div</code></label><br>
+<label><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y col-2" checked> Double <code>.row &gt; .col-2</code></label><br>
+<label><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y col-3"> Triple <code>.row &gt; .col-3</code></label><br>
 </fieldset>
 </p>
 
@@ -531,10 +532,10 @@ By default, they all have equal width.
 <p>
 <fieldset>
 <legend>Column position options (applied on central column here)</legend>
-<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-class="pad bg-y"> Fill <code>.row &gt; div</code></label><br>
-<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-class="pad bg-y col-0"> Auto <code>.row &gt; .col-0</code></label><br>
-<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-class="pad bg-y col-0 center" checked> Centrify <code>.row &gt; .col-0.center</code></label><br>
-<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-class="pad bg-y col-0 shift"> Shift right <code>.row &gt; .col-0.shift</code> (with subsequent columns)</label><br>
+<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-set="pad bg-y"> Fill <code>.row &gt; div</code></label><br>
+<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-set="pad bg-y col-0"> Auto <code>.row &gt; .col-0</code></label><br>
+<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-set="pad bg-y col-0 center" checked> Centrify <code>.row &gt; .col-0.center</code></label><br>
+<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-set="pad bg-y col-0 shift"> Shift right <code>.row &gt; .col-0.shift</code> (with subsequent columns)</label><br>
 </fieldset>
 </p>
 
@@ -1055,13 +1056,13 @@ and expand it to dropdown navbar on large screen.
 </p>
 <fieldset>
 <legend>Options</legend>
-<label><input name="nav-bg" type="checkbox" data-nodes="#navi" data-class="bg" checked> Add background <code>.bg</code></label><br>
-<label><input name="nav-hover" type="checkbox" data-nodes="#navi" data-class="hover" checked> Highlight active items <code>.hover</code></label><br>
-<label><input name="nav-flip" type="checkbox" data-nodes="#navi" data-class="flip" checked> Stack items on small screen <code>.flip</code></label><br>
-<label><input name="nav-let" type="checkbox" data-nodes="#navi" data-class="let"> Stack items on any screen <code>.let</code></label><br>
-<label><input name="nav-center" type="checkbox" data-nodes="#navi" data-class="center"> Center items vertically <code>.center</code></label><br>
-<label><input name="nav-subtitles" type="checkbox" data-nodes="#navi small" data-class="text-n" data-unclass="hide" checked> Show subtitles</label><br>
-<label><input name="nav-shift" type="checkbox" data-nodes="#navi-search" data-class="shift" checked> Shift some list item(s) to the right <code>li.shift</code></label>
+<label><input name="nav-bg" type="checkbox" data-nodes="#navi" data-set="bg" checked> Add background <code>.bg</code></label><br>
+<label><input name="nav-hover" type="checkbox" data-nodes="#navi" data-set="hover" checked> Highlight active items <code>.hover</code></label><br>
+<label><input name="nav-flip" type="checkbox" data-nodes="#navi" data-set="flip" checked> Stack items on small screen <code>.flip</code></label><br>
+<label><input name="nav-let" type="checkbox" data-nodes="#navi" data-set="let"> Stack items on any screen <code>.let</code></label><br>
+<label><input name="nav-center" type="checkbox" data-nodes="#navi" data-set="center"> Center items vertically <code>.center</code></label><br>
+<label><input name="nav-subtitles" type="checkbox" data-nodes="#navi small" data-set="text-n" data-unset="hide" checked> Show subtitles</label><br>
+<label><input name="nav-shift" type="checkbox" data-nodes="#navi-search" data-set="shift" checked> Shift some list item(s) to the right <code>li.shift</code></label>
 </fieldset>
 </p>
 
@@ -1246,9 +1247,9 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <h3 id="topbars">Topbar</h3>
 
 <p>
-<label><input name="demo-top" type="radio" data-nodes="#topbar" data-class="hide pad"> Disable top bar</label><br>
-<label><input name="demo-top" type="radio" data-nodes="#topbar" data-class="topbar shade" checked> Fixed top bar <code>.topbar</code></label><br>
-<label><input name="demo-top" type="radio" data-nodes="#topbar" data-class="topbar let shade"> Scrollable top bar <code>.topbar.let</code></label>
+<label><input name="demo-top" type="radio" data-nodes="#topbar" data-set="hide pad"> Disable top bar</label><br>
+<label><input name="demo-top" type="radio" data-nodes="#topbar" data-set="topbar shade" checked> Fixed top bar <code>.topbar</code></label><br>
+<label><input name="demo-top" type="radio" data-nodes="#topbar" data-set="topbar let shade"> Scrollable top bar <code>.topbar.let</code></label>
 </p>
 
 <div class="bord">
@@ -1289,11 +1290,13 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 	<li>Link or button with confirmation: <code>.dialog[title][data-caption]</code>
 	<li>Link with prompt: <code>a.dialog[title][data-caption][data-prompt]</code>
 	<li>Check group of boxes: <code>input[data-group]</code>, <code>[class~="data-group"]</code>
-	<li>Toggle class: <code>a[href^='#'][data-class][data-unclass]</code>, <code id="test1">a[data-nodes][data-class][data-unclass]</code> (
-		<a href="#test1" data-class="text-e" data-unclass-x="text-i" data-nodes="#js-behaviours code" class="">test</a>
-		<input type="checkbox" name="chb" data-class="bg-w" data-nodes="#js-behaviours code">
-		<a href="#test2" data-class="invert" data-nodes="body" class="">invert</a>
-		<a href="#test3" data-class="invert" data-nodes="body" class="hide" accesskey="i">(invert)</a>
+	<li>Toggle class or other attribute: <code>a[href^='#'][data-set][data-unset][data-attr]</code>, <code id="test1">a[data-nodes][data-set][data-unset][data-attr]</code> (
+		<input type="checkbox" name="chb" data-set="bg-w" data-nodes="#js-behaviours code" title="bg">
+		| <a href="#test1" data-set="text-e" data-unclass-x="text-i" data-nodes="#js-behaviours code" class="">text</a>
+		| <a href="#test2" data-set="invert" data-nodes="body" class="">invert</a>
+		<a href="#test3" data-set="invert" data-nodes="body" class="hide" accesskey="i">(invert)</a>
+		| <input name="nav-opt" type="checkbox" data-nodes="#test-input" data-set="radio" data-unset="checkbox" data-attr="type" title="input type">
+			<input type="checkbox" id="test-input">
 		)
 	<li>Set value of target input: <code>a[href^='#'][data-value]</code>
 	<li>Show value of color input: <code>input[type="color"]</code>
@@ -1308,6 +1311,51 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 	<li>Asynchronous request: <code>[data-target]</code>
 </ul>
 
+<h3 id="items">Items</h3>
+
+<p>
+Items are <code>li, tr, .item</code>.
+Container is item's parent.
+Hashed links inside items invoke actions:
+<ul>
+	<li><code>#copy</code> copy item
+	<li><code>#del</code> delete item unless it is last in the container
+	<li><code>#delete</code> delete items, even the last one
+	<li><code>#hide</code> hide item
+</ul>
+
+<div class="code">
+	<div class="bg mar pad">
+		<span class="item"> <a href="#copy">+</a> <a href="#hide">&mdash;</a> <a href="#delete">&#x2715;</a> Span item </span>
+	</div>
+	<div class="item bg-i pad mar item">
+		<div class="close nobr">
+			<a href="#copy" class="pad">+</a>
+			<a href="#hide" class="pad">&mdash;</a>
+			<a href="#delete" class="pad">&#x2715;</a>
+		</div>
+		Div item
+	</div>
+	<ul class="bg">
+		<li>List item <a href="#copy">+</a> <a href="#hide">&mdash;</a> <a href="#del">&#x2715;</a></li>
+	</ul>
+	<table class="mar">
+		<tbody>
+			<tr><td><a href="#copy">+</a> <a href="#hide">&mdash;</a> <a href="#del">&#x2715;</a></td><td>Table row item</td><td><input name="items[]"></td></tr>
+		</tbody>
+	</table>
+</div>
+
+<h3 id="icons">Icons</h3>
+
+<ul class="nav bg hover">
+	<li><a href="#x" data-icon="world"></a>
+	<li><a href="#x" data-ico="open">Open</a>
+	<li><a href="#x" data-icon="user">User</a>
+	<li><a href="#x" class="bg-w text-w" data-ico="config">Config</a>
+	<li><a href="#x" class="bg-y text-y" data-icon="find">Find</a>
+</ul>
+	
 <h3 id="toggle-details">Details</h3>
 
 <p><i class="bg-w">Warning</i>: limited browser support.

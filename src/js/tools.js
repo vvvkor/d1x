@@ -9,13 +9,17 @@ module.exports = new(function () {
   this.name = 'tools';
 
   this.opt = {
+    aNodes: 'data-nodes',
+    aSet: 'data-set',
+    aUnset: 'data-unset',
+    aAttr: 'data-attr',
     qTop: 'h2[id], h3[id], h4[id], h5[id], h6[id]', // h1[id],
     minDesktop: 900
   };
 
   this.init = function () {
     app.e('table[class]', n => this.alignCells(n));
-    app.e('[data-class]', n => this.toggleClass(n));
+    app.e('[' + this.opt.aSet + ']', n => this.toggleClass(n));
     app.e(this.opt.qTop, n => this.addTopLink(n));
     app.listen('click', e => this.onClick(e));
     this.onResize();
@@ -24,7 +28,7 @@ module.exports = new(function () {
 
   this.onClick = function(e){
     let n = e.target;
-    let a = app.closest(n, '[data-class]');
+    let a = app.closest(n, '[' + this.opt.aSet + ']');
     if(a) this.toggleClass(n, e)
   }
 
@@ -37,26 +41,28 @@ module.exports = new(function () {
     }
   }
 
-  this.setClass = function(a, c, on, n, u){
-    app.dbg(['setclass', n, c]);
-    if(u !== false) n.className = on ? c : (u || '');
-    else c.split(/\s+/).filter(cc => cc).forEach(cc => n.classList[on ? 'add' : 'remove'](cc));
-    a.classList[on ? 'add' : 'remove'](app.opt.cAct);
+  this.setClass = function(n, on, m, c){
+    app.dbg(['setclass', m, c]);
+    let u = (n.type == 'radio') ? '' : app.attr(n, this.opt.aUnset, false);
+    let attr = app.attr(n, this.opt.aAttr) || 'class';
+    if(attr !== 'class') m.setAttribute(attr, on ? c : (u || ''));
+    else if(u !== false) m.className = on ? c : (u || '');
+    else c.split(/\s+/).filter(cc => cc).forEach(cc => m.classList[on ? 'add' : 'remove'](cc));
+    n.classList[on ? 'add' : 'remove'](app.opt.cAct);
   }
 
   this.toggleClass = function(n, e) {
     if(n.type == 'radio' && !n.checked) return;
     let box = (n.type == 'checkbox' || n.type == 'radio');
-    let q = app.attr(n, 'data-nodes', n.hash);
-    let c = app.attr(n, 'data-class', false);
-    let u = (n.type == 'radio') ? '' : app.attr(n, 'data-unclass', false);
+    let q = app.attr(n, this.opt.aNodes, n.hash);
+    let c = app.attr(n, this.opt.aSet, false);
     let on = box ? n.checked : n.classList.contains(app.opt.cAct);
     if(e && !box){
       on = !on;
       e.preventDefault();
     }
     if (c !== false){
-      app.e(q, m => this.setClass(n, c, on, m, u));
+      app.e(q, m => this.setClass(n, on, m, c));
       app.fire('updated', {q: q});
     }
   }

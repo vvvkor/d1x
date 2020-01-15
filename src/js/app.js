@@ -157,21 +157,30 @@ module.exports = new (function(){
 
   //pos: -1=before, false=prepend, 0=append(default), 1=after
   this.ins = function(tag, t, attrs, n, pos) {
-    let c = document.createElement(tag || 'span');
+    let c = (tag===false && !(t && t.tagName))
+      ? document.createTextNode(t || '')
+      : document.createElement(tag || 'span');
+      
     if (t && t.tagName) c.appendChild(t);
-    else if (t) c.innerHTML = t; //c.appendChild(document.createTextNode(t||''));
-    if (attrs) {
+    else if (t && tag!==false) c.innerHTML = t;
+    
+    if (attrs && c.tagName) {
       for (let i in attrs) {
         if(i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);
         else c[i] = attrs[i];
       }
     }
+    
     return n
       ? (pos
         ? n.parentNode.insertBefore(c, pos<0 ? n : n.nextSibling)
         : (pos===false ? n.insertBefore(c, n.firstChild) : n.appendChild(c))
         )
       : c;
+  }
+  
+  this.clr = function(n){
+    if(n) while(n.firstChild) n.removeChild(n.firstChild);
   }
 
   this.x = function(d, pos, cls){

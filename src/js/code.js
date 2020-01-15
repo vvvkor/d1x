@@ -41,11 +41,16 @@ module.exports = new(function () {
   };
 
   this.init = function () {
+    app.e('code[class*="language-"]', n => this.hiliteNode(n));
     app.e(this.opt.qCode, n => this.showCode(n));
-    app.e('code[class*="language-"]', n => n.innerHTML = this.hilite(this.spaces(n.textContent), app.a(n.classList).filter(c => c.match(/language-/))[0].substr(9)));
-    app.listen('updated', e => this.update(e.q));
+    app.listen('updated', e => this.updateCode(e));
   }
 
+  this.updateCode = function(e){
+    let p = app.closest(e.n ? e.n : app.q(e.q), this.opt.qCode);
+    if(p) this.showCode(p);
+  }
+  
   this.showCode = function(src){
     let lang = app.attr(src, this.opt.aLang, this.opt.defLang);
     let t = this.spaces(src.innerHTML);
@@ -60,7 +65,7 @@ module.exports = new(function () {
       src.vCode = cod;
     }
     //src.vCode.textContent = t;
-    src.vCode.innerHTML = this.hilite(t, lang);
+    src.vCode.innerHTML = this.hiliteText(t, lang);
   }
   
   this.spaces = function(s){
@@ -70,12 +75,14 @@ module.exports = new(function () {
       //.replace(/=""/g, '');
   }
   
-  this.update = function(q){
-    let p = app.closest(app.q(q), this.opt.qCode);
-    if(p) this.showCode(p);
+  this.hiliteNode = function(n){
+    n.innerHTML = this.hiliteText(
+      this.spaces(n.textContent), 
+      app.a(n.classList).filter(c => c.match(/language-/))[0].substr(9)
+      );
   }
   
-  this.hilite = function(t, lang, pre){
+  this.hiliteText = function(t, lang){
     let l = this.langs[lang];
     let d = app.ins('div');
     d.textContent = t;

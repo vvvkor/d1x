@@ -1,4 +1,4 @@
-/*! d1css v1.0.21 */
+/*! d1css v1.0.22 */
 
 body {
     --text: #000;
@@ -371,7 +371,7 @@ form>table tr>* {
     bottom: 0;
 }
 
-.nav li, .pop {
+.nav li, .pop, .item {
     position: relative;
 }
 
@@ -426,10 +426,6 @@ ul.nav, .nav ul {
 
 .pop {
     display: inline-block;
-}
-
-.nav li, .pop {
-    position: relative;
 }
 
 .nav ul, .pop>div {
