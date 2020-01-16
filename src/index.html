@@ -20,7 +20,7 @@
 </head>
 <body class="-bg" data-d1='{"hOk":"#yes","debug":1,"textIcons":false,"disable":["-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
 <div class="topbar -shade -let" id="topbar">
-	<a href="#menu" class="pad hide-desktop"><svg class="icon" width="32" height="32"><use xlink:href="#svg-menu"/></svg></a>
+	<a href="#menu" class="pad hide-desktop" data-ico="menu" title="Menu">&equiv;</a>
 	<a href="#top" class="pad"><b>d1</b> v0.0.0</a>
 	<code class="pad">npm install d1css</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1" title="GitHub" class="pad">GitHub</a>
@@ -443,13 +443,9 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 <input type="submit" value="Submit">
 <input type="submit" value="Disabled" disabled>
 <button type="submit">Button</button>
-<button type="submit" class="bg-e">
-	<svg class="icon" width="32" height="32"><use xlink:href="#svg-ok"/></svg> Icon
-</button>
-<button type="submit" class="bg-e">
-	<svg class="icon" width="32" height="32"><use xlink:href="#svg-ok"/></svg>
-</button>
-<a href="#x" class="btn"><svg class="icon" width="32" height="32"><use xlink:href="#svg-ok"/></svg> Link</a>
+<button type="submit" class="bg-e" data-icon="ok">Icon</button>
+<button type="submit" class="bg-e" data-icon="ok"></button>
+<a href="#x" class="btn" data-icon="ok"> Link</a>
 <br>
 <input type="submit" value="Submit">
 	<!--
@@ -1188,17 +1184,19 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <h3 id="items">Items</h3>
 
 <p>
-Items are <code>.item</code>.
+Items are nodes with class <code>item</code>.
 Container is items' common parent.
+Containers with items can be nested.
 Hashed links inside items invoke actions on containing item.
-If link needs to be outside of the item, set link's <code>[data-item]</code> attribute to query selector pointing at item.
+If link needs to be outside of the item, point at item with query selector in link's <code>[data-item]</code> attribute.
+
 <ul>
 	<li><code>#copy</code> copy item
+	<li><code>#hide</code> hide item
 	<li><code>#del</code> delete item unless it is last in the container
 	<li><code>#delete</code> delete item, even the last one
 	<li><code>#delall</code> delete <i>all items</i> inside container defined by <code>[data-item]</code>
 	<li><code>#clear</code> delete <i>all nodes</i> inside container defined by <code>[data-item]</code>
-	<li><code>#hide</code> hide item
 </ul>
 
 <div class="code">
@@ -1327,41 +1325,40 @@ If link needs to be outside of the item, set link's <code>[data-item]</code> att
 	
 <h4 id="colors-icons">Links and Icons</h4>
 
-<div class="bg pad">
-	Icons:
-	<svg class="icon"><use xlink:href="#svg-ok"/></svg>
-	<svg class="icon text-y"><use xlink:href="#svg-ok"/></svg>
+<div class="code">
+	Span:
+	<span data-icon="ok"></span>,
+	<span class="text-y" data-icon="ok"></span>,
+	<span class="text-y" data-ico="ok">title</span>,
+	<span class="text-y" data-icon="ok">caption</span>
+	<br>
+	Span with absent icon:
+	<span  data-icon="noSvg"></span>,
+	<span class="text-y" data-icon="noSvg"></span>,
+	<span class="text-y" data-ico="noSvg">title</span>,
+	<span class="text-y" data-icon="noSvg">caption</span>
 	<br>
 	Simple links:
-	<a href="#x" class=""><svg class="icon"><use xlink:href="#svg-ok"/></svg> Default</a>
-	<a href="#x" class=""><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Icon</a>
-	<a href="#x" class="text-w"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Link</a>
-	<a href="#x" class="text-w"><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Both</a>
+	<a href="#x" data-icon="ok" class="">Default</a>
+	<a href="#x" data-icon="ok" class="text-y">OK</a>
 	<br>
 	Hover links:
-	<a href="#x" class="hover"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Default</a>
-	<a href="#x" class="hover"><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Icon</a>
-	<a href="#x" class="hover text-w"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Link</a>
-	<a href="#x" class="hover text-w"><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Both</a>
-	<table class="hover">
-		<tr><td>Table:
-		<td><a href="#x" class=""><svg class="icon"><use xlink:href="#svg-ok"/></svg> Default</a>
-		<td><a href="#x" class=""><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Icon</a>
-		<td><a href="#x" class="text-w"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Link</a>
-		<td><a href="#x" class="text-w"><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Both</a>	
-	</table>
-	<ul class="nav -flip -let">
-		<li><a>Nav:</a>
-		<li><a href="#x" class=""><svg class="icon"><use xlink:href="#svg-ok"/></svg> Default</a>
-		<li><a href="#x" class=""><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Icon</a>
-		<li><a href="#x" class="text-w"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Link</a>
-		<li><a href="#x" class="text-w"><svg class="icon text-y"><use xlink:href="#svg-ok"/></svg> Both</a>
-	</ul>
+	<a href="#x" data-icon="ok" class="hover">Default</a>
+	<a href="#x" data-icon="ok" class="hover text-y">OK</a>
+	<br>
 	Buttons:
-	<a href="#x" class="btn bg-i"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Default</a>
-	<a href="#x" class="btn bg-i"><svg class="icon text-e"><use xlink:href="#svg-ok"/></svg> Icon</a>
-	<a href="#x" class="btn bg-i text-e"><svg class="icon"><use xlink:href="#svg-ok"/></svg> Link</a>
-	<a href="#x" class="btn bg-i text-e"><svg class="icon text-e"><use xlink:href="#svg-ok"/></svg> Both</a>
+	<a href="#x" data-icon="ok" class="btn bg-i">Default</a>
+	<a href="#x" data-icon="ok" class="btn bg-y">OK</a>
+	<table class="hover mar">
+		<tr><td>Table:
+		<td><a href="#x" data-icon="ok" class="">Default</a>
+		<td><a href="#x" data-icon="ok" class="text-y">OK</a>
+	</table>
+	<ul class="nav bg hover mar">
+		<li><a>Nav:</a>
+		<li><a href="#x" data-icon="ok" class="">Default</a>
+		<li><a href="#x" data-icon="ok" class="text-y">OK</a>
+	</ul>
 </div>
 
 <h4>Invert</h4>
@@ -1380,11 +1377,7 @@ If link needs to be outside of the item, set link's <code>[data-item]</code> att
 
 <div class="code">
 <div class="row center">
-	<a href="#media" class="col-0">
-		<svg class="text-w" width="50" height="50">
-			<use xlink:href="#svg-place"/>
-		</svg>
-	</a>
+	<a href="#media" class="col-0" data-icon="ok/50/50"></a>
 	<div>
 		Some description
 		<br>
@@ -1399,9 +1392,7 @@ If link needs to be outside of the item, set link's <code>[data-item]</code> att
 
 <div class="code">
 	<figure class="bg c pad">
-		<svg class="text-i" width="80" height="80">
-			<use xlink:href="#svg-place"/>
-		</svg>
+		<div class="text-i" data-icon="place/80/80"></div>
 		<figcaption>
 			Figure caption
 		</figcaption>
@@ -1412,7 +1403,7 @@ If link needs to be outside of the item, set link's <code>[data-item]</code> att
 
 <div class="code">
 	<div class="shade -dlg c pad rad">
-		<svg class="text-n" width="80" height="80"><use xlink:href="#svg-place"/></svg>
+		<div class="text-n" data-icon="ok/80/80"></div>
 		<p><b>No items yet</b>
 		<p>Click the button to create new item</p>
 		<a href="#add" class="btn bg-i">Add new item</a>

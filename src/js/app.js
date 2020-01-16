@@ -187,6 +187,14 @@ module.exports = new (function(){
     return this.ins('a', this.i('close'), {href: this.opt.hClose, className: (cls || '')}, d, pos);
   }
 
+/*
+this.i = function(ico, c) {
+  let s = this.ins('span', '', {classList: c});
+  this.plugins.icons.addIcon(ico, s);
+  return s;
+}
+*/
+
   this.svg = function(id, alt, c) {
     if (!id || this.opt.textIcons || !document.getElementById(id)) return this.ins('span', alt || '', {className: c || ''});
     return this.ins('span', '<svg class="' + this.opt.cIcon + ' ' + (c || '') + '" width="24" height="24"><use xlink:href="#' + id + '"></use></svg>');

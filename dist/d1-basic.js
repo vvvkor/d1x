@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1 app v1.0.22 */
+/*! d1 app v0.0.0 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -294,6 +294,14 @@ module.exports = new function () {
       className: cls || ''
     }, d, pos);
   };
+  /*
+  this.i = function(ico, c) {
+    let s = this.ins('span', '', {classList: c});
+    this.plugins.icons.addIcon(ico, s);
+    return s;
+  }
+  */
+
 
   this.svg = function (id, alt, c) {
     if (!id || this.opt.textIcons || !document.getElementById(id)) return this.ins('span', alt || '', {
@@ -2061,33 +2069,49 @@ module.exports = new function () {
 
   this.name = 'icons';
   this.opt = {
+    width: 24,
+    height: 24,
     aReplace: 'data-ico',
     aAdd: 'data-icon'
   };
-  this.icons = {
-    'user': ['user', ':)'],
-    'find': ['find', '?'],
-    'config': ['config', '*'],
-    'open': ['add', '+'],
-    'world': ['place', '%']
+  this.icons = {};
+  this.paths = {
+    ok: 'M10,50l40,40 40,-80z'
   };
 
   this.init = function () {
     var _this = this;
 
     app.e('[' + this.opt.aReplace + ']', function (n) {
-      return _this.addIcon(n, app.attr(n, _this.opt.aReplace), true);
+      return _this.addIcon(app.attr(n, _this.opt.aReplace), n, true);
     });
     app.e('[' + this.opt.aAdd + ']', function (n) {
-      return _this.addIcon(n, app.attr(n, _this.opt.aAdd));
+      return _this.addIcon(app.attr(n, _this.opt.aAdd), n);
     });
   };
 
-  this.addIcon = function (n, i, clr) {
+  this.addIcon = function (ii, n, clr, cls) {
+    ii = ii.split(/\//);
+    var i = ii[0];
+    var w = ii[1];
+    var h = ii[2];
     var t = n.textContent;
-    if (clr) app.clr(n);
-    var s = n.insertBefore(app.i(i), n.firstChild);
-    if (s.nextSibling) app.ins(false, ' ', {}, s);else if (!n.title) n.title = t;
+    var p = this.paths[i];
+    var id = p ? null : app.opt.pSvg + i;
+    var pp = id ? document.getElementById(id) : null;
+    var svg = p || pp;
+    if (!svg) clr = false;
+    var cap = !clr && n.textContent.replace(/\s+$/, '') !== '';
+    var c = [svg && !w && !h ? app.opt.cIcon : '', cls || ''].filter(function (cc) {
+      return !!cc;
+    }).join(' ');
+    var cc = c ? ' class="' + c + '"' : '';
+    var prop = cc + ' width="' + (w || this.opt.width) + '" height="' + (h || this.opt.height) + '"';
+    var add = p ? '<svg' + prop + ' viewBox="0 0 100 100">' + '<path d="' + p + '"/></svg>' : cap ? '' : cls ? '<span' + cc + '>[' + i + ']</span>' : '[' + i + ']';
+    if (!p && pp) add = '<svg' + prop + '"><use xlink:href="#' + id + '"></use></svg>';
+    n.innerHTML = add + (cap ? ' ' + n.innerHTML : '');
+    if (!cap && !n.title) n.title = t;
+    return n.firstChild;
   };
 }();
 

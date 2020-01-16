@@ -339,7 +339,6 @@ a.act>.is-off, a:not(.act)>.is-on,
 
 .bg,blockquote,pre,code,thead,tfoot{background-color:var(--bg-pane);}
 pre code{background:none;}
-.icon{color:var(--text-lite);}
 mark{background-color:var(--bg-warning);}
 
 /* auto padding */
@@ -395,6 +394,7 @@ mark{background-color:var(--bg-warning);}
 	input,button,select,textarea,.btn{border:thin solid #aaa;} /* rgba(0,0,0,.3) fails for select */
 	.btn,button,[type="submit"]{padding:var(--gaps-n);border-radius:var(--radius);margin:var(--gap-xs) 0;border-color:transparent;cursor:pointer;}
 	form>.btn, form>button, form>[type="submit"], form>a>button{padding:var(--gap-xs) var(--gap-s);margin:0;}/* see [.nav a] padding */
+		.btn.fit{padding:0 var(--gap-s);}
 	a.btn:hover, button:hover:not([disabled]), [type="submit"]:hover:not([disabled]),
 	a.btn:focus, button:focus, input:focus, select:focus, textarea:focus, [contenteditable]:focus{box-shadow:0 0 0 .15em var(--focus);outline:none;}
 	button[disabled],[type="submit"][disabled]{opacity:.5;}
@@ -413,7 +413,8 @@ mark{background-color:var(--bg-warning);}
 	/*.btn.hover:not(:hover), button.hover:not(:hover), [type="submit"].hover:not(:hover){background:none;color:var(--link);}*/
 	.btn .icon, button .icon{color:var(--text-btn);}
 		.btn[class].hover,button.hover,[type="submit"].hover{background:none;color:inherit;}/*?*/
-		.btn.fit{padding:0 var(--gap-s);}
+	.icon{color:var(--text-lite);}
+		[class*="text-"]>.icon[class]{color:inherit;}
 
 	.text-n[class]{color:var(--text-lite);}
 	.text-i[class]{color:var(--text-info);}

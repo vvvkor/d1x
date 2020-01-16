@@ -443,13 +443,9 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 <input type="submit" value="Submit">
 <input type="submit" value="Disabled" disabled>
 <button type="submit">Button</button>
-<button type="submit" class="bg-e">
-	<svg class="icon" width="32" height="32"><use xlink:href="#svg-ok"/></svg> Icon
-</button>
-<button type="submit" class="bg-e">
-	<svg class="icon" width="32" height="32"><use xlink:href="#svg-ok"/></svg>
-</button>
-<a href="#x" class="btn"><svg class="icon" width="32" height="32"><use xlink:href="#svg-ok"/></svg> Link</a>
+<button type="submit" class="bg-e" data-icon="ok">Icon</button>
+<button type="submit" class="bg-e" data-icon="ok"></button>
+<a href="#x" class="btn" data-icon="ok"> Link</a>
 <br>
 <input type="submit" value="Submit">
 	<!--
@@ -1188,17 +1184,19 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <h3 id="items">Items</h3>
 
 <p>
-Items are <code>.item</code>.
+Items are nodes with class <code>item</code>.
 Container is items' common parent.
+Containers with items can be nested.
 Hashed links inside items invoke actions on containing item.
-If link needs to be outside of the item, set link's <code>[data-item]</code> attribute to query selector pointing at item.
+If link needs to be outside of the item, point at item with query selector in link's <code>[data-item]</code> attribute.
+
 <ul>
 	<li><code>#copy</code> copy item
+	<li><code>#hide</code> hide item
 	<li><code>#del</code> delete item unless it is last in the container
 	<li><code>#delete</code> delete item, even the last one
 	<li><code>#delall</code> delete <i>all items</i> inside container defined by <code>[data-item]</code>
 	<li><code>#clear</code> delete <i>all nodes</i> inside container defined by <code>[data-item]</code>
-	<li><code>#hide</code> hide item
 </ul>
 
 <div class="code">
@@ -1329,8 +1327,8 @@ If link needs to be outside of the item, set link's <code>[data-item]</code> att
 
 <div class="bg pad">
 	Icons:
-	<svg class="icon"><use xlink:href="#svg-ok"/></svg>
-	<svg class="icon text-y"><use xlink:href="#svg-ok"/></svg>
+	<span data-icon="ok"></span>
+	<span class="text-y" data-icon="ok">1</span>
 	<br>
 	Simple links:
 	<a href="#x" class=""><svg class="icon"><use xlink:href="#svg-ok"/></svg> Default</a>

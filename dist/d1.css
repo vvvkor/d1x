@@ -615,6 +615,10 @@ pre code {
     color: var(--text-lite);
 }
 
+[class*="text-"]>.icon {
+    color: inherit;
+}
+
 mark {
     background-color: var(--bg-warning);
 }
