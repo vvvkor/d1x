@@ -4,127 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<title>d1 - Docs and Demo</title>
-<!--
-<link  href="//www.jsdelivr.com/package/npm/prismjs/themes/prism.css" rel="stylesheet" />
-<script src="//www.jsdelivr.com/package/npm/prismjs/components/prism-core.min.js"></script>
-<script src="//www.jsdelivr.com/package/npm/prismjs/components/prism-markup.min.js"></script>
--->
-<!--
-<link  href="../arc/prism/prism.css" rel="stylesheet" />
-<script src="../arc/prism/prism-core.min.js"></script>
-<script src="../arc/prism/prism-markup.min.js"></script>
--->
-<!--
-<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/default.min.css">
-<script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
--->
-<!--script src="https://www.jsdelivr.com/package/npm/prismjs/plugins/autoloader/prism-autoloader.min.js"></script-->
-<!--
 
-# todo
-
-## git
-
-- branch
-
-## css
-
-~ /*?*/
-- .panel: rel, unmar, box-sizing:border-box
-- .pill: rad
-- .dropcap
-- input: bg, color ?
-? .hover.bg, .hover.shade
-? .hover.on
-= sticky: topbar, bottom
-= css filters
-= .btn.hover (no bg by default, like link)
-= --bg-hilite = --bg-pane
-= unuse --text-hilite
-+~ h2:before can cover preceding elements!!!
-+ index.css
-+ .row&nav .shift@mob
-+ #invert
-+ .full.c -> .center
-+ hr.fit (tabs)
-+ .topbar~* .stick
-+ code: padding
-+ .nav: valign, logo
-+ check color priority
-+ .hover:not(table) a:hover, .hover:not(table) a.act, a.hover:hover, a.hover.act, table.hover tr:hover{--bg-pane}
-+ invert --text-nav, --text-vis
-+ .topbar.let?
-+ table.let: lined, no first pad?
- 
-## js
-
-- icons.js: ins([paths]), icons[]
-? code: ".class" always
-- better .js-live-val
-? gallery: unuse :target
-?= require in browser (dev)
-= .gal to js gallery: only if .toggle?
-= outline icons [ok]
-= onscroll only if has topbar
-+ a#copy#del#delete#hide ^ul,tr,.item
-+ hilite html attrLang
-+ update .code after apply options
-+ calendar: tools: nobr
-+ d1 -> app, d1.plugins -> require
-+ edit, valid, .unhint
-+ dinamic qUnpop, no cUnpop (theme, data-class-x)
-+ .expand component = .target/.target-mobile/.target-desktop
-+ .toggle/.toggle.off : toggle with js, visible without js
-+ opt: disable plugins
-+ icons array
-- new components: scrollspy, notify, sortable, icons?
-- alerts: close link
-- code formatter/highlighter (prismjs, highlight.js)
-~ optimize: !addEventListener to d1.b(), !bind to arrFunc, getAttribute to attr,
-  - var to let, querySelector(All) to q/qq, !appendChild/insertBefore to ins
- 
-## doc
-
-- demo icons
-- customize: vars list
-- options as table
-- write on plugins: code, theme
-- .table: .r5
-! use .code only where js not involved (no .toggle, etc.)
-! fliptable, .accordion? separately
-!? "fitty" / "d1app" / "d1ui" / "d1web"
-! overview test page https://getuikit.com/assets/uikit/tests/ , https://getuikit.com/v2/tests/overview.html
-- customizer https://getuikit.com/v2/docs/customizer.html
-+ table .r5
-+ unlink h2#plugins
-+ demo table:simplify
-+ demo .row (flip, let, center, mar >center, >shift, >col-0123/wrap/read/narrow)
-+ diff d1 d2 (see index.css)
-+ js classes: .gallery, .pic
-+ demo table: .roll by def
-~ reference: js classes, components
-- "requires toggle.js"
-- doc structure:
-  - typo, table, blocks, color
-  - grid, media
-  - form, button
-  - toggle (css)
-  - plugins (js)
-  - reference (classes, plugins)
-
-## process
-
-- (validate / lint)
-- package.json: update version
-- (html: use css & js from cdn, set new version)
-- npm run build
-- npm publish ./
-- git commit
-- (publish html)
-
--->
-	
 	<!-- CDN -->
 	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.22/dist/d1.min.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.22/dist/d1.min.js"></script>
@@ -132,8 +12,10 @@
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
 	<!-- -->
+	
 	<script>
 		console.log('d1=', d1);
+		//d1.b([document], 'DOMContentLoaded', d1.e.bind(d1, 'code', n => n.classList.add('bg-w')));
 	</script>
 </head>
 <body class="-bg" data-d1='{"hOk":"#yes","debug":1,"textIcons":false,"disable":["-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
@@ -482,7 +364,7 @@ Add <code>r#, l#, c#</code> (where # is any number) classes to align cells of co
 		<tr><td>CSS</td><td>3</td><td>3 KB</td><td>1y</td><td>17.12.1996</td></tr>
 	</tbody>
 	<tfoot>
-	<tr><th>Totals<th>144.301<th>2.33 MB<th>1y 2m 6d 4h<th>-
+	<tr><th>Totals<th>17.1<th>1.003 MB<th>1y 5m 9h<th>-
 	</tfoot>
 </table>
 </div>
@@ -514,7 +396,6 @@ By default, they all have equal width.
 </p>
 
 <div class="code">
-	<!-- grid -->
 	<div class="row flip" id="cols">
 		<div class="pad bg-w">Left</div>
 		<div class="pad bg-y col-2" id="col-main">
@@ -568,17 +449,18 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 <button type="submit" class="bg-e">
 	<svg class="icon" width="32" height="32"><use xlink:href="#svg-ok"/></svg>
 </button>
-<a href="#" class="btn"><svg class="icon" width="32" height="32"><use xlink:href="#svg-ok"/></svg> Link</a>
+<a href="#x" class="btn"><svg class="icon" width="32" height="32"><use xlink:href="#svg-ok"/></svg> Link</a>
 <br>
 <input type="submit" value="Submit">
 	<!--
 	<input type="submit" value="S-hover" class="hover bg-w">
 	<button type="submit" class="hover bg-n">B-hover</button>
-	<a href="#" class="pad rad btn hover">L-hover</a>
+	<a href="#x" class="pad rad btn hover">L-hover</a>
 	-->
 <span class="btn bg-n">Span</span>
-<a href="#" class="pad rad hover">Link-pad-rad</a>
-<a href="#">Link</a>
+<a href="#x" class="pad bord rad hover">Link-pad-bord</a>
+<a href="#x" class="pad rad hover">Link-pad</a>
+<a href="#x">Link</a>
 </div>
 
 
@@ -607,7 +489,7 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 	</p>
 	<p>
 		<input type="submit" value="OK">
-		<a href="#" class="pad hover">Link</a>
+		<a href="#x" class="pad hover">Link</a>
 	</p>
 </form>
 </div>
@@ -666,7 +548,7 @@ Table will become stacked on small screen.
 		<tr><td colspan="2">
 		<fieldset>
 			<legend><a href="#fs1">Input types</a></legend>
-			<table id="fs1" class="--hide --toggle target mem">
+			<table id="fs1" class="target mem">
 			
 			<tr>
 				<td><label for="lng">Select</label>
@@ -718,10 +600,9 @@ Table will become stacked on small screen.
 				
 			</table>
 		</fieldset>
-		<!--tr><td colspan="2"-->
 		<fieldset>
 			<legend><a href="#fs2">Switches</a></legend>
-			<table id="fs2" class="--hide --toggle target mem">
+			<table id="fs2" class="target mem">
 				<tr>
 					<td>Box
 					<td>
@@ -783,7 +664,7 @@ Table will become stacked on small screen.
   data-tools-x="/*@xbi_.pqf"
   data-wys="1"
   cols="50"
-  rows="5">Write <b>formatted</b> text.</textarea>
+  rows="5">Write formatted text.</textarea>
 </div>
 
 	<h3 id="lookup">Lookup</h3>
@@ -886,7 +767,7 @@ Table will become stacked on small screen.
 <div><input type="text" name="lu1" data-lookup="data.json?q={q}" data-xlabel="1" data-url="/x/{id}" xvalue="1" required> <span class="text-e">required</span><span class="text-y">ok</span></div>
 <div><textarea name="ta1" required class="adjust edit"></textarea> <span class="text-e">required</span><span class="text-y">ok</span></div>
 <div><input type="submit" value="ok" id="testsubmit">
-<a href="#" onclick="testsubmit.click();return false;">submit</a></div>
+<a href="#x" onclick="testsubmit.click();return false;">submit</a></div>
 </form-->
 
 <h4>Custom hint elements for input validation</h4>
@@ -902,13 +783,6 @@ Table will become stacked on small screen.
 	<form method="post" class="js-unhint -js-live-val">
 		<table>
 		<tbody>
-		<!--
-		<tr>
-			<td><label for="vv-def">Default validation</label>
-			<td><input oninput="console.log(this.value)" type="text" name="def" id="vv-def" required pattern="[A-Za-z]{2,}" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4">
-				<small class="text-e">Wrong</small>
-				<small class="text-y">OK</small>
-		-->
 		<tr>
 			<td><label for="vv-nm">Name</label>
 			<td><input oninput="console.log(this.value)" type="text" name="nm" id="vv-nm" required pattern="[A-Za-z]{2,}" title="Two up to four letters" autocomplete="off" minlength="2" maxlength="4">
@@ -998,7 +872,7 @@ This approach is semantic, but has some drawbacks:
 <li>page scrolls, which is in most cases undesirable
 </ul>
 <p>
-To overcome these drawbacks, <a href="#js">JavaScript can be used</a>.
+To overcome these drawbacks, JavaScript is used.
 To control elements with Javascript, add <code>toggle</code> class like in following examples for popup, toggle, tabs, tree.
 To store elements state in local storage, add <code>mem</code> class like in following examples for toggle, tabs, tree.
 Dialogs and drawers do not require such enhancements.
@@ -1071,7 +945,7 @@ and expand it to dropdown navbar on large screen.
 	<a href="#navi" class="pad hover" title="Menu">&equiv;</a>
 </div>
 <ul class="nav flip bg hover target-mobile" id="navi">
-	<li><a href="n0" class="fit"><b>Logo</b></a></li>
+	<li><a href="#n0" class="fit"><b>Logo</b></a></li>
 	<li>
 		<a href="#n1">Item</a>
 	</li>
@@ -1115,9 +989,9 @@ Next sibling <code>div</code> should contain <code>div</code> tab panels.
 	<li><a href="#tab3">Tab3</a></li>
 </ul>
 <div class="bord pad">
-	<div id="tab2" class="--hide">2<br>2</div>
-	<div id="tab3" class="--hide">3<br>3<br>3</div>
-	<div id="tab1" class="--hide">1</div>
+	<div id="tab2">2<br>2</div>
+	<div id="tab3">3<br>3<br>3</div>
+	<div id="tab1">1</div>
 </div>
 </div>
 
@@ -1132,7 +1006,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 
 <div class="code">
 <a href="#modal">Open modal</a>
-<div id="modal" class="--hide dlg rad c pad -let">
+<div id="modal" class="dlg rad c pad">
 	<a class="close pad" href="#cancel">&times;</a>
 	<p>Modal</p>
 </div>
@@ -1270,7 +1144,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <div class="code">
 <a href="data.json" data-target="#preview">Fetch into preview area</a><br>
 <a href="data.json" data-target="#dlg-inner">Fetch into modal dialog</a><br>
-<a href="data.json" data-target="#">Fetch into generated modal dialog</a>
+<a href="data.json" data-target="#x">Fetch into generated modal dialog</a>
 <pre class="bg-i" id="preview">[preview area]</pre>
 <div id="preview-dlg" class="dlg pad"><a class="close pad" href="#cancel">&times;</a><div id="dlg-inner">(preview)</div></div>
 </div>
@@ -1314,13 +1188,16 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <h3 id="items">Items</h3>
 
 <p>
-Items are <code>li, tr, .item</code>.
-Container is item's parent.
-Hashed links inside items invoke actions:
+Items are <code>.item</code>.
+Container is items' common parent.
+Hashed links inside items invoke actions on containing item.
+If link needs to be outside of the item, set link's <code>[data-item]</code> attribute to query selector pointing at item.
 <ul>
 	<li><code>#copy</code> copy item
 	<li><code>#del</code> delete item unless it is last in the container
-	<li><code>#delete</code> delete items, even the last one
+	<li><code>#delete</code> delete item, even the last one
+	<li><code>#delall</code> delete <i>all items</i> inside container defined by <code>[data-item]</code>
+	<li><code>#clear</code> delete <i>all nodes</i> inside container defined by <code>[data-item]</code>
 	<li><code>#hide</code> hide item
 </ul>
 
@@ -1337,11 +1214,22 @@ Hashed links inside items invoke actions:
 		Div item
 	</div>
 	<ul class="bg">
-		<li>List item <a href="#copy">+</a> <a href="#hide">&mdash;</a> <a href="#del">&#x2715;</a></li>
+		<li class="item">List item <a href="#copy">+</a> <a href="#hide">&mdash;</a> <a href="#del">&#x2715;</a></li>
 	</ul>
-	<table class="mar">
+	<table class="mar" id="tab-items">
 		<tbody>
-			<tr><td><a href="#copy">+</a> <a href="#hide">&mdash;</a> <a href="#del">&#x2715;</a></td><td>Table row item</td><td><input name="items[]"></td></tr>
+			<tr>
+				<th>
+					<a href="#copy" data-item="#tab-item-tpl">+</a>
+					<a href="#delall" data-item="#tab-items>tbody">&#x2715;</a>
+					<a href="#clear" class="text-e" data-item="#tab-items">&#x2715;</a>
+				</th>
+				<th>Name</th>
+				<th>Value</th>
+			</tr>
+			<tr class="hide item" id="tab-item-tpl"><td><a href="#copy">+</a> <a href="#hide">&mdash;</a> <a href="#del">&#x2715;</a></td><td>Table row item</td><td>
+				<div class="item"><a href="#copy">+</a> <a href="#delete">&times;</a> <input name="items[]"> </div>
+			</td></tr>
 		</tbody>
 	</table>
 </div>
@@ -1375,26 +1263,26 @@ Hashed links inside items invoke actions:
 <h4 id="colors-inline">Inline</h4>
 
 <div class="code">
-	<a href="#" class="text-e">Error</a>
-	<a href="#" class="text-w">Warning</a>
-	<a href="#" class="text-i">Info</a>
-	<a href="#" class="text-y">Yes</a>
-	<a href="#" class="text-n">No</a>
-	<a href="#">Normal</a>
+	<a href="#x" class="text-e">Error</a>
+	<a href="#x" class="text-w">Warning</a>
+	<a href="#x" class="text-i">Info</a>
+	<a href="#x" class="text-y">Yes</a>
+	<a href="#x" class="text-n">No</a>
+	<a href="#x">Normal</a>
 	<br>
-	<a href="#" class="bg-e">Error</a>
-	<a href="#" class="bg-w">Warning</a>
-	<a href="#" class="bg-i">Info</a>
-	<a href="#" class="bg-y">Yes</a>
-	<a href="#" class="bg-n">No</a>
-	<a href="#">Normal</a>
+	<a href="#x" class="bg-e">Error</a>
+	<a href="#x" class="bg-w">Warning</a>
+	<a href="#x" class="bg-i">Info</a>
+	<a href="#x" class="bg-y">Yes</a>
+	<a href="#x" class="bg-n">No</a>
+	<a href="#x">Normal</a>
 	<br>
-	<a href="#" class="text-e bg-e">Error</a>
-	<a href="#" class="text-w bg-w">Warning</a>
-	<a href="#" class="text-i bg-i">Info</a>
-	<a href="#" class="text-y bg-y">Yes</a>
-	<a href="#" class="text-n bg-n">No</a>
-	<a href="#">Normal</a>
+	<a href="#x" class="text-e bg-e">Error</a>
+	<a href="#x" class="text-w bg-w">Warning</a>
+	<a href="#x" class="text-i bg-i">Info</a>
+	<a href="#x" class="text-y bg-y">Yes</a>
+	<a href="#x" class="text-n bg-n">No</a>
+	<a href="#x">Normal</a>
 	<br>
 	<span class="bg-e">Error</span>
 	<span class="bg-w">Warning</span>
@@ -1414,16 +1302,22 @@ Hashed links inside items invoke actions:
 <button type="button" class="bg-n">No</button>
 <button type="button">Normal</button>
 <button type="button" disabled>Disabled</button>
+<button type="button" class="hover bord">Hover</button>
+<a href="#x" class="pad bord rad hover let">Link</a>
+<a href="#x" class="pad bord rad hover">Link</a>
+<a href="#x" class="pad rad hover">Link</a>
+<b class="btn fit rad bg-w">Fit</b>
+	
 </div>
 
 <h4 id="colors-blocks">Blocks</h4>
 
 <div class="code">
-<p class="pad bg-e">Error<span class="text-e">Error</span></p>
-<p class="pad bg-w">Warning<span class="text-w">Warning</span></p>
-<p class="pad bg-i">Info<span class="text-i">Info</span></p>
-<p class="pad bg-y">Yes<span class="text-y">Yes</span></p>
-<p class="pad bg-n">No<span class="text-n">No</span></p>
+<p class="pad bg-e">Error <span class="text-e">Error</span></p>
+<p class="pad bg-w">Warning <span class="text-w">Warning</span></p>
+<p class="pad bg-i">Info <span class="text-i">Info</span></p>
+<p class="pad bg-y">Yes <span class="text-y">Yes</span></p>
+<p class="pad bg-n">No <span class="text-n">No</span></p>
 <p class="pad bg">Bg</p>
 <p class="pad bord">Border</p>
 <p class="pad bg bord">Bg+Border</p>
@@ -1475,7 +1369,7 @@ Hashed links inside items invoke actions:
 <div class="code">
 <div class="invert pad">
   Inverted text
-  <a href="#">link</a>
+  <a href="#x">link</a>
   <span class="bg-e text-e">colors</span>
 </div>
 </div>
@@ -1485,9 +1379,9 @@ Hashed links inside items invoke actions:
 <h4>Media object</h4>
 
 <div class="code">
-<div class="row">
+<div class="row center">
 	<a href="#media" class="col-0">
-		<svg class="text-w" width="80" height="80">
+		<svg class="text-w" width="50" height="50">
 			<use xlink:href="#svg-place"/>
 		</svg>
 	</a>
@@ -1605,9 +1499,12 @@ most important:
 </table>
 </div>
 
-<h3><a href="#ref-alpha">Alphabetical reference</a></h3>
+<h3 class="item">
+	<a href="#ref-alpha">Alphabetical reference</a>
+	<a href="#" class="close l text-n"><span data-icon="up"></span></a>
+</h3>
 
-<div id="ref-alpha" class="--hide --toggle target mem">
+<div id="ref-alpha" class="target mem">
 <ol>
 <li><code>.act</code> &mdash; active link
 <li><code>.bg</code> &mdash; light background

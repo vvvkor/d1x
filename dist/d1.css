@@ -831,6 +831,15 @@ mark {
         color: var(--text-btn);
     }
 
+    .btn[class].hover, button.hover, [type="submit"].hover {
+        background: none;
+        color: inherit;
+    }
+
+    .btn.fit {
+        padding: 0 var(--gap-s);
+    }
+
     .text-n[class] {
         color: var(--text-lite);
     }
@@ -990,7 +999,7 @@ table.fit>*>tr>*, .roll>table.fit {
     border: none;
 }
 
-a.fit {
+a.let {
     color: inherit;
 }
 

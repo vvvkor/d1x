@@ -1389,40 +1389,30 @@ module.exports = new function () {
   this.langs = {
     html: {
       nm: 'HTML',
-      e: /[a-z0-9_\-]+(?==")/g,
-      // attr name
-      w: /".*?"/g,
-      // attr value
-      i: /&lt;[^!A-Z].*?&gt;/g,
-      // tag |&amp;[\w#]+;
-      n: /&lt;\!.*?&gt;/g // comment
-
+      re: [[/[a-z0-9_\-]+(?==")/g, 'w'], // attr name
+      [/".*?"/g, 'e'], // attr value
+      [/&lt;[^!A-Z][\s\S]*?&gt;/g, 'i'], // tag |&amp;[\w#]+;
+      [/&lt;\![\s\S]*?&gt;/g, 'n'] // comment
+      ]
     },
     js: {
       nm: 'Javascript',
-      e: /(\b|\b\d+\.|\.)\d+\b/g,
-      // number
-      w: /".*?"/g,
-      // string // |'.*?'
-      y: /[{}()\[\]]/g,
-      // bracket
-      i: /\b(break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|function|if|import|in|instanceof|new|return|super|switch|this|throw|try|typeof|var|void|while|with|yield|let|await|null|undefined|true|false|arguments|get|set)\b/g,
-      // keyword
-      n: /\/\*[\s\S]*?\*\/|(\/\/|#\!)[^\n]*/g // comment
-
+      re: [[/".*?"|'.*?'/g, 'w'], // string // |'.*?'
+      [/(\b|\b\d+\.|\.)\d+\b/g, 'e'], // number
+      [/[{}()\[\]]/g, 'y'], // bracket
+      [/\b(break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|function|if|import|in|instanceof|new|return|super|switch|this|throw|try|typeof|var|void|while|with|yield|let|await|null|undefined|true|false|arguments|get|set|require)\b/g, 'i'], // keyword
+      [/\/\*[\s\S]*?\*\/|(\/\/|#\!)[^\n]*/g, 'n'] // comment
+      ]
     },
     css: {
       nm: 'CSS',
-      e: /#[\w\-]+/g,
-      // id, color
-      w: /((@\w+|\!important)|\b(none|inherit|initial|unset|attr|url|calc|var|rgba?|hsla?))\b/g,
-      // keyword
-      y: /[{}()]/g,
-      // brackets
-      i: /\.[\w\-]+/g,
-      // class
-      n: /\/\*.*?\*\//g // comment
-
+      re: [[/".*?"|'.*?'/g, 'w'], // string // |'.*?'
+      [/#[\w\-]+/g, 'e'], // id, color
+      [/[{}()]/g, 'y'], // brackets
+      [/\.[A-za-z][\w\-]*/g, 'y'], // class
+      [/((@\w+|\!important)|\b(none|inherit|initial|unset|attr|url|calc|var|rgba?|hsla?))\b/g, 'i'], // keyword
+      [/\/\*[\s\S]*?\*\//g, 'n'] // comment
+      ]
     }
   };
   this.opt = {
@@ -1498,16 +1488,16 @@ module.exports = new function () {
     var d = app.ins('div');
     d.textContent = t;
     t = d.innerHTML;
-    if (l) ['e', 'w', 'y', 'i', 'n'].forEach(function (c) {
-      return t = l[c] ? t.replace(l[c], function (m) {
-        return _this2.token(c, m);
-      }) : t;
+    if (l && l.re) l.re.forEach(function (re) {
+      return t = t.replace(re[0], function (m) {
+        return _this2.token(re[1], m);
+      });
     });
     return t;
   };
 
   this.token = function (c, m) {
-    return "<Span Class='text-" + c + "'>" + m + "</Span>";
+    return "<Span Class = 'text-" + c + "'>" + m + "</Span>";
   };
 }();
 
@@ -2113,7 +2103,8 @@ module.exports = new function () {
 
   this.name = 'items';
   this.opt = {
-    qItem: 'li, tr, .item' // div
+    aItem: 'data-item',
+    qItem: '.item' // ul, tr, div
 
   };
 
@@ -2129,12 +2120,13 @@ module.exports = new function () {
     var n = app.closest(e.target, 'a[href^="#"]');
 
     if (n && n.hash) {
-      var d = app.closest(e.target, this.opt.qItem);
+      var q = app.attr(n, this.opt.aItem);
+      var d = q ? app.q(q) : app.closest(e.target, this.opt.qItem);
 
       if (d) {
         var cont = d.parentNode;
 
-        if (this.process(d, n.hash.substr(1))) {
+        if (this.process(d, n.hash.substr(1)), !!q) {
           app.fire('updated', {
             n: cont
           });
@@ -2145,15 +2137,34 @@ module.exports = new function () {
     }
   };
 
-  this.process = function (n, x) {
+  this.items = function (n) {
+    var _this2 = this;
+
+    //return app.qq(this.opt.qItem, n).filter(n => !n.classList.contains(app.opt.cHide));
+    return app.a(n.children).filter(function (n) {
+      return n.matches(_this2.opt.qItem);
+    }).filter(function (n) {
+      return !n.classList.contains(app.opt.cHide);
+    });
+  };
+
+  this.process = function (n, x, before) {
     var r = true;
 
     if (x == 'copy') {
-      n.parentNode.insertBefore(n.cloneNode(true), n.nextSibling);
+      var m = n.parentNode.insertBefore(n.cloneNode(true),  true ? n : undefined);
+      m.classList.remove(app.opt.cHide);
+      m.removeAttribute('id');
     } else if (x == 'del') {
-      if (n.parentNode.children.length > 1) n.parentNode.removeChild(n);
+      if (this.items(n.parentNode).length > 1) n.parentNode.removeChild(n);
     } else if (x == 'delete') {
       n.parentNode.removeChild(n);
+    } else if (x == 'delall') {
+      this.items(n).forEach(function (m) {
+        return m.parentNode.removeChild(m);
+      });
+    } else if (x == 'clear') {
+      app.clr(n);
     } else if (x == 'hide') {
       n.classList.add(app.opt.cHide);
     } else r = false;

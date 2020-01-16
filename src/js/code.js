@@ -11,26 +11,33 @@ module.exports = new(function () {
   this.langs = {
     html: {
       nm: 'HTML',
-      e: /[a-z0-9_\-]+(?==")/g, // attr name
-      w: /".*?"/g, // attr value
-      i: /&lt;[^!A-Z].*?&gt;/g, // tag |&amp;[\w#]+;
-      n: /&lt;\!.*?&gt;/g // comment
+      re: [
+        [/[a-z0-9_\-]+(?==")/g, 'w'], // attr name
+        [/".*?"/g, 'e'], // attr value
+        [/&lt;[^!A-Z][\s\S]*?&gt;/g, 'i'], // tag |&amp;[\w#]+;
+        [/&lt;\![\s\S]*?&gt;/g, 'n'] // comment
+      ]
     },
     js: {
       nm: 'Javascript',
-      e: /(\b|\b\d+\.|\.)\d+\b/g, // number
-      w: /".*?"/g, // string // |'.*?'
-      y: /[{}()\[\]]/g, // bracket
-      i: /\b(break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|function|if|import|in|instanceof|new|return|super|switch|this|throw|try|typeof|var|void|while|with|yield|let|await|null|undefined|true|false|arguments|get|set)\b/g, // keyword
-      n: /\/\*[\s\S]*?\*\/|(\/\/|#\!)[^\n]*/g // comment
+      re: [
+        [/".*?"|'.*?'/g, 'w'], // string // |'.*?'
+        [/(\b|\b\d+\.|\.)\d+\b/g, 'e'], // number
+        [/[{}()\[\]]/g, 'y'], // bracket
+        [/\b(break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|function|if|import|in|instanceof|new|return|super|switch|this|throw|try|typeof|var|void|while|with|yield|let|await|null|undefined|true|false|arguments|get|set|require)\b/g, 'i'], // keyword
+        [/\/\*[\s\S]*?\*\/|(\/\/|#\!)[^\n]*/g, 'n'] // comment
+      ]
     },
     css: {
       nm: 'CSS',
-      e: /#[\w\-]+/g, // id, color
-      w: /((@\w+|\!important)|\b(none|inherit|initial|unset|attr|url|calc|var|rgba?|hsla?))\b/g, // keyword
-      y: /[{}()]/g, // brackets
-      i: /\.[\w\-]+/g, // class
-      n: /\/\*.*?\*\//g // comment
+      re: [
+        [/".*?"|'.*?'/g, 'w'], // string // |'.*?'
+        [/#[\w\-]+/g, 'e'], // id, color
+        [/[{}()]/g, 'y'], // brackets
+        [/\.[A-za-z][\w\-]*/g, 'y'], // class
+        [/((@\w+|\!important)|\b(none|inherit|initial|unset|attr|url|calc|var|rgba?|hsla?))\b/g, 'i'], // keyword
+        [/\/\*[\s\S]*?\*\//g, 'n'] // comment
+      ]
     }
   };
 
@@ -87,12 +94,12 @@ module.exports = new(function () {
     let d = app.ins('div');
     d.textContent = t;
     t = d.innerHTML;
-    if(l) ['e', 'w', 'y', 'i', 'n'].forEach(c => t = l[c] ? t.replace(l[c], m => this.token(c, m)) : t)
+    if(l && l.re) l.re.forEach(re => t = t.replace(re[0], m => this.token(re[1], m)))
     return t;
   }
   
   this.token = function(c, m){
-    return "<Span Class='text-" + c + "'>" + m + "</Span>";
+    return "<Span Class = 'text-" + c + "'>" + m + "</Span>";
   }
 
 })();

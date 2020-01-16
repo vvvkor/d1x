@@ -1,0 +1,115 @@
+# todo
+
+- doc: replace icons <svg> with <span>
+- no need to fill icons.icons[]
+- icons: inject into array, not into page
+- attr: data-icon-keep/before/link
+
+## git
+
+- branch
+
+## css
+
+~ /*?*/
+- .dropcap
+? input: bg, color
+? .hover.bg, .hover.shade
+? .hover.on
+~ .panel: rel, unmar, box-sizing:border-box [.item]
+~ .pill: rad [.btn.fit]
+= sticky: topbar, bottom
+= css filters
+= .btn.hover (no bg by default, like link)
+= --bg-hilite = --bg-pane
+= unuse --text-hilite
++~ h2:before can cover preceding elements!!!
++ .btn.let, .btn.hover, a.let
++ index.css
++ .row&nav .shift@mob
++ #invert
++ .full.c -> .center
++ hr.fit (tabs)
++ .topbar~* .stick
++ code: padding
++ .nav: valign, logo
++ check color priority
++ .hover:not(table) a:hover, .hover:not(table) a.act, a.hover:hover, a.hover.act, table.hover tr:hover{--bg-pane}
++ invert --text-nav, --text-vis
++ .topbar.let?
++ table.let: lined, no first pad?
+ 
+## js
+
+- icons.js: ins([paths]), icons[]
+- dragsort
+- better .js-live-val
+? gallery: unuse :target
+?= require in browser (dev)
+= .gal to js gallery: only if .toggle?
+= outline icons [ok]
+= onscroll only if has topbar
++ html: multiline tag (meta), "attr="?
++ js hilite "require", not #!comment, 'str';
++ items: #copy: data-item, unhide, un-id, #delall, #clear
++ a#copy#del#delete#hide ^ul,tr,.item
++ hilite html attrLang
++ update .code after apply options
++ calendar: tools: nobr
++ d1 -> app, d1.plugins -> require
++ edit, valid, .unhint
++ dinamic qUnpop, no cUnpop (theme, data-class-x)
++ .expand component = .target/.target-mobile/.target-desktop
++ .toggle/.toggle.off : toggle with js, visible without js
++ opt: disable plugins
++ icons array
+- new components: scrollspy, notify, sortable, icons?
+- alerts: close link
+- code formatter/highlighter (prismjs, highlight.js)
+~ optimize: !addEventListener to d1.b(), !bind to arrFunc, getAttribute to attr,
+  - var to let, querySelector(All) to q/qq, !appendChild/insertBefore to ins
+ 
+## doc
+
+- demo icons
+- customize: vars list
+- options as table
+- write on plugins: code, theme
+? custom inputs into #forms section
+! use .code only where js not involved (no .toggle, etc.)
+! fliptable, .accordion? separately
+!? "fitty" / "d1app" / "d1ui" / "d1web"
+! overview test page https://getuikit.com/assets/uikit/tests/ , https://getuikit.com/v2/tests/overview.html
+- customizer https://getuikit.com/v2/docs/customizer.html
+= items: Fullwidth Plus Sign &#xFF0B; minus &#xFF0D;
++ color blocks text
++ clean classes --
++ #js , n0 links
++ # links to #x
++ tablex totals
++ table .r5
++ unlink h2#plugins
++ demo table:simplify
++ demo .row (flip, let, center, mar >center, >shift, >col-0123/wrap/read/narrow)
++ diff d1 d2 (see index.css)
++ js classes: .gallery, .pic
++ demo table: .roll by def
+~ reference: js classes, components
+- "requires toggle.js"
+- doc structure:
+  - typo, table, blocks, color
+  - grid, media
+  - form, button
+  - toggle (css)
+  - plugins (js)
+  - reference (classes, plugins)
+
+## process
+
+- (validate / lint)
+- package.json: update version
+- (html: use css & js from cdn, set new version)
+- npm run build
+- npm publish ./
+- git commit
+- (publish html)

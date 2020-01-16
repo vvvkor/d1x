@@ -228,7 +228,7 @@ module.exports = new (function(){
     if(!a || a.tagName!='A') return null;
     let i, gets={};
     let args = a.search ? a.search.replace(/^\?/, '').split('&') : [];
-    for(i=0;i<args.length;i++){
+    for(i=0; i<args.length; i++){
       let v = args[i].split('=');
       gets[v[0]] = decodeURIComponent(v[1]).replace(/\+/, ' ');
     }

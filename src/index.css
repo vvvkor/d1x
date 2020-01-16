@@ -412,6 +412,8 @@ mark{background-color:var(--bg-warning);}
 	.btn[class],button,[type="submit"]{background-color:var(--bg-btn);color:var(--text-btn);}
 	/*.btn.hover:not(:hover), button.hover:not(:hover), [type="submit"].hover:not(:hover){background:none;color:var(--link);}*/
 	.btn .icon, button .icon{color:var(--text-btn);}
+		.btn[class].hover,button.hover,[type="submit"].hover{background:none;color:inherit;}/*?*/
+		.btn.fit{padding:0 var(--gap-s);}
 
 	.text-n[class]{color:var(--text-lite);}
 	.text-i[class]{color:var(--text-info);}
@@ -461,7 +463,7 @@ mark{background-color:var(--bg-warning);}
 	.fit:not(hr){border:none;}
 	ul.fit li{list-style:none;}
 	table.fit>*>tr>*, .roll>table.fit{border:none;}
-	a.fit{color:inherit;}
+	a.let{color:inherit;}
 .center{margin:0 auto;}
 .mar{margin:var(--gap-n) 0;}
 	form .mar{margin:var(--gap-s) 0;}
