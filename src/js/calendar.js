@@ -8,23 +8,13 @@ module.exports = new(function () {
   "use strict";
 
   this.name = 'calendar';
-  
-  this.icons = {
-    date:  ['date', '#'],
-    now:   ['now', '&check;'],
-    clear: ['delete', '&#x2715;'],
-    prev:  ['', '&lsaquo;'],
-    next:  ['', '&rsaquo;'],
-    prev2: ['', '&laquo;'],
-    next2: ['', '&raquo;']
-  }
 
   this.opt = {
     cBtn: 'pad hover',
     dateFormat: 'd', //y=Y-m-d, d=d.m.Y, m=m/d Y
     hashCancel: '#cancel',
     hashNow: '#now',
-    addIcons: ['date', 'now', 'clear'],
+    addIcons: [['date', '#'], ['now', '&check;'], ['delete', '&#x2715;']],
     idPicker: 'pick-date',
     minWidth: 801,
     qsCalendar: 'input.calendar',
@@ -86,8 +76,7 @@ module.exports = new(function () {
       let ic = app.ins('span', '', {className:'input-tools nobr'}, n, 1);//icons container
       for(let i in this.opt.addIcons){
         app.ins('', ' ', {}, ic);
-        let ii = ic.appendChild(app.i(this.opt.addIcons[i]));
-        ii.style.cursor = 'pointer';
+        let ii = app.ins('a', app.i(...this.opt.addIcons[i]), {href: '#'+this.opt.addIcons[i][0]}, ic);
         ico.push(ii);
       }
       if(ico[0]) app.b(ico[0], 'click', e => this.openDialog(n, null, e), false);
@@ -165,13 +154,13 @@ module.exports = new(function () {
     let p2 = null;
     if(n.vTime){
         p2 = app.ins('p', '', {className: 'c'});
-        let ph = this.btn('#prev-hour', app.i('prev'), p2);
+        let ph = this.btn('#prev-hour', app.i('prev', '&lsaquo;'), p2);
         ch = app.ins('span', this.n(x.getHours()), {className: 'pad'}, p2);
-        let nh = this.btn('#next-hour', app.i('next'), p2);
+        let nh = this.btn('#next-hour', app.i('next', '&rsaquo;'), p2);
         app.ins('span', ':', {className: 'pad'}, p2);
-        let pi = this.btn('#prev-min', app.i('prev'), p2);
+        let pi = this.btn('#prev-min', app.i('prev', '&lsaquo;'), p2);
         ci = app.ins('span', this.n(x.getMinutes()), {className: 'pad'}, p2);
-        let ni = this.btn('#next-min', app.i('next'), p2);
+        let ni = this.btn('#next-min', app.i('next', '&rsaquo;'), p2);
         app.b(ph, 'click', e => this.setTime(n, ch, ci, -1, 'h', e), false);
         app.b(nh, 'click', e => this.setTime(n, ch, ci, +1, 'h', e), false);
         app.b(pi, 'click', e => this.setTime(n, ch, ci, -this.opt.stepMinutes, 'i', e), false);
@@ -183,13 +172,13 @@ module.exports = new(function () {
     let d = x.getDate();
     let my = this.n(m+1) + '.' + y;
     let p1 = app.ins('p', '', {className: 'c'}, this.win);
-    let now = this.btn(this.opt.hashNow, app.i('now'), p1);
-    let py = this.btn('#prev-year', app.i('prev2'), p1);
-    let pm = this.btn('#prev-month', app.i('prev'), p1);
+    let now = this.btn(this.opt.hashNow, app.i('now', '&check;'), p1);
+    let py = this.btn('#prev-year', app.i('prev2', '&laquo;'), p1);
+    let pm = this.btn('#prev-month', app.i('prev', '&lsaquo;'), p1);
     let cur = app.ins('span', my, {className: 'pad'}, p1);
-    let nm = this.btn('#next-month', app.i('next'), p1);
-    let ny = this.btn('#next-year', app.i('next2'), p1);
-    let cls = this.btn(this.opt.hashCancel, app.i('close'), p1);
+    let nm = this.btn('#next-month', app.i('next', '&rsaquo;'), p1);
+    let ny = this.btn('#next-year', app.i('next2', '&raquo;'), p1);
+    let cls = this.btn(this.opt.hashCancel, app.i('close', '&#x2715;'), p1);
     app.ins('hr', '', {}, this.win);
     app.b(now, 'click', e => this.closeDialog(n, true, ch, ci, e), false);
     app.b(cls, 'click', e => this.closeDialog(n, null, null, null, e), false);

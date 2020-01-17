@@ -12,10 +12,6 @@ module.exports = new(function () {
   this.name = 'toggle';
   this.shown = null;
 
-  this.icons = {
-    toggle: ['', '[+]']
-  };
-  
   this.opt = {
     keepHash: 1,
     mediaSuffixes: ['-mobile', '-desktop'],
@@ -144,7 +140,7 @@ module.exports = new(function () {
     //let a = n.previousElementSibling;
     let aa = app.a(n.parentNode.children).filter(v => v.tagName=='A');
     let a = aa.filter(v => !v.href)[0] || aa[0]
-      || (app.ins('',' ',{},n.parentNode, false) && app.ins('a', app.i('toggle'), {}, n.parentNode, false));
+      || (app.ins('',' ',{},n.parentNode, false) && app.ins('a', app.i('toggle', '[+]'), {}, n.parentNode, false));
     if(a){
       if(!n.id) n.id = 'ul-' + app.seq();
       a.href = '#' + n.id;

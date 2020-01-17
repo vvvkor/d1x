@@ -8,18 +8,11 @@ module.exports = new (function(){
   this.sequence = 0;
   this.plugins = {};
   this.handlers = {};
+  this.svgs = {};
   this.icons = {
-    close: ['close', '&#x2715;'],//&times;
-    menu:  ['menu',  '&equiv;'],
-    add:   ['add',   '+'],
-    edit:  ['edit',  '*'],
-    ok:    ['ok',    '&check;'],//&#x2713;
-    left:  ['left',  '&larr;'],
-    right: ['right', '&rarr;'],
-    up:    ['up',    '&uarr;'],
-    down:  ['down',  '&darr;']
+find: 'M10,50l40,40 40,-80 -40,60z', // path
+open: '<svg viewBox="0 0 100 100"><path d="M10,50l40,40 40,-80 -40,0z"/></svg>' // svg
   };
-
   this.opt = {
     debug: 0,
     textIcons: false,
@@ -30,6 +23,7 @@ module.exports = new (function(){
     cOff: 'off',
     cClose: 'close',
     cIcon: 'icon',
+    iconSize: 24,
     cJs: 'js',
     hClose: '#cancel',
     hOk: '#ok',
@@ -82,7 +76,6 @@ module.exports = new (function(){
     this.dbg(['plugins', this.plugins]);
     Object.keys(this.plugins).filter(p => !this.opt.disable || this.opt.disable.indexOf(p)==-1).forEach(k => {
         if(opt && opt.plug && opt.plug[k]) this.setOpt(this.plugins[k], opt.plug[k]);
-        if(this.plugins[k].icons) Object.keys(this.plugins[k].icons).forEach(i => this.icons[i] = this.plugins[k].icons[i]);
         this.plugins[k].init();
     });
   }
@@ -157,20 +150,15 @@ module.exports = new (function(){
 
   //pos: -1=before, false=prepend, 0=append(default), 1=after
   this.ins = function(tag, t, attrs, n, pos) {
-    let c = (tag===false && !(t && t.tagName))
-      ? document.createTextNode(t || '')
-      : document.createElement(tag || 'span');
-      
-    if (t && t.tagName) c.appendChild(t);
-    else if (t && tag!==false) c.innerHTML = t;
-    
-    if (attrs && c.tagName) {
+    let c = document.createElement(tag || 'span');
+    if (t && t.nodeType) c.appendChild(t);
+    else if (t) c.innerHTML = t;
+    if (attrs) {
       for (let i in attrs) {
         if(i.match(/-/)) c.setAttribute(i.replace(/^-/, ''), attrs[i]);
         else c[i] = attrs[i];
       }
     }
-    
     return n
       ? (pos
         ? n.parentNode.insertBefore(c, pos<0 ? n : n.nextSibling)
@@ -184,26 +172,39 @@ module.exports = new (function(){
   }
 
   this.x = function(d, pos, cls){
-    return this.ins('a', this.i('close'), {href: this.opt.hClose, className: (cls || '')}, d, pos);
+    return this.ins('a', this.i('close', '&#x2715;'), {href: this.opt.hClose, className: (cls || '')}, d, pos);
   }
 
-/*
-this.i = function(ico, c) {
-  let s = this.ins('span', '', {classList: c});
-  this.plugins.icons.addIcon(ico, s);
-  return s;
-}
-*/
-
-  this.svg = function(id, alt, c) {
-    if (!id || this.opt.textIcons || !document.getElementById(id)) return this.ins('span', alt || '', {className: c || ''});
-    return this.ins('span', '<svg class="' + this.opt.cIcon + ' ' + (c || '') + '" width="24" height="24"><use xlink:href="#' + id + '"></use></svg>');
-  }
-  
-  this.i = function(ico, c) {
-    //if(ico.constructor !== Array)
-    if(typeof ico === 'string') ico = this.icons[ico] || [ico, ''];
-    return this.svg(ico[0] ? this.opt.pSvg + ico[0] : '', ico[1] || '[' + ico[0] + ']', c);
+  this.i = function(ico, alt){
+    if(this.svgs[ico] === undefined){
+      let svg = '';
+      if(!this.opt.textIcons){
+        svg = this.icons[ico];
+        if(!svg){
+          let id = this.opt.pSvg + ico;
+          if(document.getElementById(id)) svg = '<svg><use xlink:href="#' + id + '"></use></svg>'; // from page
+          else svg = ''; // none
+        }
+        else if(!svg.match(/</)) svg = '<svg viewBox="0 0 100 100"><path d="' + svg + '"/></svg>'; // from array
+      }
+      let n;
+      if(svg){
+        let div = document.createElement('div');
+        div.innerHTML = svg;
+        n = div.firstChild;
+        if(!this.attr(n, 'width'))  n.setAttribute('width', this.opt.iconSize);
+        if(!this.attr(n, 'height')) n.setAttribute('height', this.opt.iconSize);
+        if(!this.attr(n, 'class'))  n.classList.add(this.opt.cIcon);
+      }
+      else n = '';//this.ins('span', alt /*this.iTxt[ico]*/ || '[' + ico + ']');
+      this.svgs[ico] = n;
+    }
+    return this.svgs[ico]
+      ? this.svgs[ico].cloneNode(true)
+      : (alt
+        ? this.ins('span', alt)
+        : null
+        );
   }
 
   this.vis = function(n){

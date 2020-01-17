@@ -10,10 +10,6 @@ module.exports = new(function () {
 
   this.name = 'lookup';
 
-  this.icons = {
-    goto: ['', '&rarr;']
-  };
-
   this.opt = {
     aLabel: 'data-label',
     aLookup: 'data-lookup',
@@ -62,7 +58,7 @@ module.exports = new(function () {
     let i = null;
     if(app.attr(n, this.opt.aUrl)){
       let ic = app.ins('span', '', {className:'input-tools nobr'}, this.opt.inPop ? pop : m, 1);//icons container
-      i = app.ins('a', app.i('goto'), {}, ic);
+      i = app.ins('a', app.i('goto', '&rarr;'), {href: '#goto'}, ic);
       i.style.cursor = 'pointer';
       app.ins('', ' ', {}, ic, -1);
     }
