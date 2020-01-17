@@ -1,4 +1,4 @@
-/*! d1css v1.0.22 */
+/*! d1css v1.0.23 */
 
 body {
     --text: #000;
@@ -268,6 +268,17 @@ svg {
 a .icon:not(:last-child), button .icon:not(:last-child) {
     margin-right: var(--gap-s);
 }
+
+.icon.line {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 8%;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transform: translate(0, .15em);
+}
+
+/*!*/
 
 ul {
     list-style: disc outside;
@@ -611,14 +622,6 @@ pre code {
     background: none;
 }
 
-.icon {
-    color: var(--text-lite);
-}
-
-[class*="text-"]>.icon {
-    color: inherit;
-}
-
 mark {
     background-color: var(--bg-warning);
 }
@@ -785,6 +788,10 @@ mark {
         margin: 0;
     }
 
+    .btn.fit {
+        padding: 0 var(--gap-s);
+    }
+
     a.btn:hover, button:hover:not([disabled]),
     [type="submit"]:hover:not([disabled]), a.btn:focus, button:focus,
     input:focus, select:focus, textarea:focus, [contenteditable]:focus {
@@ -840,8 +847,12 @@ mark {
         color: inherit;
     }
 
-    .btn.fit {
-        padding: 0 var(--gap-s);
+    .icon {
+        color: var(--text-lite);
+    }
+
+    [class*="text-"]>.icon[class] {
+        color: inherit;
     }
 
     .text-n[class] {
@@ -1092,4 +1103,8 @@ form .mar {
     .js table.flip tr>* {
         width: 100%;
     }
+}
+
+.input-tools a {
+    color: inherit;
 }

@@ -8,28 +8,20 @@ module.exports = new (function(){
   this.sequence = 0;
   this.plugins = {};
   this.handlers = {};
-  this.svgs = {};
-  this.icons = {
-find: 'M10,50l40,40 40,-80 -40,60z', // path
-open: '<svg viewBox="0 0 100 100"><path d="M10,50l40,40 40,-80 -40,0z"/></svg>' // svg
-  };
+  
   this.opt = {
     debug: 0,
-    textIcons: false,
     aCaption: 'data-caption',
     cAct: 'act',
     cHide: 'hide',
     cToggle: 'toggle',
     cOff: 'off',
     cClose: 'close',
-    cIcon: 'icon',
-    iconSize: 24,
     cJs: 'js',
     hClose: '#cancel',
     hOk: '#ok',
     sCancel: 'Cancel',
-    sOk: 'OK',
-    pSvg: 'svg-', //prefix
+    sOk: 'OK'
   };
 
   this.init = function(opt){
@@ -176,37 +168,11 @@ open: '<svg viewBox="0 0 100 100"><path d="M10,50l40,40 40,-80 -40,0z"/></svg>' 
   }
 
   this.i = function(ico, alt){
-    if(this.svgs[ico] === undefined){
-      let svg = '';
-      if(!this.opt.textIcons){
-        svg = this.icons[ico];
-        if(!svg){
-          let id = this.opt.pSvg + ico;
-          if(document.getElementById(id)) svg = '<svg><use xlink:href="#' + id + '"></use></svg>'; // from page
-          else svg = ''; // none
-        }
-        else if(!svg.match(/</)) svg = '<svg viewBox="0 0 100 100"><path d="' + svg + '"/></svg>'; // from array
-      }
-      let n;
-      if(svg){
-        let div = document.createElement('div');
-        div.innerHTML = svg;
-        n = div.firstChild;
-        if(!this.attr(n, 'width'))  n.setAttribute('width', this.opt.iconSize);
-        if(!this.attr(n, 'height')) n.setAttribute('height', this.opt.iconSize);
-        if(!this.attr(n, 'class'))  n.classList.add(this.opt.cIcon);
-      }
-      else n = '';//this.ins('span', alt /*this.iTxt[ico]*/ || '[' + ico + ']');
-      this.svgs[ico] = n;
-    }
-    return this.svgs[ico]
-      ? this.svgs[ico].cloneNode(true)
-      : (alt
-        ? this.ins('span', alt)
-        : null
-        );
+    return this.plugins.icons
+      ? this.plugins.icons.i(ico, alt)
+      : this.ins('span', alt || ico);
   }
-
+  
   this.vis = function(n){
     return !n.classList.contains(this.opt.cOff);
   }

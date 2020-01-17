@@ -14,7 +14,7 @@ module.exports = new(function () {
     dateFormat: 'd', //y=Y-m-d, d=d.m.Y, m=m/d Y
     hashCancel: '#cancel',
     hashNow: '#now',
-    addIcons: [['date', '#'], ['now', '&check;'], ['delete', '&#x2715;']],
+    addIcons: [['date', '#'], ['ok', '&check;'], ['delete', '&#x2715;']],
     idPicker: 'pick-date',
     minWidth: 801,
     qsCalendar: 'input.calendar',
@@ -172,7 +172,7 @@ module.exports = new(function () {
     let d = x.getDate();
     let my = this.n(m+1) + '.' + y;
     let p1 = app.ins('p', '', {className: 'c'}, this.win);
-    let now = this.btn(this.opt.hashNow, app.i('now', '&check;'), p1);
+    let now = this.btn(this.opt.hashNow, app.i('ok', '&check;'), p1);
     let py = this.btn('#prev-year', app.i('prev2', '&laquo;'), p1);
     let pm = this.btn('#prev-month', app.i('prev', '&lsaquo;'), p1);
     let cur = app.ins('span', my, {className: 'pad'}, p1);
