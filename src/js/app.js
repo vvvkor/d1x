@@ -65,8 +65,9 @@ module.exports = new (function(){
   }
 
   this.initPlugins = function(opt){
+    if(this.opt.disable) this.opt.disable.forEach(p => delete this.plugins[p]);
     this.dbg(['plugins', this.plugins]);
-    Object.keys(this.plugins).filter(p => !this.opt.disable || this.opt.disable.indexOf(p)==-1).forEach(k => {
+    Object.keys(this.plugins).forEach(k => {
         if(opt && opt.plug && opt.plug[k]) this.setOpt(this.plugins[k], opt.plug[k]);
         this.plugins[k].init();
     });

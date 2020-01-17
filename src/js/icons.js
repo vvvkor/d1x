@@ -86,7 +86,6 @@ module.exports = new(function () {
     if(this.parsed[ico] === undefined){
       let svg = this.icons[ico];
       let line = svg && (svg.substr(-1) === ' ');
-      app.dbg(['svg', ico, line, svg]);
       if(!svg){
         let id = this.opt.pSvg + ico;
         if(document.getElementById(id)) svg = '<svg ' + this.opt.ns + '><use xlink:href="#' + id + '"></use></svg>'; // from page

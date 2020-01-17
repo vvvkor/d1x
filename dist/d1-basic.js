@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1 app v1.0.23 */
+/*! d1 app v0.0.0 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -163,10 +163,11 @@ module.exports = new function () {
   this.initPlugins = function (opt) {
     var _this2 = this;
 
+    if (this.opt.disable) this.opt.disable.forEach(function (p) {
+      return delete _this2.plugins[p];
+    });
     this.dbg(['plugins', this.plugins]);
-    Object.keys(this.plugins).filter(function (p) {
-      return !_this2.opt.disable || _this2.opt.disable.indexOf(p) == -1;
-    }).forEach(function (k) {
+    Object.keys(this.plugins).forEach(function (k) {
       if (opt && opt.plug && opt.plug[k]) _this2.setOpt(_this2.plugins[k], opt.plug[k]);
 
       _this2.plugins[k].init();
@@ -2115,7 +2116,6 @@ module.exports = new function () {
     if (this.parsed[ico] === undefined) {
       var svg = this.icons[ico];
       var line = svg && svg.substr(-1) === ' ';
-      app.dbg(['svg', ico, line, svg]);
 
       if (!svg) {
         var id = this.opt.pSvg + ico;
