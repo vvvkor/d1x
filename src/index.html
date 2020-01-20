@@ -58,17 +58,20 @@
 			<li><a href="#table-interactive">Interactive</a>
 			</ul>
 		<li><a href="#grid">Grid</a>
-		<li><a href="#buttons">Buttons</a>
 		<li><a href="#n-forms">Forms</a> &rsaquo;
 			<ul id="n-forms" class="--hide toggle ">
+			<li><a href="#buttons">Buttons</a>
 			<li><a href="#form-inline">Inline</a>
 			<li><a href="#form-stacked">Stacked</a>
-			<li><a href="#form-grid">Grid</a>
-			<li><a href="#form-table">Table</a>
+			<li><a href="#form-grid">Grid layout</a>
+			<li><a href="#form-table">Table layout</a>
+			<li><a href="#input-color">Color</a>
+			<li><a href="#input-boxes">Checkboxes</a>
+			<li><a href="#input-set">Set value</a>
 			<li><a href="#calendar">Calendar</a>
 			<li><a href="#edit">Edit</a>
 			<li><a href="#lookup">Lookup</a>
-			<li><a href="#valid">Valid</a>
+			<li><a href="#valid">Validation</a>
 			<!--li><a href="#form-validate">Validation</a-->
 			</ul>
 		<li><a href="#n-components">Components</a> &rsaquo;
@@ -441,7 +444,9 @@ By default, they all have equal width.
 
 
 
-<h2 id="buttons">Buttons</h2>
+<h2 id="forms">Forms</h2>
+
+<h3 id="buttons">Buttons</h2>
 
 <p>
 <code>Button</code> and <code>input</code> of type <code>submit</code> have button styling by default.
@@ -469,8 +474,6 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 <a href="#x">Link</a>
 </div>
 
-
-<h2 id="forms">Forms</h2>
 
 <h3 id="form-inline">Inline form</h3>
 
@@ -500,7 +503,7 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 </form>
 </div>
 
-<h3 id="form-grid">Aligned form using grid</h3>
+<h3 id="form-grid">Grid layout</h3>
 
 <div class="code">
 <form method="post">
@@ -532,7 +535,7 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 </div>
 
 
-<h3 id="form-table">Aligned form using table</h3>
+<h3 id="form-table">Table layout</h3>
 
 <p>
 For aligned form, <code>table</code> may be used, which is arguably not semantic, but still very convenient.
@@ -635,6 +638,33 @@ Table will become stacked on small screen.
 </div>
 
 
+<h3 id="input-color">Color</h3>
+
+<div class="code">
+	<label for="demo-color">Color</label>
+	<td><input type="color" name="c" id="demo-color" value="#ff0000">
+</div>
+
+<h3 id="input-boxes">Checkbox group</h3>
+
+<div class="code">
+	<label for="b1"><input id="b1" type="checkbox" name="colors" data-group="colors"> <b>All</b></label><br>
+	<label for="b2"><input id="b2" type="checkbox" class="colors" name="color[]" value="red"> Red</label><br>
+	<label for="b3"><input id="b3" type="checkbox" class="colors" name="color[]" value="green"> Green</label><br>
+	<label for="b4"><input id="b4" type="checkbox" class="colors" name="color[]" value="blue"> Blue</label><br>
+</div>
+
+<h3 id="input-set">Set input value</h3>
+	
+<div class="code">
+	<label for="nm-set">Name</label>
+	<input type="text" name="n" id="nm-set">
+	<a href="#nm-set" data-value="test">Test</a>,
+	<a href="#nm-set" data-value="">Reset</a>
+</div>
+	
+	
+	
 	<h3 id="calendar">Calendar</h3>
 	
 	<p>Replacement of standard HTML date inputs.
@@ -703,7 +733,7 @@ Table will become stacked on small screen.
   <select name="town" id="town" data-filter="{q}.json" data-placeholder="..." data-cache="10"></select>
 </div>
 
-<h3 id="valid">Valid</h3>
+<h3 id="valid">Validation</h3>
 
 <p>Custom form validation.
 
@@ -1159,17 +1189,8 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <h3 id="util">Utilities</h3>
 
 <ul id="js-behaviours">
-	<li>Dropdown <code>.toggle</code> &mdash; toggle, escape
-	<li>Tree <code>.toggle</code> &mdash; multiple, unscroll, toggle, remember (<code>.mem</code>), <code>.accordion</code>
-	<li>Toggle <code>.toggle</code> &mdash; multiple, unscroll, toggle, remember (<code>.mem</code>)
-	<li>Popup <code>.toggle</code> &mdash; multiple, unscroll, toggle, escape
-	<li>Tabs <code>.toggle</code> &mdash; multiple, unscroll, remember (<code>.mem</code>)
-	<li>Dialog &mdash; escape
-	<li>Gallery &mdash; previous, escape
+
 	<li>Output HTML code: <code>div.code</code>
-	<li>Link or button with confirmation: <code>.dialog[title][data-caption]</code>
-	<li>Link with prompt: <code>a.dialog[title][data-caption][data-prompt]</code>
-	<li>Check group of boxes: <code>input[data-group]</code>, <code>[class~="data-group"]</code>
 	<li>Toggle class or other attribute: <code>a[href^='#'][data-set][data-unset][data-attr]</code>, <code id="test1">a[data-nodes][data-set][data-unset][data-attr]</code> (
 		<input type="checkbox" name="chb" data-set="bg-w" data-nodes="#js-behaviours code" title="bg">
 		| <a href="#test1" data-set="text-e" data-unclass-x="text-i" data-nodes="#js-behaviours code" class="">text</a>
@@ -1178,17 +1199,29 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 		| <input name="nav-opt" type="checkbox" data-nodes="#test-input" data-set="radio" data-unset="checkbox" data-attr="type" title="input type">
 			<input type="checkbox" id="test-input">
 		)
+	<li>Class depending on resize 
+		(<code data-class-mobile="text-y" data-class-desktop="text-n">[data-class-mobile]</code> or 
+		 <code data-class-desktop="text-y" data-class-mobile="text-n">[data-class-desktop]</code>).
+<!--
+	<li>Dropdown <code>.toggle</code> &mdash; toggle, escape
+	<li>Tree <code>.toggle</code> &mdash; multiple, unscroll, toggle, remember (<code>.mem</code>), <code>.accordion</code>
+	<li>Toggle <code>.toggle</code> &mdash; multiple, unscroll, toggle, remember (<code>.mem</code>)
+	<li>Popup <code>.toggle</code> &mdash; multiple, unscroll, toggle, escape
+	<li>Tabs <code>.toggle</code> &mdash; multiple, unscroll, remember (<code>.mem</code>)
+	<li>Dialog &mdash; escape
+	<li>Gallery &mdash; previous, escape
+	<li>Link or button with confirmation: <code>.dialog[title][data-caption]</code>
+	<li>Link with prompt: <code>a.dialog[title][data-caption][data-prompt]</code>
+	<li>Check group of boxes: <code>input[data-group]</code>, <code>[class~="data-group"]</code>
 	<li>Set value of target input: <code>a[href^='#'][data-value]</code>
 	<li>Show value of color input: <code>input[type="color"]</code>
+	<li>Align table columns: <code>table.r5</code>
+	<li>Fetch asynchronous request: <code>[data-target]</code>
+-->
 	<!--
 	<li>Submit target button: <code>a[href^='#'][data-submit]</code>
 	<li>Submit form: <code>(select|[type="checkbox"]|[type="search"])[data-submit]</code>
 	-->
-	<li>Align table columns: <code>table.r5</code>
-	<li>Class depending on resize 
-		(<code data-class-mobile="text-y" data-class-desktop="text-n">[data-class-mobile]</code> or 
-		 <code data-class-desktop="text-y" data-class-mobile="text-n">[data-class-desktop]</code>).
-	<li>Asynchronous request: <code>[data-target]</code>
 </ul>
 
 <h3 id="items">Items</h3>

@@ -1,0 +1,173 @@
+<style>
+  body{font:400% sans-serif;}
+  div{display:flex;flex-wrap:wrap;width:5em;}
+  a{display:block;color:#03c;text-decoration:none;margin:.1em;}
+  a:hover{color:c00;}
+	a:hover .icon{color:inherit;}
+  .icon{display:inline-block;width:1em;height:1em;vertical-align:-.2em;/*padding-right:.5em;*/color:#666;background:#eee;background-clip:content-box;}
+	svg{fill:currentColor;}
+</style>
+
+<script>
+  let icons = {
+    //find: '# M10,50l40,40 40,-80 -40,60z', // path (#x# or 100x100)
+    //open: '<svg viewBox="0 0 100 100"><path d="M10,50l40,40 40,-80 -40,0z"/></svg>' // svg
+    menu: [7, 'M.5 1h6v1h-6zm0 2h6v1h-6zm0 2h6v1h-6z'],
+    sort: [7, 'M1 1h2v1h-2zm0 2h3.5v1h-3.5zm0 2h5v1h-5z'],
+    //more: [7, 'M3 1h1v1h-1zm0 2h1v1h-1zm0 2h1v1h-1z'],
+    more: [17, 'M7 2h3v3h-3zm0 5h3v3h-3zm0 5h3v3h-3z'],
+    grid: [7, 'M1 1h2v2h-2zM4 1h2v2h-2zM1 4h2v2h-2zM4 4h2v2h-2z'],
+	
+    home: [10, 'M1 5h1v4h2v-3h2v3h2v-4h1l-4-4z'],
+    user: [10, 'M5 9C13 -1.5 -3 -1.5 5 9zM1 8.5q4 1 8 0-4 -3 -8 0z'],
+    exit: [7, ''],
+    close: [12, 'M2 1l4 4 4-4 1 1-4 4 4 4-1 1-4-4-4 4-1-1 4-4-4-4z'],
+	
+    find: [12, 'M5 1a4 4 0 1 0 .01 0zm0 1a3 3 0 1 1-.01 0m3 5l-1 1 3 3 1-1z'],
+    folder: [12, 'M1 1h4l1 2h5v7h-10zm1 3v5h8v-5z'],
+    //folder2: [12, 'M1 1h4l.5 2h5.5v7h-10zm1 1v7h8v-5h-5.5l-.5-2z'],
+    file: [7, ''],
+    attach: [7, ''],
+	
+    edit: [10, 'M7 1q1.6 .4 2 2l-5 5-3 1 1-3zM2.3 6.3l-.5 1.5.4.4 1.5-.5z'],
+    plus: [7, 'M3 1h1v2h2v1h-2v2h-1v-2h-2v-1h2z'],
+    delete: [20, 'M5 3l5 5 5-5 2 2-5 5 5 5-2 2-5-5-5 5-2-2 5-5-5-5z'],
+    ok: [100, 'M10 48l11-9 18 22 40-50 11 9-51 65z'],
+	
+    config: [7, 'M2 3l1-1-1-1 q1.5 .2 2 1v1l2 2q-.2.8 -1 1l-2-2h-1q-.8-.5-1-2z'],
+    place: [10, 'M2 4a3 3 0 0 1 6 0q0 2 -3 5q-3-3-3-5zm3 -2a2 2 0 1 0 .01 0z'],
+    //refresh2: [10, 'M5 0v1a4 4 0 1 0 4 4h-1a3 3 0 1 1-3-3v1l2-1.5z'],
+    refresh: [20, 'M10 1.5v3a7 7 0 1 0 7 7h-2a5 5 0 1 1-5-5v3l5-4z'],
+//place2: [10, 'M5 9C-5.5 -1.5 15.5 -1.5 5 9zM5 2a2 2 0 1 0 .01 0z'],
+    //user2: [8, 'M4 7C10 -1 -2 -1 4 7zM1 6.5q3 1 6 0-3 -2 -6 0z'],
+//user1: [8, 'M4 1a1.7 2.2 0 1 0 .01 0m-3 5.5q3 1 6 0-3 -2.5 -6 0z'],
+    help: [7, ''],
+
+    north: [10, 'M1 6l4-4 4 4-1 1-3-3-3 3z'],
+    south: [10, 'M1 4l4 4 4-4-1-1-3 3-3-3z'],
+    west: [10, 'M6 1l1 1-3 3 3 3-1 1-4-4z'],
+    east: [10, 'M4 1l4 4-4 4-1-1 3-3-3-3z'],
+
+	up:   [12, 'M2 7l-1-1 5-5 5 5-1 1 -3.25 -3.2v7h-1.5v-7z'],
+	down: [12, 'M2 5l-1 1 5 5 5-5-1-1 -3.25 3.2v-7h-1.5v7z'],
+	left: [12, 'M7 2l-1-1 -5 5 5 5 1-1 -3.2 -3.25h7v-1.5h-7z'],
+	right: [12, 'M5 2l 1-1 5 5 -5 5 -1-1 3.2 -3.25h-7v-1.5h7z'],
+	
+    upload: [10, 'M1 6.7h1v1h6v-1h1v2h-8zm1-2.7h2v3h2v-3h2l-3-3z'],
+    download: [10, 'M1 6.7h1v1h6v-1h1v2h-8zm1-2.5h2v-3h2v3h2l-3 3z'],
+    first: [8, 'M1.5 1h1v6h-1zm1 3l4-3v6z'],
+    last: [8, 'M1.5 1v6l4-3zm4 0h1v6h-1z'],
+	
+    //download2: [8, 'M1 1h2v2h-1l2 3 2-3h-1v-2h2v6h-6z'],
+	//date2: [10, 'M1 1.8h1.5v-1h1.5v1h2v-1h1.5v1h1.5v7h-8zm1 2v4h6v-4z'],
+	date: [10, 'M1 1.8h8v7h-8zm1 2v4h6v-4zm.5-3v2h1.5v-2zm3.5 0v2h1.5v-2z'],
+    time: [24, 'M12 1a10 10 0 1 1 -.01 0zm0 2a8 8 0 1 0 .01 0zm-1.2 1h2v6.5l3.5 3.5-1.5 1.5-4-4z'],
+	
+    audio: [7, ''],
+    video: [7, ''],
+    image: [7, ''],
+    text: [7, ''],
+	
+    tree: [7, ''],
+    list: [7, 'M1 1h1v1h-1zm0 2h1v1h-1zm0 2h1v1h-1z M3 1h3v1h-3zm0 2h3v1h-3zm0 2h3v1h-3z'],
+    link: [7, ''],
+    chart: [10, 'M1 9v-3h2v3zm3 0v-5h2v5zm3 0v-7h2v7z'],
+	
+    error: [7, ''],
+    info: [7, ''],
+    no: [7, 'M1 3h5v1h-5z'],
+    warning: [7, ''],
+	
+	bookmark: [8, 'M4 5l-2 2v-6h4v6z'],
+    star: [34, 'M17 3 l4 10 10 0-8 7 3 11-9-7-9 7 3-11-8-7 10,0z'],
+    heart: [7, ''],
+    tag: [9, 'M1 5.2l4-4h3v3l-4 4zm5.2-3a.8 .8 0 1 0 .01 0'],
+	
+    mail: [7, ''],
+    card: [7, ''],
+    phone: [7, ''],
+    send: [7, ''],
+    chat: [7, ''],
+	
+    copy: [7, ''],
+    db: [7, ''],
+    key: [7, ''],
+    lock: [7, ''],
+    sum: [7, ''],
+    share: [7, ''],
+    world: [7, ''],
+    _view: [7, ''],
+    _box: [7, ''],
+	
+	
+    // https://github.com/danklammer/bytesize-icons
+    // outline icons; must end with space; class="icon line"
+    /*
+    heart: [32, 'M4 16 C1 12 2 6 7 4 12 2 15 6 16 8 17 6 21 2 26 4 31 6 31 12 28 16 25 20 16 28 16 28 16 28 7 20 4 16Z '],
+    message: [32, 'M2 4 L30 4 30 22 16 22 8 29 8 22 2 22Z '],
+    mail: [32, 'M2 26 L30 26 30 6 2 6 Z M2 6 L16 16 30 6 '],
+    home: [32, 'M12 20 L12 30 4 30 4 12 16 2 28 12 28 30 20 30 20 20Z '],
+    login: [32, 'M3 16 L23 16 M15 8 L23 16 15 24 M21 4 L29 4 29 28 21 28 '],
+    logout: [32, 'M28 16 L8 16 M20 8 L28 16 20 24 M11 28 L3 28 3 4 11 4 '],
+    file: [32, 'M6 2 L6 30 26 30 26 10 18 2 Z M18 2 L18 10 26 10 '],
+    folder: [32, 'M2 26 L30 26 30 7 14 7 10 4 2 4Z '],
+    date: [32, 'M2 6 L2 30 30 30 30 6 Z M2 15 L30 15 M7 3 L7 9 M13 3 L13 9 M19 3 L19 9 M25 3 L25 9 '],
+    upload: [32, 'M28 22 L28 30 4 30 4 22 M16 4 L16 24 M8 12 L16 4 24 12 '],
+    download: [32, 'M28 22 L28 30 4 30 4 22 M16 4 L16 24 M8 16 L16 24 24 16 '],
+    send: [32, 'M2 16 L30 2 16 30 12 20 Z M30 2 L12 20 '],
+    link: [32, 'M18 8 C18 8 24 2 27 5 30 8 29 12 24 16 19 20 16 21 14 17 M14 24 C14 24 8 30 5 27 2 24 3 20 8 16 13 12 16 11 18 15 '],
+    options: [32, 'M28 6 L4 6 M28 16 L4 16 M28 26 L4 26 M24 3 L24 9 M8 13 L8 19 M20 23 L20 29 '],
+    star: [32, 'M16 2 L20 12 30 12 22 19 25 30 16 23 7 30 10 19 2 12 12 12Z '],
+    warning: [32, 'M16 3 L30 29 2 29 Z M16 11 L16 19 M16 23 L16 25 '],
+    refresh: [32, 'M29 16 C29 22 24 29 16 29 8 29 3 22 3 16 3 10 8 3 16 3 21 3 25 6 27 9 M20 10 L27 9 28 2 '],
+    // not single path
+    more: '<svg viewBox="0 0 32 32"><circle cx="16" cy="7" r="2"/><circle cx="16" cy="16" r="2"/><circle cx="16" cy="25" r="2"/></svg> ',
+    info: '<svg viewBox="0 0 32 32"><path d="M16 14 L16 23 M16 8 L16 10"/><circle cx="16" cy="16" r="14"/></svg> ',
+    clock: '<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="14"/><path d="M16 8 L16 16 20 20"/></svg> ',
+    photo: '<svg viewBox="0 0 32 32"><path d="M20 24 L12 16 2 26 2 2 30 2 30 24 M16 20 L22 14 30 22 30 30 2 30 2 24"/><circle cx="10" cy="9" r="3"/></svg> ',
+    lock: '<svg viewBox="0 0 32 32"><path d="M5 15 L5 30 27 30 27 15 Z M9 15 C9 9 9 5 16 5 23 5 23 9 23 15 M16 20 L16 23"/><circle cx="16" cy="24" r="1"/></svg> ',
+    search: '<svg viewBox="0 0 32 32"><circle cx="14" cy="14" r="12" /><path d="M23 23 L30 30"  /></svg> '
+	*/
+  };
+  
+  let addIcon = function(i, n, clr){
+    n.insertBefore(svg(i), n.firstChild);
+	n.removeChild(n.lastChild, n);
+  }
+
+  let svg = function(ico, alt){
+    let a = ico.split(/\//);
+    ico = a[0];
+      let svg = icons[ico];
+      if(svg && typeof svg !== 'string'){
+        svg = '<svg viewBox="0 0 ' + svg[0] + ' ' + svg[0] + '"><path d="' + svg[1] + '"/></svg>';
+      }
+      let n = null;
+      if(svg){
+        let div = document.createElement('div');
+        div.innerHTML = svg;
+        n = div.firstChild;
+        n.setAttribute('width', 24);
+        n.setAttribute('height', 24);
+        n.setAttribute('class', 'icon');
+      }
+    return n;
+  }
+  
+		document.addEventListener('DOMContentLoaded', function(n){
+			let d = document.getElementById('demo-all-icons');
+			if(d && icons){
+				let i = 0;
+				Object.keys(icons).forEach(function(k){
+					let a = document.createElement('a');
+					a.textContent = k;
+					a.href = a.title = '#' + (++i) + '-' + k;
+					addIcon(k, a, 0);
+					d.appendChild(a);
+				});
+			}
+		}, false);
+
+</script>
+
+<div id="demo-all-icons"></div>

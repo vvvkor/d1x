@@ -49,6 +49,7 @@
 - better .js-live-val
 - new components: scrollspy, notify, sortable, icons?
 - alerts: close link
+- slides
 ~ optimize: !addEventListener to d1.b(), !bind to arrFunc, getAttribute to attr,
   - var to let, querySelector(All) to q/qq, !appendChild/insertBefore to ins
 ? gallery: unuse :target
