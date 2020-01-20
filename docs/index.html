@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+	<title>d1 - Documentation</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>d1 - Docs and Demo</title>
 
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.23/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.23/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.24/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.24/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -31,7 +31,7 @@
 <body class="-bg" data-d1='{"hOk":"#yes","debug":1,"disable":["-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
 <div class="topbar -shade -let" id="topbar">
 	<a href="#menu" class="pad hide-desktop" data-ico="menu" title="Menu">&equiv;</a>
-	<a href="#top" class="pad"><b>d1</b> v1.0.23</a>
+	<a href="#top" class="pad"><b>d1</b> v1.0.24</a>
 	<code class="pad">npm install d1css</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1" title="GitHub" class="pad">GitHub</a>
 </div>
@@ -46,6 +46,7 @@
 	<ul class="fit pad --toggle --tree mem -accordion">
 		<li><a href="#start">Get started</a>
 		<li><a href="#typo">Typography</a>
+		<li><a href="#grid">Grid</a>
 		<li><a href="#n-list">Lists</a> &rsaquo;
 			<ul id="n-list" class="--hide toggle ">
 			<li><a href="#list-basic">Basic</a>
@@ -57,18 +58,20 @@
 			<li><a href="#table-responsive">Responsive</a>
 			<li><a href="#table-interactive">Interactive</a>
 			</ul>
-		<li><a href="#grid">Grid</a>
-		<li><a href="#buttons">Buttons</a>
 		<li><a href="#n-forms">Forms</a> &rsaquo;
 			<ul id="n-forms" class="--hide toggle ">
+			<li><a href="#buttons">Buttons</a>
 			<li><a href="#form-inline">Inline</a>
 			<li><a href="#form-stacked">Stacked</a>
-			<li><a href="#form-grid">Grid</a>
-			<li><a href="#form-table">Table</a>
+			<li><a href="#form-grid">Grid layout</a>
+			<li><a href="#form-table">Table layout</a>
+			<li><a href="#input-color">Color</a>
+			<li><a href="#input-boxes">Checkboxes</a>
+			<li><a href="#input-set">Set value</a>
 			<li><a href="#calendar">Calendar</a>
 			<li><a href="#edit">Edit</a>
 			<li><a href="#lookup">Lookup</a>
-			<li><a href="#valid">Valid</a>
+			<li><a href="#valid">Validation</a>
 			<!--li><a href="#form-validate">Validation</a-->
 			</ul>
 		<li><a href="#n-components">Components</a> &rsaquo;
@@ -84,11 +87,18 @@
 			<li><a href="#gallery">Gallery</a>
 			<li><a href="#toggle-drawer">Drawer</a>
 			<li><a href="#topbars">Topbar</a>
+			<li><a href="#toggle-details">Details</a>
+			</ul>
+		<li><a href="#n-util">Utilities</a> &rsaquo;
+			<ul id="n-util" class="--hide toggle ">
 			<li><a href="#fetch">Fetch</a>
-			<li><a href="#util">Utilities</a>
+			<li><a href="#toggle-class">Toggle class</a>
+			<li><a href="#responsive-class">Responsive class</a>
 			<li><a href="#items">Items</a>
 			<li><a href="#icons">Icons</a>
-			<li><a href="#toggle-details">Details</a>
+			<li><a href="#code-highlight">Code highlight</a>
+			<li><a href="#code-sample">Code sample</a>
+			<li><a href="#theme">Theme</a>
 			</ul>
 		<li><a href="#n-style">Style</a> &rsaquo;
 			<ul id="n-style" class="--hide toggle ">
@@ -214,6 +224,69 @@ Mostly, default styling is kept.
 	<p>Paragraph</p>
 	<pre class="-l">Preformatted <code>code</code></pre>
 	<blockquote class="-l">Blockqoute</blockquote>
+
+
+
+
+<h2 id="grid" class="-let">Grid</h2>
+
+<p>
+To create a grid row add <code>row</code> class to the container <code>div</code>.
+Direct descendants of the container are columns.
+By default, they all have equal width.
+</p>
+
+<fieldset class="mar">
+<legend>Options</legend>
+<label><input name="grid-flip" type="checkbox" data-nodes="#cols" data-set="flip"> Stack on small screen <code>.flip</code></label><br>
+<label><input name="grid-center" type="checkbox" data-nodes="#cols" data-set="center"> Center columns vertically <code>.center</code></label><br>
+<label><input name="grid-mar" type="checkbox" data-nodes="#cols" data-set="mar"> Add vertical margins <code>.mar</code></label><br>
+<label><input name="grid-main-over" type="checkbox" data-nodes="#col-main-over" data-set="bg text-e pad mar nobr" data-unset="hide"> Overflow content</label><br>
+<label><input name="grid-let" type="checkbox" data-nodes="#cols" data-set="let"> Allow columns wrapping <code>.let</code></label> (disables column width modifiers)
+</fieldset>
+<fieldset class="mar">
+<legend>Column width options (applied on central column here)</legend>
+<label><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y col-0"> Auto <code>.row &gt; .col-0</code></label><br>
+<label><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y"> Single <code>.row &gt; div</code></label><br>
+<label><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y col-2" checked> Double <code>.row &gt; .col-2</code></label><br>
+<label><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y col-3"> Triple <code>.row &gt; .col-3</code></label><br>
+</fieldset>
+
+<div class="code">
+	<div class="row flip" id="cols">
+		<div class="pad bg-w">Left</div>
+		<div class="pad bg-y col-2" id="col-main">
+			Central<br>
+			column
+			<div id="col-main-over">
+				Very wide content &mdash; required to
+				overflow available column width
+			</div>
+		</div>
+		<div class="pad bg-i">Right</div>
+	</div>
+</div>
+
+
+<fieldset class="mar">
+<legend>Column position options (applied on central column here)</legend>
+<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-set="pad bg-y"> Fill <code>.row &gt; div</code></label><br>
+<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-set="pad bg-y col-0"> Auto <code>.row &gt; .col-0</code></label><br>
+<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-set="pad bg-y col-0 center" checked> Centrify <code>.row &gt; .col-0.center</code></label><br>
+<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-set="pad bg-y col-0 shift"> Shift right <code>.row &gt; .col-0.shift</code> (with subsequent columns)</label><br>
+</fieldset>
+
+
+<div class="code">
+	<div class="row" id="cols2">
+		<div class="pad bg-w col-0" id="col-left">Left</div>
+		<div class="pad bg-y col-0 center" id="col-center">Central<br>column</div>
+		<div class="pad bg-i col-0" id="col-right">Right</div>
+	</div>
+</div>
+
+
+
 
 <h2 id="list">Lists</h2>
 
@@ -380,68 +453,11 @@ Add <code>r#, l#, c#</code> (where # is any number) classes to align cells of co
 </div>
 
 
-<h2 id="grid" class="-let">Grid</h2>
-
-<p>
-To create a grid row add <code>row</code> class to the container <code>div</code>.
-Direct descendants of the container are columns.
-By default, they all have equal width.
-</p>
-
-<fieldset>
-<legend>Options</legend>
-<label><input name="grid-flip" type="checkbox" data-nodes="#cols" data-set="flip"> Stack on small screen <code>.flip</code></label><br>
-<label><input name="grid-center" type="checkbox" data-nodes="#cols" data-set="center"> Center columns vertically <code>.center</code></label><br>
-<label><input name="grid-mar" type="checkbox" data-nodes="#cols" data-set="mar"> Add vertical margins <code>.mar</code></label><br>
-<label><input name="grid-main-over" type="checkbox" data-nodes="#col-main-over" data-set="bg text-e pad mar nobr" data-unset="hide"> Overflow content</label><br>
-<label><input name="grid-let" type="checkbox" data-nodes="#cols" data-set="let"> Allow columns wrapping <code>.let</code></label> (disables column width modifiers)
-</fieldset>
-<fieldset>
-<legend>Column width options (applied on central column here)</legend>
-<label><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y col-0"> Auto <code>.row &gt; .col-0</code></label><br>
-<label><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y"> Single <code>.row &gt; div</code></label><br>
-<label><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y col-2" checked> Double <code>.row &gt; .col-2</code></label><br>
-<label><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y col-3"> Triple <code>.row &gt; .col-3</code></label><br>
-</fieldset>
-</p>
-
-<div class="code">
-	<div class="row flip" id="cols">
-		<div class="pad bg-w">Left</div>
-		<div class="pad bg-y col-2" id="col-main">
-			Central<br>
-			column
-			<div id="col-main-over">
-				Very wide content &mdash; required to
-				overflow available column width
-			</div>
-		</div>
-		<div class="pad bg-i">Right</div>
-	</div>
-</div>
-
-<p>
-<fieldset>
-<legend>Column position options (applied on central column here)</legend>
-<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-set="pad bg-y"> Fill <code>.row &gt; div</code></label><br>
-<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-set="pad bg-y col-0"> Auto <code>.row &gt; .col-0</code></label><br>
-<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-set="pad bg-y col-0 center" checked> Centrify <code>.row &gt; .col-0.center</code></label><br>
-<label><input name="grid-pos" type="radio" data-nodes="#col-center" data-set="pad bg-y col-0 shift"> Shift right <code>.row &gt; .col-0.shift</code> (with subsequent columns)</label><br>
-</fieldset>
-</p>
-
-<div class="code">
-	<div class="row" id="cols2">
-		<div class="pad bg-w col-0" id="col-left">Left</div>
-		<div class="pad bg-y col-0 center" id="col-center">Central<br>column</div>
-		<div class="pad bg-i col-0" id="col-right">Right</div>
-	</div>
-</div>
 
 
+<h2 id="forms">Forms</h2>
 
-
-<h2 id="buttons">Buttons</h2>
+<h3 id="buttons">Buttons</h3>
 
 <p>
 <code>Button</code> and <code>input</code> of type <code>submit</code> have button styling by default.
@@ -469,8 +485,6 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 <a href="#x">Link</a>
 </div>
 
-
-<h2 id="forms">Forms</h2>
 
 <h3 id="form-inline">Inline form</h3>
 
@@ -500,7 +514,7 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 </form>
 </div>
 
-<h3 id="form-grid">Aligned form using grid</h3>
+<h3 id="form-grid">Grid layout</h3>
 
 <div class="code">
 <form method="post">
@@ -532,7 +546,7 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 </div>
 
 
-<h3 id="form-table">Aligned form using table</h3>
+<h3 id="form-table">Table layout</h3>
 
 <p>
 For aligned form, <code>table</code> may be used, which is arguably not semantic, but still very convenient.
@@ -635,6 +649,33 @@ Table will become stacked on small screen.
 </div>
 
 
+<h3 id="input-color">Color</h3>
+
+<div class="code">
+	<label for="demo-color">Color</label>
+	<input type="color" name="c" id="demo-color" value="#ff0000">
+</div>
+
+<h3 id="input-boxes">Checkbox group</h3>
+
+<div class="code">
+	<label for="b1"><input id="b1" type="checkbox" name="colors" data-group="colors"> <b>All</b></label><br>
+	<label for="b2"><input id="b2" type="checkbox" class="colors" name="color[]" value="red"> Red</label><br>
+	<label for="b3"><input id="b3" type="checkbox" class="colors" name="color[]" value="green"> Green</label><br>
+	<label for="b4"><input id="b4" type="checkbox" class="colors" name="color[]" value="blue"> Blue</label><br>
+</div>
+
+<h3 id="input-set">Set input value</h3>
+	
+<div class="code">
+	<label for="nm-set">Name</label>
+	<input type="text" name="n" id="nm-set">
+	<a href="#nm-set" data-value="test">Test</a>,
+	<a href="#nm-set" data-value="">Reset</a>
+</div>
+	
+	
+	
 	<h3 id="calendar">Calendar</h3>
 	
 	<p>Replacement of standard HTML date inputs.
@@ -703,7 +744,7 @@ Table will become stacked on small screen.
   <select name="town" id="town" data-filter="{q}.json" data-placeholder="..." data-cache="10"></select>
 </div>
 
-<h3 id="valid">Valid</h3>
+<h3 id="valid">Validation</h3>
 
 <p>Custom form validation.
 
@@ -934,7 +975,8 @@ With JavaScript, nested lists are toggled on click.
 Following code shows how to collapse navigation to a single hamburger icon on small screen,
 and expand it to dropdown navbar on large screen.
 </p>
-<fieldset>
+
+<fieldset class="mar">
 <legend>Options</legend>
 <label><input name="nav-bg" type="checkbox" data-nodes="#navi" data-set="bg" checked> Add background <code>.bg</code></label><br>
 <label><input name="nav-hover" type="checkbox" data-nodes="#navi" data-set="hover" checked> Highlight active items <code>.hover</code></label><br>
@@ -944,7 +986,7 @@ and expand it to dropdown navbar on large screen.
 <label><input name="nav-subtitles" type="checkbox" data-nodes="#navi small" data-set="text-n" data-unset="hide" checked> Show subtitles</label><br>
 <label><input name="nav-shift" type="checkbox" data-nodes="#navi-search" data-set="shift" checked> Shift some list item(s) to the right <code>li.shift</code></label>
 </fieldset>
-</p>
+
 
 <div class="code">
 <div class="hide-desktop">
@@ -1044,7 +1086,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 	<a href="?a=1&b=2" class="dialog" title="Continue?">Confirm link</a>,
 	<a href="?a=1&b=2" class="dialog" title="Continue new tab?" target="_blank">Confirm link to new tab</a>,
 	<a href="#calendar" class="dialog" title="Continue?">Confirm hash</a>,
-	<a href="?a=1&b=привет+вам!&c=3" class="dialog text-w" data-prompt="b" data-caption="Quantity:" data-ok="Fine" data-cancel="No way" data-reverse="">Prompt link</a>.
+	<a href="?a=1&b=привет+вам!&c=3" class="dialog text-w" data-prompt="b" data-caption="Greeting:" data-ok="Fine" data-cancel="No way" data-reverse="">Prompt link</a>.
 </p>
 <form class="mar">
 	<input type="text" name="nm" id="nms" value="qq" required pattern="[A-Za-z]{2,}" title="Two or more letters">
@@ -1145,6 +1187,21 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 	</div>
 </div-->
 
+<h3 id="toggle-details">Details</h3>
+
+<p><i class="bg-w">Warning</i>: limited browser support.
+
+<div class="code">
+<details>
+	<summary>Summary</summary>
+	<div class="bg pad">Details</div>
+</details>
+</div>
+
+
+
+<h2 id="util">Utilities</h2>
+
 <h3 id="fetch">Fetch</h3>
 
 <div class="code">
@@ -1156,8 +1213,43 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 </div>
 
 
-<h3 id="util">Utilities</h3>
+<h3 id="toggle-class">Toggle class</h3>
 
+<p>Toggle class or other attribute.
+
+<div class="code">
+	<label>
+		<input type="checkbox" name="chb" data-set="bg-w" data-nodes="#menu a" title="bg"> Hihglight menu links
+	</label>
+	<br>
+	
+	<a href="#x" data-set="text-e" data-nodes="#menu a">Red menu links</a><br>
+	
+	<a href="#x" data-set="invert" data-nodes="body">Invert page</a><br>
+	
+	<a href="#test-input" class="act" data-set="radio" data-unset="checkbox" data-attr="type"> Change input type</a>
+	<input type="checkbox" id="test-input">
+</div>
+<a href="#x" data-set="invert" data-nodes="body" class="hide" accesskey="i">(invert)</a>
+
+<h3 id="responsive-class">Responsive class</h3>
+
+<p>Class depending on available width. Toggles on resize.
+
+<div class="code">
+	<div data-class-mobile="text-y" data-class-desktop="text-n">
+		Mobile
+		<span class="hide-mobile">off</span>
+		<span class="hide-desktop">on</span>
+	</div>
+	<div data-class-desktop="text-y" data-class-mobile="text-n">
+		Desktop
+		<span class="hide-desktop">off</span>
+		<span class="hide-mobile">on</span>
+	</div>
+</div>
+		 
+<!--
 <ul id="js-behaviours">
 	<li>Dropdown <code>.toggle</code> &mdash; toggle, escape
 	<li>Tree <code>.toggle</code> &mdash; multiple, unscroll, toggle, remember (<code>.mem</code>), <code>.accordion</code>
@@ -1166,30 +1258,19 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 	<li>Tabs <code>.toggle</code> &mdash; multiple, unscroll, remember (<code>.mem</code>)
 	<li>Dialog &mdash; escape
 	<li>Gallery &mdash; previous, escape
-	<li>Output HTML code: <code>div.code</code>
 	<li>Link or button with confirmation: <code>.dialog[title][data-caption]</code>
 	<li>Link with prompt: <code>a.dialog[title][data-caption][data-prompt]</code>
 	<li>Check group of boxes: <code>input[data-group]</code>, <code>[class~="data-group"]</code>
-	<li>Toggle class or other attribute: <code>a[href^='#'][data-set][data-unset][data-attr]</code>, <code id="test1">a[data-nodes][data-set][data-unset][data-attr]</code> (
-		<input type="checkbox" name="chb" data-set="bg-w" data-nodes="#js-behaviours code" title="bg">
-		| <a href="#test1" data-set="text-e" data-unclass-x="text-i" data-nodes="#js-behaviours code" class="">text</a>
-		| <a href="#test2" data-set="invert" data-nodes="body" class="">invert</a>
-		<a href="#test3" data-set="invert" data-nodes="body" class="hide" accesskey="i">(invert)</a>
-		| <input name="nav-opt" type="checkbox" data-nodes="#test-input" data-set="radio" data-unset="checkbox" data-attr="type" title="input type">
-			<input type="checkbox" id="test-input">
-		)
 	<li>Set value of target input: <code>a[href^='#'][data-value]</code>
 	<li>Show value of color input: <code>input[type="color"]</code>
+	<li>Align table columns: <code>table.r5</code>
+	<li>Fetch asynchronous request: <code>[data-target]</code>
+-->
 	<!--
 	<li>Submit target button: <code>a[href^='#'][data-submit]</code>
 	<li>Submit form: <code>(select|[type="checkbox"]|[type="search"])[data-submit]</code>
-	-->
-	<li>Align table columns: <code>table.r5</code>
-	<li>Class depending on resize 
-		(<code data-class-mobile="text-y" data-class-desktop="text-n">[data-class-mobile]</code> or 
-		 <code data-class-desktop="text-y" data-class-mobile="text-n">[data-class-desktop]</code>).
-	<li>Asynchronous request: <code>[data-target]</code>
 </ul>
+	-->
 
 <h3 id="items">Items</h3>
 
@@ -1253,17 +1334,41 @@ If link needs to be outside of the item, point at item with query selector in li
 	<li><a href="#x" class="bg-y text-y" data-icon="find">Find</a>
 	-->
 </ul>
-	
-<h3 id="toggle-details">Details</h3>
 
-<p><i class="bg-w">Warning</i>: limited browser support.
+<h3 id="code-highlight">Code highlight</h3>
 
 <div class="code">
-<details>
-	<summary>Summary</summary>
-	<div class="bg pad">Details</div>
-</details>
+<pre><code class="language-html">&lt;!-- HTML --&gt;
+&lt;a href="#top"&gt;Top&lt;/a&gt;
+</code></pre>
+
+<pre><code class="language-css">/* CSS */
+a .test {
+	color: inherit;
+	background: #c00;
+	font: "PT Sans", sans-serif;
+}
+</code></pre>
+
+<pre><code class="language-js">// JavaScript
+let double = function(x){
+	console.log('double', x);
+	return 2 * x;
+}</code></pre>
 </div>
+
+<h3 id="code-sample">Code sample</h3>
+
+<div class="code">
+	<div class="code">
+		<abbr title="Hypertext Markup Language">HTML</abbr> code sample
+	</div>
+</div>
+
+
+<h3 id="theme">Theme</h3>
+
+<a class="btn bg-i" href="#theme-config">Customize</a>
 
 
 <h2 id="style">Style</h2>
@@ -1395,7 +1500,7 @@ If link needs to be outside of the item, point at item with query selector in li
 
 <div class="code">
 <div class="row center">
-	<a href="#media" class="col-0" data-icon="ok/50/50"></a>
+	<a href="#media" class="col-0 text-y" data-icon="ok/50/50"></a>
 	<div>
 		Some description
 		<br>
@@ -1438,21 +1543,23 @@ If link needs to be outside of the item, point at item with query selector in li
 <h3 id="custom">Customization with CSS vars</h3>
 
 <ul>
-<li><code>--text</code> - base text color; default: <code>#222</code></li>
-<li><code>--bg</code> - base background color; default: <code>#fff</code></li>
-<li><code>--bg-pane</code> - panel background color; default: <code>rgba(0,0,0,.05)</code></li>
-<li><code>--border</code> - border style; default: <code>thin solid rgba(0,0,0,.16)</code></li>
-<li><code>--bg-hilite</code> - highlighted element background; default: <code>rgba(0,0,0,.05)</code></li>
-<li><code>--text-hilite</code> - highlighted element text color; default: <code>inherit</code></li>
-<li><code>--link</code> - base link text color; default: <code>#03b</code></li>
-<li><code>--hover</code> - hovered link text color; default: <code>#003</code></li>
-<li><code>--visited</code> - visited link text color; default: <code>#90c</code></li>
-<li><code>--rad</code> - border radius in <code>em</code>s; default: <code>.2</code></li>
-<li><code>--gap</code> - base gap for margins and paddings in <code>em</code>s; default: <code>1</code></li>
-<li><code>--gap-rate</code> - rate of vertical and horizontal gap; default: <code>.5</code></li>
+<li><code>--text</code> - base text color; default: <code>#000</code>
+<li><code>--bg</code> - base background color; default: <code>#fff</code>
+<li><code>--bg-pane</code> - panel background color; default: <code>rgba(0,0,0,.05)</code>
+<li><code>--border</code> - border style; default: <code>thin solid rgba(0,0,0,.16)</code>
+<li><code>--bg-hilite</code> - highlighted element background; default: <code>rgba(0,0,0,.05)</code>
+<li><code>--text-hilite</code> - highlighted element text color; default: <code>inherit</code>
+<li><code>--link</code> - base link text color; default: <code>#03b</code>
+<li><code>--hover</code> - hovered link text color; default: <code>#07f</code>
+<li><code>--visited</code> - visited link text color; default: <code>#80b</code>
+<li><code>--rad</code> - border radius in <code>em</code>s; default: <code>.2</code>
+<li><code>--gap</code> - base gap for margins and paddings in <code>em</code>s; default: <code>1</code>
+<li><code>--gap-rate</code> - rate of vertical and horizontal gap; default: <code>.5</code>
+<li><code>--shade</code> - shadow of overlay components; default: <code>0 .2em .8em rgba(0,0,0,.3)</code>
+<li><code>--topbar</code> - height of topbar; default: <code>3.2rem</code>
 </ul>
 
-<a class="btn bg-i" href="#theme">Customize</a>
+<a class="btn bg-i" href="#theme-config">Customize</a>
 
 
 

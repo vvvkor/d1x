@@ -1,4 +1,4 @@
-/*! d1css v1.0.23 */
+/*! d1css v1.0.24 */
 
 body {
     --text: #000;
@@ -265,20 +265,9 @@ svg {
     transform: translate(0, .15em) scale(1.2);
 }
 
-a .icon:not(:last-child), button .icon:not(:last-child) {
+.icon:not(:last-child) {
     margin-right: var(--gap-s);
 }
-
-.icon.line {
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 8%;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    transform: translate(0, .15em);
-}
-
-/*!*/
 
 ul {
     list-style: disc outside;

@@ -8,13 +8,17 @@ module.exports = new(function () {
 
   this.name = 'theme';
   this.drw = null;
-  
+
+  this.opt = {
+    idTheme: 'theme-config'
+  };
+
   this.init = function(){
     //this.restore(document.documentElement, 'theme-html');
     this.restore(document.body, 'theme-body');
 
     //button
-    let a = app.ins('a', 'Theme', {href: '#theme', className: 'fix pad btn theme-btn'}, document.body);
+    let a = app.ins('a', 'Theme', {href: '#' + this.opt.idTheme, className: 'fix pad btn theme-btn'}, document.body);
     let s = a.style;
     s.transform = 'rotate(-90deg)';
     s.transformOrigin = '100% 100%';
@@ -23,7 +27,7 @@ module.exports = new(function () {
     s.bottom = s.left = 'auto';
     s.margin = 0;
     //drawer
-    this.drw = app.ins('div', '', {id: 'theme', className: app.opt.cToggle + ' ' + app.opt.cOff + ' drawer pad shift theme-drawer'}, document.body);
+    this.drw = app.ins('div', '', {id: this.opt.idTheme, className: app.opt.cToggle + ' ' + app.opt.cOff + ' drawer pad shift theme-drawer'}, document.body);
     app.ins('a', '&#x2715;', {href: '#cancel', className: 'pad hover close'}, this.drw);
     
     //menu

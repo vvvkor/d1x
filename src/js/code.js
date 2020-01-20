@@ -48,8 +48,8 @@ module.exports = new(function () {
   };
 
   this.init = function () {
-    app.e('code[class*="language-"]', n => this.hiliteNode(n));
     app.e(this.opt.qCode, n => this.showCode(n));
+    app.e('code[class*="language-"]', n => this.hiliteNode(n));
     app.listen('updated', e => this.updateCode(e));
   }
 

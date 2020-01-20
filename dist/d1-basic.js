@@ -1,4 +1,4 @@
-/*! d1x v1.0.23 */
+/*! d1x v1.0.24 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1 app v0.0.0 */
+/*! d1 app v1.0.24 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -1393,11 +1393,11 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
-    app.e('code[class*="language-"]', function (n) {
-      return _this.hiliteNode(n);
-    });
     app.e(this.opt.qCode, function (n) {
       return _this.showCode(n);
+    });
+    app.e('code[class*="language-"]', function (n) {
+      return _this.hiliteNode(n);
     });
     app.listen('updated', function (e) {
       return _this.updateCode(e);
@@ -2973,6 +2973,9 @@ module.exports = new function () {
 
   this.name = 'theme';
   this.drw = null;
+  this.opt = {
+    idTheme: 'theme-config'
+  };
 
   this.init = function () {
     var _this = this;
@@ -2981,7 +2984,7 @@ module.exports = new function () {
     this.restore(document.body, 'theme-body'); //button
 
     var a = app.ins('a', 'Theme', {
-      href: '#theme',
+      href: '#' + this.opt.idTheme,
       className: 'fix pad btn theme-btn'
     }, document.body);
     var s = a.style;
@@ -2993,7 +2996,7 @@ module.exports = new function () {
     s.margin = 0; //drawer
 
     this.drw = app.ins('div', '', {
-      id: 'theme',
+      id: this.opt.idTheme,
       className: app.opt.cToggle + ' ' + app.opt.cOff + ' drawer pad shift theme-drawer'
     }, document.body);
     app.ins('a', '&#x2715;', {

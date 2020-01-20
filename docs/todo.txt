@@ -45,9 +45,10 @@
  
 ## js
 
+- on escape, on #cancel: close only last opened in stack (create stack)
 - dragsort
 - better .js-live-val
-- new components: scrollspy, notify, sortable, icons?
+- new components: scrollspy, notify, sortable
 - alerts: close link
 - slides
 ~ optimize: !addEventListener to d1.b(), !bind to arrFunc, getAttribute to attr,
@@ -76,26 +77,19 @@
  
 ## doc
 
+! overview test page https://getuikit.com/assets/uikit/tests/ , https://getuikit.com/v2/tests/overview.html
+!? "fitty" / "d1app" / "d1ui" / "d1web" / "d1css v2"
 - "requires toggle.js"
-- doc structure:
-  - typo, table, blocks, color
-  - grid, media
-  - form, button
-  - toggle (css)
-  - plugins (js)
-  - reference (classes, plugins)
-- customize: vars list
 - options as table
-- write on plugins: code, theme
-- buttons as subsection of forms
+- customizer https://getuikit.com/v2/docs/customizer.html
 ~ reference: js classes, components
 ? custom inputs into #forms section
-! use .code only where js not involved (no .toggle, etc.)
-! fliptable, .accordion? separately
-!? "fitty" / "d1app" / "d1ui" / "d1web"
-! overview test page https://getuikit.com/assets/uikit/tests/ , https://getuikit.com/v2/tests/overview.html
-- customizer https://getuikit.com/v2/docs/customizer.html
 = items: Fullwidth Plus Sign &#xFF0B; minus &#xFF0D;
++ use .code only where js not involved (no .toggle, etc.)
++ write on plugins: code, theme
++ fliptable, .accordion? separately
++ customize: vars list
++ doc structure
 + demo icons
 + color blocks text
 + clean classes --
