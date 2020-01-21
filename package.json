@@ -1,6 +1,6 @@
 {
   "name": "d1x",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "description": "Experiments on d1",
   "main": "dist/d1.js",
   "directories": {

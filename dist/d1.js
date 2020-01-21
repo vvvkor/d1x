@@ -1,4 +1,4 @@
-/*! d1x v1.0.25 */
+/*! d1x v1.0.26 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1 app v1.0.25 */
+/*! d1 app v1.0.26 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -483,7 +483,7 @@ module.exports = new function () {
 
   this.esc = function (e) {
     if (e) e.preventDefault();
-    this.unpop();
+    this.unpop(null, true);
     this.unhash();
     this.after();
   };
@@ -596,7 +596,7 @@ module.exports = new function () {
     }
   };
 
-  this.unpop = function (x) {
+  this.unpop = function (x, seq) {
     var _this3 = this;
 
     var keep = [x];
@@ -615,7 +615,8 @@ module.exports = new function () {
       return !(keep && keep.filter(function (m) {
         return m && m.tagName && n.contains(m);
       }).length);
-    }).filter(function (n) {
+    });
+    if (seq) nn = nn.filter(function (n) {
       return !app.q(_this3.opt.qUnpopOn, n);
     }); // to close nested subsequently
 

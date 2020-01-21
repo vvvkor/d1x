@@ -82,7 +82,7 @@ module.exports = new(function () {
 
   this.esc = function(e){
     if(e) e.preventDefault();
-    this.unpop();
+    this.unpop(null, true);
     this.unhash();
     this.after();
   }
@@ -182,7 +182,7 @@ module.exports = new(function () {
     }
   }
 
-  this.unpop = function(x){
+  this.unpop = function(x, seq){
     let keep = [x];
     keep.push(this.shown);
     let a = x ? app.closest(x, 'a') : null;
@@ -194,8 +194,8 @@ module.exports = new(function () {
     app.dbg(['unpop', keep]);
     //app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
     let nn = app.qq(this.opt.qUnpop)
-      .filter(n => !(keep && keep.filter(m => m && m.tagName && n.contains(m)).length))
-      .filter(n => !app.q(this.opt.qUnpopOn, n)); // to close nested subsequently
+      .filter(n => !(keep && keep.filter(m => m && m.tagName && n.contains(m)).length));
+    if(seq) nn = nn.filter(n => !app.q(this.opt.qUnpopOn, n)); // to close nested subsequently
     app.e(nn, n => this.toggle(n, false, 1));
   }
 
