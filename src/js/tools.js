@@ -45,7 +45,11 @@ module.exports = new(function () {
     app.dbg(['setclass', m, c]);
     let u = (n.type == 'radio') ? '' : app.attr(n, this.opt.aUnset, false);
     let attr = app.attr(n, this.opt.aAttr) || 'class';
-    if(attr !== 'class') m.setAttribute(attr, on ? c : (u || ''));
+    if(attr !== 'class'){
+      let v = on ? c : (u || '');
+      if(v) m.setAttribute(attr, v);
+      else m.removeAttribute(attr);
+    }
     else if(u !== false) m.className = on ? c : (u || '');
     else c.split(/\s+/).filter(cc => cc).forEach(cc => m.classList[on ? 'add' : 'remove'](cc));
     n.classList[on ? 'add' : 'remove'](app.opt.cAct);
