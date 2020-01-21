@@ -49,6 +49,7 @@ module.exports = new(function () {
     this.opt.qTgl = this.opt.mediaSuffixes.concat(['']).map(x => '[id].' + app.opt.cToggle + x).join(', ')
     let togglers = [q.qTrg, q.qPop, q.qNav, q.qDlg, q.qTab, q.qTre, q.qDrw/*, q.qMedia/*, q.qGal*/].join(', ');
     this.opt.qUnpop = [q.qPop, q.qNav, q.qDlg, q.qDrw/*, q.qGal*/].join(', ');
+    this.opt.qUnpopOn = [q.qPop, q.qNav, q.qDlg, q.qDrw/*, q.qGal*/].map(n => n + ':not(.' + app.opt.cOff + ')').join(', ');
     app.e(this.opt.qNav + ', ' + this.opt.qTre, n => this.attachSubNav(n)); //nav, tree: attach to links
     app.e(togglers, n => this.initToggler(n)); //initialize togglers
       this.opt.mediaSuffixes.forEach(x => app.e(this.opt.qTrg + x, n => this.initToggler(n, x))); //initialize togglers by media
@@ -191,7 +192,11 @@ module.exports = new(function () {
         keep.push(app.q(a.hash));
     }
     app.dbg(['unpop', keep]);
-    app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
+    //app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
+    let nn = app.qq(this.opt.qUnpop)
+      .filter(n => !(keep && keep.filter(m => m && m.tagName && n.contains(m)).length))
+      .filter(n => !app.q(this.opt.qUnpopOn, n)); // to close nested subsequently
+    app.e(nn, n => this.toggle(n, false, 1));
   }
 
   this.unhash = function(){

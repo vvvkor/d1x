@@ -6,8 +6,8 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.24/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.24/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.25/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.25/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -17,21 +17,25 @@
 		console.log('d1=', d1);
 		//d1.b([document], 'DOMContentLoaded', d1.e.bind(d1, 'code', n => n.classList.add('bg-w')));
 		d1.b([document], 'DOMContentLoaded', function(n){
-			let ul = d1.q('#demo-all-icons');
-			if(ul && d1.plugins.icons){
+			let d = d1.q('#demo-all-icons');
+			if(d && d1.plugins.icons){
 				let i = 0;
 				Object.keys(d1.plugins.icons.icons).forEach(function(k){
-					let li = d1.ins('li', d1.ins('a', k, {title: ++i}), {}, ul);
-					d1.plugins.icons.addIcon(k, li.firstChild, 0);
+					//let dd = d1.ins('div', d1.ins('a', k, {title: ++i}), {}, d);
+					let dd = d1.ins('a', k, {title: ++i}, d);
+					dd.style.width = '7em';
+					dd.style.margin = '.1em';
+					d1.plugins.icons.addIcon(k, dd, 0);
 				});
 			}
+			d1.e('#options-all-icons [' + d1.plugins.tools.opt.aSet + ']', n => d1.plugins.tools.toggleClass(n)); 
 		});
 	</script>
 </head>
 <body class="-bg" data-d1='{"hOk":"#yes","debug":1,"disable":["-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
 <div class="topbar -shade -let" id="topbar">
 	<a href="#menu" class="pad hide-desktop" data-ico="menu" title="Menu">&equiv;</a>
-	<a href="#top" class="pad"><b>d1</b> v1.0.24</a>
+	<a href="#top" class="pad"><b>d1</b> v1.0.25</a>
 	<code class="pad">npm install d1css</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1" title="GitHub" class="pad">GitHub</a>
 </div>
@@ -954,11 +958,26 @@ Optionally add <code>shift</code> class to the target element to pop up leftward
 
 <div class="code">
 <div class="pop">
-	<a href="#pop1">Nested hover popup</a>
-	<div class="pad">
+	<a href="#pop1">Nested popup</a>
+	<div id="pop1" class="pad shift">
 		Pop
 		<div class="pop">
 			<a href="#pop2">Internal popup</a>
+			<div id="pop2" class="pad">Sub pop</div>
+		</div>
+	</div>
+</div>
+</div>
+
+<p>
+
+<div class="code">
+<div class="pop">
+	<a href="#x">Nested hover popup</a>
+	<div class="pad">
+		Pop
+		<div class="pop">
+			<a href="#x">Internal popup</a>
 			<div class="pad shift">Pop left</div>
 		</div>
 	</div>
@@ -1217,13 +1236,13 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 
 <p>Toggle class or other attribute.
 
-<div class="code">
+<div class="code" id="demo-toggle-class">
 	<label>
-		<input type="checkbox" name="chb" data-set="bg-w" data-nodes="#menu a" title="bg"> Hihglight menu links
+		<input type="checkbox" name="chb" data-set="bg-w" data-nodes="#demo-toggle-class a" title="bg"> Highlight code links
 	</label>
 	<br>
 	
-	<a href="#x" data-set="text-e" data-nodes="#menu a">Red menu links</a><br>
+	<a href="#x" data-set="text-e" data-nodes="#demo-toggle-class a">Red code links</a><br>
 	
 	<a href="#x" data-set="invert" data-nodes="body">Invert page</a><br>
 	
@@ -1325,7 +1344,18 @@ If link needs to be outside of the item, point at item with query selector in li
 
 <h3 id="icons">Icons</h3>
 
-<ul class="nav bg hover" id="demo-all-icons">
+<fieldset class="mar" id="options-all-icons">
+<legend>Display options</legend>
+	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-set="pad" checked> Padding</label><br>
+	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-set="hover" checked> Hover</label><br>
+	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a svg" data-set="bord"> Border</label><br>
+	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-set="shade"> Shadow</label><br>
+	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a svg" data-set="bg"> Background</label><br>
+	<!--label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-attr="data-ico" data-set="1"> Hide labels</label-->
+</fieldset>
+
+
+<div class="row mar let" id="demo-all-icons">
 	<!--
 	<li><a href="#x" data-icon="world"></a>
 	<li><a href="#x" data-ico="open">Open</a>
@@ -1333,7 +1363,7 @@ If link needs to be outside of the item, point at item with query selector in li
 	<li><a href="#x" class="bg-w text-w" data-ico="config">Config</a>
 	<li><a href="#x" class="bg-y text-y" data-icon="find">Find</a>
 	-->
-</ul>
+</div>
 
 <h3 id="code-highlight">Code highlight</h3>
 

@@ -1,4 +1,4 @@
-/*! d1x v1.0.24 */
+/*! d1x v1.0.25 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1 app v0.0.0 */
+/*! d1 app v1.0.25 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -414,6 +414,11 @@ module.exports = new function () {
     this.opt.qUnpop = [q.qPop, q.qNav, q.qDlg, q.qDrw
     /*, q.qGal*/
     ].join(', ');
+    this.opt.qUnpopOn = [q.qPop, q.qNav, q.qDlg, q.qDrw
+    /*, q.qGal*/
+    ].map(function (n) {
+      return n + ':not(.' + app.opt.cOff + ')';
+    }).join(', ');
     app.e(this.opt.qNav + ', ' + this.opt.qTre, function (n) {
       return _this.attachSubNav(n);
     }); //nav, tree: attach to links
@@ -604,11 +609,18 @@ module.exports = new function () {
       keep.push(app.q(a.hash));
     }
 
-    app.dbg(['unpop', keep]);
-    app.e(this.opt.qUnpop, function (n) {
-      return keep && keep.filter(function (m) {
+    app.dbg(['unpop', keep]); //app.e(this.opt.qUnpop, n => (keep && keep.filter(m => m && m.tagName && n.contains(m)).length) ? null : this.toggle(n, false, 1));
+
+    var nn = app.qq(this.opt.qUnpop).filter(function (n) {
+      return !(keep && keep.filter(function (m) {
         return m && m.tagName && n.contains(m);
-      }).length ? null : _this3.toggle(n, false, 1);
+      }).length);
+    }).filter(function (n) {
+      return !app.q(_this3.opt.qUnpopOn, n);
+    }); // to close nested subsequently
+
+    app.e(nn, function (n) {
+      return _this3.toggle(n, false, 1);
     });
   };
 
@@ -2057,7 +2069,7 @@ module.exports = new function () {
     plus: [7, 'M3 1h1v2h2v1h-2v2h-1v-2h-2v-1h2z'],
     "delete": [20, 'M5 3l5 5 5-5 2 2-5 5 5 5-2 2-5-5-5 5-2-2 5-5-5-5z'],
     check: [100, 'M10 48l11-9 18 22 40-50 11 9-51 65z'],
-    gear: [7, 'M2 3l1-1-1-1 q1.5 .2 2 1v1l2 2q-.2.8 -1 1l-2-2h-1q-.8-.5-1-2z'],
+    gear: [20, 'M18.4,12.2 L16.2,16.2 C15.3,15.4 14.1,15.2 13.3,15.7 C12.4,16.2 12.0,17.3 12.2,18.5 L7.7,18.5 C7.9,17.3 7.5,16.2 6.6,15.7 C5.8,15.3 4.6,15.4 3.7,16.2 L1.5,12.2 C2.5,11.8 3.3,10.9 3.3,9.9 C3.3,9 2.5,8.1 1.5,7.7 L3.7,3.7 C4.6,4.5 5.7,4.7 6.6,4.2 C7.5,3.7 7.9,2.6 7.7,1.5 L12.2,1.5 C12.0,2.6 12.4,3.7 13.3,4.2 C14.2,4.7 15.3,4.5 16.2,3.7 L18.4,7.7 C17.4,8.1 16.6,8.9 16.7,10.0 C16.6,11.0 17.4,11.9 18.4,12.2 L18.4,12.2 zM10 6.5a3.5 3.5 0 1 0 .01 0z'],
     pin: [10, 'M2 4a3 3 0 0 1 6 0q0 2 -3 5q-3-3-3-5zm3 -2a2 2 0 1 0 .01 0z'],
     refresh: [20, 'M10 1.5v3a7 7 0 1 0 7 7h-2a5 5 0 1 1-5-5v3l5-4z'],
     help: [7, ''],
@@ -2112,7 +2124,7 @@ module.exports = new function () {
     settings: [11, 'M1 2h2v-1h1v1h6v1h-6v1h-1v-1h-2zm0 3h6v-1h1v1h2v1h-2v1h-1v-1h-6zm0 3h3v-1h1v1h5v1h-5v1h-1v-1h-3z'],
     power: [18, 'M6 3a6.7 6.7 0 1 0 6 0v2a4.9 4.9 0 1 1 -6 0zm2-1.5h2v8h-2z'],
     energy: [11, 'M5 1l-2 4h2l-2 5 5-6h-2l2-3z'],
-    print: [10, 'M3 1.5h4v5h-4zm-2 3v4h8v-4z'],
+    print: [10, 'M2 1.5h4v5h-4zm-1 3v4h8v-4zm6 1h1v1h-1z'],
     play: [12, 'M3 2v8l7-4z'],
     pause: [9, 'M2 2h2v5h-2zm3 0h2v5h-2z'],
     stop: [9, 'M2 2h5v5h-5z'],

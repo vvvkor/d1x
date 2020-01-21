@@ -958,11 +958,26 @@ Optionally add <code>shift</code> class to the target element to pop up leftward
 
 <div class="code">
 <div class="pop">
-	<a href="#pop1">Nested hover popup</a>
-	<div class="pad">
+	<a href="#pop1">Nested popup</a>
+	<div id="pop1" class="pad shift">
 		Pop
 		<div class="pop">
 			<a href="#pop2">Internal popup</a>
+			<div id="pop2" class="pad">Sub pop</div>
+		</div>
+	</div>
+</div>
+</div>
+
+<p>
+
+<div class="code">
+<div class="pop">
+	<a href="#x">Nested hover popup</a>
+	<div class="pad">
+		Pop
+		<div class="pop">
+			<a href="#x">Internal popup</a>
 			<div class="pad shift">Pop left</div>
 		</div>
 	</div>
@@ -1330,7 +1345,7 @@ If link needs to be outside of the item, point at item with query selector in li
 <h3 id="icons">Icons</h3>
 
 <fieldset class="mar" id="options-all-icons">
-<legend>Options</legend>
+<legend>Display options</legend>
 	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-set="pad" checked> Padding</label><br>
 	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-set="hover" checked> Hover</label><br>
 	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a svg" data-set="bord"> Border</label><br>
