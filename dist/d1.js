@@ -1,4 +1,4 @@
-/*! d1x v1.0.28 */
+/*! d1x v1.0.29 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1 app v1.0.28 */
+/*! d1 app v1.0.29 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -2106,7 +2106,7 @@ module.exports = new function () {
     date: [10, 'M1 1.8h8v7h-8zm1 2v4h6v-4zm.5-3v2h1.5v-2zm3.5 0v2h1.5v-2z'],
     time: [24, 'M12 1a10 10 0 1 1 -.01 0zm0 2a8 8 0 1 0 .01 0zm-1.2 1h2v6.5l3.5 3.5-1.5 1.5-4-4z'],
     refresh: [20, 'M10 1.2v3a7 7 0 1 0 7 7h-2a5 5 0 1 1-5-5v3l5-4z'],
-    view: [12, 'm1 6q5-6 10 0v1q-5 -6-10 0zm5-3a3 3 0 1 1 -.01 0zm0 1.9a1.1 1.1 0 1 0 .01 0z'],
+    view: [12, 'm1 6q5-6 10 0v1q-5 -6-10 0zm5-3a2.8 2.8 0 1 1 -.01 0zm0 1.8a1.1 1.1 0 1 0 .01 0z'],
     card: [14, 'M1 3h12v8h-12zm1 1v1h10v-1zm0 3v3h10v-3z'],
     sum: [12, 'M2.5 3v-1h7v1h-5l3 3-3 3h5v1h-7v-1l3-3z'],
     copy: [9, 'M1 3 h1v4h4v1h-5zm2-2h5v5h-5zm1 1v3h3v-3z'],
