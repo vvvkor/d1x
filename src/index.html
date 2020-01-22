@@ -81,7 +81,7 @@
 		<li><a href="#n-components">Components</a> &rsaquo;
 			<ul id="n-components" class="--hide toggle ">
 			<li><a href="#components">Overview</a>
-			<li><a href="#toggle-div">Toggle</a>
+			<li><a href="#target-div">Toggle</a>
 			<li><a href="#toggle-popup">Popup</a>
 			<li><a href="#nav">Navigation</a>
 			<li><a href="#toggle-tabs">Tabs</a>
@@ -134,7 +134,7 @@
 <h2 id="start">Get started</h2>
 
 <p><b>d1</b> is lightweight yet functional responsive CSS/JS front-end microframework.
-It aims to implement most widely used interface components with less code.
+Its aim is to implement widely used interface components with less code.
 
 <h3>Install with NPM</h3>
 <p>Install to your repository:
@@ -143,13 +143,6 @@ It aims to implement most widely used interface components with less code.
 <pre><code class="language-css-x">@import "../node_modules/d1css/dist/d1.min.css";</code></pre>
 <p>And optionally bundle into your JavaScript file:
 <pre><code class="language-js">let d1 = require("d1css");</code></pre>
-
-<h3>CDN</h3>
-<p>Add CDN links to the <code>head</code> of your document.
-
-<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1css/dist/d1.min.css" rel="stylesheet"&gt;
-&lt;script src="https://cdn.jsdelivr.net/npm/d1css/dist/d1.min.js"&gt;&lt;/script&gt;
-</code></pre>
 
 <h3>Install manually</h3>
 
@@ -169,6 +162,14 @@ It aims to implement most widely used interface components with less code.
   &lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
+
+<h3>CDN</h3>
+<p>Add CDN links to the <code>head</code> of your document.
+
+<pre><code class="language-html">&lt;link href="https://cdn.jsdelivr.net/npm/d1css/dist/d1.min.css" rel="stylesheet"&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/d1css/dist/d1.min.js"&gt;&lt;/script&gt;
+</code></pre>
+
 
 <h2 id="typo">Typography</h2>
 
@@ -235,7 +236,7 @@ Mostly, default styling is kept.
 <h2 id="grid" class="-let">Grid</h2>
 
 <p>
-To create a grid row add <code>row</code> class to the container <code>div</code>.
+Grid row (container) <code>div.row</code>.
 Direct descendants of the container are columns.
 By default, they all have equal width.
 </p>
@@ -464,8 +465,8 @@ Add <code>r#, l#, c#</code> (where # is any number) classes to align cells of co
 <h3 id="buttons">Buttons</h3>
 
 <p>
-<code>Button</code> and <code>input</code> of type <code>submit</code> have button styling by default.
-Add <code>btn</code> class to the element (usually a link) to make it look like a button <i>(which is not recommended from accessability point of view)</i>.
+<code>Button</code> and <code>input</code> of type <code>submit</code> have button styling by default.<br>
+Add <code>.btn</code> class to the element (usually a link) to make it look like a button <i>(which is not recommended from accessability point of view)</i>.
 For color options see <a href="#colors-buttons">Colors</a> section.
 </p>
 
@@ -698,13 +699,65 @@ Table will become stacked on small screen.
 	<h3 id="edit">Edit</h3>
 
 	<p>
-	Add class <code>adjust</code> to <code>textarea</code> for height auto-adjustment to content.
+	Auto-adjust <code>textarea</code> height to content <code>.adjust</code>.
 	<p>
-	Add class <code>edit</code> to <code>textarea</code> tu turn it into WYSIWYG editor.<br>
-	Optional <code>data-tools</code> attribute defines custom set of tools.<br>
-	Optional <code>data-wys</code> attribute defines initial mode: <code>"1"</code> for WYSIWYG, <code>""</code> for source editing.
-	If absent, mode is defined automatically based on whether HTML tags are contained in text.
+	Turn <code>textarea</code> into WYSIWYG editor <code>.edit</code>.<br>
+	Optionally define initial mode in <code>[data-wys]</code> ("1" for WYSIWYG, "" for source editing).
+	If absent, mode is defined automatically based on whether HTML tags are contained in text.<br>
+	Optionally define custom <a href="#editor-commands">set of tools</a> in <code>[data-tools]</code>.
+	Example: <code>data-tools="/bi_."</code>.
 	</p>
+	
+	<div id="editor-commands" class="target mar pad bg">
+	<table class="let sort hover">
+	<caption>Editor tools<caption>
+	<thead>
+	<tr><th>Code<th>Command<th>Description
+	</thead>
+	<tbody>
+    <tr><td>/<td><i>src</i><td>Toggle source/WYSIWYG mode
+    <tr><td>*<td>insertimage<td>Image
+    <tr><td>@<td>createlink<td>Link
+    <tr><td>x<td>unlink<td>Unlink
+    <tr><td>b<td>bold<td>Bold
+    <tr><td>i<td>italic<td>Italic
+    <tr><td>_<td>removeformat<td>Unformat
+    <tr><td>.<td>insertUnorderedList<td>List
+    <tr><td>#<td>insertOrderedList<td>Ordered
+    <tr><td>1<td>formatblock<td>Head 1
+    <tr><td>2<td>formatblock<td>Head 2
+    <tr><td>3<td>formatblock<td>Head 3
+    <tr><td>p<td>formatblock<td>Paragraph
+    <tr><td>|<td><i>tools</i><td>Expand toolbar
+    <tr><td>c<td>inserthtml<td>Code
+    <tr><td>,<td>inserthtml<td>Abbreviation
+    <tr><td>s<td>strikeThrough<td>Strike through
+    <tr><td>^<td>subscript<td>Subscript
+    <tr><td>v<td>superscript<td>Superscript
+    <tr><td>d<td>formatblock<td>Div
+    <tr><td>q<td>formatblock<td>Block quote
+    <tr><td>f<td>formatblock<td>Preformatted
+    <tr><td>~<td>inserthorizontalrule<td>Horizontal ruler
+    <tr><td>T<td>inserthtml<td>Table
+    <tr><td>(<td>justifyLeft<td>Justify left
+    <tr><td>=<td>justifyCenter<td>Justify center
+    <tr><td>)<td>justifyRight<td>Justify right
+    <tr><td>j<td>justifyFull<td>Justify full
+    <tr><td>+<td>indent<td>Increase indent
+    <tr><td>-<td>outdent<td>Decrease indent
+    <!--
+    <tr><td>u<td>underline<td>Underline
+    <tr><td>C<td>foreColor<td>Text color
+    <tr><td>h<td>hiliteColor<td>Hilite color
+    <tr><td>B<td>backColor<td>Back color
+    <tr><td>S<td>fontSize<td>Font size
+    <tr><td>F<td>fontName<td>Font name
+    <tr><td>L<td>inserthtml<td>Float left
+    <tr><td>R<td>inserthtml<td>Float right
+	-->
+	</tbody>
+	</table>
+	</div>
 
 <div class="code">
 <label for="wys">Label</label>
@@ -754,7 +807,7 @@ Table will become stacked on small screen.
 
 <h4>Custom input validation messages</h4>
 
-<p>To customize input validation messages, provide validation hint in <code>data-hint</code> attribute of input element. Placeholders inside percent characters are replaced with value of corresponding attribute of input element.
+<p>To customize input validation messages, provide validation hint in <code>[data-hint]</code> attribute of input element. Placeholders inside percent characters are replaced with value of corresponding attribute of input element.
 
 <!--pre class="">&lt;input
   type="text"
@@ -823,8 +876,8 @@ Table will become stacked on small screen.
 
 <h4>Custom hint elements for input validation</h4>
 
-<p>Another option is to add sibling element with class <code>text-e</code> after <code>input</code>. It will be visible only if input value is not valid. Contrary, sibling element with class <code>text-y</code> will be visible only if input value is valid.
-<p>To improve usability, add class <code>js-unhint</code> to <code>form</code>. This will disble default brower-specific tooltips and disables reporting empty required inputs as invalid until submitting.
+<p>Another option is to add sibling element with class <code>.text-e</code> after input. It will be visible only if input value is not valid. Contrary, sibling element with class <code>.text-y</code> will be visible only if input value is valid.
+<p>To improve usability, add class <code>.js-unhint</code> to <code>form</code>. This will disble default brower-specific tooltips and disables reporting empty required inputs as invalid until submitting.
 
 <!--pre class="">
   &lt;input type="text" name="nm" required&gt;
@@ -924,15 +977,15 @@ This approach is semantic, but has some drawbacks:
 </ul>
 <p>
 To overcome these drawbacks, JavaScript is used.
-To control elements with Javascript, add <code>toggle</code> class like in following examples for popup, toggle, tabs, tree.
-To store elements state in local storage, add <code>mem</code> class like in following examples for toggle, tabs, tree.
+<!--To control elements with Javascript, add <code>toggle</code> class like in following examples for popup, toggle, tabs, tree.-->
+To store elements state in local storage, add <code>.mem</code> class like in following examples for target, tabs, tree.
 Dialogs and drawers do not require such enhancements.
 
 
-<h3 id="toggle-div">Toggle</h3>
+<h3 id="target-div">Target</h3>
 
 <p>
-Use link pointing at element with <code>target</code> class.
+Use link pointing at element with <code>.target</code> class.
 </p>
 
 <div class="code">
@@ -943,8 +996,9 @@ Use link pointing at element with <code>target</code> class.
 <h3 id="toggle-popup">Popup</h3>
 
 <p>
-Inside <code>div</code> with <code>pop</code> class, use link pointing at sibling element.<br>
-Optionally add <code>shift</code> class to the target element to pop up leftwards.
+Inside <code>div</code> with <code>.pop</code> class, use link pointing at sibling <code>div</code> element.<br>
+Optionally add <code>.shift</code> class to the target element to pop up leftwards.<br>
+Popups can be nested.
 </p>
 
 <div class="code">
@@ -987,7 +1041,7 @@ Optionally add <code>shift</code> class to the target element to pop up leftward
 <h3 id="nav">Navigation</h3>
 
 <p>
-To create a navigarion bar add <code>nav</code> class to the <code>ul</code> element.
+To create a navigarion bar add <code>.nav</code> class to the <code>ul</code> element.
 <p>
 With pure CSS, nested lists are shown on hover.
 With JavaScript, nested lists are toggled on click.
@@ -1044,7 +1098,7 @@ and expand it to dropdown navbar on large screen.
 <h3 id="toggle-tabs">Tabs</h3>
 
 <p>
-Use list with <code>nav tabs</code> classes as tabs headers.<br>
+Use list with <code>.nav.tabs</code> classes as tabs headers.<br>
 Each list item should contain a link pointing at tab panel.<br>
 Next sibling <code>div</code> should contain <code>div</code> tab panels.
 </p>
@@ -1066,8 +1120,8 @@ Next sibling <code>div</code> should contain <code>div</code> tab panels.
 <h3 id="toggle-dlg">Modal</h3>
 
 <p>
-Use link pointing at element with <code>hide dlg</code> classes.<br>
-Add <code>let</code> class for larger width.<br>
+Use link pointing at element with <code>.dlg</code> class.<br>
+Add <code>.let</code> class for larger width.<br>
 Optionally use closing link pointing at <code>#cancel</code> inside target element.
 </p>
 
@@ -1083,7 +1137,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <h3 id="toggle-full">Modal fullscreen</h3>
 
 <p>
-Use link pointing at element with <code>hide full</code> classes.<br>
+Use link pointing at element with <code>.dlg.full</code> classes.<br>
 Optionally use closing link pointing at <code>#cancel</code> inside target element.
 </p>
 
@@ -1097,7 +1151,12 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 
 	<h3 id="dialog">Dialog</h3>
 	
-	<p>Replacement for standard Javascript dialogs.</p>
+	<p>Replacement for standard Javascript dialogs.
+	<ul>
+		<li>Alert <code>.alert</code>
+		<li>Confirm <code>.dialog[title]</code>
+		<li>Prompt <code>.dialog[data-prompt][data-caption]</code>
+	</ul>
 
 <div class="code">
 <p>
@@ -1130,7 +1189,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <h4 id="toggle-gallery">Pure CSS gallery</h4>
 
 <p>
-Inside <code>div</code> with class <code>gal</code>, add sequence of links, each one pointing at the next and having <code>style</code> attribute with <code>--img</code> CSS proprty pointing at image.
+Inside <code>div</code> with class <code>.gal</code>, add sequence of links, each one pointing at the next and having <code>[style]</code> attribute with <code>--img</code> CSS proprty pointing at image.
 Lastly, add closing link pointing at <code>#cancel</code>.
 </p>
 
@@ -1154,7 +1213,7 @@ Enter key press navigates to the next image (depends on browser).
 	<h4 id="gen-gallery">Generated gallery</h4>
 	
 	<p>
-	Place links with class <code>pic</code> inside <code>div</code> with class <code>gallery</code>
+	Place links with class <code>.pic</code> inside <code>div</code> with class <code>.gallery</code>
 	to generate gallery similar to <a href="#toggle-gallery">pure CSS gallery</a>.
 	</p>
 	
@@ -1171,8 +1230,8 @@ Enter key press navigates to the next image (depends on browser).
 <h3 id="toggle-drawer">Drawer</h3>
 
 <p>
-Use link pointing at element with <code>drawer</code> class.<br>
-Optionally add <code>shift</code> class to the drawer element for right side drawer.<br>
+Use link pointing at element with <code>.drawer</code> class.<br>
+Optionally add <code>.shift</code> class to the drawer element for right side drawer.<br>
 Optionally use closing link pointing at <code>#cancel</code> inside target element.
 </p>
 
@@ -1234,7 +1293,9 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 
 <h3 id="toggle-class">Toggle class</h3>
 
-<p>Toggle class or other attribute.
+<p>Toggle class or other attribute 
+<code>a[href^="#"][data-set]</code>, 
+<code>:is(a, [type="checkbox"], [type="radio"])[data-nodes][data-set][data-unset][data-attr]</code>.
 
 <div class="code" id="demo-toggle-class">
 	<label>
@@ -1253,7 +1314,8 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 
 <h3 id="responsive-class">Responsive class</h3>
 
-<p>Class depending on available width. Toggles on resize.
+<p>Class depending on available width <code>[data-class-mobile], [data-class-desktop]</code>.<br>
+Toggles on resize.
 
 <div class="code">
 	<div data-class-mobile="text-y" data-class-desktop="text-n">
@@ -1294,7 +1356,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <h3 id="items">Items</h3>
 
 <p>
-Items are nodes with class <code>item</code>.
+Items are nodes with class <code>.item</code>.
 Container is items' common parent.
 Containers with items can be nested.
 Hashed links inside items invoke actions on containing item.
@@ -1344,6 +1406,18 @@ If link needs to be outside of the item, point at item with query selector in li
 
 <h3 id="icons">Icons</h3>
 
+<p>
+Add icon before element's content <code>[data-icon]</code>.<br>
+Replace element's content with icon <code>[data-ico]</code>.
+
+<div class="code">
+	<a title="Menu"   href="#x" data-ico="menu" class="pad rad hover">&equiv;</a>
+	<a title="OK"     href="#x" data-icon="ok" class="btn">OK</a>
+	<a title="Cancel" href="#x" data-icon="ban" class="btn bg-n">Cancel</a>
+</div>
+
+<h4 id="iconset">Available icons</h4>
+
 <fieldset class="mar" id="options-all-icons">
 <legend>Display options</legend>
 	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-set="pad" checked> Padding</label><br>
@@ -1353,7 +1427,6 @@ If link needs to be outside of the item, point at item with query selector in li
 	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a svg" data-set="bg"> Background</label><br>
 	<!--label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-attr="data-ico" data-set="1"> Hide labels</label-->
 </fieldset>
-
 
 <div class="row mar let" id="demo-all-icons">
 	<!--
@@ -1366,6 +1439,10 @@ If link needs to be outside of the item, point at item with query selector in li
 </div>
 
 <h3 id="code-highlight">Code highlight</h3>
+
+<p>
+Use <code>code.language-xxx</code>.
+Available language codes: <code>html</code>, <code>css</code>, <code>js</code>.
 
 <div class="code">
 <pre><code class="language-html">&lt;!-- HTML --&gt;
@@ -1388,6 +1465,8 @@ let double = function(x){
 </div>
 
 <h3 id="code-sample">Code sample</h3>
+
+<p>Use <code>div.code</code>.
 
 <div class="code">
 	<div class="code">
@@ -1617,7 +1696,7 @@ most important:
 <tr><th>button, a.btn<td><a href="#colors-buttons">Button</a><td><a href="#form-table">form</a> submit button a span<td>.bg-x <i>[data-target]</i>
 <tr><th>.flip<td>Responsive<td>.row .nav table<td>
 <tr><th>.hide<td>Visibility by media<td>div<td>.hide-mobile .hide-desktop .hide-print .hide-screen
-<tr><th>.target<td><a href="#toggle-div">Toggle</a><td>div<td>.toggle .off .mem <i>.act</i>
+<tr><th>.target<td><a href="#target-div">Toggle</a><td>div<td>.toggle .off .mem <i>.act</i>
 <tr><th>.pop<td><a href="#toggle-popup">Popup</a><td><td>.pop>.shift
 <tr><th>.nav<td><a href="#nav">Navigation</a><td>ul<td>.flip .hover .let .bg .center .nav.tabs.mem<i>.act .shift</i>
 <tr><th>.tabs<td><a href="#toggle-tabs">Tabs</a><td>ul.nav<td>
