@@ -6,8 +6,8 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 
 	<!-- CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.29/dist/d1.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.29/dist/d1.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/d1x@1.0.30/dist/d1.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/d1x@1.0.30/dist/d1.min.js"></script>
 	<!-- local-npm-src ->
 	<link href="../src/index.css" rel="stylesheet">
 	<script src="../dist/d1.min.js"></script>
@@ -23,7 +23,7 @@
 				Object.keys(d1.plugins.icons.icons).forEach(function(k){
 					//let dd = d1.ins('div', d1.ins('a', k, {title: ++i}), {}, d);
 					let dd = d1.ins('a', k, {title: ++i}, d);
-					dd.style.width = '7em';
+					dd.style.width = '6.5em';
 					dd.style.margin = '.1em';
 					d1.plugins.icons.addIcon(k, dd, 0);
 				});
@@ -31,11 +31,18 @@
 			d1.e('#options-all-icons [' + d1.plugins.tools.opt.aSet + ']', n => d1.plugins.tools.toggleClass(n)); 
 		});
 	</script>
+	<style>
+		/* Roboto, Open Sans, Georgia, PT Sans, PT Serif, PT Mono */
+		@import url('https://fonts.googleapis.com/css?family=PT+Sans&display=swap');
+		@import url('https://fonts.googleapis.com/css?family=PT+Serif&display=swap');
+		@import url('https://fonts.googleapis.com/css?family=PT+Mono&display=swap');
+		@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
+	</style>
 </head>
-<body class="-bg" data-d1='{"hOk":"#yes","debug":1,"disable":["-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"}}}'>
+<body class="-bg" data-d1='{"hOk":"#yes","debug":1,"disable":["-theme","-valid","-icons"],"plug":{"toggle":{"keepHash":1},"gallery":{"idPrefix":"image-"},"theme":{"fonts":["sans-serif","serif","mono","PT Sans","PT Serif","PT Mono","Roboto Slab"]},"-scroll":{"qHideOnScroll":".drawer[id]"},"-icons":{"pSvg":"icon-"}}}'>
 <div class="topbar -shade -let" id="topbar">
 	<a href="#menu" class="pad hide-desktop" data-ico="menu" title="Menu">&equiv;</a>
-	<a href="#top" class="pad"><b>d1</b> v1.0.29</a>
+	<a href="#top" class="pad"><b>d1</b> v1.0.30</a>
 	<code class="pad">npm install d1css</code>
 	<a target="_blank" rel="noopener noreferrer" href="https://github.com/vvvkor/d1" title="GitHub" class="pad">GitHub</a>
 </div>
@@ -133,7 +140,7 @@
 
 <h2 id="start">Get started</h2>
 
-<p><b>d1</b> is lightweight yet functional responsive CSS/JS front-end microframework.
+<p><b>d1</b> is lightweight functional responsive CSS/JS front-end microframework.
 Its aim is to implement widely used interface components with less code.
 
 <h3>Install with NPM</h3>
@@ -207,12 +214,12 @@ Mostly, default styling is kept.
 
 <h3>Headings</h3>
 
-<fieldset class="mar">
-<legend>Options</legend>
-	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="" checked> Default margins</label><br>
-	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="mar"> Smaller margins: <code>h1.mar</code></label><br>
-	<label><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="fit"> No margins: <code>h1.fit</code></label>
-</fieldset>
+<table class="let mar">
+	<tr><td><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="" checked><td><td>Default margins
+	<tr><td><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="mar"><td><code>.mar</code><td>Smaller margins
+	<tr><td><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="fit"><td><code>.fit</code><td>No margins
+</table>
+
 
 <div id="headings" class="code">
 	<h1>Heading 1</h1>
@@ -240,7 +247,6 @@ Grid row (container) <code>div.row</code>.
 Direct descendants of the container are columns.
 By default, they all have equal width.
 </p>
-
 <fieldset class="mar">
 <legend>Options</legend>
 <label><input name="grid-flip" type="checkbox" data-nodes="#cols" data-set="flip"> Stack on small screen <code>.flip</code></label><br>
@@ -256,6 +262,24 @@ By default, they all have equal width.
 <label><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y col-2" checked> Double <code>.row &gt; .col-2</code></label><br>
 <label><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y col-3"> Triple <code>.row &gt; .col-3</code></label><br>
 </fieldset>
+
+<!--table class="let mar">
+	<caption></caption>
+	<tr><td><td><code>div.row</code><td>Grid row (container). Direct descendants of container are columns. By default, columns have equal width.
+	<tr><td><input name="grid-flip" type="checkbox" data-nodes="#cols" data-set="flip" checked><td><code>.flip</code><td>Stack on small screen
+	<tr><td><input name="grid-center" type="checkbox" data-nodes="#cols" data-set="center"><td><code>.center</code><td>Center columns vertically
+	<tr><td><input name="grid-mar" type="checkbox" data-nodes="#cols" data-set="mar"><td><code>.mar</code><td>Add vertical margins
+	<tr><td><input name="grid-let" type="checkbox" data-nodes="#cols" data-set="let"><td><code>.let</code><td>Allow columns wrapping (disables column width modifiers)
+	<tr><td><input name="grid-main-over" type="checkbox" data-nodes="#col-main-over" data-set="bg text-e pad mar nobr" data-unset="hide"><td><td>Overflow content
+</table>
+<table class="let mar">
+	<caption>Central column width</caption>
+	<tr><td><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y col-0"><td><code>.row &gt; .col-0</code><td>Auto
+	<tr><td><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y"><td><code>.row &gt; div</code><td>Single
+	<tr><td><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y col-2" checked><td><code>.row &gt; .col-2</code><td>Double
+	<tr><td><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y col-3"><td><code>.row &gt; .col-3</code><td>Triple
+</table-->
+
 
 <div class="code">
 	<div class="row flip" id="cols">
@@ -369,22 +393,64 @@ To remember state, use <code>.mem</code>.
 
 <h3 id="table-basic">Basic table</h3>
 
-<p>
+<table class="let mar">
+	<tr><td>
+		<td><code>table</code><td>By default, table is styled with border
+	<tr><td>
+		<td><code>form &gt; table</code><td>No borders if table is a direct descendant of form
+	<tr><td><input type="checkbox" name="demo-table-fit" data-set="fit" data-nodes="#demo-table">
+		<td><code>.fit</code><td>Hide borders
+	<tr><td><input type="checkbox" name="demo-table-let" data-set="let" data-nodes="#demo-table">
+		<td><code>.let</code><td>Row dividers
+	<tr><td><input type="checkbox" name="demo-table-hover" data-set="hover" data-nodes="#demo-table" checked>
+		<td><code>.hover</code><td>Highlight row on hover
+	<tr><td><input type="checkbox" name="demo-table-shift" data-set="shift" data-nodes="#demo-table" checked>
+		<td><code>.shift</code><td>Full width
+	<tr><td><input type="checkbox" name="demo-roll" data-set="roll" data-nodes="#demo-roll" checked>
+		<td><code>.roll &gt; table</code><td>Scroll overflowing width
+	<tr><td><!--input type="checkbox" name="demo-table-align" data-set="r1" data-nodes="#demo-table" checked-->
+		<td><code>.l1 .r2 .c3</code><td>Align specific columns to the left/right/center
+</table>
+
+<!--p>
+Add <code>r#, l#, c#</code> (where # is any number) classes to align cells of column number # to the right, left or center, respectively (JavaScript required).
+</p-->
+
+<div class="code">
+<div class="roll" id="demo-roll">
+	<table class="hover shift r1 c3 c4 c5" id="demo-table">
+		<caption>Table caption</caption>
+		<thead>
+		<tr><th>Component<th>Code<th>Remember state<th>Fix position<th>Close on Escape
+		</thead>
+		<tbody>
+		<tr>	<th>Dropdown	<td><code>.nav</code>	<td>-					<td>+	<td>+
+		<tr>	<th>Tree		<td><code>.tree</code>	<td><code>.mem</code>	<td>-	<td>-
+		<tr>	<th>Toggle		<td><code>.target</code><td><code>.mem</code>	<td>-	<td>-
+		<tr>	<th>Popup		<td><code>.pop</code>	<td>-					<td>+	<td>+
+		<tr>	<th>Tabs		<td><code>.tabs</code>	<td><code>.mem</code>	<td>-	<td>-
+		<tr>	<th>Modal		<td><code>.dlg</code>	<td>-					<td>-	<td>+
+		<tr>	<th>Drawer		<td><code>.drawer</code><td>-					<td>-	<td>+
+		<tr>	<th>Gallery		<td><code>.gal</code>	<td>-					<td>-	<td>+
+		<tr>	<th>Topbar		<td><code>.topbar</code><td>-					<td>-	<td>-
+		</tbody>
+	</table>
+</div>
+</div>
+
+<!--p>
 By default, <code>table</code> is styled with border, unless it is a direct descendant of <code>form</code>.
 <fieldset>
 <legend>Options</legend>
 	<label><input type="checkbox" name="demo-table-hover" data-set="hover" data-nodes="#demo-table" checked> Highlight hovered row <code>.hover</code></label><br>
-	<label><input type="checkbox" name="demo-table-fit" data-set="fit" data-nodes="#demo-table"> Hide borders <code>.fit</code> <!--(for responsive: heading and value on one line)--> </label><br>
+	<label><input type="checkbox" name="demo-table-fit" data-set="fit" data-nodes="#demo-table"> Hide borders <code>.fit</code> </label><br>
 	<label><input type="checkbox" name="demo-table-let" data-set="let" data-nodes="#demo-table"> Lined style <code>.let</code></label><br>
+	<label><input type="checkbox" name="demo-table-shift" data-set="shift" data-nodes="#demo-table"> Full width <code>.shift</code></label><br>
 	<label><input type="checkbox" name="demo-roll" data-set="roll" data-nodes="#demo-roll" checked> Scroll overflowing width <code>.roll &gt; table</code></label>
-</fieldset>
-<p>
-Add <code>r#, l#, c#</code> (where # is any number) classes to align cells of column number # to the right, left or center, respectively (JavaScript required).
-</p>
-
-<div class="code">
-<div class="roll" id="demo-roll">
-	<table class="hover r1 c4 c5" data-order-x="1 0" id="demo-table">
+</fieldset-->
+<!--div class="code">
+<div class="roll" id="demo-roll-old">
+	<table class="hover r1 c4 c5" data-order-x="1 0" id="demo-table-old">
 		<caption>Table caption</caption>
 		<thead>
 		<tr><th>Component<th>Code<th>Pure CSS<th>JS<th>Remember state <code>.mem</code><th>Fix position<th>Close on Escape<th>Modifications
@@ -393,9 +459,8 @@ Add <code>r#, l#, c#</code> (where # is any number) classes to align cells of co
 		<tr>	<th>Dropdown	<td><code>.nav</code>	<td>Ht	<td>J	<td>-	<td>+	<td>+	<td><code>.flip, .let, .hover, .center, li.shift</code>
 		<tr>	<th>Tree		<td><code>.tree</code>	<td>t	<td>J	<td>+	<td>-	<td>-	<td><code>.accordion .fit</code>
 		<tr>	<th>Toggle		<td><code>.target</code><td>t	<td>J	<td>+	<td>-	<td>-	<td>
-		<tr>	<th>Popup		<td><code>.pop</code>	<td>Ht	<td>HJ<td>-	<td>+	<td>+	<td><code>.shift</code>
+		<tr>	<th>Popup		<td><code>.pop</code>	<td>Ht	<td>HJ	<td>-	<td>+	<td>+	<td><code>.shift</code>
 		<tr>	<th>Tabs		<td><code>.tabs</code>	<td>t	<td>J	<td>+	<td>-	<td>-	<td>
-		<!--tr>	<th>Tooltip		<td><code></code>		<td>HF	<td>HF	<td>-	<td>+	<td>+	<td-->
 		<tr>	<th>Modal		<td><code>.dlg</code>	<td>T	<td>J	<td>-	<td>-	<td>+	<td><code>.full, .let</code>
 		<tr>	<th>Drawer		<td><code>.drawer</code><td>T	<td>J	<td>-	<td>-	<td>+	<td><code>.shift</code>
 		<tr>	<th>Gallery		<td><code>.gal</code>	<td>T	<td>T	<td>-	<td>-	<td>+	<td>
@@ -403,7 +468,8 @@ Add <code>r#, l#, c#</code> (where # is any number) classes to align cells of co
 		</tbody>
 	</table>
 </div>
-</div>
+</div-->
+		<!--tr>	<th>Tooltip		<td><code></code>		<td>HF	<td>HF	<td>-	<td>+	<td>+	<td-->
 	
 	<p class="pad bg-n">
 		<b>Legend</b><br>
@@ -466,7 +532,7 @@ Add <code>r#, l#, c#</code> (where # is any number) classes to align cells of co
 
 <p>
 <code>Button</code> and <code>input</code> of type <code>submit</code> have button styling by default.<br>
-Add <code>.btn</code> class to the element (usually a link) to make it look like a button <i>(which is not recommended from accessability point of view)</i>.
+Add <code>.btn</code> class to the element (usually a link) to make it look like a button <i>(which is not recommended from accessibility point of view)</i>.
 For color options see <a href="#colors-buttons">Colors</a> section.
 </p>
 
@@ -554,7 +620,7 @@ For color options see <a href="#colors-buttons">Colors</a> section.
 <h3 id="form-table">Table layout</h3>
 
 <p>
-For aligned form, <code>table</code> may be used, which is arguably not semantic, but still very convenient.
+For aligned form, <code>table</code> may be used, which is arguably not semantic, but very convenient.
 In this case, <code>table</code> must be a direct descendant of <code>form</code>.
 Table will become stacked on small screen.
 
@@ -709,24 +775,24 @@ Table will become stacked on small screen.
 	</p>
 	
 	<div id="editor-commands" class="target mar pad bg">
-	<table class="let sort hover">
+	<table class="let shift sort hover">
 	<caption>Editor tools<caption>
 	<thead>
 	<tr><th>Code<th>Command<th>Description
 	</thead>
 	<tbody>
-    <tr><td>/<td><i>src</i><td>Toggle source/WYSIWYG mode
+    <tr><td>/<td><i>src</i><td>View source
     <tr><td>*<td>insertimage<td>Image
     <tr><td>@<td>createlink<td>Link
     <tr><td>x<td>unlink<td>Unlink
     <tr><td>b<td>bold<td>Bold
     <tr><td>i<td>italic<td>Italic
-    <tr><td>_<td>removeformat<td>Unformat
-    <tr><td>.<td>insertUnorderedList<td>List
-    <tr><td>#<td>insertOrderedList<td>Ordered
-    <tr><td>1<td>formatblock<td>Head 1
-    <tr><td>2<td>formatblock<td>Head 2
-    <tr><td>3<td>formatblock<td>Head 3
+    <tr><td>_<td>removeformat<td>Remove format
+    <tr><td>.<td>insertUnorderedList<td>Unordered list
+    <tr><td>#<td>insertOrderedList<td>Ordered list
+    <tr><td>1<td>formatblock<td>Heading 1
+    <tr><td>2<td>formatblock<td>Heading 2
+    <tr><td>3<td>formatblock<td>Heading 3
     <tr><td>p<td>formatblock<td>Paragraph
     <tr><td>|<td><i>tools</i><td>Expand toolbar
     <tr><td>c<td>inserthtml<td>Code
@@ -748,7 +814,7 @@ Table will become stacked on small screen.
     <!--
     <tr><td>u<td>underline<td>Underline
     <tr><td>C<td>foreColor<td>Text color
-    <tr><td>h<td>hiliteColor<td>Hilite color
+    <tr><td>h<td>hiliteColor<td>Highlight color
     <tr><td>B<td>backColor<td>Back color
     <tr><td>S<td>fontSize<td>Font size
     <tr><td>F<td>fontName<td>Font name
@@ -1063,7 +1129,7 @@ and expand it to dropdown navbar on large screen.
 
 <div class="code">
 <div class="hide-desktop">
-	<a href="#navi" class="pad hover" title="Menu">&equiv;</a>
+	<a href="#navi" class="pad hover" title="Menu" data-ico="menu">&equiv;</a>
 </div>
 <ul class="nav flip bg hover target-mobile" id="navi">
 	<li><a href="#n0" class="fit"><b>Logo</b></a></li>
@@ -1128,7 +1194,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <div class="code">
 <a href="#modal">Open modal</a>
 <div id="modal" class="dlg rad c pad">
-	<a class="close pad" href="#cancel">&times;</a>
+	<a class="close pad" href="#cancel" data-ico="close">&times;</a>
 	<p>Modal</p>
 </div>
 </div>
@@ -1144,7 +1210,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <div class="code">
 <a href="#full">Open fullscreen modal</a>
 <div id="full" class="dlg full center pad bg-w">
-	<a class="close pad" href="#cancel">&times;</a>
+	<a class="close pad" href="#cancel" data-ico="close">&times;</a>
 	Fullscreen modal
 </div>
 </div>
@@ -1236,9 +1302,9 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 </p>
 
 <div class="code">
-<a class="pad hover" href="#drw">&equiv;</a>
+<a class="pad hover" href="#drw" data-ico="menu">&equiv;</a>
 <div class="drawer shift pad" id="drw">
-	<a class="close pad" href="#cancel">&times;</a>
+	<a class="close pad" href="#cancel" data-ico="close">&times;</a>
 	Demo drawer
 </div>
 </div>
@@ -1287,28 +1353,38 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <a href="data.json" data-target="#dlg-inner">Fetch into modal dialog</a><br>
 <a href="data.json" data-target="#x">Fetch into generated modal dialog</a>
 <pre class="bg-i" id="preview">[preview area]</pre>
-<div id="preview-dlg" class="dlg pad"><a class="close pad" href="#cancel">&times;</a><div id="dlg-inner">(preview)</div></div>
+<div id="preview-dlg" class="dlg pad"><a class="close pad" href="#cancel" data-ico="close">&times;</a><p class="pad" id="dlg-inner">(preview)</p></div>
 </div>
 
 
 <h3 id="toggle-class">Toggle class</h3>
 
 <p>Toggle class or other attribute 
-<code>a[href^="#"][data-set]</code>, 
-<code>:is(a, [type="checkbox"], [type="radio"])[data-nodes][data-set][data-unset][data-attr]</code>.
+<code>a[href^="#"][data-set][data-unset][data-attr]</code>, 
+<code>:is(a, select, [type="checkbox"], [type="radio"])[data-nodes][data-set][data-unset][data-attr]</code>.
 
 <div class="code" id="demo-toggle-class">
 	<label>
-		<input type="checkbox" name="chb" data-set="bg-w" data-nodes="#demo-toggle-class a" title="bg"> Highlight code links
+		<input type="checkbox" name="chb" data-set="bg-w" data-nodes="#demo-toggle-class a" title="bg"> Highlight links in this block
 	</label>
 	<br>
 	
-	<a href="#x" data-set="text-e" data-nodes="#demo-toggle-class a">Red code links</a><br>
+	<a href="#x" data-set="text-e" data-nodes="#demo-toggle-class a">Red text links in this block</a><br>
 	
 	<a href="#x" data-set="invert" data-nodes="body">Invert page</a><br>
 	
-	<a href="#test-input" class="act" data-set="radio" data-unset="checkbox" data-attr="type"> Change input type</a>
+	<a href="#test-input" class="act" data-set="radio" data-unset="checkbox" data-attr="type"> Change type of the following input</a>
 	<input type="checkbox" id="test-input">
+	<br>
+	
+	<label>Highlight labels in this block as
+	<select name="sel" data-nodes="#demo-toggle-class label">
+		<option value="">-</option>
+		<option value="bg-y">Success</option>
+		<option value="bg-w">Warning</option>
+		<option value="bg-e">Danger</option>
+	</select>
+	</label>
 </div>
 <a href="#x" data-set="invert" data-nodes="body" class="hide" accesskey="i">(invert)</a>
 
@@ -1408,7 +1484,7 @@ If link needs to be outside of the item, point at item with query selector in li
 
 <p>
 Add icon before element's content <code>[data-icon]</code>.<br>
-Replace element's content with icon <code>[data-ico]</code>.
+Replace element's content with icon <code>[data-ico]</code> Provide <code>[title]</code> for accessibility.
 
 <div class="code">
 	<a title="Menu"   href="#x" data-ico="menu" class="pad rad hover">&equiv;</a>
@@ -1419,14 +1495,14 @@ Replace element's content with icon <code>[data-ico]</code>.
 <h4 id="iconset">Available icons</h4>
 
 <fieldset class="mar" id="options-all-icons">
-<legend>Display options</legend>
+<!--legend>Display options</legend>
 	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-set="pad" checked> Padding</label><br>
 	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-set="hover" checked> Hover</label><br>
 	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a svg" data-set="bord"> Border</label><br>
 	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-set="shade"> Shadow</label><br>
 	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a svg" data-set="bg"> Background</label><br>
+</fieldset-->
 	<!--label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-attr="data-ico" data-set="1"> Hide labels</label-->
-</fieldset>
 
 <div class="row mar let" id="demo-all-icons">
 	<!--
@@ -1690,7 +1766,7 @@ most important:
 </thead>
 <tbody>
 <tr><th>.row<td><a href="#grid">Grid</a><td>div ul .col-0 .col-2 .col-3<td>.flip .let .center<i>.shift .stick .center .wrap .read .narrow</i>
-<tr><th>table<td><a href="#table">Table</a><td>.roll<td>.hover .fit .let .flip
+<tr><th>table<td><a href="#table">Table</a><td>.roll<td>.hover .fit .let .shift .flip
 <tr><th>ul, ol, dl<td><a href="#list">List</a><td><td>.fit .row
 <tr><th>.tree<td><a href="#list-tree">Tree</a><td>ul<td>.accordion .fit
 <tr><th>button, a.btn<td><a href="#colors-buttons">Button</a><td><a href="#form-table">form</a> submit button a span<td>.bg-x <i>[data-target]</i>
@@ -1832,20 +1908,19 @@ most important:
 -->
 
 <svg style="display:none;" width="0" height="0">
-<symbol id="svg-add" viewBox="0 0 7 7"><path d="M3 1h1v2h2v1h-2v2h-1v-2h-2v-1h2z"/></symbol>
-<symbol id="svg-close" viewBox="0 0 20 20"><path d="M5 3l5 5 5-5 2 2-5 5 5 5-2 2-5-5-5 5-2-2 5-5-5-5z"/></symbol>
-<symbol id="svg-config" viewBox="0 0 7 7"><path d="M2 3l1-1-1-1 q1.5 .2 2 1v1l2 2q-.2.8 -1 1l-2-2h-1q-.8-.5-1-2z"/></symbol>
-<symbol id="svg-edit" viewBox="0 0 10 10"><path d="M7 1q1.6 .4 2 2l-5 5-3 1 1-3zM2.3 6.3l-.5 1.5.4.4 1.5-.5z"/></symbol>
-<symbol id="svg-find" viewBox="0 0 10 10"><path d="M4 1a3 3 0 1 0 .01 0zm0 1a2 2 0 1 1-.01 0m2 3l-1 1 3 3 1-1z"/></symbol>
-<symbol id="svg-left" viewBox="0 0 10 10"><path d="M6 1l1 1-3 3 3 3-1 1-4-4z"/></symbol>
-<symbol id="svg-menu" viewBox="0 0 7 7"><path d="M1 1h5v1h-5zm0 2h5v1h-5zm0 2h5v1h-5z"/></symbol>
-<symbol id="svg-ok" viewBox="0 0 8 8"><path d="M.8 4l1-1 1.5 1.5 3-3 1 1-4 4z"/></symbol>
-<symbol id="svg-place" viewBox="0 0 10 10"><path d="M2 4a3 3 0 0 1 6 0q0 2 -3 5q-3-3-3-5zm3 -2a2 2 0 1 0 .01 0"/></symbol>
-<symbol id="svg-right" viewBox="0 0 10 10"><path d="M4 1l4 4-4 4-1-1 3-3-3-3z"/></symbol>
-<symbol id="svg-user" viewBox="0 0 8 8"><path d="M4 1a1.7 2.2 0 1 0 .01 0m-3 5.5q3 1 6 0-3 -2.5 -6 0z"/></symbol>
-
-<symbol id="svg-up" viewBox="0 0 10 10"><path d="M1 6l4-4 4 4-1 1-3-3-3 3z"/></symbol>
-<symbol id="svg-down" viewBox="0 0 10 10"><path d="M1 4l4 4 4-4-1-1-3 3-3-3z"/></symbol>
+<symbol id="icon-add" viewBox="0 0 7 7"><path d="M3 1h1v2h2v1h-2v2h-1v-2h-2v-1h2z"/></symbol>
+<symbol id="icon-close" viewBox="0 0 20 20"><path d="M5 3l5 5 5-5 2 2-5 5 5 5-2 2-5-5-5 5-2-2 5-5-5-5z"/></symbol>
+<symbol id="icon-config" viewBox="0 0 7 7"><path d="M2 3l1-1-1-1 q1.5 .2 2 1v1l2 2q-.2.8 -1 1l-2-2h-1q-.8-.5-1-2z"/></symbol>
+<symbol id="icon-edit" viewBox="0 0 10 10"><path d="M7 1q1.6 .4 2 2l-5 5-3 1 1-3zM2.3 6.3l-.5 1.5.4.4 1.5-.5z"/></symbol>
+<symbol id="icon-find" viewBox="0 0 10 10"><path d="M4 1a3 3 0 1 0 .01 0zm0 1a2 2 0 1 1-.01 0m2 3l-1 1 3 3 1-1z"/></symbol>
+<symbol id="icon-left" viewBox="0 0 10 10"><path d="M6 1l1 1-3 3 3 3-1 1-4-4z"/></symbol>
+<symbol id="icon-menu" viewBox="0 0 7 7"><path d="M1 1h5v1h-5zm0 2h5v1h-5zm0 2h5v1h-5z"/></symbol>
+<symbol id="icon-ok" viewBox="0 0 8 8"><path d="M.8 4l1-1 1.5 1.5 3-3 1 1-4 4z"/></symbol>
+<symbol id="icon-place" viewBox="0 0 10 10"><path d="M2 4a3 3 0 0 1 6 0q0 2 -3 5q-3-3-3-5zm3 -2a2 2 0 1 0 .01 0"/></symbol>
+<symbol id="icon-right" viewBox="0 0 10 10"><path d="M4 1l4 4-4 4-1-1 3-3-3-3z"/></symbol>
+<symbol id="icon-user" viewBox="0 0 8 8"><path d="M4 1a1.7 2.2 0 1 0 .01 0m-3 5.5q3 1 6 0-3 -2.5 -6 0z"/></symbol>
+<symbol id="icon-up" viewBox="0 0 10 10"><path d="M1 6l4-4 4 4-1 1-3-3-3 3z"/></symbol>
+<symbol id="icon-down" viewBox="0 0 10 10"><path d="M1 4l4 4 4-4-1-1-3 3-3-3z"/></symbol>
 </svg>
 
 <a class="fix r l pad hover hide-print" href="#">&uarr;</a>

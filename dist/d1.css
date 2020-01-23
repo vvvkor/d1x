@@ -1,4 +1,4 @@
-/*! d1css v1.0.29 */
+/*! d1css v1.0.30 */
 
 body {
     --text: #000;
@@ -313,6 +313,15 @@ hr {
 
 table.let tr>* {
     border-width: 0 0 thin 0;
+}
+
+table.let tr:last-child>* {
+    border-width: 0;
+}
+
+table.shift {
+    width: 100%;
+    margin: 0;
 }
 
 .roll {

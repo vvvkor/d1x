@@ -14,6 +14,7 @@ module.exports = new(function () {
   
   this.opt = {
     //gap: 20,
+    qHideOnScroll: '', // '.drawer[id]'
     cStart: 'shade',
     qTopbar: '.topbar.let',
     qEnable: '.topbar, .drawer'
@@ -54,7 +55,7 @@ module.exports = new(function () {
     app.dbg(['scroll', window.scrollY, dy]); // ,mode,h,this.hashed
     if(this.y!==null/* && !h*/){
       app.e(this.opt.qTopbar, n => this.decorate(n, window.scrollY, dy));
-      app.e(toggle.opt.qDrw, n => toggle.toggle(n, false));
+      app.e(this.opt.qHideOnScroll, n => toggle.toggle(n, false));
     }
     this.y = window.scrollY; // forces reflow
     //if(this.hashed) this.fixScroll();

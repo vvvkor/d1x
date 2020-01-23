@@ -1,3 +1,31 @@
+tur,b,ker
+
+## doc
+-? opts as table
+<table class="let mar">
+	<tr><td><code></code><td>
+</table>
+<table class="let mar">
+	<caption></caption>
+	<tr><td><td><code></code><td>
+</table>
+- doc: more on "use"
++ "yet","but still"
++ data-ic: nav,modal,drw
++ data-ico:provide title
++ narrower icon grid
++ describe editor tools
++ use gfonts
+## js
++ priority svg on page
++ set class by select
+##git
+- one-path-svg
+##ico
++ "storage"
++ key3
++ first,last,warn,i,send
+
 # todo
 
 - doc: replace icons <svg> with <span>

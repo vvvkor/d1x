@@ -1,4 +1,4 @@
-/*! d1x v1.0.29 */
+/*! d1x v1.0.30 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -89,7 +89,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1 app v1.0.29 */
+/*! d1 app v1.0.30 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -2044,11 +2044,9 @@ module.exports = new function () {
   this.name = 'icons';
   this.opt = {
     cIcon: 'icon',
-    //cLine: 'line',
-    //ns: 'xmlns="http://www.w3.org/2000/svg"',
     iconSize: 24,
-    pSvg: 'svg-',
-    //prefix
+    pSvg: false,
+    // 'icon-', // id prefix to search on page
     aReplace: 'data-ico',
     aAdd: 'data-icon'
   };
@@ -2169,14 +2167,20 @@ module.exports = new function () {
     ico = a[0];
 
     if (this.parsed[ico] === undefined) {
-      var svg = this.icons[ico]; //let line = svg && (svg.substr(-1) === ' ');
+      var svg = '';
+
+      if (this.opt.pSvg !== false) {
+        var id = this.opt.pSvg + ico;
+        var sym = document.getElementById(id);
+        if (sym && sym.tagName.toLowerCase() == 'symbol') svg = '<svg><use xlink:href="#' + id + '"></use></svg>'; // from page
+      }
 
       if (!svg) {
-        var id = this.opt.pSvg + ico;
-        if (document.getElementById(id)) svg = '<svg><use xlink:href="#' + id + '"></use></svg>'; // from page
-        else svg = ''; // none
-      } else if (typeof svg !== 'string') {
-        svg = '<svg viewBox="0 0 ' + svg[0] + ' ' + svg[0] + '"><path d="' + svg[1] + '"/></svg>'; // from array
+        svg = this.icons[ico] || '';
+
+        if (typeof svg !== 'string') {
+          svg = '<svg viewBox="0 0 ' + svg[0] + ' ' + svg[0] + '"><path d="' + svg[1] + '"/></svg>'; // from array
+        }
       }
 
       var n;
@@ -2187,9 +2191,7 @@ module.exports = new function () {
         n = div.firstChild;
         if (!app.attr(n, 'width')) n.setAttribute('width', this.opt.iconSize);
         if (!app.attr(n, 'height')) n.setAttribute('height', this.opt.iconSize);
-        if (!app.attr(n, 'class')) n.setAttribute('class', this.opt.cIcon
-        /* + (line ? ' ' + this.opt.cLine : '')*/
-        );
+        if (!app.attr(n, 'class')) n.setAttribute('class', this.opt.cIcon);
       } else n = '';
 
       this.parsed[ico] = n;
@@ -2596,6 +2598,8 @@ module.exports = new function () {
 
   this.opt = {
     //gap: 20,
+    qHideOnScroll: '',
+    // '.drawer[id]'
     cStart: 'shade',
     qTopbar: '.topbar.let',
     qEnable: '.topbar, .drawer' //qTopbarFixed: '.topbar:not(.let)'
@@ -2657,7 +2661,7 @@ module.exports = new function () {
         app.e(this.opt.qTopbar, function (n) {
           return _this2.decorate(n, window.scrollY, dy);
         });
-        app.e(toggle.opt.qDrw, function (n) {
+        app.e(this.opt.qHideOnScroll, function (n) {
           return toggle.toggle(n, false);
         });
       }
@@ -3045,7 +3049,7 @@ module.exports = new function () {
     this.put('Menu', ['rgba(255,255,255,0)', 'rgba(0,0,0,.1)', 'hsla(1,100%,55%,.3)', 'hsla(45,100%,50%,.3)', 'hsla(120,100%,35%,.3)', 'hsla(180,100%,35%,.3)', 'hsla(220,100%,55%,.3)', 'hsla(290,100%,50%,.3)'], ['--bg-pane', '--bg-hilite']);
     this.put('Links', ['#000', '#777', '#c00', '#c60', '#090', '#088', '#00c', '#909'], ['--link', '--visited', '--hover']);
     this.put('Text', ['#000', '#222', '#444', '#555', '#666', '#777', '#888', '#999'], '--text');
-    this.put('Font', ['sans-serif', 'serif', 'monospace', 'Roboto', 'Open Sans', 'Georgia', 'PT Sans', 'PT Serif', 'PT Mono'], 'font-family');
+    this.put('Font', this.opt.fonts || ['sans-serif', 'serif', 'monospace'], 'font-family');
     this.put('Gaps', ['0.5', '0.7', '1', '1.2', '1.5'], '--gap');
   };
 
@@ -3131,11 +3135,17 @@ module.exports = new function () {
   this.init = function () {
     var _this = this;
 
+    this.opt.qSet = '[' + this.opt.aSet + '], [' + this.opt.aNodes + ']';
+    this.opt.qSetClick = 'a[' + this.opt.aSet + ']';
+    this.opt.qSetChange = 'input[' + this.opt.aNodes + '], select[' + this.opt.aNodes + ']';
     app.e('table[class]', function (n) {
       return _this.alignCells(n);
     });
-    app.e('[' + this.opt.aSet + ']', function (n) {
+    app.e(this.opt.qSet, function (n) {
       return _this.toggleClass(n);
+    });
+    app.b(this.opt.qSetChange, 'change', function (e) {
+      return _this.toggleClass(e.target);
     });
     app.e(this.opt.qTop, function (n) {
       return _this.addTopLink(n);
@@ -3151,7 +3161,7 @@ module.exports = new function () {
 
   this.onClick = function (e) {
     var n = e.target;
-    var a = app.closest(n, '[' + this.opt.aSet + ']');
+    var a = app.closest(n, this.opt.qSetClick);
     if (a) this.toggleClass(n, e);
   };
 
@@ -3173,7 +3183,7 @@ module.exports = new function () {
 
   this.setClass = function (n, on, m, c) {
     app.dbg(['setclass', m, c]);
-    var u = n.type == 'radio' ? '' : app.attr(n, this.opt.aUnset, false);
+    var u = n.type == 'radio' || n.tagName == 'SELECT' ? '' : app.attr(n, this.opt.aUnset, false);
     var attr = app.attr(n, this.opt.aAttr) || 'class';
 
     if (attr !== 'class') {
@@ -3193,14 +3203,17 @@ module.exports = new function () {
 
     if (n.type == 'radio' && !n.checked) return;
     var box = n.type == 'checkbox' || n.type == 'radio';
+    var sel = n.tagName == 'SELECT';
     var q = app.attr(n, this.opt.aNodes, n.hash);
-    var c = app.attr(n, this.opt.aSet, false);
-    var on = box ? n.checked : n.classList.contains(app.opt.cAct);
+    var c = sel ? n.value : app.attr(n, this.opt.aSet, false);
+    var on = sel ? true : box ? n.checked : n.classList.contains(app.opt.cAct);
 
-    if (e && !box) {
+    if (e && !box && !sel) {
       on = !on;
       e.preventDefault();
     }
+
+    app.dbg(['setclass?', c, on, q]);
 
     if (c !== false) {
       app.e(q, function (m) {

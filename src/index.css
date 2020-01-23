@@ -229,6 +229,8 @@ th,td{padding:var(--gaps-s);vertical-align:top;background-clip:padding-box;}
 		textarea{width:100%;}
 	hr{border-width:thin 0 0 0;}
 	table.let tr>*{border-width:0 0 thin 0;}
+		table.let tr:last-child>*{border-width:0;}
+	table.shift{width:100%;margin:0;}
 .roll{overflow-x:auto;}
 	.roll>table{border-width:medium;}
 

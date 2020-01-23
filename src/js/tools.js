@@ -18,8 +18,12 @@ module.exports = new(function () {
   };
 
   this.init = function () {
+    this.opt.qSet = '[' + this.opt.aSet + '], [' + this.opt.aNodes + ']';
+    this.opt.qSetClick = 'a[' + this.opt.aSet + ']';
+    this.opt.qSetChange = 'input[' + this.opt.aNodes + '], select[' + this.opt.aNodes + ']';
     app.e('table[class]', n => this.alignCells(n));
-    app.e('[' + this.opt.aSet + ']', n => this.toggleClass(n));
+    app.e(this.opt.qSet, n => this.toggleClass(n));
+    app.b(this.opt.qSetChange, 'change', e => this.toggleClass(e.target));
     app.e(this.opt.qTop, n => this.addTopLink(n));
     app.listen('click', e => this.onClick(e));
     this.onResize();
@@ -28,7 +32,7 @@ module.exports = new(function () {
 
   this.onClick = function(e){
     let n = e.target;
-    let a = app.closest(n, '[' + this.opt.aSet + ']');
+    let a = app.closest(n, this.opt.qSetClick);
     if(a) this.toggleClass(n, e)
   }
 
@@ -43,7 +47,7 @@ module.exports = new(function () {
 
   this.setClass = function(n, on, m, c){
     app.dbg(['setclass', m, c]);
-    let u = (n.type == 'radio') ? '' : app.attr(n, this.opt.aUnset, false);
+    let u = (n.type == 'radio' || n.tagName=='SELECT') ? '' : app.attr(n, this.opt.aUnset, false);
     let attr = app.attr(n, this.opt.aAttr) || 'class';
     if(attr !== 'class'){
       let v = on ? c : (u || '');
@@ -58,13 +62,15 @@ module.exports = new(function () {
   this.toggleClass = function(n, e) {
     if(n.type == 'radio' && !n.checked) return;
     let box = (n.type == 'checkbox' || n.type == 'radio');
+    let sel = (n.tagName == 'SELECT');
     let q = app.attr(n, this.opt.aNodes, n.hash);
-    let c = app.attr(n, this.opt.aSet, false);
-    let on = box ? n.checked : n.classList.contains(app.opt.cAct);
-    if(e && !box){
+    let c = sel ? n.value : app.attr(n, this.opt.aSet, false);
+    let on = sel ? true : (box ? n.checked : n.classList.contains(app.opt.cAct));
+    if(e && !box && !sel){
       on = !on;
       e.preventDefault();
     }
+    app.dbg(['setclass?', c, on, q]);
     if (c !== false){
       app.e(q, m => this.setClass(n, on, m, c));
       app.fire('updated', {q: q});

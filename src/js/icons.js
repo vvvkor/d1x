@@ -10,10 +10,8 @@ module.exports = new(function () {
 
   this.opt = {
     cIcon: 'icon',
-    //cLine: 'line',
-    //ns: 'xmlns="http://www.w3.org/2000/svg"',
     iconSize: 24,
-    pSvg: 'svg-', //prefix
+    pSvg: false, // 'icon-', // id prefix to search on page
     aReplace: 'data-ico',
     aAdd: 'data-icon'
   };
@@ -145,15 +143,17 @@ module.exports = new(function () {
     let a = ico.split(/\//);
     ico = a[0];
     if(this.parsed[ico] === undefined){
-      let svg = this.icons[ico];
-      //let line = svg && (svg.substr(-1) === ' ');
-      if(!svg){
+      let svg = '';
+      if(this.opt.pSvg !== false){
         let id = this.opt.pSvg + ico;
-        if(document.getElementById(id)) svg = '<svg><use xlink:href="#' + id + '"></use></svg>'; // from page
-        else svg = ''; // none
+        let sym = document.getElementById(id);
+        if(sym && sym.tagName.toLowerCase()=='symbol') svg = '<svg><use xlink:href="#' + id + '"></use></svg>'; // from page
       }
-      else if(typeof svg !== 'string'){
-        svg = '<svg viewBox="0 0 ' + svg[0] + ' ' + svg[0] + '"><path d="' + svg[1] + '"/></svg>'; // from array
+      if(!svg){
+        svg = this.icons[ico] || '';
+        if(typeof svg !== 'string'){
+          svg = '<svg viewBox="0 0 ' + svg[0] + ' ' + svg[0] + '"><path d="' + svg[1] + '"/></svg>'; // from array
+        }
       }
 
       let n;
@@ -163,7 +163,7 @@ module.exports = new(function () {
         n = div.firstChild;
         if(!app.attr(n, 'width'))  n.setAttribute('width', this.opt.iconSize);
         if(!app.attr(n, 'height')) n.setAttribute('height', this.opt.iconSize);
-        if(!app.attr(n, 'class'))  n.setAttribute('class', this.opt.cIcon /* + (line ? ' ' + this.opt.cLine : '')*/);
+        if(!app.attr(n, 'class'))  n.setAttribute('class', this.opt.cIcon);
       }
       else n = '';
       this.parsed[ico] = n;
