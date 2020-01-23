@@ -1,41 +1,9 @@
-tur,b,ker
-
-## doc
--? opts as table
-<table class="let mar">
-	<tr><td><code></code><td>
-</table>
-<table class="let mar">
-	<caption></caption>
-	<tr><td><td><code></code><td>
-</table>
-- doc: more on "use"
-+ "yet","but still"
-+ data-ic: nav,modal,drw
-+ data-ico:provide title
-+ narrower icon grid
-+ describe editor tools
-+ use gfonts
-## js
-+ priority svg on page
-+ set class by select
-##git
-- one-path-svg
-##ico
-+ "storage"
-+ key3
-+ first,last,warn,i,send
-
 # todo
-
-- doc: replace icons <svg> with <span>
-- no need to fill icons.icons[]
-- icons: inject into array, not into page
-- attr: data-icon-keep/before/link
 
 ## icons
 
-- add svgs
+- "one-path-svg"
++ add svgs
 
 ## git
 
@@ -73,10 +41,8 @@ tur,b,ker
  
 ## js
 
-- on escape, on #cancel: close only last opened in stack (create stack)
-- dragsort
 - better .js-live-val
-- new components: scrollspy, notify, sortable
+- new components: scrollspy, notify, sortable/dragsort
 - alerts: close link
 - slides
 ~ optimize: !addEventListener to d1.b(), !bind to arrFunc, getAttribute to attr,
@@ -86,6 +52,9 @@ tur,b,ker
 = .gal to js gallery: only if .toggle?
 = outline icons [ok]
 = onscroll only if has topbar
++ on escape, on #cancel: close only last opened in stack (create stack)
++ priority svg on page
++ set class by select
 + icons.js: ins([paths]), icons[]
 + html: multiline tag (meta), "attr="?
 + js hilite "require", not #!comment, 'str';
@@ -108,11 +77,20 @@ tur,b,ker
 ! overview test page https://getuikit.com/assets/uikit/tests/ , https://getuikit.com/v2/tests/overview.html
 !? "fitty" / "d1app" / "d1ui" / "d1web" / "d1css v2"
 - "requires toggle.js"
-- options as table
+- options as table "opts-"
+	<table class="let mar">
+		<tr><td><code></code><td>
+	</table>
+	<table class="let mar">
+		<caption></caption>
+		<tr><td><td><code></code><td>
+	</table>
 - customizer https://getuikit.com/v2/docs/customizer.html
 ~ reference: js classes, components
 ? custom inputs into #forms section
 = items: Fullwidth Plus Sign &#xFF0B; minus &#xFF0D;
++ describe editor tools
++ use gfonts
 + use .code only where js not involved (no .toggle, etc.)
 + write on plugins: code, theme
 + fliptable, .accordion? separately

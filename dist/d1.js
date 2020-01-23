@@ -1,4 +1,4 @@
-/*! d1x v1.0.30 */
+/*! d1x v1.0.31 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,14 +82,14 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 20);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports) {
 
-/*! d1 app v1.0.30 */
+/*! d1 app v1.0.31 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -876,6 +876,135 @@ module.exports = new function () {
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/*! gallery - image gallery */
+// .gallery a.pic 
+var app = __webpack_require__(0);
+
+module.exports = new function () {
+  "use strict";
+
+  this.name = 'gallery';
+  this.opt = {
+    idPrefix: 'pic-',
+    num: true,
+    cGal: 'gal',
+    qGal: '.gal>a[id]',
+    // dup of toggle.opt.qGal
+    qGallery: '.gallery',
+    qLinks: 'a.pic'
+  };
+
+  this.init = function () {
+    var _this = this;
+
+    app.listen('hash', function (e) {
+      return _this.onHash(e);
+    });
+    app.listen('key', function (e) {
+      return _this.onKey(e);
+    });
+    app.listen('click', function (e) {
+      return _this.onClick(e);
+    });
+    app.e(this.opt.qGallery, function (n) {
+      return _this.prepare(n);
+    });
+  };
+
+  this.onClick = function (e) {
+    var n = e.target;
+
+    if (n.matches(this.opt.qGal)) {
+      if (e.clientX > 0
+      /* not Enter key */
+      && e.clientX < n.clientWidth / 3) {
+        if (this.prevImg(n)) e.preventDefault();
+      } //return n;
+
+    }
+  };
+
+  this.prevImg = function (n) {
+    var p = n.previousElementSibling || app.qq('a[id]', n.parentNode).pop();
+    if (p.id) location.hash = '#' + p.id;
+    return p.id;
+  };
+
+  this.onHash = function () {
+    var n = app.q(location.hash);
+
+    if (n) {
+      this.loadImg(n);
+      this.loadImg(app.q(n.hash));
+    }
+  };
+
+  this.loadImg = function (n) {
+    if (n && n.vImg) {
+      n.style.backgroundImage = 'url("' + n.vImg + '")';
+      n.vImg = '';
+    }
+  };
+
+  this.prepare = function (n) {
+    var g = app.ins('div', '', {
+      className: this.opt.cGal
+    });
+    var a = app.qq(this.opt.qLinks, n);
+    var z = a.length;
+    var first = 0;
+
+    for (var i = 0; i < z; i++) {
+      if (!a[i].vDone) {
+        var s = app.seq();
+        if (!i) first = s;
+        var p = app.ins('a', '', {
+          id: this.opt.idPrefix + s,
+          href: '#' + this.opt.idPrefix + (i == z - 1 ? first : s + 1)
+        }, g); //p.style.setProperty('--img', 'url("' + app.attr(a[i], 'href') + '")');
+        //p.style.backgroundImage = 'url("' + app.attr(a[i], 'href') + '")';//preload all
+
+        p.vLink = app.attr(a[i], 'href'); //real link
+
+        p.vImg = app.attr(a[i], 'href'); //preload prev & next
+
+        p.setAttribute(app.opt.aCaption, (this.opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || ''));
+        a[i].href = '#' + p.id;
+        a[i].vDone = 1;
+      }
+    }
+
+    app.x(g);
+    app.b(app.qq('a[id]', g), 'click', app.gotoPrev);
+    document.body.appendChild(g);
+  };
+
+  this.onKey = function (e) {
+    if (location.hash) {
+      var a = app.q(location.hash);
+
+      if (a && a.hash) {
+        var k = e.keyCode;
+        if (k == 37 || k == 38) this.prevImg(a);else if (k == 39 || k == 40) location.hash = a.hash; //a.click();
+        else if (k == 8) {
+            var h = a.vLink;
+
+            if (!h) {
+              h = window.getComputedStyle(a).backgroundImage;
+              h = h.substring(4, h.length - 1).replace(/^"|"$/g, '');
+            }
+
+            if (h) location.href = h;
+          } //e.preventDefault();
+      }
+    }
+  };
+}();
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
 /*! fetch - asynchronous requests */
 var app = __webpack_require__(0);
 
@@ -942,29 +1071,45 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 4 */
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var app = __webpack_require__(0);
+
+['code', 'icons', 'toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'calendar', 'lookup', 'edit', 'valid', 'tools', 'form', 'items', 'fliptable', 'fetch', 'theme'].forEach(function (p) {
+  return app.plug(__webpack_require__(6)("./" + p + ".js"));
+}); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
+
+app.b([document], 'DOMContentLoaded', function (e) {
+  return app.init();
+});
+if (true) module.exports = app;
+if (window) window.d1 = app;
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
 	"./app.js": 0,
-	"./calendar.js": 5,
-	"./code.js": 6,
+	"./calendar.js": 7,
+	"./code.js": 8,
 	"./dialog.js": 2,
-	"./edit.js": 7,
-	"./example.js": 8,
-	"./fetch.js": 3,
-	"./fliptable.js": 9,
-	"./form.js": 10,
-	"./gallery.js": 11,
-	"./icons.js": 12,
-	"./items.js": 13,
-	"./lookup.js": 14,
-	"./scroll.js": 15,
-	"./tablex.js": 16,
-	"./theme.js": 17,
+	"./edit.js": 9,
+	"./example.js": 10,
+	"./fetch.js": 4,
+	"./fliptable.js": 11,
+	"./form.js": 12,
+	"./gallery.js": 3,
+	"./icons.js": 13,
+	"./items.js": 14,
+	"./lookup.js": 15,
+	"./scroll.js": 16,
+	"./tablex.js": 17,
+	"./theme.js": 18,
 	"./toggle.js": 1,
-	"./tools.js": 18,
-	"./valid.js": 19
+	"./tools.js": 19,
+	"./valid.js": 20
 };
 
 
@@ -985,10 +1130,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 4;
+webpackContext.id = 6;
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
@@ -1358,7 +1503,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! code - source code sample */
@@ -1484,7 +1629,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! edit - wysiwyg text editor */
@@ -1759,7 +1904,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! example - plugin template */
@@ -1783,7 +1928,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! fliptable - responsive table */
@@ -1836,7 +1981,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! form - utilities for form inputs */
@@ -1903,136 +2048,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*! gallery - image gallery */
-// .gallery a.pic 
-var app = __webpack_require__(0);
-
-module.exports = new function () {
-  "use strict";
-
-  this.name = 'gallery';
-  this.opt = {
-    idPrefix: 'pic-',
-    num: true,
-    cGal: 'gal',
-    qGal: '.gal>a[id]',
-    // dup of toggle.opt.qGal
-    qGallery: '.gallery',
-    qLinks: 'a.pic'
-  };
-
-  this.init = function () {
-    var _this = this;
-
-    app.listen('hash', function (e) {
-      return _this.onHash(e);
-    });
-    app.listen('key', function (e) {
-      return _this.onKey(e);
-    });
-    app.listen('click', function (e) {
-      return _this.onClick(e);
-    });
-    app.e(this.opt.qGallery, function (n) {
-      return _this.prepare(n);
-    });
-  };
-
-  this.onClick = function (e) {
-    var n = e.target;
-
-    if (n.matches(this.opt.qGal)) {
-      if (e.clientX > 0
-      /* not Enter key */
-      && e.clientX < n.clientWidth / 3) {
-        if (this.prevImg(n)) e.preventDefault();
-      } //return n;
-
-    }
-  };
-
-  this.prevImg = function (n) {
-    var p = n.previousElementSibling || app.qq('a[id]', n.parentNode).pop();
-    if (p.id) location.hash = '#' + p.id;
-    return p.id;
-  };
-
-  this.onHash = function () {
-    var n = app.q(location.hash);
-
-    if (n) {
-      this.loadImg(n);
-      this.loadImg(app.q(n.hash));
-    }
-  };
-
-  this.loadImg = function (n) {
-    if (n && n.vImg) {
-      n.style.backgroundImage = 'url("' + n.vImg + '")';
-      n.vImg = '';
-    }
-  };
-
-  this.prepare = function (n) {
-    var g = app.ins('div', '', {
-      className: this.opt.cGal
-    });
-    var a = app.qq(this.opt.qLinks, n);
-    var z = a.length;
-    var first = 0;
-
-    for (var i = 0; i < z; i++) {
-      if (!a[i].vDone) {
-        var s = app.seq();
-        if (!i) first = s;
-        var p = app.ins('a', '', {
-          id: this.opt.idPrefix + s,
-          href: '#' + this.opt.idPrefix + (i == z - 1 ? first : s + 1)
-        }, g); //p.style.setProperty('--img', 'url("' + app.attr(a[i], 'href') + '")');
-        //p.style.backgroundImage = 'url("' + app.attr(a[i], 'href') + '")';//preload all
-
-        p.vLink = app.attr(a[i], 'href'); //real link
-
-        p.vImg = app.attr(a[i], 'href'); //preload prev & next
-
-        p.setAttribute(app.opt.aCaption, (this.opt.num ? i + 1 + '/' + z + (a[i].title ? ' - ' : '') : '') + (a[i].title || ''));
-        a[i].href = '#' + p.id;
-        a[i].vDone = 1;
-      }
-    }
-
-    app.x(g);
-    app.b(app.qq('a[id]', g), 'click', app.gotoPrev);
-    document.body.appendChild(g);
-  };
-
-  this.onKey = function (e) {
-    if (location.hash) {
-      var a = app.q(location.hash);
-
-      if (a && a.hash) {
-        var k = e.keyCode;
-        if (k == 37 || k == 38) this.prevImg(a);else if (k == 39 || k == 40) location.hash = a.hash; //a.click();
-        else if (k == 8) {
-            var h = a.vLink;
-
-            if (!h) {
-              h = window.getComputedStyle(a).backgroundImage;
-              h = h.substring(4, h.length - 1).replace(/^"|"$/g, '');
-            }
-
-            if (h) location.href = h;
-          } //e.preventDefault();
-      }
-    }
-  };
-}();
-
-/***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! icons - include svg icons */
@@ -2209,7 +2225,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! items - copy, hide, delete items */
@@ -2291,7 +2307,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! lookup - autocomplete lookups with data from XHTTP request */
@@ -2299,7 +2315,7 @@ var app = __webpack_require__(0);
 
 var toggle = __webpack_require__(1);
 
-var fetch = __webpack_require__(3);
+var fetch = __webpack_require__(4);
 
 module.exports = new function () {
   "use strict";
@@ -2582,7 +2598,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! scroll - scrolling behaviours (topbar, drawer) */
@@ -2691,7 +2707,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! tablex - filter and sort HTML table */
@@ -2996,7 +3012,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! theme - live theme configurator */
@@ -3112,7 +3128,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! tools - miscellaneous utilities */
@@ -3244,7 +3260,7 @@ module.exports = new function () {
 }();
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*! valid - custom form validation messages */
@@ -3346,22 +3362,6 @@ module.exports = new function () {
     }
   };
 }();
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var app = __webpack_require__(0);
-
-['code', 'icons', 'toggle', 'dialog', 'gallery', 'tablex', 'scroll', 'calendar', 'lookup', 'edit', 'valid', 'tools', 'form', 'items', 'fliptable', 'fetch', 'theme'].forEach(function (p) {
-  return app.plug(__webpack_require__(4)("./" + p + ".js"));
-}); //let opt = {hOk:'#yex', plug: {gallery: {idPrefix: 'imx-'}}};
-
-app.b([document], 'DOMContentLoaded', function (e) {
-  return app.init();
-});
-if (true) module.exports = app;
-if (window) window.d1 = app;
 
 /***/ })
 /******/ ]);

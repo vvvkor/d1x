@@ -214,10 +214,10 @@ Mostly, default styling is kept.
 
 <h3>Headings</h3>
 
-<table class="let mar">
-	<tr><td><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="" checked><td><td>Default margins
-	<tr><td><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="mar"><td><code>.mar</code><td>Smaller margins
-	<tr><td><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="fit"><td><code>.fit</code><td>No margins
+<table class="let mar opts-h1">
+	<tr><td><code>h1..h6</code><td>Default margins<td><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="" checked>
+	<tr><td><code>.mar</code><td>Smaller margins<td><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="mar">
+	<tr><td><code>.fit</code><td>No margins<td><input name="demo-h" type="radio" data-nodes="#headings>*" data-set="fit">
 </table>
 
 
@@ -263,7 +263,7 @@ By default, they all have equal width.
 <label><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y col-3"> Triple <code>.row &gt; .col-3</code></label><br>
 </fieldset>
 
-<!--table class="let mar">
+<!--table class="let mar opts-grid">
 	<caption></caption>
 	<tr><td><td><code>div.row</code><td>Grid row (container). Direct descendants of container are columns. By default, columns have equal width.
 	<tr><td><input name="grid-flip" type="checkbox" data-nodes="#cols" data-set="flip" checked><td><code>.flip</code><td>Stack on small screen
@@ -272,7 +272,7 @@ By default, they all have equal width.
 	<tr><td><input name="grid-let" type="checkbox" data-nodes="#cols" data-set="let"><td><code>.let</code><td>Allow columns wrapping (disables column width modifiers)
 	<tr><td><input name="grid-main-over" type="checkbox" data-nodes="#col-main-over" data-set="bg text-e pad mar nobr" data-unset="hide"><td><td>Overflow content
 </table>
-<table class="let mar">
+<table class="let mar opts-grid-cols">
 	<caption>Central column width</caption>
 	<tr><td><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y col-0"><td><code>.row &gt; .col-0</code><td>Auto
 	<tr><td><input name="grid-main" type="radio" data-nodes="#col-main" data-set="pad bg-y"><td><code>.row &gt; div</code><td>Single
@@ -393,13 +393,13 @@ To remember state, use <code>.mem</code>.
 
 <h3 id="table-basic">Basic table</h3>
 
-<table class="let mar">
+<table class="let mar opts-table">
 	<tr><td>
 		<td><code>table</code><td>By default, table is styled with border
 	<tr><td>
 		<td><code>form &gt; table</code><td>No borders if table is a direct descendant of form
 	<tr><td><input type="checkbox" name="demo-table-fit" data-set="fit" data-nodes="#demo-table">
-		<td><code>.fit</code><td>Hide borders
+		<td><code>.fit</code><td>Hide borders<!--a href="#demo-table" data-set="let">Hide borders</a-->
 	<tr><td><input type="checkbox" name="demo-table-let" data-set="let" data-nodes="#demo-table">
 		<td><code>.let</code><td>Row dividers
 	<tr><td><input type="checkbox" name="demo-table-hover" data-set="hover" data-nodes="#demo-table" checked>
@@ -1115,7 +1115,7 @@ Following code shows how to collapse navigation to a single hamburger icon on sm
 and expand it to dropdown navbar on large screen.
 </p>
 
-<fieldset class="mar">
+<fieldset class="mar opts-nav">
 <legend>Options</legend>
 <label><input name="nav-bg" type="checkbox" data-nodes="#navi" data-set="bg" checked> Add background <code>.bg</code></label><br>
 <label><input name="nav-hover" type="checkbox" data-nodes="#navi" data-set="hover" checked> Highlight active items <code>.hover</code></label><br>
@@ -1218,7 +1218,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 	<h3 id="dialog">Dialog</h3>
 	
 	<p>Replacement for standard Javascript dialogs.
-	<ul>
+	<ul class="opts-dlg">
 		<li>Alert <code>.alert</code>
 		<li>Confirm <code>.dialog[title]</code>
 		<li>Prompt <code>.dialog[data-prompt][data-caption]</code>
@@ -1312,7 +1312,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 
 <h3 id="topbars">Topbar</h3>
 
-<p>
+<p class="opts-topbar">
 <label><input name="demo-top" type="radio" data-nodes="#topbar" data-set="hide pad"> Disable top bar</label><br>
 <label><input name="demo-top" type="radio" data-nodes="#topbar" data-set="topbar shade" checked> Fixed top bar <code>.topbar</code></label><br>
 <label><input name="demo-top" type="radio" data-nodes="#topbar" data-set="topbar let shade"> Scrollable top bar <code>.topbar.let</code></label>
@@ -1347,7 +1347,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <h2 id="util">Utilities</h2>
 
 <h3 id="fetch">Fetch</h3>
-
+<!--opts-fetch-->
 <div class="code">
 <a href="data.json" data-target="#preview">Fetch into preview area</a><br>
 <a href="data.json" data-target="#dlg-inner">Fetch into modal dialog</a><br>
@@ -1358,7 +1358,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 
 
 <h3 id="toggle-class">Toggle class</h3>
-
+<!--opts-set-class-->
 <p>Toggle class or other attribute 
 <code>a[href^="#"][data-set][data-unset][data-attr]</code>, 
 <code>:is(a, select, [type="checkbox"], [type="radio"])[data-nodes][data-set][data-unset][data-attr]</code>.
@@ -1389,7 +1389,7 @@ Optionally use closing link pointing at <code>#cancel</code> inside target eleme
 <a href="#x" data-set="invert" data-nodes="body" class="hide" accesskey="i">(invert)</a>
 
 <h3 id="responsive-class">Responsive class</h3>
-
+<!--opts-resp-class-->
 <p>Class depending on available width <code>[data-class-mobile], [data-class-desktop]</code>.<br>
 Toggles on resize.
 
@@ -1430,7 +1430,7 @@ Toggles on resize.
 	-->
 
 <h3 id="items">Items</h3>
-
+<!--opts-items-->
 <p>
 Items are nodes with class <code>.item</code>.
 Container is items' common parent.
@@ -1481,7 +1481,7 @@ If link needs to be outside of the item, point at item with query selector in li
 </div>
 
 <h3 id="icons">Icons</h3>
-
+<!--opts-icon-->
 <p>
 Add icon before element's content <code>[data-icon]</code>.<br>
 Replace element's content with icon <code>[data-ico]</code> Provide <code>[title]</code> for accessibility.
@@ -1494,14 +1494,14 @@ Replace element's content with icon <code>[data-ico]</code> Provide <code>[title
 
 <h4 id="iconset">Available icons</h4>
 
-<fieldset class="mar" id="options-all-icons">
-<!--legend>Display options</legend>
-	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-set="pad" checked> Padding</label><br>
+<fieldset class="mar opts-iconset" id="options-all-icons">
+<legend>Display options</legend>
 	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-set="hover" checked> Hover</label><br>
+	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-set="pad" checked> Padding</label><br>
 	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a svg" data-set="bord"> Border</label><br>
 	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-set="shade"> Shadow</label><br>
 	<label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a svg" data-set="bg"> Background</label><br>
-</fieldset-->
+</fieldset>
 	<!--label><input name="demo-h" type="checkbox" data-nodes="#demo-all-icons a" data-attr="data-ico" data-set="1"> Hide labels</label-->
 
 <div class="row mar let" id="demo-all-icons">
@@ -1515,9 +1515,9 @@ Replace element's content with icon <code>[data-ico]</code> Provide <code>[title
 </div>
 
 <h3 id="code-highlight">Code highlight</h3>
-
+<!--opts-code-hilite-->
 <p>
-Use <code>code.language-xxx</code>.
+Add <code>.language-xxx</code> class to <code>code</code> element.
 Available language codes: <code>html</code>, <code>css</code>, <code>js</code>.
 
 <div class="code">
@@ -1541,8 +1541,8 @@ let double = function(x){
 </div>
 
 <h3 id="code-sample">Code sample</h3>
-
-<p>Use <code>div.code</code>.
+<!--opts-code-->
+<p>Add <code>.code</code> class to <code>div</code> element.
 
 <div class="code">
 	<div class="code">
@@ -1561,7 +1561,7 @@ let double = function(x){
 <h3 id="colors">Colors</h3>
 
 <h4 id="colors-inline">Inline</h4>
-
+<!--opts-color-->
 <div class="code">
 	<a href="#x" class="text-e">Error</a>
 	<a href="#x" class="text-w">Warning</a>
@@ -1593,7 +1593,7 @@ let double = function(x){
 </div>
 	
 <h4 id="colors-buttons">Buttons</h4>
-
+<!--opts-btn-->
 <div class="code">
 <button type="button" class="bg-e">Error</button>
 <button type="button" class="bg-w">Warning</button>
@@ -1611,7 +1611,7 @@ let double = function(x){
 </div>
 
 <h4 id="colors-blocks">Blocks</h4>
-
+<!--opts-bg-->
 <div class="code">
 <p class="pad bg-e">Error <span class="text-e">Error</span></p>
 <p class="pad bg-w">Warning <span class="text-w">Warning</span></p>
@@ -1670,7 +1670,7 @@ let double = function(x){
 </div>
 
 <h4>Invert</h4>
-
+<!--opts-invert-->
 <div class="code">
 <div class="invert pad">
   Inverted text

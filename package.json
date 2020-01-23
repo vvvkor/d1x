@@ -1,6 +1,6 @@
 {
   "name": "d1x",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "description": "Experiments on d1",
   "main": "dist/d1.js",
   "directories": {
@@ -13,7 +13,7 @@
     "build:docs.cmt": "cross-var replace-in-file \"/REMOVE-/g\" \"\" \"docs/*.*\" --isRegex",
     "build:version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"dist/*.*\" --isRegex",
     "build:docs.version": "cross-var replace-in-file \"/0\\.0\\.0/g\" \"$npm_package_version\" \"docs/*.*\" --isRegex",
-	"webpack": "webpack",
+    "webpack": "webpack",
     "build": "npm run build:css && npm run minify:css && npm run build:docs && npm run build:docs.cmt && npm run build:docs.version && webpack && npm run build:version",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
