@@ -1,4 +1,4 @@
-/*! d1x v1.0.31 */
+/*! d1x v1.0.32 */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -82,7 +82,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 21);
+/******/ 	return __webpack_require__(__webpack_require__.s = 22);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -90,7 +90,7 @@
 /***/ 0:
 /***/ (function(module, exports) {
 
-/*! d1 app v1.0.31 */
+/*! d1 app v1.0.32 */
 // (() => {
 //let main = new (function(){
 module.exports = new function () {
@@ -877,7 +877,7 @@ module.exports = new function () {
 
 /***/ }),
 
-/***/ 21:
+/***/ 22:
 /***/ (function(module, exports, __webpack_require__) {
 
 var app = __webpack_require__(0); //['toggle', 'dialog', 'gallery']

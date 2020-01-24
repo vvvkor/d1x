@@ -41,10 +41,8 @@
  
 ## js
 
-- better .js-live-val
-- new components: scrollspy, notify, sortable/dragsort
-- alerts: close link
-- slides
+- new components: scrollspy, notify, sortable/dragsort, slides
+~ better .js-live-val
 ~ optimize: !addEventListener to d1.b(), !bind to arrFunc, getAttribute to attr,
   - var to let, querySelector(All) to q/qq, !appendChild/insertBefore to ins
 ? gallery: unuse :target
@@ -59,6 +57,7 @@
 + html: multiline tag (meta), "attr="?
 + js hilite "require", not #!comment, 'str';
 + code formatter/highlighter (prismjs, highlight.js) [own]
++ alerts: close link
 + items: #copy: data-item, unhide, un-id, #delall, #clear
 + a#copy#del#delete#hide ^ul,tr,.item
 + hilite html attrLang
@@ -75,7 +74,7 @@
 ## doc
 
 ! overview test page https://getuikit.com/assets/uikit/tests/ , https://getuikit.com/v2/tests/overview.html
-!? "fitty" / "d1app" / "d1ui" / "d1web" / "d1css v2"
+! name: "fitty" / "d1app" / "d1ui" / "d1web" / "d1css v2"
 - "requires toggle.js"
 - options as table "opts-"
 	<table class="let mar">
